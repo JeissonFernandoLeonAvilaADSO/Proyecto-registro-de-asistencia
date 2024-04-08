@@ -1,0 +1,9 @@
+@import url(../variables.css);
+.fieldsetCard__InputCard{
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid var(--primary_color_var3);
+    border-radius: 4px;
+    height: 64px;
+    margin-top: 10px;
+}

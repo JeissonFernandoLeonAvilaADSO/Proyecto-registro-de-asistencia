@@ -1,0 +1,19 @@
+@import url(../variables.css);
+.btn_style_secondary{
+    background-color: var(--primary_color_var3);
+    width: 80%;
+    height: 64px;
+    padding: 5px 50px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn_style_secondary:hover{
+    background-color: var(--primary_color_var2);
+}
+
+.btn_style_secondary:active{
+    background-color: var(--primary_color_var4);
+}
