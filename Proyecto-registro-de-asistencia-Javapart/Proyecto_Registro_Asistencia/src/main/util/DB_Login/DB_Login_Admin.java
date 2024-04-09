@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
  * @author JeissonLeon
  */
 public class DB_Login_Admin {
-
     /**
      * Verifica si las credenciales de inicio de sesión son válidas.
      *

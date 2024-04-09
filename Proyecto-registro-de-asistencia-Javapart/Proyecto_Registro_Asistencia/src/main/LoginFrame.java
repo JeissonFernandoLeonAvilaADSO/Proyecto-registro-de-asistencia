@@ -31,11 +31,11 @@ public class LoginFrame extends javax.swing.JFrame {
         InstructorCheck = new javax.swing.JCheckBox();
         AdminCheck = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        Ingresar = new javax.swing.JButton();
         UserField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        PassField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        PassField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,16 +55,18 @@ public class LoginFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Iniciar sesion");
 
-        jButton1.setText("Iniciar sesion");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Ingresar.setText("Iniciar sesion");
+        Ingresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                IngresarActionPerformed(evt);
             }
         });
 
         jLabel2.setText("Usuario");
 
         jLabel3.setText("Contraseña");
+
+        PassField.setText("jPasswordField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -85,9 +87,9 @@ public class LoginFrame extends javax.swing.JFrame {
                                 .addComponent(AdminCheck))
                             .addComponent(jLabel2)
                             .addComponent(UserField)
-                            .addComponent(PassField, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
                             .addComponent(jLabel3)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(Ingresar, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                            .addComponent(PassField))))
                 .addContainerGap(130, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -108,7 +110,7 @@ public class LoginFrame extends javax.swing.JFrame {
                     .addComponent(InstructorCheck)
                     .addComponent(AdminCheck))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(Ingresar)
                 .addContainerGap(61, Short.MAX_VALUE))
         );
 
@@ -123,16 +125,18 @@ public class LoginFrame extends javax.swing.JFrame {
         InstructorCheck.setSelected(false);
     }//GEN-LAST:event_AdminCheckActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void IngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarActionPerformed
         if (AdminCheck.isSelected()){
             DB_Login_Admin AdminLog = new DB_Login_Admin();
             AdminLog.LogAdmin(UserField.getText(), PassField.getText());
+                
+            
         } else if (InstructorCheck.isSelected()){
             
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione un rol");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_IngresarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,10 +175,10 @@ public class LoginFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox AdminCheck;
+    private javax.swing.JButton Ingresar;
     private javax.swing.JCheckBox InstructorCheck;
-    private javax.swing.JTextField PassField;
+    private javax.swing.JPasswordField PassField;
     private javax.swing.JTextField UserField;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
