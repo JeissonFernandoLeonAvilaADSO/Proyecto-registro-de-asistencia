@@ -4,11 +4,12 @@
  */
 package main;
 import main.util.DB_Login.DB_Login_Admin;
+import main.AdminFrames.AdminHomeScreen;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author IZHAR
+ * @author Jeisson Leon
  */
 public class LoginFrame extends javax.swing.JFrame {
 
@@ -17,6 +18,9 @@ public class LoginFrame extends javax.swing.JFrame {
      */
     public LoginFrame() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        InstructorCheck.setSelected(true);
+        AdminCheck.setSelected(false);
     }
 
     /**
@@ -65,8 +69,6 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel2.setText("Usuario");
 
         jLabel3.setText("Contraseña");
-
-        PassField.setText("jPasswordField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,23 +119,46 @@ public class LoginFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    // Este método se ejecuta cuando se realiza una acción en el checkbox InstructorCheck.
+    // Desmarca el checkbox AdminCheck cuando InstructorCheck está seleccionado.
     private void InstructorCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstructorCheckActionPerformed
         AdminCheck.setSelected(false);
     }//GEN-LAST:event_InstructorCheckActionPerformed
 
+    // Este método se ejecuta cuando se realiza una acción en el checkbox AdminCheck.
+    // Desmarca el checkbox InstructorCheck cuando AdminCheck está seleccionado.
     private void AdminCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminCheckActionPerformed
         InstructorCheck.setSelected(false);
     }//GEN-LAST:event_AdminCheckActionPerformed
-
+    
+    // Este método se ejecuta cuando se realiza una acción en el botón Ingresar.
     private void IngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarActionPerformed
+        // Verifica si el checkbox AdminCheck está seleccionado.
         if (AdminCheck.isSelected()){
+            // Crea una nueva instancia de DB_Login_Admin.
             DB_Login_Admin AdminLog = new DB_Login_Admin();
-            AdminLog.LogAdmin(UserField.getText(), PassField.getText());
-                
             
+            // Verifica las credenciales del administrador.
+            if(AdminLog.LogAdmin(UserField.getText(), PassField.getText())){
+                // Si las credenciales son válidas, muestra un mensaje de bienvenida.
+                JOptionPane.showMessageDialog(null, "Usuario válido. Bienvenido.");
+                // Crea una nueva instancia de AdminHomeScreen y la hace visible.
+                AdminHomeScreen AdminHome = new AdminHomeScreen();
+                AdminHome.setVisible(true);
+                // Cierra la ventana actual.
+                this.dispose();
+            } else {
+                // Si las credenciales no son válidas, muestra un mensaje de error.
+                JOptionPane.showMessageDialog(null, "Usuario invalido o no registrado.");
+            }
+            
+        // Verifica si el checkbox InstructorCheck está seleccionado.
         } else if (InstructorCheck.isSelected()){
+            // Aquí iría el código para manejar la selección del rol de instructor.
             
         } else {
+            // Si no se seleccionó ningún rol, muestra un mensaje solicitando la selección de un rol.
             JOptionPane.showMessageDialog(null, "Seleccione un rol");
         }
     }//GEN-LAST:event_IngresarActionPerformed

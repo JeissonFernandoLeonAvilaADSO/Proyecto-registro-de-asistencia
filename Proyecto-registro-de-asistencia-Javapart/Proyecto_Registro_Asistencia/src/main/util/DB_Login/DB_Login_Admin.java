@@ -48,11 +48,11 @@ public boolean LogAdmin(String UserAdmin, String PassAdmin) {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     // Si hay un resultado, las credenciales son válidas.
-                    JOptionPane.showMessageDialog(null, "Usuario válido. Bienvenido.");
+                    
                     return true;
                 } else {
                     // Si no hay resultados, las credenciales no son válidas.
-                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
+                    
                     return false;
                 }
             }
