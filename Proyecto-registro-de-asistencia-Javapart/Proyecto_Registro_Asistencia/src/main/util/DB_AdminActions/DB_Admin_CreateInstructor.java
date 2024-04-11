@@ -18,7 +18,7 @@ import java.sql.ResultSet;
 public class DB_Admin_CreateInstructor {
 
     // Este método toma los detalles del instructor como parámetros y los inserta en la base de datos.
-    public boolean AdminCreateInstructor(String NombreInstructor, String ApellidoInstructor, String CorreoInstructor, String AreaInstructor, String Contra){
+    public boolean AdminCreateInstructor(int IDInstructor, String NombreInstructor, String ApellidoInstructor, String CorreoInstructor, String AreaInstructor, String Contra){
         // URL de la base de datos a la que se va a conectar.
         String url = "jdbc:mysql://localhost:3306/db_proyecto_asistencia";
         // Nombre de usuario para la conexión a la base de datos.
@@ -30,16 +30,17 @@ public class DB_Admin_CreateInstructor {
         try (Connection conexion = DriverManager.getConnection(url, usuarioDB, contraDB)) {
 
             // Consulta SQL para verificar las credenciales del usuario.
-            String consulta = "INSERT INTO instructor (nombre, apellido, correo, areaProfe, contraseña) VALUES (?, ?, ?, ?, ?)";
+            String consulta = "INSERT INTO instructor (id, nombre, apellido, correo, areaProfe, contraseña) VALUES (?, ?, ?, ?, ?, ?)";
 
             // Prepara la consulta SQL.
             try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
                 // Establece los parámetros de la consulta.
-                ps.setString(1, NombreInstructor);
-                ps.setString(2, ApellidoInstructor);
-                ps.setString(3, CorreoInstructor);
-                ps.setString(4, AreaInstructor);
-                ps.setString(5, Contra);
+                ps.setInt(1, IDInstructor);
+                ps.setString(2, NombreInstructor);
+                ps.setString(3, ApellidoInstructor);
+                ps.setString(4, CorreoInstructor);
+                ps.setString(5, AreaInstructor);
+                ps.setString(6, Contra);
 
                 // Ejecuta la consulta y obtiene los resultados en base a si se modificaron columnas.
                 int rowsAffected = ps.executeUpdate();

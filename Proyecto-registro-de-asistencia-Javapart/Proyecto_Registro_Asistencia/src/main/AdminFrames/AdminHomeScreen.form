@@ -31,14 +31,14 @@
                       <Component id="CrearInstructor" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel1" max="32767" attributes="0"/>
-                          <Component id="ModificarInstructor" min="-2" pref="175" max="-2" attributes="0"/>
+                          <Component id="jLabel1" pref="187" max="32767" attributes="0"/>
+                          <Component id="ModificarInstructor" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="EliminarInstructor" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="30" max="32767" attributes="0"/>
+              <EmptySpace pref="22" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -89,8 +89,11 @@
     </Component>
     <Component class="javax.swing.JButton" name="EliminarInstructor">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Eliminar usuario instrutctor"/>
+        <Property name="text" type="java.lang.String" value="Eliminar usuario instructor"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EliminarInstructorActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

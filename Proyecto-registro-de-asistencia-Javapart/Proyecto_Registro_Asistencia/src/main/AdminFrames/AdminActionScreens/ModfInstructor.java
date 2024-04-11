@@ -137,6 +137,7 @@ public class ModfInstructor extends javax.swing.JFrame {
 
         jLabel13.setText("Cedula");
 
+        ModificarCedulaInstructor.setText("0");
         ModificarCedulaInstructor.setEnabled(false);
 
         CheckActivarCedula.addActionListener(new java.awt.event.ActionListener() {

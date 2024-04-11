@@ -5,6 +5,7 @@
 package main.AdminFrames;
 import main.AdminFrames.AdminActionScreens.CreateInstructor;
 import main.AdminFrames.AdminActionScreens.ModfInstructor;
+import main.AdminFrames.AdminActionScreens.DeleteInstructor;
 /**
  *
  * @author Jeisson Leon
@@ -54,7 +55,12 @@ public class AdminHomeScreen extends javax.swing.JFrame {
             }
         });
 
-        EliminarInstructor.setText("Eliminar usuario instrutctor");
+        EliminarInstructor.setText("Eliminar usuario instructor");
+        EliminarInstructor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarInstructorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -68,11 +74,11 @@ public class AdminHomeScreen extends javax.swing.JFrame {
                         .addComponent(CrearInstructor)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ModificarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                            .addComponent(ModificarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(EliminarInstructor)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,6 +109,12 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         modfInstructor.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_ModificarInstructorActionPerformed
+
+    private void EliminarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarInstructorActionPerformed
+        DeleteInstructor delInstructor = new DeleteInstructor();
+        delInstructor.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_EliminarInstructorActionPerformed
 
     /**
      * @param args the command line arguments

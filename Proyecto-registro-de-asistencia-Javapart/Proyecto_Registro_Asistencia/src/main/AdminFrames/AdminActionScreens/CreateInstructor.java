@@ -40,6 +40,8 @@ public class CreateInstructor extends javax.swing.JFrame {
         RegistroContraInstructor = new javax.swing.JTextField();
         RegistroAreaInstructor = new javax.swing.JTextField();
         VolverHome = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        RegistroIDInstructor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,31 +69,39 @@ public class CreateInstructor extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Cedula");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel6)
                     .addComponent(jLabel5)
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1)
-                    .addComponent(RegistrarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                    .addComponent(RegistrarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(RegistroApellidoInstructor)
                     .addComponent(RegistroCorreoInstructor)
                     .addComponent(RegistroContraInstructor)
                     .addComponent(RegistroAreaInstructor)
                     .addComponent(RegistroNombreInstructor)
-                    .addComponent(VolverHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(98, Short.MAX_VALUE))
+                    .addComponent(VolverHome, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                    .addComponent(RegistroIDInstructor))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(RegistroIDInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addGap(4, 4, 4)
                 .addComponent(RegistroNombreInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -115,7 +125,7 @@ public class CreateInstructor extends javax.swing.JFrame {
                 .addComponent(RegistrarInstructor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(VolverHome)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         pack();
@@ -128,7 +138,7 @@ public class CreateInstructor extends javax.swing.JFrame {
         
         // Llama al método AdminCreateInstructor de la clase DB_Admin_CreateInstructor.
         // Los parámetros del método son los textos de los campos de registro del instructor.
-        CrearInstructor.AdminCreateInstructor(RegistroNombreInstructor.getText(), RegistroApellidoInstructor.getText(), RegistroCorreoInstructor.getText(), RegistroAreaInstructor.getText(), RegistroContraInstructor.getText());
+        CrearInstructor.AdminCreateInstructor(Integer.parseInt(RegistroIDInstructor.getText()) ,RegistroNombreInstructor.getText(), RegistroApellidoInstructor.getText(), RegistroCorreoInstructor.getText(), RegistroAreaInstructor.getText(), RegistroContraInstructor.getText());
         
         // Limpia los campos de texto después de registrar al instructor.
         RegistroNombreInstructor.setText("");
@@ -185,6 +195,7 @@ public class CreateInstructor extends javax.swing.JFrame {
     private javax.swing.JTextField RegistroAreaInstructor;
     private javax.swing.JTextField RegistroContraInstructor;
     private javax.swing.JTextField RegistroCorreoInstructor;
+    private javax.swing.JTextField RegistroIDInstructor;
     private javax.swing.JTextField RegistroNombreInstructor;
     private javax.swing.JButton VolverHome;
     private javax.swing.JLabel jLabel1;
@@ -192,5 +203,6 @@ public class CreateInstructor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     // End of variables declaration//GEN-END:variables
 }
