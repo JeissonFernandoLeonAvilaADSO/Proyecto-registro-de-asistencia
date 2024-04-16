@@ -3,9 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package main;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.event.ItemEvent;
 import main.util.DB_Login.DB_Login_Admin;
 import main.AdminFrames.AdminHomeScreen;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.basic.BasicButtonUI;
+
 
 /**
  *
@@ -20,7 +27,21 @@ public class LoginFrame extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         InstructorCheck.setSelected(true);
+        InstructorCheck.setOpaque(true);
+        AdminCheck.setOpaque(true);
+        InstructorCheck.setBackground(Color.decode("#39A900"));
         AdminCheck.setSelected(false);
+        InstructorCheck.setBorder(new LineBorder(Color.decode("#39A900")));
+        InstructorCheck.setHorizontalAlignment(SwingConstants.CENTER);
+        AdminCheck.setBorder(new LineBorder(Color.decode("#39A900")));
+        AdminCheck.setHorizontalAlignment(SwingConstants.CENTER);
+        UserField.setBorder(new LineBorder(Color.decode("#39A900")));
+        PassField.setBorder(new LineBorder(Color.decode("#39A900")));
+        Ingresar.setUI(new BasicButtonUI());
+        Ingresar.setBorderPainted(false);
+        Ingresar.setFocusPainted(false);
+        Ingresar.setContentAreaFilled(true);
+        Ingresar.setOpaque(true);
     }
 
     /**
@@ -32,6 +53,8 @@ public class LoginFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         InstructorCheck = new javax.swing.JCheckBox();
         AdminCheck = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
@@ -40,80 +63,164 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         PassField = new javax.swing.JPasswordField();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setOpaque(false);
+
+        InstructorCheck.setBackground(new java.awt.Color(255, 255, 255));
+        InstructorCheck.setFont(new java.awt.Font("Dubai Light", 0, 24)); // NOI18N
+        InstructorCheck.setForeground(new java.awt.Color(0, 0, 0));
         InstructorCheck.setText("Instructor");
+        InstructorCheck.setAlignmentX(10.0F);
+        InstructorCheck.setAlignmentY(0.0F);
+        InstructorCheck.setBorderPainted(true);
+        InstructorCheck.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                InstructorCheckItemStateChanged(evt);
+            }
+        });
+        InstructorCheck.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                InstructorCheckMousePressed(evt);
+            }
+        });
         InstructorCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InstructorCheckActionPerformed(evt);
             }
         });
 
+        AdminCheck.setBackground(new java.awt.Color(255, 255, 255));
+        AdminCheck.setFont(new java.awt.Font("Dubai Light", 0, 24)); // NOI18N
+        AdminCheck.setForeground(new java.awt.Color(0, 0, 0));
         AdminCheck.setText("Admin");
+        AdminCheck.setAlignmentX(10.0F);
+        AdminCheck.setAlignmentY(0.0F);
+        AdminCheck.setBorderPainted(true);
+        AdminCheck.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                AdminCheckItemStateChanged(evt);
+            }
+        });
         AdminCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AdminCheckActionPerformed(evt);
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Dubai Light", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Iniciar sesion");
 
+        Ingresar.setBackground(new java.awt.Color(57, 169, 0));
+        Ingresar.setFont(new java.awt.Font("Dubai Light", 0, 24)); // NOI18N
+        Ingresar.setForeground(new java.awt.Color(255, 255, 255));
         Ingresar.setText("Iniciar sesion");
+        Ingresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                IngresarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                IngresarMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                IngresarMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                IngresarMouseReleased(evt);
+            }
+        });
         Ingresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IngresarActionPerformed(evt);
             }
         });
 
+        UserField.setBackground(new java.awt.Color(255, 255, 255));
+        UserField.setFont(new java.awt.Font("Dubai Light", 0, 18)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Dubai Light", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Usuario");
 
+        jLabel3.setFont(new java.awt.Font("Dubai Light", 0, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Contraseña");
+
+        PassField.setBackground(new java.awt.Color(255, 255, 255));
+        PassField.setFont(new java.awt.Font("Dubai Light", 0, 18)); // NOI18N
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Ingresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(PassField)
+            .addComponent(UserField)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(62, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(InstructorCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(AdminCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(61, 61, 61))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(114, 114, 114))))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(UserField, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PassField, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(InstructorCheck)
+                    .addComponent(AdminCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
+
+        jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 160, -1, -1));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/util/icons/Group 65.jpg"))); // NOI18N
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 820));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(159, 159, 159)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(108, 108, 108)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(InstructorCheck)
-                                .addGap(18, 18, 18)
-                                .addComponent(AdminCheck))
-                            .addComponent(jLabel2)
-                            .addComponent(UserField)
-                            .addComponent(jLabel3)
-                            .addComponent(Ingresar, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-                            .addComponent(PassField))))
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addComponent(jLabel1)
-                .addGap(12, 12, 12)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(UserField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PassField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(InstructorCheck)
-                    .addComponent(AdminCheck))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Ingresar)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -163,6 +270,44 @@ public class LoginFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_IngresarActionPerformed
 
+    private void IngresarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IngresarMouseEntered
+        Ingresar.setBackground(Color.decode("#008550"));
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_IngresarMouseEntered
+
+    private void IngresarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IngresarMouseExited
+        Ingresar.setBackground(Color.decode("#39A900"));
+        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_IngresarMouseExited
+
+    private void IngresarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IngresarMousePressed
+        Ingresar.setBackground(Color.decode("#87CA66"));
+    }//GEN-LAST:event_IngresarMousePressed
+
+    private void IngresarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_IngresarMouseReleased
+        Ingresar.setBackground(Color.decode("#39A900"));
+    }//GEN-LAST:event_IngresarMouseReleased
+
+    private void InstructorCheckMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InstructorCheckMousePressed
+
+    }//GEN-LAST:event_InstructorCheckMousePressed
+
+    private void InstructorCheckItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_InstructorCheckItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            InstructorCheck.setBackground(Color.decode("#39a900")); // Color de fondo cuando está seleccionado
+        } else {
+            InstructorCheck.setBackground(Color.WHITE); // Color de fondo cuando no está seleccionado
+        }
+    }//GEN-LAST:event_InstructorCheckItemStateChanged
+
+    private void AdminCheckItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_AdminCheckItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            AdminCheck.setBackground(Color.decode("#39a900")); // Color de fondo cuando está seleccionado
+        } else {
+            AdminCheck.setBackground(Color.WHITE); // Color de fondo cuando no está seleccionado
+        }
+    }//GEN-LAST:event_AdminCheckItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -207,5 +352,8 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }
