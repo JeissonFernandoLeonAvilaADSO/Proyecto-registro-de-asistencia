@@ -3,16 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/AdminFrames/AdminActionScreens/CreateInstructor.java</file>
-            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/AdminFrames/AdminActionScreens/DeleteInstructor.java</file>
-            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/util/DB_AdminActions/DB_Admin_DeletInstructor.java</file>
-            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/LoginFrame.java</file>
-            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/util/DB_Login/DB_Login_Instructor.java</file>
-            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/util/DB_AdminActions/DB_Admin_CreateInstructor.java</file>
-            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/util/DB_Login/DB_Login_Admin.java</file>
-            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/util/DB_AdminActions/DB_Admin_ModifInstructor.java</file>
-            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/util/DB_AdminActions/DB_AdminBuscarInstructor.java</file>
-            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/AdminFrames/AdminActionScreens/ModfInstructor.java</file>
+            <file>file:/C:/Users/IZHAR/Documents/Proyecto-registro-de-asistencia/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/LoginFrame.java</file>
+            <file>file:/C:/Users/IZHAR/Documents/Proyecto-registro-de-asistencia/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/AdminFrames/AdminActionScreens/ModfInstructor.java</file>
+            <file>file:/C:/Users/IZHAR/Documents/Proyecto-registro-de-asistencia/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/AdminFrames/AdminActionScreens/DeleteInstructor.java</file>
+            <file>file:/C:/Users/IZHAR/Documents/Proyecto-registro-de-asistencia/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/AdminFrames/AdminHomeScreen.java</file>
+            <file>file:/C:/Users/IZHAR/Documents/Proyecto-registro-de-asistencia/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/AdminFrames/AdminActionScreens/CreateInstructor.java</file>
         </group>
     </open-files>
 </project-private>
