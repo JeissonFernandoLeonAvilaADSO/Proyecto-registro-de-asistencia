@@ -139,6 +139,11 @@ public class ModfInstructor extends javax.swing.JFrame {
 
         ModificarCedulaInstructor.setText("0");
         ModificarCedulaInstructor.setEnabled(false);
+        ModificarCedulaInstructor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarCedulaInstructorActionPerformed(evt);
+            }
+        });
 
         CheckActivarCedula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -536,6 +541,10 @@ public class ModfInstructor extends javax.swing.JFrame {
         adminHomre.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VolverHomeActionPerformed
+
+    private void ModificarCedulaInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarCedulaInstructorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ModificarCedulaInstructorActionPerformed
 
     /**
      * @param args the command line arguments

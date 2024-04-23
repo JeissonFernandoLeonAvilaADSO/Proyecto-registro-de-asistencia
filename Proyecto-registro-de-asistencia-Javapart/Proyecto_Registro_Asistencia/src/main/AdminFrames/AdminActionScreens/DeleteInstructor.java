@@ -59,7 +59,7 @@ public class DeleteInstructor extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Cedula");
+        jLabel1.setText("Cédula");
 
         jLabel2.setText("Nombre");
 
