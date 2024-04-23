@@ -10,16 +10,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ItemEvent;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
-import java.io.File;
-import java.io.IOException;
 import javax.swing.ButtonGroup;
 import main.util.DB_Login.DB_Login_Admin;
+import main.util.DB_Login.DB_Login_Instructor;
 import main.AdminFrames.AdminHomeScreen;
+import main.InstructorFrames.InstructorHomeScreen;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -251,6 +247,20 @@ public class LoginFrame extends javax.swing.JFrame {
         // Verifica si el checkbox InstructorCheck está seleccionado.
         } else if (InstructorCheck.isSelected()){
             // Aquí iría el código para manejar la selección del rol de instructor.
+            DB_Login_Instructor InstructorLog = new DB_Login_Instructor();
+            // Verifica las credenciales del instructor.
+            if(InstructorLog.LogInstructor(UserField.getText(), PassField.getText())){
+                // Si las credenciales son válidas, muestra un mensaje de bienvenida.
+                JOptionPane.showMessageDialog(null, "Usuario válido. Bienvenido.");
+                // Crea una nueva instancia de InstructorHomeScreen y la hace visible.
+                InstructorHomeScreen InstructorHome = new InstructorHomeScreen();
+                InstructorHome.setVisible(true);
+                // Cierra la ventana actual.
+                this.dispose();
+            } else {
+                // Si las credenciales no son válidas, muestra un mensaje de error.
+                JOptionPane.showMessageDialog(null, "Usuario invalido o no registrado.");
+            }
             
         } else {
             // Si no se seleccionó ningún rol, muestra un mensaje solicitando la selección de un rol.
