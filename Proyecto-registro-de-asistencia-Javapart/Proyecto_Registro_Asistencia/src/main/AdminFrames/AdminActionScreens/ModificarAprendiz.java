@@ -610,7 +610,7 @@ public class ModificarAprendiz extends javax.swing.JFrame {
         if (ProgramaCheck.isSelected()){
             ModProgramaAprendiz.setEnabled(true);
         } else {
-            ModProgramaAprendiz.setEditable(false);
+            ModProgramaAprendiz.setEnabled(false);
         }
     }//GEN-LAST:event_ProgramaCheckActionPerformed
 
