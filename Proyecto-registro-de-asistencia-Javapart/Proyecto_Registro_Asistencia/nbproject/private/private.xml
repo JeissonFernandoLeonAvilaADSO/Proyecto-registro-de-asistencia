@@ -6,6 +6,8 @@
             <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/AdminFrames/AdminHomeScreen.java</file>
             <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/LoginFrame.java</file>
             <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/InstructorFrames/InstructorHomeScreen.java</file>
+            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/util/DB_Login/DB_Login_Instructor.java</file>
+            <file>file:/D:/prAsis/Proyecto-registro-de-asistencia-Javapart/Proyecto_Registro_Asistencia/src/main/util/DB_Login/DB_Login_Admin.java</file>
         </group>
     </open-files>
 </project-private>

@@ -7,16 +7,22 @@ import java.sql.ResultSet;
 
 public class DB_Admin_BuscarAprendiz {
 
-    public String ResultadoCedulaAprendiz;
+    public String ResultadoDocumentoAprendiz;
     public String ResultadoNombreAprendiz;
     public String ResultadoApellidoAprendiz;
-    public String ResultadoCorreoAprendiz;
+    public String ResultadoTipoDocuAprendiz;
+    public String ResultadoGeneroAprendiz;
+    public String ResultadoNumeroFichaAprendiz;
     public String ResultadoProgramAprendiz;
-    public String ResultadoContraAprendiz;
-
+    public String ResultadoJornadaAprendiz;
+    public String ResultadoNivelAprendiz;
+    public String ResultadoCentroAprendiz;
+    public String ResultadoCorreoAprendiz;
+    public int ResultadoTelAprendiz;
+    
     public boolean AdminBuscarAprendiz (int IDAprendiz){
         // URL de la base de datos a la que se va a conectar.
-        String url = "jdbc:mysql://localhost:3306/db_proyecto_asistencia";
+        String url = "jdbc:mysql://localhost:3307/db_proyecto_asistencia";
         // Nombre de usuario para la conexión a la base de datos.
         String usuarioDB = "root";
         // Contraseña para la conexión a la base de datos.
@@ -26,7 +32,7 @@ public class DB_Admin_BuscarAprendiz {
         try (Connection conexion = DriverManager.getConnection(url, usuarioDB, contraDB)) {
 
             // Consulta SQL para verificar las credenciales del usuario.
-            String consulta = "SELECT * FROM `instructor` WHERE ID = ?;";
+            String consulta = "SELECT * FROM `aprendiz` WHERE ID = ?;";
 
             // Prepara la consulta SQL.
             try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
@@ -37,12 +43,18 @@ public class DB_Admin_BuscarAprendiz {
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         // Si hay un resultado, las credenciales son válidas.
-                        ResultadoCedulaAprendiz = rs.getString("id");
+                        ResultadoDocumentoAprendiz = rs.getString("id");
                         ResultadoNombreAprendiz = rs.getString("nombres");
                         ResultadoApellidoAprendiz = rs.getString("apellidos");
-                        ResultadoCorreoAprendiz = rs.getString("correo");
+                        ResultadoTipoDocuAprendiz = rs.getString("tipoDocu");
+                        ResultadoGeneroAprendiz = rs.getString("genero");
+                        ResultadoNumeroFichaAprendiz = rs.getString("numFicha");
                         ResultadoProgramAprendiz = rs.getString("prograForm");
-                        ResultadoContraAprendiz = rs.getString("contraseña");
+                        ResultadoJornadaAprendiz = rs.getString("jornadaForm");
+                        ResultadoNivelAprendiz = rs.getString("nivelForm");
+                        ResultadoCentroAprendiz = rs.getString("centroForm");
+                        ResultadoCorreoAprendiz = rs.getString("correo");
+                        ResultadoTelAprendiz = rs.getInt("telefono");
                         return true;
                     } else {
                         // Si no hay resultados, las credenciales no son válidas.

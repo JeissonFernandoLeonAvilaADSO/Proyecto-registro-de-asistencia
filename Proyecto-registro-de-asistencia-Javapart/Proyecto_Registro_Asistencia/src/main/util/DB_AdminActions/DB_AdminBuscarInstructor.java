@@ -17,7 +17,7 @@ public class DB_AdminBuscarInstructor {
 
     public boolean AdminBuscarInstructor(int IDInstructor){
         // URL de la base de datos a la que se va a conectar.
-        String url = "jdbc:mysql://localhost:3306/db_proyecto_asistencia";
+        String url = "jdbc:mysql://localhost:3307/db_proyecto_asistencia";
         // Nombre de usuario para la conexión a la base de datos.
         String usuarioDB = "root";
         // Contraseña para la conexión a la base de datos.
