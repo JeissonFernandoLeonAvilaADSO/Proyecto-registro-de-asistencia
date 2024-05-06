@@ -199,26 +199,7 @@ public class DeleteInstructor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BuscarDatosInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosInstructorActionPerformed
-                // Crea una nueva instancia de DB_AdminBuscarInstructor.
-        DB_AdminBuscarInstructor buscarInstructor = new DB_AdminBuscarInstructor();
 
-        // Intenta buscar al instructor en la base de datos.
-        if (buscarInstructor.AdminBuscarInstructor(Integer.parseInt(IDInstructorField.getText()))){
-            // Si el instructor se encuentra, se muestran sus datos en los campos correspondientes.
-            ResultadoCedulaInstructor.setText(buscarInstructor.ResultadoCedulaInstructor);
-            ResultadoNombreInstructor.setText(buscarInstructor.ResultadoNombreInstructor);
-            ResultadoApellidoInstructor.setText(buscarInstructor.ResultadoApellidoInstructor);
-            ResultadoCorreoInstructor.setText(buscarInstructor.ResultadoCorreoInstructor);
-            ResultadoAreaInstructor.setText(buscarInstructor.ResultadoAreaInstructor);
-            ResultadoContraInstructor.setText(buscarInstructor.ResultadoContraInstructor);
-            EliminarInstructor.setEnabled(true);
-            IDInstructorField.setText("");
-
-        } else {
-            // Si el instructor no se encuentra, se muestra un mensaje de error y se deshabilitan los componentes del Panel_ModificarDatos.
-            JOptionPane.showMessageDialog(null, "No se encontraron coincidencias");
-            EliminarInstructor.setEnabled(false);
-        }
     }//GEN-LAST:event_BuscarDatosInstructorActionPerformed
 
     private void VolverHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverHomeActionPerformed

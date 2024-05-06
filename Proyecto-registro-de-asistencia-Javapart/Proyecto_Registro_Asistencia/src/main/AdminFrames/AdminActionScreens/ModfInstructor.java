@@ -5,10 +5,17 @@
 package main.AdminFrames.AdminActionScreens;
 
 import java.awt.Component;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import main.util.DB_AdminActions.DB_AdminBuscarInstructor;
 import main.util.DB_AdminActions.DB_Admin_ModifInstructor;
 import main.AdminFrames.AdminHomeScreen;
+import org.json.JSONObject;
+import main.util.models.TipoDocumentoModel;
+import main.util.models.GeneroModel;
+import main.util.models.RolModel;
+
 /**
  *
  * @author IZHAR
@@ -18,14 +25,14 @@ public class ModfInstructor extends javax.swing.JFrame {
     /**
      * Creates new form ModfInstructor
      */
+    
     public ModfInstructor() {
         initComponents();
+        AditionalConfig();
         this.setLocationRelativeTo(null);
-        for (Component component : Panel_ModificarDatos.getComponents()) {
-        component.setEnabled(false);
-        }
-
+        
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -38,51 +45,64 @@ public class ModfInstructor extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         Panel_ModificarDatos = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        CheckActivarApellido = new javax.swing.JCheckBox();
+        CheckActivarNombres = new javax.swing.JCheckBox();
         ModificarInstructor = new javax.swing.JButton();
-        CheckActivarCorreo = new javax.swing.JCheckBox();
-        ModificarApellidoInstructor = new javax.swing.JTextField();
-        CheckActivarArea = new javax.swing.JCheckBox();
-        ModificarCorreoInstructor = new javax.swing.JTextField();
-        CheckActivarContra = new javax.swing.JCheckBox();
-        ModificarNombreInstructor = new javax.swing.JTextField();
-        ModificarContraInstructor = new javax.swing.JTextField();
-        ModificarAreaInstructor = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        CheckActivarNombre = new javax.swing.JCheckBox();
-        jLabel13 = new javax.swing.JLabel();
-        ModificarCedulaInstructor = new javax.swing.JTextField();
+        CheckActivarApellidos = new javax.swing.JCheckBox();
+        CheckActivarGenero = new javax.swing.JCheckBox();
+        CheckActivarTelefono = new javax.swing.JCheckBox();
+        CheckActivarTipoDoc = new javax.swing.JCheckBox();
         CheckActivarCedula = new javax.swing.JCheckBox();
+        ModificarNombreInstructor = new javax.swing.JTextField();
+        ModificarAreaInstructor = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        ModificarApellidoInstructor = new javax.swing.JTextField();
+        ModificarCedulaInstructor = new javax.swing.JTextField();
+        ModificarTelefonoInstructor = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        CheckActivarRol = new javax.swing.JCheckBox();
+        CheckActivarArea = new javax.swing.JCheckBox();
+        CheckActivarSede = new javax.swing.JCheckBox();
+        ModificarTipoDocInstructor = new javax.swing.JComboBox<>();
+        ModificarGeneroInstructor = new javax.swing.JComboBox<>();
+        ModificarRolInstructor = new javax.swing.JComboBox<>();
+        ModificarSedeInstructor = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         ResultadoNombreInstructor = new javax.swing.JTextField();
-        ResultadoCorreoInstructor = new javax.swing.JTextField();
+        ResultadoRolInstructor = new javax.swing.JTextField();
         ResultadoApellidoInstructor = new javax.swing.JTextField();
-        ResultadoContraInstructor = new javax.swing.JTextField();
+        ResultadoSedeInstructor = new javax.swing.JTextField();
         ResultadoAreaInstructor = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         BuscarDatosInstructor = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         ResultadoCedulaInstructor = new javax.swing.JTextField();
         IDInstructorField = new javax.swing.JTextField();
         VolverHome = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        ResultadoTipoDocInstructor = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        ResultadoGeneroInstructor = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        ResultadoTelefonoInstructor = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         Panel_ModificarDatos.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar Datos"));
 
-        jLabel5.setText("Contraseña");
-
-        CheckActivarApellido.addActionListener(new java.awt.event.ActionListener() {
+        CheckActivarNombres.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckActivarApellidoActionPerformed(evt);
+                CheckActivarNombresActionPerformed(evt);
             }
         });
 
@@ -93,55 +113,27 @@ public class ModfInstructor extends javax.swing.JFrame {
             }
         });
 
-        CheckActivarCorreo.addActionListener(new java.awt.event.ActionListener() {
+        CheckActivarApellidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckActivarCorreoActionPerformed(evt);
+                CheckActivarApellidosActionPerformed(evt);
             }
         });
 
-        ModificarApellidoInstructor.setEnabled(false);
-
-        CheckActivarArea.addActionListener(new java.awt.event.ActionListener() {
+        CheckActivarGenero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckActivarAreaActionPerformed(evt);
+                CheckActivarGeneroActionPerformed(evt);
             }
         });
 
-        ModificarCorreoInstructor.setEnabled(false);
-
-        CheckActivarContra.addActionListener(new java.awt.event.ActionListener() {
+        CheckActivarTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckActivarContraActionPerformed(evt);
+                CheckActivarTelefonoActionPerformed(evt);
             }
         });
 
-        ModificarNombreInstructor.setEnabled(false);
-
-        ModificarContraInstructor.setEnabled(false);
-
-        ModificarAreaInstructor.setEnabled(false);
-
-        jLabel1.setText("Nombre");
-
-        jLabel2.setText("Apellido");
-
-        jLabel3.setText("Correo");
-
-        jLabel4.setText("Area de trabajo");
-
-        CheckActivarNombre.addActionListener(new java.awt.event.ActionListener() {
+        CheckActivarTipoDoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckActivarNombreActionPerformed(evt);
-            }
-        });
-
-        jLabel13.setText("Cedula");
-
-        ModificarCedulaInstructor.setText("0");
-        ModificarCedulaInstructor.setEnabled(false);
-        ModificarCedulaInstructor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ModificarCedulaInstructorActionPerformed(evt);
+                CheckActivarTipoDocActionPerformed(evt);
             }
         });
 
@@ -151,82 +143,181 @@ public class ModfInstructor extends javax.swing.JFrame {
             }
         });
 
+        ModificarNombreInstructor.setEditable(false);
+        ModificarNombreInstructor.setFocusable(false);
+
+        ModificarAreaInstructor.setEditable(false);
+        ModificarAreaInstructor.setFocusable(false);
+
+        jLabel19.setText("Documento");
+
+        ModificarApellidoInstructor.setEditable(false);
+        ModificarApellidoInstructor.setFocusable(false);
+
+        ModificarCedulaInstructor.setEditable(false);
+        ModificarCedulaInstructor.setFocusable(false);
+
+        ModificarTelefonoInstructor.setEditable(false);
+        ModificarTelefonoInstructor.setFocusable(false);
+
+        jLabel18.setText("Telefono");
+
+        jLabel24.setText("Area de trabajo");
+
+        jLabel21.setText("Nombres");
+
+        jLabel22.setText("Apellidos");
+
+        jLabel20.setText("Tipo de documento");
+
+        jLabel23.setText("Genero");
+
+        jLabel17.setText("Sede");
+
+        jLabel10.setText("Rol");
+
+        CheckActivarRol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CheckActivarRolActionPerformed(evt);
+            }
+        });
+
+        CheckActivarArea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CheckActivarAreaActionPerformed(evt);
+            }
+        });
+
+        CheckActivarSede.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CheckActivarSedeActionPerformed(evt);
+            }
+        });
+
+        ModificarTipoDocInstructor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        ModificarGeneroInstructor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        ModificarRolInstructor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        ModificarSedeInstructor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout Panel_ModificarDatosLayout = new javax.swing.GroupLayout(Panel_ModificarDatos);
         Panel_ModificarDatos.setLayout(Panel_ModificarDatosLayout);
         Panel_ModificarDatosLayout.setHorizontalGroup(
             Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(ModificarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
-                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel13)
-                            .addComponent(ModificarCedulaInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CheckActivarCedula))
-                    .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
-                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(ModificarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ModificarApellidoInstructor)
-                            .addComponent(ModificarCorreoInstructor)
-                            .addComponent(ModificarContraInstructor)
-                            .addComponent(ModificarAreaInstructor)
-                            .addComponent(ModificarNombreInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Panel_ModificarDatosLayout.createSequentialGroup()
+                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel17)
+                                    .addComponent(jLabel24)
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel23)
+                                    .addComponent(jLabel22)
+                                    .addComponent(jLabel10))
+                                .addGap(42, 42, 42)
+                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ModificarAreaInstructor, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(ModificarRolInstructor, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ModificarTelefonoInstructor, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(ModificarGeneroInstructor, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ModificarApellidoInstructor)
+                                    .addComponent(ModificarSedeInstructor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Panel_ModificarDatosLayout.createSequentialGroup()
+                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel20)
+                                    .addComponent(jLabel21)
+                                    .addComponent(jLabel19))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(ModificarTipoDocInstructor, javax.swing.GroupLayout.Alignment.TRAILING, 0, 351, Short.MAX_VALUE)
+                                    .addComponent(ModificarCedulaInstructor, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(ModificarNombreInstructor))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(CheckActivarCorreo)
+                            .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(CheckActivarApellidos)
+                                .addComponent(CheckActivarGenero)
+                                .addComponent(CheckActivarTelefono)
+                                .addComponent(CheckActivarTipoDoc)
+                                .addComponent(CheckActivarNombres)
+                                .addComponent(CheckActivarCedula, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(CheckActivarRol)
                             .addComponent(CheckActivarArea)
-                            .addComponent(CheckActivarContra)
-                            .addComponent(CheckActivarNombre)
-                            .addComponent(CheckActivarApellido))))
+                            .addComponent(CheckActivarSede))))
                 .addGap(22, 22, 22))
         );
         Panel_ModificarDatosLayout.setVerticalGroup(
             Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
-                .addComponent(jLabel13)
-                .addGap(4, 4, 4)
-                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ModificarCedulaInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CheckActivarCedula))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addGap(4, 4, 4)
-                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ModificarNombreInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CheckActivarNombre))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(CheckActivarCedula)
+                    .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel19)
+                        .addComponent(ModificarCedulaInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(10, 10, 10)
+                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel20)
+                        .addComponent(ModificarTipoDocInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CheckActivarTipoDoc))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ModificarApellidoInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CheckActivarApellido))
-                .addComponent(jLabel3)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createSequentialGroup()
+                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
+                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel21)
+                                    .addComponent(CheckActivarNombres))
+                                .addGap(9, 9, 9))
+                            .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
+                                .addComponent(ModificarNombreInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel22)
+                                .addComponent(ModificarApellidoInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CheckActivarApellidos))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel23)
+                                .addComponent(ModificarGeneroInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CheckActivarGenero))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel18)
+                                .addComponent(ModificarTelefonoInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CheckActivarTelefono))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
+                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10)
+                                    .addComponent(ModificarRolInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel24)
+                                    .addComponent(ModificarAreaInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
+                                .addComponent(CheckActivarRol)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(CheckActivarArea)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel17)
+                            .addComponent(ModificarSedeInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(CheckActivarSede, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ModificarCorreoInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CheckActivarCorreo))
-                .addGap(16, 16, 16)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ModificarAreaInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CheckActivarArea))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ModificarContraInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CheckActivarContra))
-                .addGap(18, 18, 18)
                 .addComponent(ModificarInstructor)
-                .addGap(42, 42, 42))
+                .addGap(116, 116, 116))
         );
 
         jLabel6.setText("Documento del instructor");
@@ -234,27 +325,25 @@ public class ModfInstructor extends javax.swing.JFrame {
         ResultadoNombreInstructor.setEditable(false);
         ResultadoNombreInstructor.setFocusable(false);
 
-        ResultadoCorreoInstructor.setEditable(false);
-        ResultadoCorreoInstructor.setFocusable(false);
+        ResultadoRolInstructor.setEditable(false);
+        ResultadoRolInstructor.setFocusable(false);
 
         ResultadoApellidoInstructor.setEditable(false);
         ResultadoApellidoInstructor.setFocusable(false);
 
-        ResultadoContraInstructor.setEditable(false);
-        ResultadoContraInstructor.setFocusable(false);
+        ResultadoSedeInstructor.setEditable(false);
+        ResultadoSedeInstructor.setFocusable(false);
 
         ResultadoAreaInstructor.setEditable(false);
         ResultadoAreaInstructor.setFocusable(false);
 
-        jLabel7.setText("Nombre");
+        jLabel7.setText("Nombres");
 
-        jLabel8.setText("Apellido");
+        jLabel8.setText("Apellidos");
 
-        jLabel9.setText("Correo");
+        jLabel9.setText("Rol");
 
-        jLabel10.setText("Area de trabajo");
-
-        jLabel11.setText("Contraseña");
+        jLabel11.setText("Sede");
 
         BuscarDatosInstructor.setText("Buscar");
         BuscarDatosInstructor.addActionListener(new java.awt.event.ActionListener() {
@@ -263,7 +352,7 @@ public class ModfInstructor extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setText("Cedula");
+        jLabel12.setText("Documento");
 
         ResultadoCedulaInstructor.setEditable(false);
         ResultadoCedulaInstructor.setFocusable(false);
@@ -275,39 +364,73 @@ public class ModfInstructor extends javax.swing.JFrame {
             }
         });
 
+        jLabel14.setText("Tipo de documento");
+
+        ResultadoTipoDocInstructor.setEditable(false);
+        ResultadoTipoDocInstructor.setFocusable(false);
+
+        jLabel15.setText("Genero");
+
+        ResultadoGeneroInstructor.setEditable(false);
+        ResultadoGeneroInstructor.setFocusable(false);
+
+        jLabel16.setText("Telefono");
+
+        ResultadoTelefonoInstructor.setEditable(false);
+        ResultadoTelefonoInstructor.setFocusable(false);
+
+        jLabel25.setText("Area de trabajo");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(60, 60, 60)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel7)
-                            .addComponent(ResultadoNombreInstructor)
-                            .addComponent(ResultadoApellidoInstructor)
-                            .addComponent(ResultadoCorreoInstructor)
-                            .addComponent(ResultadoAreaInstructor)
-                            .addComponent(ResultadoContraInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-                            .addComponent(jLabel12)
-                            .addComponent(ResultadoCedulaInstructor)
-                            .addComponent(VolverHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(79, 79, 79)
-                        .addComponent(Panel_ModificarDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(65, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel16)
+                                    .addComponent(jLabel15)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel25))
+                                .addGap(28, 28, 28)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ResultadoApellidoInstructor)
+                                    .addComponent(ResultadoGeneroInstructor)
+                                    .addComponent(ResultadoTelefonoInstructor)
+                                    .addComponent(ResultadoRolInstructor)
+                                    .addComponent(ResultadoAreaInstructor)
+                                    .addComponent(ResultadoSedeInstructor)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel14)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel12))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ResultadoNombreInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                                    .addComponent(ResultadoTipoDocInstructor)
+                                    .addComponent(ResultadoCedulaInstructor)))
+                            .addComponent(VolverHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Panel_ModificarDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(90, 90, 90))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(IDInstructorField)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(BuscarDatosInstructor))
-                            .addComponent(jLabel6))))
-                .addContainerGap())
+                                .addComponent(BuscarDatosInstructor)
+                                .addContainerGap())))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -318,46 +441,57 @@ public class ModfInstructor extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(BuscarDatosInstructor)
                     .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                        .addComponent(Panel_ModificarDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(jLabel12)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(ResultadoCedulaInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(ResultadoTipoDocInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(ResultadoNombreInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ResultadoCedulaInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(ResultadoApellidoInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel15)
+                            .addComponent(ResultadoGeneroInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ResultadoNombreInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel8)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel16)
+                            .addComponent(ResultadoTelefonoInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ResultadoApellidoInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(ResultadoRolInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel9)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ResultadoAreaInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel25))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ResultadoCorreoInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ResultadoAreaInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ResultadoContraInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(VolverHome)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(ResultadoSedeInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(VolverHome))
+                    .addComponent(Panel_ModificarDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,52 +506,98 @@ public class ModfInstructor extends javax.swing.JFrame {
      * Habilita o deshabilita el campo ModificarNombreInstructor dependiendo del estado del checkbox.
      *
      */
-    private void CheckActivarNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarNombreActionPerformed
-        if (CheckActivarNombre.isSelected()){
-            ModificarNombreInstructor.setEnabled(true);
-        } else {
-            ModificarNombreInstructor.setEnabled(false);
+    
+        
+    public void AditionalConfig(){
+        for (Component component : Panel_ModificarDatos.getComponents()) {
+            component.setEnabled(false);
         }
-    }//GEN-LAST:event_CheckActivarNombreActionPerformed
+
+        TipoDocumentoModel tipoDocModel = new TipoDocumentoModel();
+        try {
+            List<String> tiposDocumento = tipoDocModel.BoxTipoDocModel();
+            if (tiposDocumento != null) {
+                DefaultComboBoxModel<String> TipoDocBoxModel = new DefaultComboBoxModel<>(tipoDocModel.toArray(tiposDocumento));
+                ModificarTipoDocInstructor.setModel(TipoDocBoxModel);
+            } else {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los tipos de documentos de la API");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        GeneroModel generoModel = new GeneroModel();
+        try {
+            List<String> tiposGenero = generoModel.BoxTipoActividadModel();
+            if (tiposGenero != null) {
+                DefaultComboBoxModel<String> GeneroBoxModel = new DefaultComboBoxModel<>(generoModel.toArray(tiposGenero));
+                ModificarGeneroInstructor.setModel(GeneroBoxModel);
+            } else {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los tipos de documentos de la API");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        RolModel rolModel = new RolModel();
+        try {
+            List<String> tiposRol = rolModel.BoxRolModel();
+            if (tiposRol != null) {
+                DefaultComboBoxModel<String> RolBoxModel = new DefaultComboBoxModel<>(rolModel.toArray(tiposRol));
+                ModificarRolInstructor.setModel(RolBoxModel);
+            } else {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los tipos de documentos de la API");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void CheckActivarTipoDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarTipoDocActionPerformed
+        if (CheckActivarTipoDoc.isSelected()){
+            ModificarTipoDocInstructor.setEnabled(true);
+        } else {
+            ModificarTipoDocInstructor.setEnabled(false);
+        }
+    }//GEN-LAST:event_CheckActivarTipoDocActionPerformed
 
     /**
      * Método que se ejecuta cuando se realiza una acción sobre el checkbox CheckActivarContra.
      * Habilita o deshabilita el campo ModificarContraInstructor dependiendo del estado del checkbox.
      *
      */
-    private void CheckActivarContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarContraActionPerformed
-        if (CheckActivarContra.isSelected()){
-            ModificarContraInstructor.setEnabled(true);
+    private void CheckActivarTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarTelefonoActionPerformed
+        if (CheckActivarTelefono.isSelected()){
+            ModificarTelefonoInstructor.setEnabled(true);
         } else {
-            ModificarContraInstructor.setEnabled(false);
+            ModificarTelefonoInstructor.setEnabled(false);
         }
-    }//GEN-LAST:event_CheckActivarContraActionPerformed
+    }//GEN-LAST:event_CheckActivarTelefonoActionPerformed
 
     /**
      * Método que se ejecuta cuando se realiza una acción sobre el checkbox CheckActivarArea.
      * Habilita o deshabilita el campo ModificarAreaInstructor dependiendo del estado del checkbox.
      *
      */
-    private void CheckActivarAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarAreaActionPerformed
-        if (CheckActivarArea.isSelected()){
-            ModificarAreaInstructor.setEnabled(true);
+    private void CheckActivarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarGeneroActionPerformed
+        if (CheckActivarGenero.isSelected()){
+            ModificarGeneroInstructor.setEnabled(true);
         } else {
-            ModificarAreaInstructor.setEnabled(false);
+            ModificarGeneroInstructor.setEnabled(false);
         }
-    }//GEN-LAST:event_CheckActivarAreaActionPerformed
+    }//GEN-LAST:event_CheckActivarGeneroActionPerformed
 
     /**
      * Método que se ejecuta cuando se realiza una acción sobre el checkbox CheckActivarCorreo.
      * Habilita o deshabilita el campo ModificarCorreoInstructor dependiendo del estado del checkbox.
      *
      */
-    private void CheckActivarCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarCorreoActionPerformed
-        if (CheckActivarCorreo.isSelected()){
-            ModificarCorreoInstructor.setEnabled(true);
+    private void CheckActivarApellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarApellidosActionPerformed
+        if (CheckActivarApellidos.isSelected()){
+            ModificarApellidoInstructor.setEnabled(true);
         } else {
-            ModificarCorreoInstructor.setEnabled(false);
+            ModificarApellidoInstructor.setEnabled(false);
         }
-    }//GEN-LAST:event_CheckActivarCorreoActionPerformed
+    }//GEN-LAST:event_CheckActivarApellidosActionPerformed
 
 
     /**
@@ -434,19 +614,7 @@ public class ModfInstructor extends javax.swing.JFrame {
             case JOptionPane.YES_OPTION:
                 // Si el usuario confirma, crea una instancia de DB_Admin_ModifInstructor y llama al método AdminModifInstructor con los datos del instructor.
                 DB_Admin_ModifInstructor modifInstructor = new DB_Admin_ModifInstructor();
-                modifInstructor.AdminModifInstructor(CheckActivarCedula.isSelected(),
-                        CheckActivarNombre.isSelected(),
-                        CheckActivarApellido.isSelected(),
-                        CheckActivarCorreo.isSelected(),
-                        CheckActivarArea.isSelected(),
-                        CheckActivarContra.isSelected(),
-                        Integer.parseInt(ModificarCedulaInstructor.getText()),
-                        ModificarNombreInstructor.getText(),
-                        ModificarApellidoInstructor.getText(),
-                        ModificarCorreoInstructor.getText(),
-                        ModificarAreaInstructor.getText(),
-                        ModificarContraInstructor.getText(),
-                        Integer.parseInt(ResultadoCedulaInstructor.getText()));
+
                 break;
 
             case JOptionPane.NO_OPTION:
@@ -464,13 +632,13 @@ public class ModfInstructor extends javax.swing.JFrame {
      * Habilita o deshabilita el campo ModificarApellidoInstructor dependiendo del estado del checkbox.
      *
      */
-    private void CheckActivarApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarApellidoActionPerformed
-        if (CheckActivarApellido.isSelected()){
-            ModificarApellidoInstructor.setEnabled(true);
+    private void CheckActivarNombresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarNombresActionPerformed
+        if (CheckActivarNombres.isSelected()){
+            ModificarNombreInstructor.setEnabled(true);
         } else {
-            ModificarApellidoInstructor.setEnabled(false);
+            ModificarNombreInstructor.setEnabled(false);
         }
-    }//GEN-LAST:event_CheckActivarApellidoActionPerformed
+    }//GEN-LAST:event_CheckActivarNombresActionPerformed
 
 
     /**
@@ -489,20 +657,26 @@ public class ModfInstructor extends javax.swing.JFrame {
     
     private void DesHabilitarCampos(){
         ModificarCedulaInstructor.setEnabled(false);
+        ModificarTipoDocInstructor.setEnabled(false);
         ModificarNombreInstructor.setEnabled(false);
         ModificarApellidoInstructor.setEnabled(false);
-        ModificarCorreoInstructor.setEnabled(false);
+        ModificarGeneroInstructor.setEnabled(false);
+        ModificarTelefonoInstructor.setEnabled(false);
+        ModificarRolInstructor.setEnabled(false);
         ModificarAreaInstructor.setEnabled(false);
-        ModificarContraInstructor.setEnabled(false);
+        ModificarSedeInstructor.setEnabled(false);
     }
     
     private void HabilitarCampos(){
         ModificarCedulaInstructor.setEnabled(true);
+        ModificarTipoDocInstructor.setEnabled(true);
         ModificarNombreInstructor.setEnabled(true);
         ModificarApellidoInstructor.setEnabled(true);
-        ModificarCorreoInstructor.setEnabled(true);
+        ModificarGeneroInstructor.setEnabled(true);
+        ModificarTelefonoInstructor.setEnabled(true);
+        ModificarRolInstructor.setEnabled(true);
         ModificarAreaInstructor.setEnabled(true);
-        ModificarContraInstructor.setEnabled(true);
+        ModificarSedeInstructor.setEnabled(true);
     }
     
     private void BuscarDatosInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosInstructorActionPerformed
@@ -510,15 +684,20 @@ public class ModfInstructor extends javax.swing.JFrame {
         DB_AdminBuscarInstructor buscarInstructor = new DB_AdminBuscarInstructor();
 
         // Intenta buscar al instructor en la base de datos.
-        if (buscarInstructor.AdminBuscarInstructor(Integer.parseInt(IDInstructorField.getText()))){
-            // Si el instructor se encuentra, se muestran sus datos en los campos correspondientes.
-            ResultadoCedulaInstructor.setText(buscarInstructor.ResultadoCedulaInstructor);
-            ResultadoNombreInstructor.setText(buscarInstructor.ResultadoNombreInstructor);
-            ResultadoApellidoInstructor.setText(buscarInstructor.ResultadoApellidoInstructor);
-            ResultadoCorreoInstructor.setText(buscarInstructor.ResultadoCorreoInstructor);
-            ResultadoAreaInstructor.setText(buscarInstructor.ResultadoAreaInstructor);
-            ResultadoContraInstructor.setText(buscarInstructor.ResultadoContraInstructor);
-            IDInstructorField.setText("");
+        JSONObject instructor = buscarInstructor.AdminBuscarInstructor(Integer.parseInt(IDInstructorField.getText()));
+        if (instructor != null){
+            System.out.println(instructor);
+            ResultadoCedulaInstructor.setText(String.valueOf(instructor.getInt("documento")));
+            ResultadoTipoDocInstructor.setText(instructor.getString("tipoDocumento"));
+            ResultadoNombreInstructor.setText(instructor.getString("nombres"));
+            ResultadoApellidoInstructor.setText(instructor.getString("apellidos"));
+            ResultadoGeneroInstructor.setText(instructor.getString("genero"));
+            ResultadoTelefonoInstructor.setText(String.valueOf(instructor.getInt("telefono")));
+            ResultadoRolInstructor.setText(instructor.getString("rol"));
+            ResultadoAreaInstructor.setText(instructor.getString("area"));
+            ResultadoSedeInstructor.setText(instructor.getString("sede"));
+            
+
 
             // Habilita los componentes del Panel_ModificarDatos.
             for (Component component : Panel_ModificarDatos.getComponents()) {
@@ -542,9 +721,29 @@ public class ModfInstructor extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_VolverHomeActionPerformed
 
-    private void ModificarCedulaInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarCedulaInstructorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ModificarCedulaInstructorActionPerformed
+    private void CheckActivarRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarRolActionPerformed
+        if (CheckActivarApellidos.isSelected()){
+            ModificarRolInstructor.setEnabled(true);
+        } else {
+            ModificarRolInstructor.setEnabled(false);
+        }
+    }//GEN-LAST:event_CheckActivarRolActionPerformed
+
+    private void CheckActivarAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarAreaActionPerformed
+        if (CheckActivarApellidos.isSelected()){
+            ModificarAreaInstructor.setEnabled(true);
+        } else {
+            ModificarAreaInstructor.setEnabled(false);
+        }
+    }//GEN-LAST:event_CheckActivarAreaActionPerformed
+
+    private void CheckActivarSedeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarSedeActionPerformed
+        if (CheckActivarApellidos.isSelected()){
+            ModificarSedeInstructor.setEnabled(true);
+        } else {
+            ModificarSedeInstructor.setEnabled(false);
+        }
+    }//GEN-LAST:event_CheckActivarSedeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -583,37 +782,52 @@ public class ModfInstructor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BuscarDatosInstructor;
-    private javax.swing.JCheckBox CheckActivarApellido;
+    private javax.swing.JCheckBox CheckActivarApellidos;
     private javax.swing.JCheckBox CheckActivarArea;
     private javax.swing.JCheckBox CheckActivarCedula;
-    private javax.swing.JCheckBox CheckActivarContra;
-    private javax.swing.JCheckBox CheckActivarCorreo;
-    private javax.swing.JCheckBox CheckActivarNombre;
+    private javax.swing.JCheckBox CheckActivarGenero;
+    private javax.swing.JCheckBox CheckActivarNombres;
+    private javax.swing.JCheckBox CheckActivarRol;
+    private javax.swing.JCheckBox CheckActivarSede;
+    private javax.swing.JCheckBox CheckActivarTelefono;
+    private javax.swing.JCheckBox CheckActivarTipoDoc;
     private javax.swing.JTextField IDInstructorField;
     private javax.swing.JTextField ModificarApellidoInstructor;
     private javax.swing.JTextField ModificarAreaInstructor;
     private javax.swing.JTextField ModificarCedulaInstructor;
-    private javax.swing.JTextField ModificarContraInstructor;
-    private javax.swing.JTextField ModificarCorreoInstructor;
+    private javax.swing.JComboBox<String> ModificarGeneroInstructor;
     private javax.swing.JButton ModificarInstructor;
     private javax.swing.JTextField ModificarNombreInstructor;
+    private javax.swing.JComboBox<String> ModificarRolInstructor;
+    private javax.swing.JComboBox<String> ModificarSedeInstructor;
+    private javax.swing.JTextField ModificarTelefonoInstructor;
+    private javax.swing.JComboBox<String> ModificarTipoDocInstructor;
     private javax.swing.JPanel Panel_ModificarDatos;
     private javax.swing.JTextField ResultadoApellidoInstructor;
     private javax.swing.JTextField ResultadoAreaInstructor;
     private javax.swing.JTextField ResultadoCedulaInstructor;
-    private javax.swing.JTextField ResultadoContraInstructor;
-    private javax.swing.JTextField ResultadoCorreoInstructor;
+    private javax.swing.JTextField ResultadoGeneroInstructor;
     private javax.swing.JTextField ResultadoNombreInstructor;
+    private javax.swing.JTextField ResultadoRolInstructor;
+    private javax.swing.JTextField ResultadoSedeInstructor;
+    private javax.swing.JTextField ResultadoTelefonoInstructor;
+    private javax.swing.JTextField ResultadoTipoDocInstructor;
     private javax.swing.JButton VolverHome;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
