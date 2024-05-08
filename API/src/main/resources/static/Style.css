@@ -1,0 +1,21 @@
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: black;
+}
+.Box{
+    align-items: center;
+    border: 1px solid aqua;
+    border-radius: 8px;
+    width: calc(50%);
+    text-align: center;
+    color: white;
+}
