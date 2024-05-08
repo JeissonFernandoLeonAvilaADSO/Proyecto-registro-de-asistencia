@@ -33,8 +33,13 @@ public class InstructorController {
 
     @RequestMapping(value = "ObtenerInstructor/{IDInstructor}")
     public InstructorModel getInstructor(@PathVariable Integer IDInstructor){
-        String consulta = "SELECT perfilinstructor.Documento, perfilinstructor.Nombres, perfilinstructor.Apellidos, perfilinstructor.Telefono, perfilinstructor.Area, TipoDocumento.TipoDocumento, Genero.TiposGeneros, Rol.TipoRol, Sede.CentroFormacion FROM perfilinstructor INNER JOIN TipoDocumento ON perfilinstructor.IDTipoDocumento = TipoDocumento.ID INNER JOIN Genero ON perfilinstructor.IDGenero = Genero.ID INNER JOIN Rol ON perfilinstructor.IDRol = Rol.ID INNER JOIN Sede ON perfilinstructor.IDSede = Sede.ID WHERE perfilinstructor.Documento = ?";
-
+        String consulta = """ 
+                            SELECT perfilusuario.Documento, perfilusuario.Nombres, perfilusuario.Apellidos, perfilusuario.Telefono, perfilusuario.Area, TipoDocumento.TipoDocumento, Genero.TiposGeneros, Rol.TipoRol, Sede.CentroFormacion FROM perfilusuario
+                                INNER JOIN TipoDocumento ON perfilusuario.IDTipoDocumento = TipoDocumento.ID
+                                INNER JOIN Genero ON perfilusuario.IDGenero = Genero.ID
+                                INNER JOIN Rol ON perfilusuario.IDRol = Rol.ID
+                                INNER JOIN Sede ON perfilusuario.IDSede = Sede.ID
+                                WHERE perfilusuario.Documento = ?""";
         try {
             return jdbcTemplate.queryForObject(consulta, new Object[]{IDInstructor}, new RowMapper<InstructorModel>() {
                 @Override

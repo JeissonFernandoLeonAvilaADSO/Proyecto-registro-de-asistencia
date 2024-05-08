@@ -19,7 +19,10 @@ public class LoginAPI {
 
     @RequestMapping(value = "Registro/Instructor/{User}/{Pass}")
     public InstructorModel LoginInstructor(@PathVariable String User, @PathVariable String Pass) {
-        String consulta1 = "SELECT Documento from perfilinstructor INNER JOIN usuarioinstructor ON perfilinstructor.IDUsuarioInstructor = usuarioinstructor.ID WHERE usuarioinstructor.Usuario = ? AND usuarioinstructor.Contraseña = ?";
+        String consulta1 = """
+                            SELECT Documento from perfilusuario 
+                                INNER JOIN usuario ON perfilusuario.IDUsuario = usuario.ID 
+                                WHERE usuario.Usuario = ? AND usuario.Contraseña = ?""";
         InstructorModel instructor = null;
 
         try {
@@ -27,7 +30,13 @@ public class LoginAPI {
             Integer documento = jdbcTemplate.queryForObject(consulta1, new Object[]{User, Pass}, Integer.class);
 
             if (documento != null) {
-                String consulta2 = "SELECT perfilinstructor.Documento, perfilinstructor.Nombres, perfilinstructor.Apellidos, perfilinstructor.Telefono, perfilinstructor.Area, TipoDocumento.TipoDocumento, Genero.TiposGeneros, Rol.TipoRol, Sede.CentroFormacion FROM perfilinstructor INNER JOIN TipoDocumento ON perfilinstructor.IDTipoDocumento = TipoDocumento.ID INNER JOIN Genero ON perfilinstructor.IDGenero = Genero.ID INNER JOIN Rol ON perfilinstructor.IDRol = Rol.ID INNER JOIN Sede ON perfilinstructor.IDSede = Sede.ID WHERE perfilinstructor.Documento = ?";
+                String consulta2 = """ 
+                                    SELECT perfilusuario.Documento, perfilusuario.Nombres, perfilusuario.Apellidos, perfilusuario.Telefono, perfilusuario.Area, TipoDocumento.TipoDocumento, Genero.TiposGeneros, Rol.TipoRol, Sede.CentroFormacion FROM perfilusuario
+                                        INNER JOIN TipoDocumento ON perfilusuario.IDTipoDocumento = TipoDocumento.ID
+                                        INNER JOIN Genero ON perfilusuario.IDGenero = Genero.ID
+                                        INNER JOIN Rol ON perfilusuario.IDRol = Rol.ID
+                                        INNER JOIN Sede ON perfilusuario.IDSede = Sede.ID
+                                        WHERE perfilusuario.Documento = ?""";
 
                 // Si las credenciales son correctas, obtén los detalles del instructor.
                 instructor = jdbcTemplate.queryForObject(consulta2, new Object[]{documento}, new RowMapper<InstructorModel>() {
