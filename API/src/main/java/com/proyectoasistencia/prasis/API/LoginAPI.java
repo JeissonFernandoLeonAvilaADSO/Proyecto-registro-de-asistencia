@@ -1,6 +1,6 @@
 package com.proyectoasistencia.prasis.API;
 
-import com.proyectoasistencia.prasis.models.InstructorModel;
+import com.proyectoasistencia.prasis.models.PerfilUsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,12 +18,12 @@ public class LoginAPI {
     private JdbcTemplate jdbcTemplate;
 
     @RequestMapping(value = "Registro/Instructor/{User}/{Pass}")
-    public InstructorModel LoginInstructor(@PathVariable String User, @PathVariable String Pass) {
+    public PerfilUsuarioModel LoginInstructor(@PathVariable String User, @PathVariable String Pass) {
         String consulta1 = """
                             SELECT Documento from perfilusuario 
                                 INNER JOIN usuario ON perfilusuario.IDUsuario = usuario.ID 
                                 WHERE usuario.Usuario = ? AND usuario.Contraseña = ?""";
-        InstructorModel instructor = null;
+        PerfilUsuarioModel instructor = null;
 
         try {
             // Primero, verifica las credenciales del usuario.
@@ -39,10 +39,10 @@ public class LoginAPI {
                                         WHERE perfilusuario.Documento = ?""";
 
                 // Si las credenciales son correctas, obtén los detalles del instructor.
-                instructor = jdbcTemplate.queryForObject(consulta2, new Object[]{documento}, new RowMapper<InstructorModel>() {
+                instructor = jdbcTemplate.queryForObject(consulta2, new Object[]{documento}, new RowMapper<PerfilUsuarioModel>() {
                     @Override
-                    public InstructorModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        InstructorModel instructor = new InstructorModel();
+                    public PerfilUsuarioModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        PerfilUsuarioModel instructor = new PerfilUsuarioModel();
                         instructor.setDocumento(rs.getInt("Documento"));
                         instructor.setTipoDocumento(rs.getString("TipoDocumento"));
                         instructor.setNombres(rs.getString("nombres"));
@@ -61,5 +61,27 @@ public class LoginAPI {
             e.printStackTrace();
         }
         return instructor;
+    }
+
+    @RequestMapping(value = "Registro/Administrador/{User}/{Pass}")
+    public boolean LoginAdministrador(@PathVariable String User, @PathVariable String Pass) {
+        String consulta = """
+                    SELECT COUNT(*) from administrador
+                        WHERE AdminUser = ? AND AdminPass = ?""";
+        boolean confirmacion = false;
+
+        try {
+            // Primero, verifica las credenciales del usuario.
+            Integer cont = jdbcTemplate.queryForObject(consulta, new Object[]{User, Pass}, Integer.class);
+
+            if (cont != null && cont > 0) {
+                confirmacion = true;
+                return confirmacion;
+            }
+        } catch (Exception e) {
+            // Imprime la traza de la pila de la excepción en caso de que ocurra un error.
+            e.printStackTrace();
+        }
+        return confirmacion;
     }
 }

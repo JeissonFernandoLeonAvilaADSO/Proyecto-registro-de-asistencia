@@ -1,4 +1,4 @@
-package main.util.DB_AdminActions;
+package main.util.API_AdminActions;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -10,7 +10,7 @@ import main.AdminFrames.APISecPass;
  * Clase DB_Admin_ModifInstructor que contiene el método para modificar los datos de un instructor en la base de datos.
  * @author Jeisson Leon
  */
-public class DB_Admin_ModifInstructor {
+public class API_Admin_ModifInstructor {
 
     public void AdminModifInstructor(int IDInstructor,
                                     boolean CambiarDocumento,

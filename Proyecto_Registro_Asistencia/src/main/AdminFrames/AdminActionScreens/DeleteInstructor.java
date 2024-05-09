@@ -4,8 +4,8 @@
  */
 package main.AdminFrames.AdminActionScreens;
 import javax.swing.JOptionPane;
-import main.util.DB_AdminActions.DB_AdminBuscarInstructor;
-import main.util.DB_AdminActions.DB_Admin_DeletInstructor;
+
+import main.util.API_AdminActions.API_Admin_DeletInstructor;
 import main.AdminFrames.AdminHomeScreen;
 /**
 /**
@@ -216,7 +216,7 @@ public class DeleteInstructor extends javax.swing.JFrame {
         switch (respuesta){
             case JOptionPane.YES_OPTION:
                 // Si el usuario confirma, crea una instancia de DB_Admin_ModifInstructor y llama al método AdminModifInstructor con los datos del instructor.
-                DB_Admin_DeletInstructor modifInstructor = new DB_Admin_DeletInstructor();
+                API_Admin_DeletInstructor modifInstructor = new API_Admin_DeletInstructor();
                 modifInstructor.borrarInstructor(Integer.parseInt(ResultadoCedulaInstructor.getText()));
                 break;
 

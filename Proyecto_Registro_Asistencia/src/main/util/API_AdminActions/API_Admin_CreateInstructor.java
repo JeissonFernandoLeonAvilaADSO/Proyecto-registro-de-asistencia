@@ -2,20 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main.util.DB_AdminActions;
+package main.util.API_AdminActions;
 
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 /**
  * Clase para crear usuarios de instructores en la base de datos.
  * @author JeissonLeon
  */
 // Esta clase se utiliza para crear un instructor en la base de datos.
-public class DB_Admin_CreateInstructor {
+public class API_Admin_CreateInstructor {
 
     // Este método toma los detalles del instructor como parámetros y los inserta en la base de datos.
     public boolean AdminCreateInstructor(int IDInstructor, String NombreInstructor, String ApellidoInstructor, String CorreoInstructor, String AreaInstructor, String Contra){

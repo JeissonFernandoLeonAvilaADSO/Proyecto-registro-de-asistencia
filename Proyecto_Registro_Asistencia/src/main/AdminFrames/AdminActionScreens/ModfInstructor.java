@@ -8,8 +8,8 @@ import java.awt.Component;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import main.util.DB_AdminActions.DB_AdminBuscarInstructor;
-import main.util.DB_AdminActions.DB_Admin_ModifInstructor;
+import main.util.API_AdminActions.API_AdminBuscarInstructor;
+import main.util.API_AdminActions.API_Admin_ModifInstructor;
 import main.AdminFrames.AdminHomeScreen;
 import org.json.JSONObject;
 import main.util.models.TipoDocumentoModel;
@@ -33,7 +33,6 @@ public class ModfInstructor extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -74,6 +73,9 @@ public class ModfInstructor extends javax.swing.JFrame {
         ModificarGeneroInstructor = new javax.swing.JComboBox<>();
         ModificarRolInstructor = new javax.swing.JComboBox<>();
         ModificarSedeInstructor = new javax.swing.JComboBox<>();
+        jLabel26 = new javax.swing.JLabel();
+        ModificarCodInstructor = new javax.swing.JTextField();
+        CheckActivarCod = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         ResultadoNombreInstructor = new javax.swing.JTextField();
         ResultadoRolInstructor = new javax.swing.JTextField();
@@ -96,6 +98,8 @@ public class ModfInstructor extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         ResultadoTelefonoInstructor = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        ResultadoCodInstructor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -144,22 +148,7 @@ public class ModfInstructor extends javax.swing.JFrame {
             }
         });
 
-        ModificarNombreInstructor.setEditable(false);
-        ModificarNombreInstructor.setFocusable(false);
-
-        ModificarAreaInstructor.setEditable(false);
-        ModificarAreaInstructor.setFocusable(false);
-
         jLabel19.setText("Documento");
-
-        ModificarApellidoInstructor.setEditable(false);
-        ModificarApellidoInstructor.setFocusable(false);
-
-        ModificarCedulaInstructor.setEditable(false);
-        ModificarCedulaInstructor.setFocusable(false);
-
-        ModificarTelefonoInstructor.setEditable(false);
-        ModificarTelefonoInstructor.setFocusable(false);
 
         jLabel18.setText("Telefono");
 
@@ -223,15 +212,29 @@ public class ModfInstructor extends javax.swing.JFrame {
             }
         });
 
+        jLabel26.setText("Codigo de usuario");
+
+        CheckActivarCod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CheckActivarCodActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout Panel_ModificarDatosLayout = new javax.swing.GroupLayout(Panel_ModificarDatos);
         Panel_ModificarDatos.setLayout(Panel_ModificarDatosLayout);
         Panel_ModificarDatosLayout.setHorizontalGroup(
             Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createSequentialGroup()
+            .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ModificarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
+                        .addComponent(jLabel26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ModificarCodInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CheckActivarCod))
+                    .addComponent(ModificarInstructor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createSequentialGroup()
                         .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Panel_ModificarDatosLayout.createSequentialGroup()
                                 .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,8 +278,14 @@ public class ModfInstructor extends javax.swing.JFrame {
         );
         Panel_ModificarDatosLayout.setVerticalGroup(
             Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(CheckActivarCod)
+                    .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel26)
+                        .addComponent(ModificarCodInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(CheckActivarCedula)
                     .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -338,7 +347,7 @@ public class ModfInstructor extends javax.swing.JFrame {
                     .addComponent(CheckActivarSede, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ModificarInstructor)
-                .addGap(116, 116, 116))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel6.setText("Documento del instructor");
@@ -402,6 +411,11 @@ public class ModfInstructor extends javax.swing.JFrame {
 
         jLabel25.setText("Area de trabajo");
 
+        jLabel13.setText("Codigo de usuario");
+
+        ResultadoCodInstructor.setEditable(false);
+        ResultadoCodInstructor.setFocusable(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -419,25 +433,27 @@ public class ModfInstructor extends javax.swing.JFrame {
                                     .addComponent(jLabel15)
                                     .addComponent(jLabel8)
                                     .addComponent(jLabel25))
-                                .addGap(28, 28, 28)
+                                .addGap(30, 30, 30)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ResultadoAreaInstructor, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(ResultadoTelefonoInstructor, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(ResultadoGeneroInstructor, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(ResultadoApellidoInstructor)
-                                    .addComponent(ResultadoGeneroInstructor)
-                                    .addComponent(ResultadoTelefonoInstructor)
-                                    .addComponent(ResultadoRolInstructor)
-                                    .addComponent(ResultadoAreaInstructor)
+                                    .addComponent(ResultadoRolInstructor, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(ResultadoSedeInstructor)))
+                            .addComponent(VolverHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel14)
                                     .addComponent(jLabel7)
-                                    .addComponent(jLabel12))
+                                    .addComponent(jLabel12)
+                                    .addComponent(jLabel13))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ResultadoCodInstructor)
                                     .addComponent(ResultadoNombreInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                                     .addComponent(ResultadoTipoDocInstructor)
-                                    .addComponent(ResultadoCedulaInstructor)))
-                            .addComponent(VolverHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(ResultadoCedulaInstructor))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Panel_ModificarDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
@@ -465,6 +481,13 @@ public class ModfInstructor extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(Panel_ModificarDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(ResultadoCodInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
                             .addComponent(ResultadoCedulaInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -502,9 +525,7 @@ public class ModfInstructor extends javax.swing.JFrame {
                             .addComponent(ResultadoSedeInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(VolverHome)
-                        .addGap(0, 61, Short.MAX_VALUE))
-                    .addComponent(Panel_ModificarDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addGap(38, 38, 38))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -656,7 +677,7 @@ public class ModfInstructor extends javax.swing.JFrame {
         switch (respuesta){
             case JOptionPane.YES_OPTION:
                 // Si el usuario confirma, crea una instancia de DB_Admin_ModifInstructor y llama al método AdminModifInstructor con los datos del instructor.
-                DB_Admin_ModifInstructor modifInstructor = new DB_Admin_ModifInstructor();
+                API_Admin_ModifInstructor modifInstructor = new API_Admin_ModifInstructor();
 
                 break;
 
@@ -724,12 +745,13 @@ public class ModfInstructor extends javax.swing.JFrame {
     
     private void BuscarDatosInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosInstructorActionPerformed
         // Crea una nueva instancia de DB_AdminBuscarInstructor.
-        DB_AdminBuscarInstructor buscarInstructor = new DB_AdminBuscarInstructor();
+        API_AdminBuscarInstructor buscarInstructor = new API_AdminBuscarInstructor();
 
         // Intenta buscar al instructor en la base de datos.
         JSONObject instructor = buscarInstructor.AdminBuscarInstructor(Integer.parseInt(IDInstructorField.getText()));
         if (instructor != null){
             System.out.println(instructor);
+            ResultadoCodInstructor.setText(String.valueOf(instructor.getInt("ID")));
             ResultadoCedulaInstructor.setText(String.valueOf(instructor.getInt("documento")));
             ResultadoTipoDocInstructor.setText(instructor.getString("tipoDocumento"));
             ResultadoNombreInstructor.setText(instructor.getString("nombres"));
@@ -805,6 +827,14 @@ public class ModfInstructor extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ModificarTipoDocInstructorActionPerformed
 
+    private void CheckActivarCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarCodActionPerformed
+        if (CheckActivarSede.isSelected()){
+            ModificarCodInstructor.setEnabled(true);
+        } else {
+            ModificarCodInstructor.setEnabled(false);
+        }
+    }//GEN-LAST:event_CheckActivarCodActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -845,6 +875,7 @@ public class ModfInstructor extends javax.swing.JFrame {
     private javax.swing.JCheckBox CheckActivarApellidos;
     private javax.swing.JCheckBox CheckActivarArea;
     private javax.swing.JCheckBox CheckActivarCedula;
+    private javax.swing.JCheckBox CheckActivarCod;
     private javax.swing.JCheckBox CheckActivarGenero;
     private javax.swing.JCheckBox CheckActivarNombres;
     private javax.swing.JCheckBox CheckActivarRol;
@@ -855,6 +886,7 @@ public class ModfInstructor extends javax.swing.JFrame {
     private javax.swing.JTextField ModificarApellidoInstructor;
     private javax.swing.JTextField ModificarAreaInstructor;
     private javax.swing.JTextField ModificarCedulaInstructor;
+    private javax.swing.JTextField ModificarCodInstructor;
     private javax.swing.JComboBox<String> ModificarGeneroInstructor;
     private javax.swing.JButton ModificarInstructor;
     private javax.swing.JTextField ModificarNombreInstructor;
@@ -866,6 +898,7 @@ public class ModfInstructor extends javax.swing.JFrame {
     private javax.swing.JTextField ResultadoApellidoInstructor;
     private javax.swing.JTextField ResultadoAreaInstructor;
     private javax.swing.JTextField ResultadoCedulaInstructor;
+    private javax.swing.JTextField ResultadoCodInstructor;
     private javax.swing.JTextField ResultadoGeneroInstructor;
     private javax.swing.JTextField ResultadoNombreInstructor;
     private javax.swing.JTextField ResultadoRolInstructor;
@@ -876,6 +909,7 @@ public class ModfInstructor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -888,6 +922,7 @@ public class ModfInstructor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

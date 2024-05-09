@@ -1,10 +1,10 @@
-package main.util.DB_AdminActions;
+package main.util.API_AdminActions;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
 
-public class DB_Admin_DeletInstructor {
+public class API_Admin_DeletInstructor {
     public boolean borrarInstructor(int IDInstructor){
         // URL de la base de datos a la que se va a conectar.
         String url = "jdbc:mysql://localhost:3306/db_proyecto_asistencia";

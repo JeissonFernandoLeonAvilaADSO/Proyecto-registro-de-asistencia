@@ -4,7 +4,7 @@
  */
 package main.AdminFrames.AdminActionScreens;
 import main.AdminFrames.AdminHomeScreen;
-import main.util.DB_AdminActions.DB_Admin_BuscarAprendiz;
+import main.util.API_AdminActions.API_Admin_BuscarAprendiz;
 /**
  *
  * @author Propietario
@@ -459,9 +459,9 @@ public class ModificarAprendiz extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(IDAprendizField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BuscarDatosAprendiz))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BuscarDatosAprendiz, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(IDAprendizField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
@@ -550,7 +550,7 @@ public class ModificarAprendiz extends javax.swing.JFrame {
     }//GEN-LAST:event_ResultadoProgramAprendizActionPerformed
 
     private void BuscarDatosAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosAprendizActionPerformed
-        DB_Admin_BuscarAprendiz buscarAprendiz = new DB_Admin_BuscarAprendiz();
+        API_Admin_BuscarAprendiz buscarAprendiz = new API_Admin_BuscarAprendiz();
         buscarAprendiz.AdminBuscarAprendiz(Integer.parseInt(IDAprendizField.getText()));
         ResultadoDocAprendiz.setText(buscarAprendiz.ResultadoDocumentoAprendiz);
         ResultadoNombreAprendiz.setText(buscarAprendiz.ResultadoNombreAprendiz);

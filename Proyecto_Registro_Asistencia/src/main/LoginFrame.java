@@ -11,8 +11,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ItemEvent;
 import javax.swing.ButtonGroup;
-import main.util.DB_Login.DB_Login_Admin;
-import main.util.DB_Login.DB_Login_Instructor;
+import main.util.API_Login.API_Login_Admin;
+import main.util.API_Login.API_Login_Instructor;
 import main.AdminFrames.AdminHomeScreen;
 import main.InstructorFrames.InstructorHomeScreen;
 import javax.swing.JOptionPane;
@@ -228,7 +228,7 @@ public class LoginFrame extends javax.swing.JFrame {
         // Verifica si el checkbox AdminCheck está seleccionado.
         if (AdminCheck.isSelected()){
             // Crea una nueva instancia de DB_Login_Admin.
-            DB_Login_Admin AdminLog = new DB_Login_Admin();
+            API_Login_Admin AdminLog = new API_Login_Admin();
             
             // Verifica las credenciales del administrador.
             if(AdminLog.LogAdmin(UserField.getText(), PassField.getText())){
@@ -247,7 +247,7 @@ public class LoginFrame extends javax.swing.JFrame {
         // Verifica si el checkbox InstructorCheck está seleccionado.
         } else if (InstructorCheck.isSelected()){
             // Aquí iría el código para manejar la selección del rol de instructor.
-            DB_Login_Instructor InstructorLog = new DB_Login_Instructor();
+            API_Login_Instructor InstructorLog = new API_Login_Instructor();
             // Verifica las credenciales del instructor.
             if(InstructorLog.LogInstructor(UserField.getText(), PassField.getText())){
                 // Si las credenciales son válidas, muestra un mensaje de bienvenida.

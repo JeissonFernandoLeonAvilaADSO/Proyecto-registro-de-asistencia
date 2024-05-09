@@ -2,29 +2,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main.util.DB_Login;
-
-import main.AdminFrames.APISecPass;
+package main.util.API_Login;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
-
-import org.json.JSONObject;
+import main.AdminFrames.APISecPass;
 
 /**
- *
- * @author IZHAR
+ * Clase para verificar el inicio de sesión de un administrador en la base de datos.
+ * @author JeissonLeon
  */
-public class DB_Login_Instructor {
+public class API_Login_Admin {
 
-    public JSONObject InstructorCred;
-    public boolean LogInstructor(String UserInstructor, String PassInstructor) {
+
+    public boolean LogAdmin(String userAdmin, String passAdmin) {
         try {
             APISecPass APIPass = new APISecPass();
-            URL url = new URL("http://localhost:8080/Registro/Instructor/" + UserInstructor + "/" + PassInstructor);
+            var url = new URL("http://localhost:8080/Registro/Administrador/" + userAdmin + "/" + passAdmin);
             String pass = APIPass.GetAPIPass();
             String userCredentials = "user:" + pass; // Reemplaza "username:password" con tus credenciales
             String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
@@ -34,26 +31,23 @@ public class DB_Login_Instructor {
             conn.setRequestProperty("Accept", "application/json");
             conn.setRequestProperty("Authorization", basicAuth);
 
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            int responseCode = conn.getResponseCode();
+            if (responseCode == 200) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String response = reader.readLine();
+                return Boolean.parseBoolean(response);
+            } else {
+                System.out.println("Error al consultar el controlador. Código de respuesta: " + responseCode);
+                // Aquí puedes manejar específicamente el código de respuesta 401 si lo deseas
             }
-
-            try (BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())))) {
-                String output;
-                JSONObject instructor = null;
-                while ((output = br.readLine()) != null) {
-                    instructor = new JSONObject(output);
-                }
-                System.out.println(instructor);
-                InstructorCred = instructor;
-                return true;
-            }
-
         } catch (Exception e) {
             e.printStackTrace();
+            // Maneja excepciones específicas aquí (por ejemplo, MalformedURLException, IOException, etc.)
         }
-
         return false;
     }
-
 }
+
+
+
+

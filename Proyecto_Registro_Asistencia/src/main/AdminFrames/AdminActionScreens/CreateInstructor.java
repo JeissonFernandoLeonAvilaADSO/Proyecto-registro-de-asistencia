@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package main.AdminFrames.AdminActionScreens;
-import main.util.DB_AdminActions.DB_Admin_CreateInstructor;
+import main.util.API_AdminActions.API_Admin_CreateInstructor;
 import main.AdminFrames.AdminHomeScreen;
 /**
  *
@@ -134,7 +134,7 @@ public class CreateInstructor extends javax.swing.JFrame {
     // Este método se ejecuta cuando se realiza una acción en el botón RegistrarInstructor.
     private void RegistrarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarInstructorActionPerformed
         // Crea una nueva instancia de DB_Admin_CreateInstructor.
-        DB_Admin_CreateInstructor CrearInstructor = new DB_Admin_CreateInstructor();
+        API_Admin_CreateInstructor CrearInstructor = new API_Admin_CreateInstructor();
         
         // Llama al método AdminCreateInstructor de la clase DB_Admin_CreateInstructor.
         // Los parámetros del método son los textos de los campos de registro del instructor.

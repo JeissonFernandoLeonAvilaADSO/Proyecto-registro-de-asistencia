@@ -1,7 +1,7 @@
 package com.proyectoasistencia.prasis.controller;
 
 
-import com.proyectoasistencia.prasis.models.InstructorModel;
+import com.proyectoasistencia.prasis.models.PerfilUsuarioModel;
 import com.proyectoasistencia.prasis.models.InstructorPUTModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @RestController
-public class InstructorController {
+public class PerfilUsuarioController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -32,28 +32,57 @@ public class InstructorController {
     private PlatformTransactionManager transactionManager;
 
     @RequestMapping(value = "ObtenerInstructor/{IDInstructor}")
-    public InstructorModel getInstructor(@PathVariable Integer IDInstructor){
+    public PerfilUsuarioModel getInstructor(@PathVariable Integer IDInstructor){
         String consulta = """ 
-                            SELECT perfilusuario.Documento, perfilusuario.Nombres, perfilusuario.Apellidos, perfilusuario.Telefono, perfilusuario.Area, TipoDocumento.TipoDocumento, Genero.TiposGeneros, Rol.TipoRol, Sede.CentroFormacion FROM perfilusuario
-                                INNER JOIN TipoDocumento ON perfilusuario.IDTipoDocumento = TipoDocumento.ID
-                                INNER JOIN Genero ON perfilusuario.IDGenero = Genero.ID
-                                INNER JOIN Rol ON perfilusuario.IDRol = Rol.ID
-                                INNER JOIN Sede ON perfilusuario.IDSede = Sede.ID
-                                WHERE perfilusuario.Documento = ?""";
+                SELECT perfilusuario.ID,
+                                   usuario.Usuario,
+                                   usuario.Contraseña,
+                                   perfilusuario.Documento,
+                                   tipodocumento.TipoDocumento,
+                                   perfilusuario.Nombres,
+                                   perfilusuario.Apellidos,
+                                   genero.TiposGeneros,
+                                   perfilusuario.Telefono,
+                                   programaformacion.ProgramaFormacion,
+                                   perfilusuario.NumeroFicha,
+                                   jornadaformacion.JornadasFormacion,
+                                   nivelformacion.NivelFormacion,
+                                   perfilusuario.Area,
+                                   sede.CentroFormacion,
+                                   perfilusuario.Correo,
+                                   rol.TipoRol
+                            FROM perfilusuario
+                                     INNER JOIN usuario ON perfilusuario.IDUsuario = usuario.ID
+                                     INNER JOIN tipoDocumento ON perfilusuario.IDTipoDocumento = tipoDocumento.ID
+                                     INNER JOIN genero ON perfilusuario.IDGenero = genero.ID
+                                     INNER JOIN programaformacion ON perfilusuario.IDProgramaFormacion = programaformacion.ID
+                                     INNER JOIN jornadaformacion ON perfilusuario.IDJornadaFormacion = jornadaformacion.ID
+                                     INNER JOIN nivelformacion ON perfilusuario.IDNivelFormacion = nivelformacion.ID
+                                     INNER JOIN sede ON perfilusuario.IDSede = sede.ID
+                                     INNER JOIN rol ON perfilusuario.IDRol = rol.ID
+                            WHERE perfilusuario.Documento = ?""";
         try {
-            return jdbcTemplate.queryForObject(consulta, new Object[]{IDInstructor}, new RowMapper<InstructorModel>() {
+            return jdbcTemplate.queryForObject(consulta, new Object[]{IDInstructor}, new RowMapper<PerfilUsuarioModel>() {
                 @Override
-                public InstructorModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    InstructorModel instructor = new InstructorModel();
+                public PerfilUsuarioModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    PerfilUsuarioModel instructor = new PerfilUsuarioModel();
+                    instructor.setID(rs.getInt("ID"));
+                    instructor.setUser(rs.getString("Usuario"));
+                    instructor.setPass(rs.getString("Contraseña"));
                     instructor.setDocumento(rs.getInt("Documento"));
                     instructor.setTipoDocumento(rs.getString("TipoDocumento"));
                     instructor.setNombres(rs.getString("nombres"));
                     instructor.setApellidos(rs.getString("apellidos"));
                     instructor.setGenero(rs.getString("TiposGeneros"));
                     instructor.setTelefono(rs.getInt("Telefono"));
+                    instructor.setProgramaFormacion(rs.getString("ProgramaFormacion"));
+                    instructor.setNumeroFicha(rs.getInt("NumeroFicha"));
+                    instructor.setJornadaFormacion(rs.getString("JornadasFormacion"));
+                    instructor.setNivelFormacion(rs.getString("NivelFormacion"));
                     instructor.setArea(rs.getString("Area"));
-                    instructor.setRol(rs.getString("TipoRol"));
                     instructor.setSede(rs.getString("CentroFormacion"));
+                    instructor.setCorreo(rs.getString("Correo"));
+                    instructor.setRol(rs.getString("TipoRol"));
                     return instructor;
                 }
             });

@@ -1,11 +1,11 @@
-package main.util.DB_AdminActions;
+package main.util.API_AdminActions;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class DB_Admin_BuscarAprendiz {
+public class API_Admin_BuscarAprendiz {
 
     public String ResultadoDocumentoAprendiz;
     public String ResultadoNombreAprendiz;

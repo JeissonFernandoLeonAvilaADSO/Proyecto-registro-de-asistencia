@@ -1,20 +1,30 @@
-package main.util.DB_AdminActions;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package main.util.API_Login;
+
+import main.AdminFrames.APISecPass;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
+
 import org.json.JSONObject;
 
-import main.AdminFrames.APISecPass;
+/**
+ *
+ * @author IZHAR
+ */
+public class API_Login_Instructor {
 
-public class DB_AdminBuscarInstructor {
-    public JSONObject AdminBuscarInstructor(Integer IDInstructor) {
-
+    public JSONObject InstructorCred;
+    public boolean LogInstructor(String UserInstructor, String PassInstructor) {
         try {
             APISecPass APIPass = new APISecPass();
-            URL url = new URL("http://localhost:8080/ObtenerInstructor/" + IDInstructor);
+            URL url = new URL("http://localhost:8080/Registro/Instructor/" + UserInstructor + "/" + PassInstructor);
             String pass = APIPass.GetAPIPass();
             String userCredentials = "user:" + pass; // Reemplaza "username:password" con tus credenciales
             String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
@@ -35,15 +45,15 @@ public class DB_AdminBuscarInstructor {
                     instructor = new JSONObject(output);
                 }
                 System.out.println(instructor);
-                return instructor;
+                InstructorCred = instructor;
+                return true;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return false;
     }
+
 }
-
-
