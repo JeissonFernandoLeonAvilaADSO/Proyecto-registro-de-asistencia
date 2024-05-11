@@ -8,8 +8,8 @@ import java.awt.Component;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import main.util.API_AdminActions.API_AdminBuscarInstructor;
-import main.util.API_AdminActions.API_Admin_ModifInstructor;
+import main.util.API_AdminActions.API_AdminBuscarUsuario;
+import main.util.API_AdminActions.API_Admin_ModifUsuario;
 import main.AdminFrames.AdminHomeScreen;
 import org.json.JSONObject;
 import main.util.models.TipoDocumentoModel;
@@ -676,8 +676,8 @@ public class ModfInstructor extends javax.swing.JFrame {
         // Procesa la respuesta del usuario.
         switch (respuesta){
             case JOptionPane.YES_OPTION:
-                // Si el usuario confirma, crea una instancia de DB_Admin_ModifInstructor y llama al método AdminModifInstructor con los datos del instructor.
-                API_Admin_ModifInstructor modifInstructor = new API_Admin_ModifInstructor();
+                // Si el usuario confirma, crea una instancia de DB_Admin_ModifInstructor y llama al método AdminModifPerfilUsuario con los datos del instructor.
+                API_Admin_ModifUsuario modifUsuario = new API_Admin_ModifUsuario();
 
                 break;
 
@@ -745,10 +745,10 @@ public class ModfInstructor extends javax.swing.JFrame {
     
     private void BuscarDatosInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosInstructorActionPerformed
         // Crea una nueva instancia de DB_AdminBuscarInstructor.
-        API_AdminBuscarInstructor buscarInstructor = new API_AdminBuscarInstructor();
+        API_AdminBuscarUsuario buscarInstructor = new API_AdminBuscarUsuario();
 
         // Intenta buscar al instructor en la base de datos.
-        JSONObject instructor = buscarInstructor.AdminBuscarInstructor(Integer.parseInt(IDInstructorField.getText()));
+        JSONObject instructor = buscarInstructor.AdminBuscarUsuario(Integer.parseInt(IDInstructorField.getText()));
         if (instructor != null){
             System.out.println(instructor);
             ResultadoCodInstructor.setText(String.valueOf(instructor.getInt("ID")));

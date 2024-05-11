@@ -14,7 +14,7 @@ import java.sql.PreparedStatement;
  * @author JeissonLeon
  */
 // Esta clase se utiliza para crear un instructor en la base de datos.
-public class API_Admin_CreateInstructor {
+public class API_Admin_CreateUsuario {
 
     // Este método toma los detalles del instructor como parámetros y los inserta en la base de datos.
     public boolean AdminCreateInstructor(int IDInstructor, String NombreInstructor, String ApellidoInstructor, String CorreoInstructor, String AreaInstructor, String Contra){

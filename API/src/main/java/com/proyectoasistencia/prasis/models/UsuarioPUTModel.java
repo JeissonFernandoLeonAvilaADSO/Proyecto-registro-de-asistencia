@@ -1,28 +1,66 @@
 package com.proyectoasistencia.prasis.models;
 
 
-import lombok.Getter;
-import lombok.Setter;
+public class UsuarioPUTModel {
 
-public class InstructorPUTModel {
+    private boolean CambiarID;
+    private boolean CambiarUsuario;
+    private boolean CambiarPass;
     private boolean CambiarDocumento;
     private boolean CambiarTipoDoc;
     private boolean CambiarNombres;
     private boolean CambiarApellidos;
     private boolean CambiarGenero;
     private boolean CambiarTelefono;
+    private boolean CambiarProgramaFormacion;
+    private boolean CambiarNumeroFicha;
+    private boolean CambiarJornada;
     private boolean CambiarArea;
-    private boolean CambiarRol;
     private boolean CambiarSede;
+    private boolean CambiarCorreo;
+    private boolean CambiarRol;
+    private int NuevoID;
+    private String NuevoUsuario;
+    private String NuevoPass;
     private int NuevoDocumento;
     private int NuevoTipoDoc;
     private String NuevosNombres;
     private String NuevosApellidos;
     private int NuevoGenero;
     private int NuevoTelefono;
+    private int NuevoProgramaFormacion;
+    private int NuevaFicha;
+    private int NuevaJornada;
+    private int NuevoNivelFormacion;
     private String NuevoArea;
+    private String NuevoCorreo;
     private int NuevoRol;
     private int NuevaSede;
+
+
+    public boolean isCambiarID() {
+        return CambiarID;
+    }
+
+    public void setCambiarID(boolean cambiarID) {
+        CambiarID = cambiarID;
+    }
+
+    public boolean isCambiarUsuario() {
+        return CambiarUsuario;
+    }
+
+    public void setCambiarUsuario(boolean cambiarUsuario) {
+        CambiarUsuario = cambiarUsuario;
+    }
+
+    public boolean isCambiarPass() {
+        return CambiarPass;
+    }
+
+    public void setCambiarPass(boolean cambiarPass) {
+        CambiarPass = cambiarPass;
+    }
 
     public boolean isCambiarDocumento() {
         return CambiarDocumento;
@@ -72,12 +110,52 @@ public class InstructorPUTModel {
         CambiarTelefono = cambiarTelefono;
     }
 
+    public boolean isCambiarProgramaFormacion() {
+        return CambiarProgramaFormacion;
+    }
+
+    public void setCambiarProgramaFormacion(boolean cambiarProgramaFormacion) {
+        CambiarProgramaFormacion = cambiarProgramaFormacion;
+    }
+
+    public boolean isCambiarNumeroFicha() {
+        return CambiarNumeroFicha;
+    }
+
+    public void setCambiarNumeroFicha(boolean cambiarNumeroFicha) {
+        CambiarNumeroFicha = cambiarNumeroFicha;
+    }
+
+    public boolean isCambiarJornada() {
+        return CambiarJornada;
+    }
+
+    public void setCambiarJornada(boolean cambiarJornada) {
+        CambiarJornada = cambiarJornada;
+    }
+
     public boolean isCambiarArea() {
         return CambiarArea;
     }
 
     public void setCambiarArea(boolean cambiarArea) {
         CambiarArea = cambiarArea;
+    }
+
+    public boolean isCambiarSede() {
+        return CambiarSede;
+    }
+
+    public void setCambiarSede(boolean cambiarSede) {
+        CambiarSede = cambiarSede;
+    }
+
+    public boolean isCambiarCorreo() {
+        return CambiarCorreo;
+    }
+
+    public void setCambiarCorreo(boolean cambiarCorreo) {
+        CambiarCorreo = cambiarCorreo;
     }
 
     public boolean isCambiarRol() {
@@ -88,12 +166,28 @@ public class InstructorPUTModel {
         CambiarRol = cambiarRol;
     }
 
-    public boolean isCambiarSede() {
-        return CambiarSede;
+    public int getNuevoID() {
+        return NuevoID;
     }
 
-    public void setCambiarSede(boolean cambiarSede) {
-        CambiarSede = cambiarSede;
+    public void setNuevoID(int nuevoID) {
+        NuevoID = nuevoID;
+    }
+
+    public String getNuevoUsuario() {
+        return NuevoUsuario;
+    }
+
+    public void setNuevoUsuario(String nuevoUsuario) {
+        NuevoUsuario = nuevoUsuario;
+    }
+
+    public String getNuevoPass() {
+        return NuevoPass;
+    }
+
+    public void setNuevoPass(String nuevoPass) {
+        NuevoPass = nuevoPass;
     }
 
     public int getNuevoDocumento() {
@@ -144,12 +238,52 @@ public class InstructorPUTModel {
         NuevoTelefono = nuevoTelefono;
     }
 
+    public int getNuevoProgramaFormacion() {
+        return NuevoProgramaFormacion;
+    }
+
+    public void setNuevoProgramaFormacion(int nuevoProgramaFormacion) {
+        NuevoProgramaFormacion = nuevoProgramaFormacion;
+    }
+
+    public int getNuevaFicha() {
+        return NuevaFicha;
+    }
+
+    public void setNuevaFicha(int nuevaFicha) {
+        NuevaFicha = nuevaFicha;
+    }
+
+    public int getNuevaJornada() {
+        return NuevaJornada;
+    }
+
+    public void setNuevaJornada(int nuevaJornada) {
+        NuevaJornada = nuevaJornada;
+    }
+
+    public int getNuevoNivelFormacion() {
+        return NuevoNivelFormacion;
+    }
+
+    public void setNuevoNivelFormacion(int nuevoNivelFormacion) {
+        NuevoNivelFormacion = nuevoNivelFormacion;
+    }
+
     public String getNuevoArea() {
         return NuevoArea;
     }
 
     public void setNuevoArea(String nuevoArea) {
         NuevoArea = nuevoArea;
+    }
+
+    public String getNuevoCorreo() {
+        return NuevoCorreo;
+    }
+
+    public void setNuevoCorreo(String nuevoCorreo) {
+        NuevoCorreo = nuevoCorreo;
     }
 
     public int getNuevoRol() {

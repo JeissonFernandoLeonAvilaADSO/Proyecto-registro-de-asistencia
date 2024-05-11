@@ -2,7 +2,7 @@ package com.proyectoasistencia.prasis.controller;
 
 
 import com.proyectoasistencia.prasis.models.PerfilUsuarioModel;
-import com.proyectoasistencia.prasis.models.InstructorPUTModel;
+import com.proyectoasistencia.prasis.models.UsuarioPUTModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +18,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class PerfilUsuarioController {
@@ -94,134 +96,49 @@ public class PerfilUsuarioController {
     }
 
     @PutMapping(value = "ModificarInstructor/{IDInstructor}")
-    public ResponseEntity<String> ModInstructor(@PathVariable Integer IDInstructor, @RequestBody InstructorPUTModel instructorPUTModel){
-        boolean cambiarDocumento = instructorPUTModel.isCambiarDocumento();
-        boolean cambiarTipoDoc = instructorPUTModel.isCambiarTipoDoc();
-        boolean cambiarNombres = instructorPUTModel.isCambiarNombres();
-        boolean cambiarApellidos = instructorPUTModel.isCambiarApellidos();
-        boolean cambiarGenero = instructorPUTModel.isCambiarGenero();
-        boolean cambiarTelefono = instructorPUTModel.isCambiarTelefono();
-        boolean cambiarArea = instructorPUTModel.isCambiarArea();
-        boolean cambiarRol = instructorPUTModel.isCambiarRol();
-        boolean cambiarSede = instructorPUTModel.isCambiarSede();
+    public ResponseEntity<String> ModInstructor(@PathVariable Integer IDInstructor, @RequestBody UsuarioPUTModel usuarioPUTModel){
+        Map<String, Object> campos = new HashMap<>();
+        campos.put("ID", usuarioPUTModel.isCambiarID() ? usuarioPUTModel.getNuevoID() : null);
+        campos.put("Usuario", usuarioPUTModel.isCambiarUsuario() ? usuarioPUTModel.getNuevoUsuario() : null);
+        campos.put("Contraseña", usuarioPUTModel.isCambiarPass() ? usuarioPUTModel.getNuevoPass() : null);
+        campos.put("Documento", usuarioPUTModel.isCambiarDocumento() ? usuarioPUTModel.getNuevoDocumento() : null);
+        campos.put("TipoDoc", usuarioPUTModel.isCambiarTipoDoc() ? usuarioPUTModel.getNuevoTipoDoc() : null);
+        campos.put("Nombres", usuarioPUTModel.isCambiarNombres() ? usuarioPUTModel.getNuevosNombres() : null);
+        campos.put("Apellidos", usuarioPUTModel.isCambiarApellidos() ? usuarioPUTModel.getNuevosApellidos() : null);
+        campos.put("Genero", usuarioPUTModel.isCambiarGenero() ? usuarioPUTModel.getNuevoGenero() : null);
+        campos.put("Telefono", usuarioPUTModel.isCambiarTelefono() ? usuarioPUTModel.getNuevoTelefono() : null);
+        campos.put("ProgramaFormacion", usuarioPUTModel.isCambiarProgramaFormacion() ? usuarioPUTModel.getNuevoProgramaFormacion() : null);
+        campos.put("NumeroFicha", usuarioPUTModel.isCambiarNumeroFicha() ? usuarioPUTModel.getNuevaFicha() : null);
+        campos.put("Jornada", usuarioPUTModel.isCambiarJornada() ? usuarioPUTModel.getNuevaJornada() : null);
+        campos.put("Area", usuarioPUTModel.isCambiarArea() ? usuarioPUTModel.getNuevoArea() : null);
+        campos.put("Correo", usuarioPUTModel.isCambiarCorreo() ? usuarioPUTModel.getNuevoCorreo() : null);
+        campos.put("Rol", usuarioPUTModel.isCambiarRol() ? usuarioPUTModel.getNuevoRol() : null);
+        campos.put("Sede", usuarioPUTModel.isCambiarSede() ? usuarioPUTModel.getNuevaSede() : null);
 
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         TransactionStatus status = transactionManager.getTransaction(def);
 
         try (Connection conexion = dataSource.getConnection()) {
-            if (cambiarDocumento) {
-                String consulta = "UPDATE instructor SET Documento = ? WHERE id = ?";
-
-                try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-                    ps.setInt(1, instructorPUTModel.getNuevoDocumento());
-                    ps.setInt(2, IDInstructor);
-                    int rowsAffected = ps.executeUpdate();
-                    if (rowsAffected <= 0) {
-                        return new ResponseEntity<>("No se pudo actualizar el documento", HttpStatus.BAD_REQUEST);
+            for (Map.Entry<String, Object> entry : campos.entrySet()) {
+                if (entry.getValue() != null) {
+                    String consulta;
+                    if (entry.getKey().equals("Usuario") || entry.getKey().equals("Contraseña")) {
+                        consulta = "UPDATE usuario SET " + entry.getKey() + " = ? WHERE id = (SELECT IDUsuario FROM perfilusuario WHERE ID = ?)";
+                    } else {
+                        consulta = "UPDATE perfilusuario SET " + entry.getKey() + " = ? WHERE ID = ?";
                     }
-                }
-            }
 
-            if (cambiarTipoDoc) {
-                String consulta = "UPDATE instructor SET IDTipoDocumento = ? WHERE Documento = ?";
-
-                try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-                    ps.setInt(1, instructorPUTModel.getNuevoTipoDoc());
-                    ps.setInt(2, IDInstructor);
-                    int rowsAffected = ps.executeUpdate();
-                    if (rowsAffected <= 0) {
-                        return new ResponseEntity<>("No se pudo actualizar el tipo de documento", HttpStatus.BAD_REQUEST);
-                    }
-                }
-            }
-
-            if (cambiarNombres) {
-                String consulta = "UPDATE instructor SET Nombres = ? WHERE id = ?";
-
-                try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-                    ps.setString(1, instructorPUTModel.getNuevosNombres());
-                    ps.setInt(2, IDInstructor);
-                    int rowsAffected = ps.executeUpdate();
-                    if (rowsAffected <= 0) {
-                        return new ResponseEntity<>("No se pudo actualizar los nombres", HttpStatus.BAD_REQUEST);
-                    }
-                }
-            }
-
-            if (cambiarApellidos) {
-                String consulta = "UPDATE instructor SET Apellidos = ? WHERE Documento = ?";
-
-                try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-                    ps.setString(1, instructorPUTModel.getNuevosApellidos());
-                    ps.setInt(2, IDInstructor);
-                    int rowsAffected = ps.executeUpdate();
-                    if (rowsAffected <= 0) {
-                        return new ResponseEntity<>("No se pudo actualizar los apellidos", HttpStatus.BAD_REQUEST);
-                    }
-                }
-            }
-
-            if (cambiarGenero) {
-                String consulta = "UPDATE instructor SET IDGenero = ? WHERE Documento = ?";
-
-                try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-                    ps.setInt(1, instructorPUTModel.getNuevoGenero());
-                    ps.setInt(2, IDInstructor);
-                    int rowsAffected = ps.executeUpdate();
-                    if (rowsAffected <= 0) {
-                        return new ResponseEntity<>("No se pudo actualizar el género", HttpStatus.BAD_REQUEST);
-                    }
-                }
-            }
-
-            if (cambiarTelefono) {
-                String consulta = "UPDATE instructor SET Telefono = ? WHERE Documento = ?";
-
-                try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-                    ps.setInt(1, instructorPUTModel.getNuevoTelefono());
-                    ps.setInt(2, IDInstructor);
-                    int rowsAffected = ps.executeUpdate();
-                    if (rowsAffected <= 0) {
-                        return new ResponseEntity<>("No se pudo actualizar el teléfono", HttpStatus.BAD_REQUEST);
-                    }
-                }
-            }
-
-            if (cambiarArea) {
-                String consulta = "UPDATE instructor SET Area = ? WHERE Documento = ?";
-
-                try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-                    ps.setString(1, instructorPUTModel.getNuevoArea());
-                    ps.setInt(2, IDInstructor);
-                    int rowsAffected = ps.executeUpdate();
-                    if (rowsAffected <= 0) {
-                        return new ResponseEntity<>("No se pudo actualizar el área", HttpStatus.BAD_REQUEST);
-                    }
-                }
-            }
-
-            if (cambiarRol) {
-                String consulta = "UPDATE instructor SET IDRol = ? WHERE Documento = ?";
-
-                try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-                    ps.setInt(1, instructorPUTModel.getNuevoRol());
-                    ps.setInt(2, IDInstructor);
-                    int rowsAffected = ps.executeUpdate();
-                    if (rowsAffected <= 0) {
-                        return new ResponseEntity<>("No se pudo actualizar el rol", HttpStatus.BAD_REQUEST);
-                    }
-                }
-            }
-
-            if (cambiarSede) {
-                String consulta = "UPDATE instructor SET IDSede = ? WHERE Documento = ?";
-
-                try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-                    ps.setInt(1, instructorPUTModel.getNuevaSede());
-                    ps.setInt(2, IDInstructor);
-                    int rowsAffected = ps.executeUpdate();
-                    if (rowsAffected <= 0) {
-                        return new ResponseEntity<>("No se pudo actualizar la sede", HttpStatus.BAD_REQUEST);
+                    try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
+                        if (entry.getValue() instanceof Integer) {
+                            ps.setInt(1, (Integer) entry.getValue());
+                        } else if (entry.getValue() instanceof String) {
+                            ps.setString(1, (String) entry.getValue());
+                        }
+                        ps.setInt(2, IDInstructor);
+                        int rowsAffected = ps.executeUpdate();
+                        if (rowsAffected <= 0) {
+                            return new ResponseEntity<>("No se pudo actualizar " + entry.getKey(), HttpStatus.BAD_REQUEST);
+                        }
                     }
                 }
             }
@@ -233,5 +150,6 @@ public class PerfilUsuarioController {
             return new ResponseEntity<>("Error durante la actualización: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
 

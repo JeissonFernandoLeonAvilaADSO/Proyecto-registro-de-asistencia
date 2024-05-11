@@ -9,12 +9,12 @@ import org.json.JSONObject;
 
 import main.AdminFrames.APISecPass;
 
-public class API_AdminBuscarInstructor {
-    public JSONObject AdminBuscarInstructor(Integer IDInstructor) {
+public class API_AdminBuscarUsuario {
+    public JSONObject AdminBuscarUsuario(Integer IDUsuario) {
 
         try {
             APISecPass APIPass = new APISecPass();
-            URL url = new URL("http://localhost:8080/ObtenerInstructor/" + IDInstructor);
+            URL url = new URL("http://localhost:8080/ObtenerInstructor/" + IDUsuario);
             String pass = APIPass.GetAPIPass();
             String userCredentials = "user:" + pass; // Reemplaza "username:password" con tus credenciales
             String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
