@@ -4,7 +4,7 @@
  */
 package main.AdminFrames.AdminActionScreens;
 import main.AdminFrames.AdminHomeScreen;
-import main.util.API_AdminActions.API_Admin_BuscarAprendiz;
+
 /**
  *
  * @author Propietario
@@ -550,20 +550,8 @@ public class ModificarAprendiz extends javax.swing.JFrame {
     }//GEN-LAST:event_ResultadoProgramAprendizActionPerformed
 
     private void BuscarDatosAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosAprendizActionPerformed
-        API_Admin_BuscarAprendiz buscarAprendiz = new API_Admin_BuscarAprendiz();
-        buscarAprendiz.AdminBuscarAprendiz(Integer.parseInt(IDAprendizField.getText()));
-        ResultadoDocAprendiz.setText(buscarAprendiz.ResultadoDocumentoAprendiz);
-        ResultadoNombreAprendiz.setText(buscarAprendiz.ResultadoNombreAprendiz);
-        ResultadoApellidoAprendiz.setText(buscarAprendiz.ResultadoApellidoAprendiz);
-        ResultadoGeneroAprendiz.setText(buscarAprendiz.ResultadoGeneroAprendiz);
-        ResultadoFichaAprendiz.setText(buscarAprendiz.ResultadoNumeroFichaAprendiz);
-        ResultadoProgramAprendiz.setText(buscarAprendiz.ResultadoProgramAprendiz);
-        ResultadoJornadaAprendiz.setText(buscarAprendiz.ResultadoJornadaAprendiz);
-        ResultadoNivelAprendiz.setText(buscarAprendiz.ResultadoNivelAprendiz);
-        ResultadoCentroAprendiz.setText(buscarAprendiz.ResultadoCentroAprendiz);
-        ResultadoCorreoAprendiz.setText(buscarAprendiz.ResultadoCorreoAprendiz);
-        ResultadoContraAprendiz.setText(buscarAprendiz.ResultadoDocumentoAprendiz);
-        ResultadoTelAprendiz.setText(String.valueOf(buscarAprendiz.ResultadoTelAprendiz));
+
+
     }//GEN-LAST:event_BuscarDatosAprendizActionPerformed
 
     private void DocCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DocCheckActionPerformed

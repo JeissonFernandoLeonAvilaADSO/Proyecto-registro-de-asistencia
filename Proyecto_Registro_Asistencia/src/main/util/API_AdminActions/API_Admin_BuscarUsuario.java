@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import main.AdminFrames.APISecPass;
 
-public class API_AdminBuscarUsuario {
+public class API_Admin_BuscarUsuario {
     public JSONObject AdminBuscarUsuario(Integer IDUsuario) {
 
         try {

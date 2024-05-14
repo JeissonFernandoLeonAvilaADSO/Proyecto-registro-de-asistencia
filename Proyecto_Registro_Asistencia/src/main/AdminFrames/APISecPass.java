@@ -9,7 +9,7 @@ package main.AdminFrames;
  * @author IZHAR
  */
 public class APISecPass {
-    public String pass = "456d58b9-7730-4288-b00e-142b302b713e";
+    public String pass = "d75c2c43-2cfa-45b5-bae9-b5ef2836eed3";
     public String GetAPIPass(){
         return this.pass;
     }

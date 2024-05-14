@@ -108,6 +108,7 @@ public class PerfilUsuarioController {
         campos.put("Genero", usuarioPUTModel.isCambiarGenero() ? usuarioPUTModel.getNuevoGenero() : null);
         campos.put("Telefono", usuarioPUTModel.isCambiarTelefono() ? usuarioPUTModel.getNuevoTelefono() : null);
         campos.put("ProgramaFormacion", usuarioPUTModel.isCambiarProgramaFormacion() ? usuarioPUTModel.getNuevoProgramaFormacion() : null);
+        campos.put("NivelFormacion", usuarioPUTModel.isCambiarProgramaFormacion() ? usuarioPUTModel.getNuevoNivelFormacion() : null);
         campos.put("NumeroFicha", usuarioPUTModel.isCambiarNumeroFicha() ? usuarioPUTModel.getNuevaFicha() : null);
         campos.put("Jornada", usuarioPUTModel.isCambiarJornada() ? usuarioPUTModel.getNuevaJornada() : null);
         campos.put("Area", usuarioPUTModel.isCambiarArea() ? usuarioPUTModel.getNuevoArea() : null);

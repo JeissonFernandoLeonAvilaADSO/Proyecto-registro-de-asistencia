@@ -13,6 +13,7 @@ public class UsuarioPUTModel {
     private boolean CambiarGenero;
     private boolean CambiarTelefono;
     private boolean CambiarProgramaFormacion;
+    private boolean CambiarNivelFormacion;
     private boolean CambiarNumeroFicha;
     private boolean CambiarJornada;
     private boolean CambiarArea;
@@ -29,9 +30,9 @@ public class UsuarioPUTModel {
     private int NuevoGenero;
     private int NuevoTelefono;
     private int NuevoProgramaFormacion;
+    private int NuevoNivelFormacion;
     private int NuevaFicha;
     private int NuevaJornada;
-    private int NuevoNivelFormacion;
     private String NuevoArea;
     private String NuevoCorreo;
     private int NuevoRol;
@@ -112,6 +113,14 @@ public class UsuarioPUTModel {
 
     public boolean isCambiarProgramaFormacion() {
         return CambiarProgramaFormacion;
+    }
+
+    public boolean isCambiarNivelFormacion() {
+        return CambiarNivelFormacion;
+    }
+
+    public void setCambiarNivelFormacion(boolean cambiarNivelFormacion) {
+        CambiarNivelFormacion = cambiarNivelFormacion;
     }
 
     public void setCambiarProgramaFormacion(boolean cambiarProgramaFormacion) {

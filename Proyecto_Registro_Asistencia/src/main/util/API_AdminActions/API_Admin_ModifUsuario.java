@@ -15,7 +15,7 @@ import main.AdminFrames.APISecPass;
  */
 public class API_Admin_ModifUsuario {
 
-    public void AdminModifPerfilUsuario(int DocumentoComparativo,
+    public void AdminModifPerfilUsuario(Integer DocumentoComparativo,
                                         boolean CambiarID,
                                         boolean CambiarUsuario,
                                         boolean CambiarPass,
@@ -33,23 +33,23 @@ public class API_Admin_ModifUsuario {
                                         boolean CambiarSede,
                                         boolean CambiarCorreo,
                                         boolean CambiarRol,
-                                        int NuevoID,
+                                        Integer NuevoID,
                                         String NuevoUsuario,
                                         String NuevoPass,
-                                        int NuevoDocumento,
-                                        int NuevoTipoDoc,
+                                        Integer NuevoDocumento,
+                                        Integer NuevoTipoDoc,
                                         String NuevosNombres,
                                         String NuevosApellidos,
-                                        int NuevoGenero,
-                                        int NuevoTelefono,
-                                        int NuevoProgramaFormacion,
-                                        int NuevaFicha,
-                                        int NuevaJornada,
-                                        int NuevoNivelFormacion,
+                                        Integer NuevoGenero,
+                                        Integer NuevoTelefono,
+                                        Integer NuevoProgramaFormacion,
+                                        Integer NuevaFicha,
+                                        Integer NuevaJornada,
+                                        Integer NuevoNivelFormacion,
                                         String NuevoArea,
                                         String NuevoCorreo,
-                                        int NuevoRol,
-                                        int NuevaSede) {
+                                        Integer NuevoRol,
+                                        Integer NuevaSede) {
 
 
         try {
@@ -71,38 +71,38 @@ public class API_Admin_ModifUsuario {
             // Crea un objeto UsuarioPUTModel y establece sus campos
             JSONObject usuarioPUTModel = new JSONObject();
             usuarioPUTModel.put("CambiarID", CambiarID);
-            usuarioPUTModel.put("NuevoID", NuevoID);
             usuarioPUTModel.put("CambiarUsuario", CambiarUsuario);
-            usuarioPUTModel.put("NuevoUsuario", NuevoUsuario);
             usuarioPUTModel.put("CambiarPass", CambiarPass);
-            usuarioPUTModel.put("NuevoPass", NuevoPass);
             usuarioPUTModel.put("CambiarDocumento", CambiarDocumento);
-            usuarioPUTModel.put("NuevoDocumento", NuevoDocumento);
             usuarioPUTModel.put("CambiarTipoDoc", CambiarTipoDoc);
-            usuarioPUTModel.put("NuevoTipoDoc", NuevoTipoDoc);
             usuarioPUTModel.put("CambiarNombres", CambiarNombres);
-            usuarioPUTModel.put("NuevosNombres", NuevosNombres);
             usuarioPUTModel.put("CambiarApellidos", CambiarApellidos);
-            usuarioPUTModel.put("NuevosApellidos", NuevosApellidos);
             usuarioPUTModel.put("CambiarGenero", CambiarGenero);
-            usuarioPUTModel.put("NuevoGenero", NuevoGenero);
             usuarioPUTModel.put("CambiarTelefono", CambiarTelefono);
-            usuarioPUTModel.put("NuevoTelefono", NuevoTelefono);
             usuarioPUTModel.put("CambiarProgramaFormacion", CambiarProgramaFormacion);
-            usuarioPUTModel.put("NuevoProgramaFormacion", NuevoProgramaFormacion);
             usuarioPUTModel.put("CambiarNivelFormacion", CambiarNivelFormacion);
-            usuarioPUTModel.put("NuevoNivelFormacion", NuevoNivelFormacion);
             usuarioPUTModel.put("CambiarNumeroFicha", CambiarNumeroFicha);
-            usuarioPUTModel.put("NuevaFicha", NuevaFicha);
             usuarioPUTModel.put("CambiarJornada", CambiarJornada);
-            usuarioPUTModel.put("NuevaJornada", NuevaJornada);
             usuarioPUTModel.put("CambiarArea", CambiarArea);
-            usuarioPUTModel.put("NuevoArea", NuevoArea);
             usuarioPUTModel.put("CambiarSede", CambiarSede);
-            usuarioPUTModel.put("NuevaSede", NuevaSede);
             usuarioPUTModel.put("CambiarCorreo", CambiarCorreo);
-            usuarioPUTModel.put("NuevoCorreo", NuevoCorreo);
             usuarioPUTModel.put("CambiarRol", CambiarRol);
+            usuarioPUTModel.put("NuevoID", NuevoID);
+            usuarioPUTModel.put("NuevoUsuario", NuevoUsuario);
+            usuarioPUTModel.put("NuevoPass", NuevoPass);
+            usuarioPUTModel.put("NuevoDocumento", NuevoDocumento);
+            usuarioPUTModel.put("NuevoTipoDoc", NuevoTipoDoc);
+            usuarioPUTModel.put("NuevosNombres", NuevosNombres);
+            usuarioPUTModel.put("NuevosApellidos", NuevosApellidos);
+            usuarioPUTModel.put("NuevoGenero", NuevoGenero);
+            usuarioPUTModel.put("NuevoTelefono", NuevoTelefono);
+            usuarioPUTModel.put("NuevoProgramaFormacion", NuevoProgramaFormacion);
+            usuarioPUTModel.put("NuevoNivelFormacion", NuevoNivelFormacion);
+            usuarioPUTModel.put("NuevaFicha", NuevaFicha);
+            usuarioPUTModel.put("NuevaJornada", NuevaJornada);
+            usuarioPUTModel.put("NuevoArea", NuevoArea);
+            usuarioPUTModel.put("NuevaSede", NuevaSede);
+            usuarioPUTModel.put("NuevoCorreo", NuevoCorreo);
             usuarioPUTModel.put("NuevoRol", NuevoRol);
 
             try(OutputStream os = conn.getOutputStream()) {
