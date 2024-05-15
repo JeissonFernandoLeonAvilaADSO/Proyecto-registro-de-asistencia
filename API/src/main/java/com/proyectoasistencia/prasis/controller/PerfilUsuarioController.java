@@ -1,8 +1,10 @@
 package com.proyectoasistencia.prasis.controller;
 
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.proyectoasistencia.prasis.models.PerfilUsuarioModel;
 import com.proyectoasistencia.prasis.models.UsuarioPUTModel;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -96,26 +98,9 @@ public class PerfilUsuarioController {
     }
 
     @PutMapping(value = "ModificarInstructor/{IDInstructor}")
-    public ResponseEntity<String> ModInstructor(@PathVariable Integer IDInstructor, @RequestBody UsuarioPUTModel usuarioPUTModel){
-        Map<String, Object> campos = new HashMap<>();
-        campos.put("ID", usuarioPUTModel.isCambiarID() ? usuarioPUTModel.getNuevoID() : null);
-        campos.put("Usuario", usuarioPUTModel.isCambiarUsuario() ? usuarioPUTModel.getNuevoUsuario() : null);
-        campos.put("Contraseña", usuarioPUTModel.isCambiarPass() ? usuarioPUTModel.getNuevoPass() : null);
-        campos.put("Documento", usuarioPUTModel.isCambiarDocumento() ? usuarioPUTModel.getNuevoDocumento() : null);
-        campos.put("TipoDoc", usuarioPUTModel.isCambiarTipoDoc() ? usuarioPUTModel.getNuevoTipoDoc() : null);
-        campos.put("Nombres", usuarioPUTModel.isCambiarNombres() ? usuarioPUTModel.getNuevosNombres() : null);
-        campos.put("Apellidos", usuarioPUTModel.isCambiarApellidos() ? usuarioPUTModel.getNuevosApellidos() : null);
-        campos.put("Genero", usuarioPUTModel.isCambiarGenero() ? usuarioPUTModel.getNuevoGenero() : null);
-        campos.put("Telefono", usuarioPUTModel.isCambiarTelefono() ? usuarioPUTModel.getNuevoTelefono() : null);
-        campos.put("ProgramaFormacion", usuarioPUTModel.isCambiarProgramaFormacion() ? usuarioPUTModel.getNuevoProgramaFormacion() : null);
-        campos.put("NivelFormacion", usuarioPUTModel.isCambiarProgramaFormacion() ? usuarioPUTModel.getNuevoNivelFormacion() : null);
-        campos.put("NumeroFicha", usuarioPUTModel.isCambiarNumeroFicha() ? usuarioPUTModel.getNuevaFicha() : null);
-        campos.put("Jornada", usuarioPUTModel.isCambiarJornada() ? usuarioPUTModel.getNuevaJornada() : null);
-        campos.put("Area", usuarioPUTModel.isCambiarArea() ? usuarioPUTModel.getNuevoArea() : null);
-        campos.put("Correo", usuarioPUTModel.isCambiarCorreo() ? usuarioPUTModel.getNuevoCorreo() : null);
-        campos.put("Rol", usuarioPUTModel.isCambiarRol() ? usuarioPUTModel.getNuevoRol() : null);
-        campos.put("Sede", usuarioPUTModel.isCambiarSede() ? usuarioPUTModel.getNuevaSede() : null);
-
+    public ResponseEntity<String> ModInstructor(@PathVariable Integer IDInstructor, @RequestBody Map<String, Object> usuarioPUTModel){
+        Map<String, Object> campos = usuarioPUTModel;
+        System.out.println(campos);
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         TransactionStatus status = transactionManager.getTransaction(def);
 
@@ -143,7 +128,6 @@ public class PerfilUsuarioController {
                     }
                 }
             }
-
             transactionManager.commit(status);
             return new ResponseEntity<>("Actualización exitosa", HttpStatus.OK);
         } catch (SQLException e) {

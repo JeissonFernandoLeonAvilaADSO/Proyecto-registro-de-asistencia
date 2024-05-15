@@ -4,6 +4,17 @@
  */
 package main.AdminFrames.AdminActionScreens;
 import main.AdminFrames.AdminHomeScreen;
+import java.awt.Component;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
+import main.API_Actions.ConvertirDatos;
+import main.util.API_AdminActions.API_Admin_BuscarUsuario;
+import main.util.API_AdminActions.API_Admin_ModifUsuario;
+import main.AdminFrames.AdminHomeScreen;
+import main.util.models.ComboBoxModels;
+import org.json.JSONObject;
 
 /**
  *
@@ -16,6 +27,7 @@ public class ModificarAprendiz extends javax.swing.JFrame {
      */
     public ModificarAprendiz() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -535,6 +547,58 @@ public class ModificarAprendiz extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void AditionalConfig(){
+
+
+        ComboBoxModels ComboBoxModels = new ComboBoxModels();
+        try {
+            List<String> tiposDocumento = ComboBoxModels.BoxTipoDocModel();
+            if (tiposDocumento == null) {
+                // Maneja el caso en que BoxTipoDocModel() devuelva null
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los tipos de documentos de la API");
+            } else {
+                tiposDocumento.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> TipoDocBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposDocumento));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            List<String> tiposGenero = ComboBoxModels.BoxTipoActividadModel();
+            if (tiposGenero == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los géneros de la API");
+            } else {
+                tiposGenero.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> GeneroBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposGenero));
+
+ 
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+        try {
+            List<String> tiposSede = ComboBoxModels.BoxSedeModel();
+            if (tiposSede == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando las sedes de la API");
+            } else {
+                tiposSede.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> SedeBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposSede));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        
+    }
     private void ModApellidoAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModApellidoAprendizActionPerformed
         
     }//GEN-LAST:event_ModApellidoAprendizActionPerformed

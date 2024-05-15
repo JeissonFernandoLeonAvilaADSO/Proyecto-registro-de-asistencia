@@ -5,7 +5,9 @@
 package main.AdminFrames.AdminActionScreens;
 
 import java.awt.Component;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
@@ -13,11 +15,9 @@ import main.API_Actions.ConvertirDatos;
 import main.util.API_AdminActions.API_Admin_BuscarUsuario;
 import main.util.API_AdminActions.API_Admin_ModifUsuario;
 import main.AdminFrames.AdminHomeScreen;
+import main.util.models.ComboBoxModels;
 import org.json.JSONObject;
-import main.util.models.TipoDocumentoModel;
-import main.util.models.GeneroModel;
-import main.util.models.RolModel;
-import main.util.models.sedeModel;
+
 
 /**
  *
@@ -645,62 +645,63 @@ public class ModfInstructor extends javax.swing.JFrame {
             component.setEnabled(false);
         }
 
-        TipoDocumentoModel tipoDocModel = new TipoDocumentoModel();
+        ComboBoxModels ComboBoxModels = new ComboBoxModels();
         try {
-            List<String> tiposDocumento = tipoDocModel.BoxTipoDocModel();
-            
-            tiposDocumento.add(0, "Seleccionar...");
-            if (tiposDocumento != null) {
-                DefaultComboBoxModel<String> TipoDocBoxModel = new DefaultComboBoxModel<>(tipoDocModel.toArray(tiposDocumento));
-                ModificarTipoDocInstructor.setModel(TipoDocBoxModel);
-            } else {
+            List<String> tiposDocumento = ComboBoxModels.BoxTipoDocModel();
+            if (tiposDocumento == null) {
+                // Maneja el caso en que BoxTipoDocModel() devuelva null
                 JOptionPane.showMessageDialog(null, "Hubo un error cargando los tipos de documentos de la API");
+            } else {
+                tiposDocumento.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> TipoDocBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposDocumento));
+                ModificarTipoDocInstructor.setModel(TipoDocBoxModel);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        GeneroModel generoModel = new GeneroModel();
+
         try {
-            List<String> tiposGenero = generoModel.BoxTipoActividadModel();
-            
-            tiposGenero.add(0, "Seleccionar...");
-            if (tiposGenero != null) {
-                DefaultComboBoxModel<String> GeneroBoxModel = new DefaultComboBoxModel<>(generoModel.toArray(tiposGenero));
-                ModificarGeneroInstructor.setModel(GeneroBoxModel);
-            } else {
+            List<String> tiposGenero = ComboBoxModels.BoxTipoActividadModel();
+            if (tiposGenero == null) {
                 JOptionPane.showMessageDialog(null, "Hubo un error cargando los géneros de la API");
+            } else {
+                tiposGenero.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> GeneroBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposGenero));
+                ModificarGeneroInstructor.setModel(GeneroBoxModel);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        RolModel rolModel = new RolModel();
+
         try {
-            List<String> tiposRol = rolModel.BoxRolModel();
-            
-            tiposRol.add(0, "Seleccionar...");
-            if (tiposRol != null) {
-                DefaultComboBoxModel<String> RolBoxModel = new DefaultComboBoxModel<>( rolModel.toArray(tiposRol));
-                ModificarRolInstructor.setModel(RolBoxModel);
-            } else {
+            List<String> tiposRol = ComboBoxModels.BoxRolModel();
+            if (tiposRol == null) {
                 JOptionPane.showMessageDialog(null, "Hubo un error cargando los roles de la API");
+            } else {
+                tiposRol.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> RolBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposRol));
+                ModificarRolInstructor.setModel(RolBoxModel);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        sedeModel sedeModel = new sedeModel();
+
         try {
-            List<String> tiposSede = sedeModel.BoxSedeModel();
-            
-            tiposSede.add(0, "Seleccionar...");
-            if (tiposSede != null) {
-                DefaultComboBoxModel<String> SedeBoxModel = new DefaultComboBoxModel<>(sedeModel.toArray(tiposSede));
-                ModificarSedeInstructor.setModel(SedeBoxModel);
-            } else {
+            List<String> tiposSede = ComboBoxModels.BoxSedeModel();
+            if (tiposSede == null) {
                 JOptionPane.showMessageDialog(null, "Hubo un error cargando las sedes de la API");
+            } else {
+                tiposSede.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> SedeBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposSede));
+                ModificarSedeInstructor.setModel(SedeBoxModel);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -768,41 +769,27 @@ public class ModfInstructor extends javax.swing.JFrame {
                 // Si el usuario confirma, crea una instancia de DB_Admin_ModifInstructor y llama al método AdminModifPerfilUsuario con los datos del instructor.
                 API_Admin_ModifUsuario modifUsuario = new API_Admin_ModifUsuario();
                 ConvertirDatos convertirDatos = new ConvertirDatos();
-                modifUsuario.AdminModifPerfilUsuario(Integer.parseInt(IDInstructorField.getText()),
-                        CheckActivarCod.isSelected(),
-                        CheckActivarUsuario.isSelected(),
-                        CheckActivarPass.isSelected(),
-                        CheckActivarDoc.isSelected(),
-                        CheckActivarTipoDoc.isSelected(),
-                        CheckActivarNombres.isSelected(),
-                        CheckActivarApellidos.isSelected(),
-                        CheckActivarGenero.isSelected(),
-                        CheckActivarTelefono.isSelected(),
-                        false,
-                        false,
-                        false,
-                        false,
-                        CheckActivarArea.isSelected(),
-                        CheckActivarSede.isSelected(),
-                        CheckActivarCorreo.isSelected(),
-                        CheckActivarRol.isSelected(),
-                        Integer.parseInt(ModificarCodInstructor.getText()),
-                        ModificarUsuarioInstructor.getText(),
-                        ModificarPassInstructor.getText(),
-                        Integer.parseInt(ModificarDocumentoInstructor.getText()),
-                        convertirDatos.ObtenerIDTipoDoc(String.valueOf(ModificarTipoDocInstructor.getSelectedItem())),
-                        ModificarNombreInstructor.getText(),
-                        ModificarApellidoInstructor.getText(),
-                        convertirDatos.ObtenerIDTipoGenero(String.valueOf(ModificarGeneroInstructor.getSelectedItem())),
-                        Integer.parseInt(ModificarTelefonoInstructor.getText()),
-                        null,
-                        null,
-                        null,
-                        null,
-                        ModificarAreaInstructor.getText(),
-                        ModificarCorreoInstructor.getText(),
-                        convertirDatos.ObtenerIDTipoRol(String.valueOf(ModificarGeneroInstructor.getSelectedItem())),
-                        convertirDatos.ObtenerIDTipoSede(String.valueOf(ModificarSedeInstructor.getSelectedItem())));
+                Map<String, Object> usuarioPUTModel = new HashMap<>();
+                usuarioPUTModel.put("ID", CheckActivarCod.isSelected() ? Integer.valueOf(ModificarCodInstructor.getText()) : null);
+                usuarioPUTModel.put("Usuario", CheckActivarUsuario.isSelected() ? ModificarUsuarioInstructor.getText() : null);
+                usuarioPUTModel.put("Contraseña", CheckActivarPass.isSelected() ? ModificarPassInstructor.getText() : null);
+                usuarioPUTModel.put("Documento", CheckActivarDoc.isSelected() ? Integer.valueOf(ModificarDocumentoInstructor.getText()) : null);
+                usuarioPUTModel.put("TipoDoc", CheckActivarTipoDoc.isSelected() ? convertirDatos.ObtenerIDTipoDoc(String.valueOf(ModificarTipoDocInstructor.getSelectedItem())) : null);
+                usuarioPUTModel.put("Nombres", CheckActivarNombres.isSelected() ? ModificarNombreInstructor.getText() : null);
+                usuarioPUTModel.put("Apellidos", CheckActivarApellidos.isSelected() ? ModificarApellidoInstructor.getText() : null);
+                usuarioPUTModel.put("Genero", CheckActivarGenero.isSelected() ? convertirDatos.ObtenerIDTipoGenero(String.valueOf(ModificarGeneroInstructor.getSelectedItem())) : null);
+                usuarioPUTModel.put("Telefono", CheckActivarTelefono.isSelected() ? Integer.valueOf(ModificarTelefonoInstructor.getText()) : null);
+                usuarioPUTModel.put("ProgramaFormacion", (String) null);
+                usuarioPUTModel.put("NivelFormacion", (Integer) null);
+                usuarioPUTModel.put("NumeroFicha", (Integer) null);
+                usuarioPUTModel.put("Jornada", (Integer) null);
+                usuarioPUTModel.put("Area", CheckActivarArea.isSelected() ?  ModificarAreaInstructor.getText() : null);
+                usuarioPUTModel.put("Correo", CheckActivarCorreo.isSelected() ? ModificarCorreoInstructor.getText() : null);
+                usuarioPUTModel.put("Rol", CheckActivarRol.isSelected() ? convertirDatos.ObtenerIDTipoRol(String.valueOf(ModificarGeneroInstructor.getSelectedItem())) : null);
+                usuarioPUTModel.put("Sede", CheckActivarSede.isSelected() ? convertirDatos.ObtenerIDTipoSede(String.valueOf(ModificarSedeInstructor.getSelectedItem())) : null);
+
+                System.out.println(usuarioPUTModel);
+                modifUsuario.AdminModifPerfilUsuario(Integer.valueOf(IDInstructorField.getText()), usuarioPUTModel);
                 break;
 
             case JOptionPane.NO_OPTION:
@@ -874,19 +861,6 @@ public class ModfInstructor extends javax.swing.JFrame {
         // Intenta buscar al instructor en la base de datos.
         JSONObject instructor = buscarInstructor.AdminBuscarUsuario(Integer.parseInt(IDInstructorField.getText()));
         if (instructor != null){
-            System.out.println(instructor);
-            ResultadoCodInstructor.setText(String.valueOf(instructor.getInt("ID")));
-            ResultadoCedulaInstructor.setText(String.valueOf(instructor.getInt("documento")));
-            ResultadoTipoDocInstructor.setText(instructor.getString("tipoDocumento"));
-            ResultadoNombreInstructor.setText(instructor.getString("nombres"));
-            ResultadoApellidoInstructor.setText(instructor.getString("apellidos"));
-            ResultadoGeneroInstructor.setText(instructor.getString("genero"));
-            ResultadoTelefonoInstructor.setText(String.valueOf(instructor.getInt("telefono")));
-            ResultadoRolInstructor.setText(instructor.getString("rol"));
-            ResultadoAreaInstructor.setText(instructor.getString("area"));
-            ResultadoSedeInstructor.setText(instructor.getString("sede"));
-            
-
 
             // Habilita los componentes del Panel_ModificarDatos.
             for (Component component : Panel_ModificarDatos.getComponents()) {

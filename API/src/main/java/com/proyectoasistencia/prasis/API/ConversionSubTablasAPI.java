@@ -14,14 +14,14 @@ public class ConversionSubTablasAPI {
     private JdbcTemplate jdbcTemplate;
 
     @RequestMapping(value = "Conversion/TipoDoc_Str_to_ID/{TipoDocStr}")
-    public int TipoDocData_Str_to_ID(@PathVariable String TipoDocStr) {
+    public Integer TipoDocData_Str_to_ID(@PathVariable String TipoDocStr) {
         String consulta = "select ID from tipodocumento WHERE TipoDocumento = ?";
         Integer IDTipoDoc = jdbcTemplate.queryForObject(consulta, new Object[]{TipoDocStr} ,Integer.class);
         return IDTipoDoc;
     }
 
     @RequestMapping(value = "Conversion/TipoGenero_Str_to_ID/{TipoGeneroStr}")
-    public int TipoGenero(@PathVariable String TipoGeneroStr){
+    public Integer TipoGenero(@PathVariable String TipoGeneroStr){
         String consulta = "select ID from genero WHERE TiposGeneros = ?";
         Integer IDTipoGenero = jdbcTemplate.queryForObject(consulta, new Object[]{TipoGeneroStr} ,Integer.class);
         return IDTipoGenero;
@@ -29,7 +29,7 @@ public class ConversionSubTablasAPI {
     }
 
     @RequestMapping(value = "Conversion/TipoRol_Str_to_ID/{TipoRolStr}")
-    public int TipoRol(@PathVariable String TipoRolStr){
+    public Integer TipoRol(@PathVariable String TipoRolStr){
         String consulta = "select ID from rol WHERE TipoRol = ?";
         Integer IDTipoRol = jdbcTemplate.queryForObject(consulta, new Object[]{TipoRolStr} ,Integer.class);
         return IDTipoRol;
@@ -37,7 +37,7 @@ public class ConversionSubTablasAPI {
     }
 
     @RequestMapping(value = "Conversion/TipoSede_Str_to_ID/{TipoSedeStr}")
-    public int TipoSede(@PathVariable String TipoSedeStr){
+    public Integer TipoSede(@PathVariable String TipoSedeStr){
         String consulta = "select ID from sede WHERE CentroFormacion = ?";
         Integer IDTipoSede = jdbcTemplate.queryForObject(consulta, new Object[]{TipoSedeStr} ,Integer.class);
         return IDTipoSede;

@@ -173,7 +173,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
         jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 160, -1, -1));
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/util/icons/Group 65.jpg"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/util/icons/BgLog.jpg"))); // NOI18N
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 820));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
