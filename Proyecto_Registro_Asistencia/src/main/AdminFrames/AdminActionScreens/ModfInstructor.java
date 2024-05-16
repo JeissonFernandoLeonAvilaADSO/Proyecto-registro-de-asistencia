@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
-import main.API_Actions.ConvertirDatos;
+import main.util.API_Actions.ConvertirDatos;
 import main.util.API_AdminActions.API_Admin_BuscarUsuario;
 import main.util.API_AdminActions.API_Admin_ModifUsuario;
 import main.AdminFrames.AdminHomeScreen;
@@ -774,19 +774,19 @@ public class ModfInstructor extends javax.swing.JFrame {
                 usuarioPUTModel.put("Usuario", CheckActivarUsuario.isSelected() ? ModificarUsuarioInstructor.getText() : null);
                 usuarioPUTModel.put("Contraseña", CheckActivarPass.isSelected() ? ModificarPassInstructor.getText() : null);
                 usuarioPUTModel.put("Documento", CheckActivarDoc.isSelected() ? Integer.valueOf(ModificarDocumentoInstructor.getText()) : null);
-                usuarioPUTModel.put("TipoDoc", CheckActivarTipoDoc.isSelected() ? convertirDatos.ObtenerIDTipoDoc(String.valueOf(ModificarTipoDocInstructor.getSelectedItem())) : null);
+                usuarioPUTModel.put("IDTipoDocumento", CheckActivarTipoDoc.isSelected() ? convertirDatos.ObtenerIDTipoDoc((String)ModificarTipoDocInstructor.getSelectedItem()) : null);
                 usuarioPUTModel.put("Nombres", CheckActivarNombres.isSelected() ? ModificarNombreInstructor.getText() : null);
                 usuarioPUTModel.put("Apellidos", CheckActivarApellidos.isSelected() ? ModificarApellidoInstructor.getText() : null);
-                usuarioPUTModel.put("Genero", CheckActivarGenero.isSelected() ? convertirDatos.ObtenerIDTipoGenero(String.valueOf(ModificarGeneroInstructor.getSelectedItem())) : null);
+                usuarioPUTModel.put("IDGenero", CheckActivarGenero.isSelected() ? convertirDatos.ObtenerIDTipoGenero((String)ModificarGeneroInstructor.getSelectedItem()) : null);
                 usuarioPUTModel.put("Telefono", CheckActivarTelefono.isSelected() ? Integer.valueOf(ModificarTelefonoInstructor.getText()) : null);
-                usuarioPUTModel.put("ProgramaFormacion", (String) null);
-                usuarioPUTModel.put("NivelFormacion", (Integer) null);
+                usuarioPUTModel.put("IDProgramaFormacion", (Integer) null);
+                usuarioPUTModel.put("IDNivelFormacion", (Integer) null);
                 usuarioPUTModel.put("NumeroFicha", (Integer) null);
-                usuarioPUTModel.put("Jornada", (Integer) null);
+                usuarioPUTModel.put("IDJornadaFormacion", (Integer) null);
                 usuarioPUTModel.put("Area", CheckActivarArea.isSelected() ?  ModificarAreaInstructor.getText() : null);
                 usuarioPUTModel.put("Correo", CheckActivarCorreo.isSelected() ? ModificarCorreoInstructor.getText() : null);
-                usuarioPUTModel.put("Rol", CheckActivarRol.isSelected() ? convertirDatos.ObtenerIDTipoRol(String.valueOf(ModificarGeneroInstructor.getSelectedItem())) : null);
-                usuarioPUTModel.put("Sede", CheckActivarSede.isSelected() ? convertirDatos.ObtenerIDTipoSede(String.valueOf(ModificarSedeInstructor.getSelectedItem())) : null);
+                usuarioPUTModel.put("IDRol", CheckActivarRol.isSelected() ? convertirDatos.ObtenerIDTipoRol((String)ModificarGeneroInstructor.getSelectedItem()) : null);
+                usuarioPUTModel.put("IDSede", CheckActivarSede.isSelected() ? convertirDatos.ObtenerIDTipoSede((String)ModificarSedeInstructor.getSelectedItem()) : null);
 
                 System.out.println(usuarioPUTModel);
                 modifUsuario.AdminModifPerfilUsuario(Integer.valueOf(IDInstructorField.getText()), usuarioPUTModel);

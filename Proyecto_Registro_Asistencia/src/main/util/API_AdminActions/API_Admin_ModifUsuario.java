@@ -1,10 +1,12 @@
 package main.util.API_AdminActions;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -18,29 +20,31 @@ import main.AdminFrames.APISecPass;
 public class API_Admin_ModifUsuario {
 
     public void AdminModifPerfilUsuario(Integer DocumentoComparativo, Map<String, Object> usuarioPUTModel) {
-        System.out.println(usuarioPUTModel);
         try {
-            APISecPass APIPass = new APISecPass();
             URL url = new URL("http://localhost:8080/ModificarInstructor/" + DocumentoComparativo);
-            String pass = APIPass.GetAPIPass();
-            String userCredentials = "user:" + pass;
-            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("PUT");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestProperty("Authorization", basicAuth);
-            conn.setRequestProperty("Content-Type", "application/json; utf-8");
 
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            conn.setRequestMethod("PUT");
+            conn.setRequestProperty("Content-Type", "application/json; UTF-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+
+            JSONObject json = new JSONObject(usuarioPUTModel);
+            byte[] input = json.toString().getBytes("utf-8");
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(input, 0, input.length);
             }
 
-            conn.setDoOutput(true);
-            try(OutputStream os = conn.getOutputStream()) {
-                JSONObject json = new JSONObject(usuarioPUTModel);
-                byte[] input = json.toString().getBytes("utf-8");
-                os.write(input, 0, input.length);
+            if (conn.getResponseCode() != 200) {
+                // Imprime el mensaje de error del servidor
+                if (conn.getErrorStream() != null) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                }
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
             }
 
             // Obtiene la respuesta del servidor

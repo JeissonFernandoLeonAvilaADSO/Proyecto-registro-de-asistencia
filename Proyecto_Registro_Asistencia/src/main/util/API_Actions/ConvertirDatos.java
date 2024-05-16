@@ -2,14 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main.API_Actions;
+package main.util.API_Actions;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Base64;
-import main.AdminFrames.APISecPass;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 
 /**
  *
@@ -18,16 +19,11 @@ import main.AdminFrames.APISecPass;
 public class ConvertirDatos {
     public Integer ObtenerIDTipoDoc(String TipoDocStr){
         try {
-            APISecPass APIPass = new APISecPass();
-            URL url = new URL("http://localhost:8080/Conversion/TipoDoc_Str_to_ID/" + TipoDocStr);
-            String pass = APIPass.GetAPIPass();
-            String userCredentials = "user:" + pass; // Reemplaza "username:password" con tus credenciales
-            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-
+            String encodedTipoDocStr = URLEncoder.encode(TipoDocStr, StandardCharsets.UTF_8.toString());
+            URL url = new URL("http://localhost:8080/Conversion/TipoDoc_Str_to_ID/" + encodedTipoDocStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestProperty("Authorization", basicAuth);
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
@@ -45,7 +41,7 @@ public class ConvertirDatos {
             conn.disconnect();
 
             // Retorna el ID obtenido
-            return Integer.parseInt(content.toString());
+            return Integer.valueOf(content.toString());
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,16 +51,11 @@ public class ConvertirDatos {
     
     public Integer ObtenerIDTipoGenero(String TipoGeneroStr){
         try {
-            APISecPass APIPass = new APISecPass();
+            String encodedTipoDocStr = URLEncoder.encode(TipoGeneroStr, StandardCharsets.UTF_8.toString());
             URL url = new URL("http://localhost:8080/Conversion/TipoGenero_Str_to_ID/" + TipoGeneroStr);
-            String pass = APIPass.GetAPIPass();
-            String userCredentials = "user:" + pass; // Reemplaza "username:password" con tus credenciales
-            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestProperty("Authorization", basicAuth);
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
@@ -82,7 +73,7 @@ public class ConvertirDatos {
             conn.disconnect();
 
             // Retorna el ID obtenido
-            return Integer.parseInt(content.toString());
+            return Integer.valueOf(content.toString());
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,16 +83,11 @@ public class ConvertirDatos {
         
     public Integer ObtenerIDTipoSede(String TipoSedeStr){
         try {
-            APISecPass APIPass = new APISecPass();
+            String encodedTipoDocStr = URLEncoder.encode(TipoSedeStr, StandardCharsets.UTF_8.toString());
             URL url = new URL("http://localhost:8080/Conversion/TipoSede_Str_to_ID/" + TipoSedeStr);
-            String pass = APIPass.GetAPIPass();
-            String userCredentials = "user:" + pass; // Reemplaza "username:password" con tus credenciales
-            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestProperty("Authorization", basicAuth);
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
@@ -119,7 +105,7 @@ public class ConvertirDatos {
             conn.disconnect();
 
             // Retorna el ID obtenido
-            return Integer.parseInt(content.toString());
+            return Integer.valueOf(content.toString());
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,16 +115,11 @@ public class ConvertirDatos {
             
     public Integer ObtenerIDTipoRol(String TipoRolStr){
         try {
-            APISecPass APIPass = new APISecPass();
+            String encodedTipoDocStr = URLEncoder.encode(TipoRolStr, StandardCharsets.UTF_8.toString());
             URL url = new URL("http://localhost:8080/Conversion/TipoRol_Str_to_ID/" + TipoRolStr);
-            String pass = APIPass.GetAPIPass();
-            String userCredentials = "user:" + pass; // Reemplaza "username:password" con tus credenciales
-            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestProperty("Authorization", basicAuth);
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
@@ -156,7 +137,7 @@ public class ConvertirDatos {
             conn.disconnect();
 
             // Retorna el ID obtenido
-            return Integer.parseInt(content.toString());
+            return Integer.valueOf(content.toString());
             
         } catch (Exception e) {
             e.printStackTrace();

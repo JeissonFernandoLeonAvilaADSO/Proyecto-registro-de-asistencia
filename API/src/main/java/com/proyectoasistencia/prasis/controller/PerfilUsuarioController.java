@@ -1,10 +1,8 @@
 package com.proyectoasistencia.prasis.controller;
 
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.proyectoasistencia.prasis.models.PerfilUsuarioModel;
-import com.proyectoasistencia.prasis.models.UsuarioPUTModel;
-import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+
 import java.util.Map;
 
 @RestController
@@ -98,7 +96,7 @@ public class PerfilUsuarioController {
     }
 
     @PutMapping(value = "ModificarInstructor/{IDInstructor}")
-    public ResponseEntity<String> ModInstructor(@PathVariable Integer IDInstructor, @RequestBody Map<String, Object> usuarioPUTModel){
+    public ResponseEntity<String> ModInstructor(@PathVariable int IDInstructor, @RequestBody Map<String, Object> usuarioPUTModel){
         Map<String, Object> campos = usuarioPUTModel;
         System.out.println(campos);
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -109,9 +107,9 @@ public class PerfilUsuarioController {
                 if (entry.getValue() != null) {
                     String consulta;
                     if (entry.getKey().equals("Usuario") || entry.getKey().equals("Contraseña")) {
-                        consulta = "UPDATE usuario SET " + entry.getKey() + " = ? WHERE id = (SELECT IDUsuario FROM perfilusuario WHERE ID = ?)";
+                        consulta = "UPDATE usuario SET " + entry.getKey() + " = ? WHERE id = (SELECT IDUsuario FROM perfilusuario WHERE Documento = ?)";
                     } else {
-                        consulta = "UPDATE perfilusuario SET " + entry.getKey() + " = ? WHERE ID = ?";
+                        consulta = "UPDATE perfilusuario SET " + entry.getKey() + " = ? WHERE Documento = ?";
                     }
 
                     try (PreparedStatement ps = conexion.prepareStatement(consulta)) {

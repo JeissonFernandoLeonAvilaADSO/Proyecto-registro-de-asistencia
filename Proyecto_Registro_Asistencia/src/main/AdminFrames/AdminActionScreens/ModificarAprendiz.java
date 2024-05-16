@@ -4,17 +4,12 @@
  */
 package main.AdminFrames.AdminActionScreens;
 import main.AdminFrames.AdminHomeScreen;
-import java.awt.Component;
+
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
-import main.API_Actions.ConvertirDatos;
-import main.util.API_AdminActions.API_Admin_BuscarUsuario;
-import main.util.API_AdminActions.API_Admin_ModifUsuario;
-import main.AdminFrames.AdminHomeScreen;
 import main.util.models.ComboBoxModels;
-import org.json.JSONObject;
 
 /**
  *

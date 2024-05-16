@@ -13,16 +13,10 @@ public class API_Admin_BuscarUsuario {
     public JSONObject AdminBuscarUsuario(Integer IDUsuario) {
 
         try {
-            APISecPass APIPass = new APISecPass();
             URL url = new URL("http://localhost:8080/ObtenerInstructor/" + IDUsuario);
-            String pass = APIPass.GetAPIPass();
-            String userCredentials = "user:" + pass; // Reemplaza "username:password" con tus credenciales
-            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestProperty("Authorization", basicAuth);
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
