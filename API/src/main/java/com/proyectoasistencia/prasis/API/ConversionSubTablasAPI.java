@@ -58,5 +58,38 @@ public class ConversionSubTablasAPI {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping(value = "Conversion/ProgramaFormacion_Str_to_ID/{ProgramaFormacionStr}")
+    public ResponseEntity<Integer> ProgramaFormacion(@PathVariable String ProgramaFormacionStr){
+        try {
+            String consulta = "select ID from programaformacion WHERE ProgramaFormacion = ?";
+            Integer IDProgramaFormacion = jdbcTemplate.queryForObject(consulta, new Object[]{ProgramaFormacionStr} ,Integer.class);
+            return new ResponseEntity<>(IDProgramaFormacion, HttpStatus.OK);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "Conversion/JornadaFormacion_Str_to_ID/{JornadaFormacionStr}")
+    public ResponseEntity<Integer> JornadaFormacion(@PathVariable String JornadaFormacionStr){
+        try {
+            String consulta = "select ID from jornadaformacion WHERE JornadasFormacion = ?";
+            Integer IDJornadaFormacion = jdbcTemplate.queryForObject(consulta, new Object[]{JornadaFormacionStr} ,Integer.class);
+            return new ResponseEntity<>(IDJornadaFormacion, HttpStatus.OK);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "Conversion/NivelFormacion_Str_to_ID/{NivelFormacionStr}")
+    public ResponseEntity<Integer> NivelFormacion(@PathVariable String NivelFormacionStr){
+        try {
+            String consulta = "select ID from nivelformacion WHERE NivelFormacion = ?";
+            Integer IDNivelFormacion = jdbcTemplate.queryForObject(consulta, new Object[]{NivelFormacionStr} ,Integer.class);
+            return new ResponseEntity<>(IDNivelFormacion, HttpStatus.OK);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 }
 

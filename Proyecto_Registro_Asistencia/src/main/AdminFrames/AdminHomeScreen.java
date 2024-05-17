@@ -3,11 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package main.AdminFrames;
-import main.AdminFrames.AdminActionScreens.CreateInstructor;
-import main.AdminFrames.AdminActionScreens.ModfInstructor;
-import main.AdminFrames.AdminActionScreens.DeleteInstructor;
-import main.AdminFrames.AdminActionScreens.ModificarAprendiz;
-import main.AdminFrames.AdminActionScreens.DeleteAprendiz;
+import main.AdminFrames.AdminActionScreens.CreateUsuario;
+import main.AdminFrames.AdminActionScreens.ModifUsuario;
+import main.AdminFrames.AdminActionScreens.DeleteUsuario;
+
 /**
  *
  * @author Jeisson Leon
@@ -35,13 +34,10 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        ModificarAprendiz = new javax.swing.JButton();
-        EliminarAprendiz = new javax.swing.JButton();
         CrearInstructor = new javax.swing.JButton();
         ModificarInstructor = new javax.swing.JButton();
         EliminarInstructor = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,7 +60,7 @@ public class AdminHomeScreen extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 706, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -78,20 +74,6 @@ public class AdminHomeScreen extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
-
-        ModificarAprendiz.setText("Modificar usuario aprendiz");
-        ModificarAprendiz.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ModificarAprendizActionPerformed(evt);
-            }
-        });
-
-        EliminarAprendiz.setText("Eliminar usuario aprendiz");
-        EliminarAprendiz.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EliminarAprendizActionPerformed(evt);
-            }
-        });
 
         CrearInstructor.setText("Crear usuario instructor");
         CrearInstructor.addActionListener(new java.awt.event.ActionListener() {
@@ -118,30 +100,18 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Acciones Instructor");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("Acciones Aprendiz");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(237, 237, 237)
-                .addComponent(ModificarAprendiz, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(EliminarAprendiz, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(309, 309, 309))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)))
+                        .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(142, 142, 142)
+                        .addGap(141, 141, 141)
                         .addComponent(CrearInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(25, 25, 25)
                         .addComponent(ModificarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -155,18 +125,12 @@ public class AdminHomeScreen extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(115, 115, 115)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(EliminarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(EliminarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(ModificarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(CrearInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(46, 46, 46)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(EliminarAprendiz, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                    .addComponent(ModificarAprendiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(146, Short.MAX_VALUE))
+                    .addComponent(CrearInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(173, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -184,34 +148,22 @@ public class AdminHomeScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CrearInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearInstructorActionPerformed
-        CreateInstructor createInstructor = new CreateInstructor();
+        CreateUsuario createInstructor = new CreateUsuario();
         createInstructor.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_CrearInstructorActionPerformed
 
     private void ModificarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarInstructorActionPerformed
-        ModfInstructor modfInstructor = new ModfInstructor();
+        ModifUsuario modfInstructor = new ModifUsuario();
         modfInstructor.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_ModificarInstructorActionPerformed
 
     private void EliminarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarInstructorActionPerformed
-        DeleteInstructor delInstructor = new DeleteInstructor();
+        DeleteUsuario delInstructor = new DeleteUsuario();
         delInstructor.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_EliminarInstructorActionPerformed
-
-    private void ModificarAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarAprendizActionPerformed
-        ModificarAprendiz modificarAprendiz = new ModificarAprendiz();
-        modificarAprendiz.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_ModificarAprendizActionPerformed
-
-    private void EliminarAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarAprendizActionPerformed
-        DeleteAprendiz borrarAprendiz = new DeleteAprendiz();
-        borrarAprendiz.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_EliminarAprendizActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,13 +202,10 @@ public class AdminHomeScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CrearInstructor;
-    private javax.swing.JButton EliminarAprendiz;
     private javax.swing.JButton EliminarInstructor;
-    private javax.swing.JButton ModificarAprendiz;
     private javax.swing.JButton ModificarInstructor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

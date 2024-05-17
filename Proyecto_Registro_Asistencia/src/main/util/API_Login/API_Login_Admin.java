@@ -20,16 +20,10 @@ public class API_Login_Admin {
 
     public boolean LogAdmin(String userAdmin, String passAdmin) {
         try {
-            APISecPass APIPass = new APISecPass();
             var url = new URL("http://localhost:8080/Registro/Administrador/" + userAdmin + "/" + passAdmin);
-            String pass = APIPass.GetAPIPass();
-            String userCredentials = "user:" + pass; // Reemplaza "username:password" con tus credenciales
-            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestProperty("Authorization", basicAuth);
 
             int responseCode = conn.getResponseCode();
             if (responseCode == 200) {
