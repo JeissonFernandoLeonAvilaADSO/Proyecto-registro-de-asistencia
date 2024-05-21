@@ -134,5 +134,41 @@ public class PerfilUsuarioController {
         }
     }
 
+    @RequestMapping(value = "EliminarUsuario/{IDUsuario}")
+    public ResponseEntity<String> EliminarUsuario(@PathVariable int IDUsuario){
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        TransactionStatus status = transactionManager.getTransaction(def);
+
+        try (Connection conexion = dataSource.getConnection()) {
+            // Eliminar el usuario de la tabla 'usuario'
+            String consultaUsuario = "DELETE FROM usuario WHERE ID = ?";
+            try (PreparedStatement psUsuario = conexion.prepareStatement(consultaUsuario)) {
+                psUsuario.setInt(1, IDUsuario);
+                int rowsAffectedUsuario = psUsuario.executeUpdate();
+                if (rowsAffectedUsuario <= 0) {
+                    transactionManager.rollback(status);
+                    return new ResponseEntity<>("No se pudo eliminar el usuario", HttpStatus.BAD_REQUEST);
+                }
+            }
+
+            // Eliminar el usuario de la tabla 'perfilusuario'
+            String consultaPerfilUsuario = "DELETE FROM perfilusuario WHERE IDUsuario = ?";
+            try (PreparedStatement psPerfilUsuario = conexion.prepareStatement(consultaPerfilUsuario)) {
+                psPerfilUsuario.setInt(1, IDUsuario);
+                int rowsAffectedPerfilUsuario = psPerfilUsuario.executeUpdate();
+                if (rowsAffectedPerfilUsuario <= 0) {
+                    transactionManager.rollback(status);
+                    return new ResponseEntity<>("No se pudo eliminar el perfil del usuario", HttpStatus.BAD_REQUEST);
+                }
+            }
+
+            transactionManager.commit(status);
+            return new ResponseEntity<>("Usuario eliminado exitosamente", HttpStatus.OK);
+        } catch (SQLException e) {
+            transactionManager.rollback(status);
+            return new ResponseEntity<>("Error al eliminar el usuario: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
 

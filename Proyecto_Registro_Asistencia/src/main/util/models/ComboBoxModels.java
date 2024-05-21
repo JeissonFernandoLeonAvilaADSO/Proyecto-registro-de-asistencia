@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ComboBoxModels {
+    
     public ArrayList<String> BoxTipoGeneroModel() throws Exception {
 
         URL url = new URL("http://localhost:8080/GeneroData");

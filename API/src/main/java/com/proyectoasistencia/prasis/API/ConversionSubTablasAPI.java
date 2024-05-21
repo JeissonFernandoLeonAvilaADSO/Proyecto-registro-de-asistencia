@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
 @RestController
 public class ConversionSubTablasAPI {
 
@@ -53,16 +56,18 @@ public class ConversionSubTablasAPI {
 
     private ResponseEntity<Integer> obtenerID(String tabla, String columna, String valor) {
         try {
-            System.out.println(tabla);
-            System.out.println(columna);
-            System.out.println(valor);
+            // Decodifica el valor del parámetro
+            String decodedValor = URLDecoder.decode(valor, StandardCharsets.UTF_8.toString());
+
             String consulta = "select ID from " + tabla + " WHERE " + columna + " = ?";
-            Integer ID = jdbcTemplate.queryForObject(consulta, new Object[]{valor} ,Integer.class);
+            Integer ID = jdbcTemplate.queryForObject(consulta, new Object[]{decodedValor}, Integer.class);
             return new ResponseEntity<>(ID, HttpStatus.OK);
         } catch (EmptyResultDataAccessException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace(); // Loguea la excepción para depuración
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
 

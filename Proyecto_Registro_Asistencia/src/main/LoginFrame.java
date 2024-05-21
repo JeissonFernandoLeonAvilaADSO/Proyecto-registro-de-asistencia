@@ -227,11 +227,11 @@ public class LoginFrame extends javax.swing.JFrame {
     private void IngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarActionPerformed
         // Verifica si el checkbox AdminCheck está seleccionado.
         if (AdminCheck.isSelected()){
-            // Crea una nueva instancia de DB_Login_Admin.
+            // Crea una nueva instancia de API_Login_Admin.
             API_Login_Admin AdminLog = new API_Login_Admin();
             
             // Verifica las credenciales del administrador.
-            if(AdminLog.LogAdmin(UserField.getText(), PassField.getText())){
+            if(AdminLog.LogAdmin(UserField.getText(), new String(PassField.getPassword()))){
                 // Si las credenciales son válidas, muestra un mensaje de bienvenida.
                 JOptionPane.showMessageDialog(null, "Usuario válido. Bienvenido.");
                 // Crea una nueva instancia de AdminHomeScreen y la hace visible.
@@ -246,23 +246,16 @@ public class LoginFrame extends javax.swing.JFrame {
             
         // Verifica si el checkbox InstructorCheck está seleccionado.
         } else if (InstructorCheck.isSelected()){
-            // Aquí iría el código para manejar la selección del rol de instructor.
+            // Crea una nueva instancia de API_Login_Instructor.
             API_Login_Instructor InstructorLog = new API_Login_Instructor();
-            // Verifica las credenciales del instructor.
-            if(InstructorLog.LogInstructor(UserField.getText(), PassField.getText())){
-                // Si las credenciales son válidas, muestra un mensaje de bienvenida.
+            if (InstructorLog.LogInstructor(UserField.getText(), PassField.getText())) {
                 JOptionPane.showMessageDialog(null, "Usuario válido. Bienvenido.");
-                // Crea una nueva instancia de InstructorHomeScreen y la hace visible.
                 InstructorHomeScreen InstructorHome = new InstructorHomeScreen();
-                InstructorHome.setVisible(true);
-                // Cierra la ventana actual.
-                System.out.println(InstructorLog.InstructorCred);
+                InstructorHome.setVisible(true);// Aquí puedes ver los datos del instructor
                 this.dispose();
             } else {
-                // Si las credenciales no son válidas, muestra un mensaje de error.
                 JOptionPane.showMessageDialog(null, "Usuario invalido o no registrado.");
             }
-            
         } else {
             // Si no se seleccionó ningún rol, muestra un mensaje solicitando la selección de un rol.
             JOptionPane.showMessageDialog(null, "Seleccione un rol");

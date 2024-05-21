@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import main.util.API_Actions.ConvertirDatos;
 import main.util.API_AdminActions.API_Admin_BuscarUsuario;
 import main.util.API_AdminActions.API_Admin_ModifUsuario;
+import main.AdminFrames.AdminActionScreens.*;
 import main.AdminFrames.AdminHomeScreen;
 import main.util.models.ComboBoxModels;
 import org.json.JSONObject;
@@ -56,7 +57,7 @@ public class ModifUsuario extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         Panel_ModificarDatos = new javax.swing.JPanel();
         CheckActivarNombres = new javax.swing.JCheckBox();
-        ModificarInstructor = new javax.swing.JButton();
+        ConfirmarModificarUsuario = new javax.swing.JButton();
         CheckActivarApellidos = new javax.swing.JCheckBox();
         CheckActivarGenero = new javax.swing.JCheckBox();
         CheckActivarTelefono = new javax.swing.JCheckBox();
@@ -174,13 +175,13 @@ public class ModifUsuario extends javax.swing.JFrame {
             }
         });
 
-        ModificarInstructor.setBackground(new java.awt.Color(0, 34, 64));
-        ModificarInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ModificarInstructor.setForeground(new java.awt.Color(255, 255, 255));
-        ModificarInstructor.setText("Modificar datos del Usuario");
-        ModificarInstructor.addActionListener(new java.awt.event.ActionListener() {
+        ConfirmarModificarUsuario.setBackground(new java.awt.Color(0, 34, 64));
+        ConfirmarModificarUsuario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        ConfirmarModificarUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        ConfirmarModificarUsuario.setText("Modificar datos del Usuario");
+        ConfirmarModificarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ModificarInstructorActionPerformed(evt);
+                ConfirmarModificarUsuarioActionPerformed(evt);
             }
         });
 
@@ -466,7 +467,7 @@ public class ModifUsuario extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ModificarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ConfirmarModificarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
                         .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel18)
@@ -681,7 +682,7 @@ public class ModifUsuario extends javax.swing.JFrame {
                     .addComponent(ModificarSede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(CheckActivarSede, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ModificarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ConfirmarModificarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -814,6 +815,11 @@ public class ModifUsuario extends javax.swing.JFrame {
         ResultadoCorreo.setEditable(false);
         ResultadoCorreo.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoCorreo.setFocusable(false);
+        ResultadoCorreo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResultadoCorreoActionPerformed(evt);
+            }
+        });
 
         ResultadoNivelFormacion.setEditable(false);
         ResultadoNivelFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -866,20 +872,24 @@ public class ModifUsuario extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(54, 54, 54)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel13)
-                                    .addComponent(jLabel31)
-                                    .addComponent(jLabel30)
-                                    .addComponent(jLabel16)
-                                    .addComponent(jLabel15)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel14)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel12))
+                                .addGap(45, 45, 45)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel13)
+                                        .addComponent(jLabel31)
+                                        .addComponent(jLabel30)
+                                        .addComponent(jLabel15)
+                                        .addComponent(jLabel8)
+                                        .addComponent(jLabel14)
+                                        .addComponent(jLabel7)
+                                        .addComponent(jLabel12))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel16)
+                                        .addGap(83, 83, 83)))
                                 .addGap(33, 33, 33)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ResultadoGenero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                                    .addComponent(ResultadoFicha, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(ResultadoGenero, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(ResultadoApellido, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(ResultadoNombre, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(ResultadoTipoDoc, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -887,45 +897,34 @@ public class ModifUsuario extends javax.swing.JFrame {
                                     .addComponent(ResultadoContra)
                                     .addComponent(ResultadoUsuario)
                                     .addComponent(ResultadoTelefono, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(ResultadoCod)))
+                                    .addComponent(ResultadoCod)
+                                    .addComponent(ResultadoProgramaFormacion)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
+                                .addGap(48, 48, 48)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(VolverHome, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel34)
+                                        .addGap(22, 22, 22)
+                                        .addComponent(ResultadoJornada))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(48, 48, 48)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel33)
-                                                    .addComponent(jLabel36)
-                                                    .addComponent(jLabel35))
-                                                .addGap(23, 23, 23))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                            .addComponent(jLabel32)
-                                                            .addGap(121, 121, 121))
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                            .addComponent(jLabel34)
-                                                            .addGap(18, 18, 18)))
-                                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                            .addComponent(jLabel9)
-                                                            .addComponent(jLabel25)
-                                                            .addComponent(jLabel11))
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))))
+                                            .addComponent(jLabel35)
+                                            .addComponent(jLabel36)
+                                            .addComponent(jLabel32)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel25)
+                                            .addComponent(jLabel11))
+                                        .addGap(29, 29, 29)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(ResultadoFicha, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-                                            .addComponent(ResultadoJornada)
-                                            .addComponent(ResultadoCorreo, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(ResultadoRol)
-                                            .addComponent(ResultadoArea)
+                                            .addComponent(ResultadoRol, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(ResultadoCorreo)
+                                            .addComponent(ResultadoArea, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
                                             .addComponent(ResultadoSede)))
-                                    .addComponent(VolverHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel33)
+                                        .addGap(41, 41, 41)
+                                        .addComponent(ResultadoNivelFormacion)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Panel_ModificarDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -978,49 +977,43 @@ public class ModifUsuario extends javax.swing.JFrame {
                             .addComponent(jLabel16)
                             .addComponent(ResultadoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel35))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(31, 31, 31)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel33))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(ResultadoJornada, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel34))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(ResultadoCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel32)))
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(ResultadoFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel36)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ResultadoRol, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel9))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(ResultadoArea, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel25))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel11)
-                                .addGap(3, 3, 3))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(ResultadoSede, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel35))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ResultadoFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel36))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel33))
+                        .addGap(9, 9, 9)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel34)
+                            .addComponent(ResultadoJornada, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ResultadoCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel32))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ResultadoRol, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel25)
+                            .addComponent(ResultadoArea, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(ResultadoSede, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(VolverHome, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(55, 55, 55)
                         .addComponent(Panel_ModificarDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(102, 132, 147));
@@ -1562,7 +1555,7 @@ private void DesHabilitarCampos(){
      * Muestra un cuadro de diálogo de confirmación y, si el usuario confirma, modifica los datos del instructor.
      *
      */
-    private void ModificarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarInstructorActionPerformed
+    private void ConfirmarModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarModificarUsuarioActionPerformed
         // Muestra un cuadro de diálogo de confirmación.
         int respuesta = JOptionPane.showConfirmDialog(null, "Esta seguro que desea modificar los datos del instructor?", "Confirmacion" ,JOptionPane.YES_NO_CANCEL_OPTION);
 
@@ -1605,7 +1598,7 @@ private void DesHabilitarCampos(){
             // Si el usuario cancela, no se hace nada.
             break;
         }
-    }//GEN-LAST:event_ModificarInstructorActionPerformed
+    }//GEN-LAST:event_ConfirmarModificarUsuarioActionPerformed
 
     /**
      * Método que se ejecuta cuando se realiza una acción sobre el checkbox CheckActivarApellido.
@@ -1623,6 +1616,32 @@ private void DesHabilitarCampos(){
     private void ModificarPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarPassActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ModificarPassActionPerformed
+
+    private void CrearUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearUsuarioFrameActionPerformed
+        CreateUsuario createUsuario = new CreateUsuario();
+        createUsuario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CrearUsuarioFrameActionPerformed
+
+    private void ModificarUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarUsuarioFrameActionPerformed
+        ModifUsuario modifUsuario = new ModifUsuario();
+        modifUsuario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ModificarUsuarioFrameActionPerformed
+
+    private void EliminarUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarUsuarioFrameActionPerformed
+        DeleteUsuario deleteUsuario = new DeleteUsuario();
+        deleteUsuario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_EliminarUsuarioFrameActionPerformed
+
+    private void CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CerrarSesionActionPerformed
+
+    private void ResultadoCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResultadoCorreoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ResultadoCorreoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1700,6 +1719,7 @@ private void DesHabilitarCampos(){
     private javax.swing.JCheckBox CheckActivarTelefono;
     private javax.swing.JCheckBox CheckActivarTipoDoc;
     private javax.swing.JCheckBox CheckActivarUsuario;
+    private javax.swing.JButton ConfirmarModificarUsuario;
     private javax.swing.JButton CrearInstructor;
     private javax.swing.JTextField IDInstructorField;
     private javax.swing.JTextField ModificarApellido;
@@ -1709,7 +1729,6 @@ private void DesHabilitarCampos(){
     private javax.swing.JTextField ModificarDocumento;
     private javax.swing.JTextField ModificarFicha;
     private javax.swing.JComboBox<String> ModificarGenero;
-    private javax.swing.JButton ModificarInstructor;
     private javax.swing.JComboBox<String> ModificarJornada;
     private javax.swing.JComboBox<String> ModificarNivelFormacion;
     private javax.swing.JTextField ModificarNombre;

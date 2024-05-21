@@ -46,32 +46,31 @@ public class ConvertirDatos {
         return obtenerID("JornadaFormacion_Str_to_ID", jornadaFormacionStr);
     }
 
-private Integer obtenerID(String endpoint, String tipoStr) {
-    try {
-        String encodedTipoStr = URLEncoder.encode(tipoStr, StandardCharsets.UTF_8.toString());
-        URL url = new URL("http://localhost:8080/Conversion/" + endpoint + "/" + encodedTipoStr);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Accept", "application/json");
+    private Integer obtenerID(String endpoint, String tipoStr) {
+        try {
+            String encodedTipoStr = URLEncoder.encode(tipoStr, StandardCharsets.UTF_8.toString());
+            URL url = new URL("http://localhost:8080/Conversion/" + endpoint + "/" + encodedTipoStr);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
 
-        if (conn.getResponseCode() != 200) {
-            throw new RuntimeException("Failed: HTTP error code: " + conn.getResponseCode());
-        }
-
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
-            String inputLine;
-            StringBuilder content = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed: HTTP error code: " + conn.getResponseCode());
             }
-            // Cierra las conexiones
-            return Integer.valueOf(content.toString());
-        }
-    } catch (Exception e) {
-        // Maneja la excepción apropiadamente (lanza o registra)
-        e.printStackTrace();
-    }
-    return null;
-}
 
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                // Cierra las conexiones
+                return Integer.valueOf(content.toString());
+            }
+        } catch (Exception e) {
+            // Maneja la excepción apropiadamente (lanza o registra)
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
