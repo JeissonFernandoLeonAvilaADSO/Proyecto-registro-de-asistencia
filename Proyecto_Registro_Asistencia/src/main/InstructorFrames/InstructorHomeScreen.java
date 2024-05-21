@@ -40,6 +40,11 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        EliminarInstructor = new javax.swing.JButton();
+        CrearInstructor = new javax.swing.JButton();
+        ModificarInstructor = new javax.swing.JButton();
+        ModificarAprendiz = new javax.swing.JButton();
+        EliminarAprendiz = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -140,7 +145,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(428, Short.MAX_VALUE))
+                .addContainerGap(413, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 50)); // NOI18N
@@ -149,17 +154,68 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 50)); // NOI18N
         jLabel3.setText("registro de asistencia");
 
+        EliminarInstructor.setText("Eliminar usuario instructor");
+        EliminarInstructor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarInstructorActionPerformed(evt);
+            }
+        });
+
+        CrearInstructor.setText("Crear usuario instructor");
+        CrearInstructor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CrearInstructorActionPerformed(evt);
+            }
+        });
+
+        ModificarInstructor.setText("Modificar usuario instructor");
+        ModificarInstructor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarInstructorActionPerformed(evt);
+            }
+        });
+
+        ModificarAprendiz.setText("Modificar usuario aprendiz");
+        ModificarAprendiz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarAprendizActionPerformed(evt);
+            }
+        });
+
+        EliminarAprendiz.setText("Eliminar usuario aprendiz");
+        EliminarAprendiz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarAprendizActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addGap(0, 944, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(133, 133, 133)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ModificarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(EliminarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(CrearInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(86, 86, 86)
+                                .addComponent(ModificarAprendiz, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(152, 152, 152)
+                                .addComponent(EliminarAprendiz, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(38, 820, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,6 +225,20 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(200, 200, 200)
+                        .addComponent(CrearInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(ModificarAprendiz, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(55, 55, 55)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(ModificarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(EliminarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(EliminarAprendiz, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -193,6 +263,36 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void CrearInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearInstructorActionPerformed
+        CreateInstructor createInstructor = new CreateInstructor();
+        createInstructor.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CrearInstructorActionPerformed
+
+    private void ModificarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarInstructorActionPerformed
+        ModfInstructor modfInstructor = new ModfInstructor();
+        modfInstructor.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ModificarInstructorActionPerformed
+
+    private void EliminarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarInstructorActionPerformed
+        DeleteInstructor delInstructor = new DeleteInstructor();
+        delInstructor.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_EliminarInstructorActionPerformed
+
+    private void ModificarAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarAprendizActionPerformed
+        ModificarAprendiz modificarAprendiz = new ModificarAprendiz();
+        modificarAprendiz.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ModificarAprendizActionPerformed
+
+    private void EliminarAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarAprendizActionPerformed
+        DeleteAprendiz borrarAprendiz = new DeleteAprendiz();
+        borrarAprendiz.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_EliminarAprendizActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,6 +330,11 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CrearInstructor;
+    private javax.swing.JButton EliminarAprendiz;
+    private javax.swing.JButton EliminarInstructor;
+    private javax.swing.JButton ModificarAprendiz;
+    private javax.swing.JButton ModificarInstructor;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

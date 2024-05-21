@@ -13,11 +13,16 @@ import java.util.List;
 
 public class ComboBoxModels {
     public ArrayList<String> BoxTipoActividadModel() throws Exception {
-
+        APISecPass APIPass = new APISecPass();
         URL url = new URL("http://localhost:8080/GeneroData");
+        String pass = APIPass.GetAPIPass();
+        String userCredentials = "user:" + pass;
+        String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
+        conn.setRequestProperty("Authorization", basicAuth);
 
         // Obtiene la respuesta
         int responseCode = conn.getResponseCode();
@@ -53,10 +58,16 @@ public class ComboBoxModels {
 
     public ArrayList<String> BoxRolModel() throws Exception {
 
+        APISecPass APIPass = new APISecPass();
         URL url = new URL("http://localhost:8080/RolData");
+        String pass = APIPass.GetAPIPass();
+        String userCredentials = "user:" + pass;
+        String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
+        conn.setRequestProperty("Authorization", basicAuth);
 
         // Obtiene la respuesta
         int responseCode = conn.getResponseCode();
@@ -92,10 +103,16 @@ public class ComboBoxModels {
 
     public ArrayList<String> BoxSedeModel() throws Exception {
 
+        APISecPass APIPass = new APISecPass();
         URL url = new URL("http://localhost:8080/SedeData");
+        String pass = APIPass.GetAPIPass();
+        String userCredentials = "user:" + pass;
+        String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
+        conn.setRequestProperty("Authorization", basicAuth);
 
         // Obtiene la respuesta
         int responseCode = conn.getResponseCode();
@@ -133,9 +150,14 @@ public class ComboBoxModels {
 
         APISecPass APIPass = new APISecPass();
         URL url = new URL("http://localhost:8080/TipoDocData");
+        String pass = APIPass.GetAPIPass();
+        String userCredentials = "user:" + pass;
+        String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
+        conn.setRequestProperty("Authorization", basicAuth);
 
         // Obtiene la respuesta
         int responseCode = conn.getResponseCode();
