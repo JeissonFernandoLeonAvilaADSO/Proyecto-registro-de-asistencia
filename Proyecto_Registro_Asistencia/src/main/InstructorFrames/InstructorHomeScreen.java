@@ -265,33 +265,23 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void CrearInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearInstructorActionPerformed
-        CreateInstructor createInstructor = new CreateInstructor();
-        createInstructor.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_CrearInstructorActionPerformed
 
     private void ModificarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarInstructorActionPerformed
-        ModfInstructor modfInstructor = new ModfInstructor();
-        modfInstructor.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_ModificarInstructorActionPerformed
 
     private void EliminarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarInstructorActionPerformed
-        DeleteInstructor delInstructor = new DeleteInstructor();
-        delInstructor.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_EliminarInstructorActionPerformed
 
     private void ModificarAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarAprendizActionPerformed
-        ModificarAprendiz modificarAprendiz = new ModificarAprendiz();
-        modificarAprendiz.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_ModificarAprendizActionPerformed
 
     private void EliminarAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarAprendizActionPerformed
-        DeleteAprendiz borrarAprendiz = new DeleteAprendiz();
-        borrarAprendiz.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_EliminarAprendizActionPerformed
 
     /**

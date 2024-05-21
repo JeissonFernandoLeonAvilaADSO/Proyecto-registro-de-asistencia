@@ -3,11 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package main.AdminFrames;
-import main.AdminFrames.AdminActionScreens.CreateInstructor;
-import main.AdminFrames.AdminActionScreens.ModfInstructor;
-import main.AdminFrames.AdminActionScreens.DeleteInstructor;
-import main.AdminFrames.AdminActionScreens.ModificarAprendiz;
-import main.AdminFrames.AdminActionScreens.DeleteAprendiz;
+import main.AdminFrames.AdminActionScreens.CreateUsuario;
+import main.AdminFrames.AdminActionScreens.ModifUsuario;
+import main.AdminFrames.AdminActionScreens.DeleteUsuario;
 /**
  *
  * @author Jeisson Leon
