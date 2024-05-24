@@ -114,6 +114,11 @@ public class LoginFrame extends javax.swing.JFrame {
                 InstructorCheckItemStateChanged(evt);
             }
         });
+        InstructorCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InstructorCheckActionPerformed(evt);
+            }
+        });
 
         AdminCheck.setBackground(new java.awt.Color(255, 255, 255));
         AdminCheck.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
@@ -303,6 +308,10 @@ public class LoginFrame extends javax.swing.JFrame {
             AdminCheck.setForeground(Color.BLACK);
         }
     }//GEN-LAST:event_AdminCheckItemStateChanged
+
+    private void InstructorCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstructorCheckActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_InstructorCheckActionPerformed
 
     /**
      * @param args the command line arguments

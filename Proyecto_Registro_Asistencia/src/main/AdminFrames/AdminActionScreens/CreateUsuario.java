@@ -3,8 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package main.AdminFrames.AdminActionScreens;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ItemEvent;
+import java.util.List;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
+import main.LoginFrame;
 import main.util.API_AdminActions.API_Admin_CreateUsuario;
 import main.AdminFrames.AdminHomeScreen;
+import main.util.API_Actions.ConvertirDatos;
+import main.util.models.ComboBoxModels;
 /**
  *
  * @author Jeisson Leon
@@ -16,7 +27,11 @@ public class CreateUsuario extends javax.swing.JFrame {
      */
     public CreateUsuario() {
         initComponents();
+        AditionalConfig();
         this.setLocationRelativeTo(null);
+        ButtonGroup CheckButtons = new ButtonGroup();
+        CheckButtons.add(InstructorCheck);
+        CheckButtons.add(AprendizCheck);
     }
 
     /**
@@ -28,40 +43,118 @@ public class CreateUsuario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        RegistrarInstructor = new javax.swing.JButton();
-        RegistroApellidoInstructor = new javax.swing.JTextField();
-        RegistroCorreoInstructor = new javax.swing.JTextField();
-        RegistroNombreInstructor = new javax.swing.JTextField();
-        RegistroContraInstructor = new javax.swing.JTextField();
-        RegistroAreaInstructor = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        CerrarSesion = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        ConfirmarRegistroUsuario = new javax.swing.JButton();
         VolverHome = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        RegistroIDInstructor = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        InstructorCheck = new javax.swing.JToggleButton();
+        AprendizCheck = new javax.swing.JToggleButton();
+        Panel_RegistrarDatos = new javax.swing.JPanel();
+        RegistrarNombres = new javax.swing.JTextField();
+        RegistrarArea = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        RegistrarApellidos = new javax.swing.JTextField();
+        RegistrarDocumento = new javax.swing.JTextField();
+        RegistrarTelefono = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        RegistrarTipoDoc = new javax.swing.JComboBox<>();
+        RegistrarGenero = new javax.swing.JComboBox<>();
+        RegistrarRol = new javax.swing.JComboBox<>();
+        RegistrarSede = new javax.swing.JComboBox<>();
+        jLabel26 = new javax.swing.JLabel();
+        RegistrarCodigo = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        RegistrarUsuario = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
+        RegistrarPass = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        RegistrarCorreo = new javax.swing.JTextField();
+        jLabel37 = new javax.swing.JLabel();
+        RegistrarProgramaFormacion = new javax.swing.JComboBox<>();
+        jLabel38 = new javax.swing.JLabel();
+        RegistrarFicha = new javax.swing.JTextField();
+        RegistrarNivelFormacion = new javax.swing.JComboBox<>();
+        jLabel39 = new javax.swing.JLabel();
+        RegistrarJornada = new javax.swing.JComboBox<>();
+        jLabel40 = new javax.swing.JLabel();
+        CrearUsuarioFrame = new javax.swing.JButton();
+        EliminarUsuarioFrame = new javax.swing.JButton();
+        ModificarUsuarioFrame = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Nombre");
+        jPanel2.setBackground(new java.awt.Color(102, 132, 147));
 
-        jLabel2.setText("Apellido");
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 208, 78));
+        jLabel8.setText("Acciones");
 
-        jLabel3.setText("Correo");
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/util/icons/LogoSena.png"))); // NOI18N
 
-        jLabel4.setText("Area de trabajo");
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Usuario:");
 
-        jLabel5.setText("Contraseña");
-
-        RegistrarInstructor.setText("Registrar Instructor");
-        RegistrarInstructor.addActionListener(new java.awt.event.ActionListener() {
+        jButton4.setBackground(new java.awt.Color(255, 208, 78));
+        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(0, 34, 64));
+        jButton4.setText("Administrador");
+        jButton4.setBorderPainted(false);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RegistrarInstructorActionPerformed(evt);
+                jButton4ActionPerformed(evt);
             }
         });
 
+        jLabel11.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("________________________________________________________");
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+
+        CerrarSesion.setBackground(new java.awt.Color(57, 169, 0));
+        CerrarSesion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        CerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
+        CerrarSesion.setText("Cerrar sesión");
+        CerrarSesion.setBorderPainted(false);
+        CerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CerrarSesionActionPerformed(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        ConfirmarRegistroUsuario.setBackground(new java.awt.Color(0, 34, 64));
+        ConfirmarRegistroUsuario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        ConfirmarRegistroUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        ConfirmarRegistroUsuario.setText("Crear nuevo Usuario");
+        ConfirmarRegistroUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ConfirmarRegistroUsuarioActionPerformed(evt);
+            }
+        });
+
+        VolverHome.setBackground(new java.awt.Color(57, 169, 0));
+        VolverHome.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        VolverHome.setForeground(new java.awt.Color(255, 255, 255));
         VolverHome.setText("Volver");
         VolverHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -69,91 +162,789 @@ public class CreateUsuario extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Cedula");
+        jLabel1.setBackground(new java.awt.Color(0, 34, 64));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 34, 64));
+        jLabel1.setText("Que tipo de usuario desea registrar?");
+
+        InstructorCheck.setBackground(new java.awt.Color(255, 255, 255));
+        InstructorCheck.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        InstructorCheck.setForeground(new java.awt.Color(0, 0, 0));
+        InstructorCheck.setText("Instructor");
+        InstructorCheck.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                InstructorCheckItemStateChanged(evt);
+            }
+        });
+        InstructorCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InstructorCheckActionPerformed(evt);
+            }
+        });
+
+        AprendizCheck.setBackground(new java.awt.Color(255, 255, 255));
+        AprendizCheck.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        AprendizCheck.setForeground(new java.awt.Color(0, 0, 0));
+        AprendizCheck.setText("Aprendiz");
+        AprendizCheck.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                AprendizCheckItemStateChanged(evt);
+            }
+        });
+
+        Panel_RegistrarDatos.setBackground(new java.awt.Color(255, 255, 255));
+        Panel_RegistrarDatos.setForeground(new java.awt.Color(0, 0, 0));
+
+        RegistrarNombres.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarNombres.setForeground(new java.awt.Color(0, 0, 0));
+
+        RegistrarArea.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarArea.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel19.setText("Documento");
+
+        RegistrarApellidos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarApellidos.setForeground(new java.awt.Color(0, 0, 0));
+
+        RegistrarDocumento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarDocumento.setForeground(new java.awt.Color(0, 0, 0));
+
+        RegistrarTelefono.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarTelefono.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel18.setText("Telefono");
+
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel24.setText("Area de trabajo");
+
+        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel21.setText("Nombres");
+
+        jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel22.setText("Apellidos");
+
+        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel20.setText("Tipo de documento");
+
+        jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel23.setText("Genero");
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel17.setText("Sede");
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel14.setText("Rol");
+
+        RegistrarTipoDoc.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarTipoDoc.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarTipoDoc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        RegistrarTipoDoc.setPreferredSize(new java.awt.Dimension(64, 28));
+        RegistrarTipoDoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarTipoDocActionPerformed(evt);
+            }
+        });
+
+        RegistrarGenero.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarGenero.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        RegistrarGenero.setPreferredSize(new java.awt.Dimension(64, 28));
+        RegistrarGenero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarGeneroActionPerformed(evt);
+            }
+        });
+
+        RegistrarRol.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarRol.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        RegistrarRol.setPreferredSize(new java.awt.Dimension(64, 28));
+        RegistrarRol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarRolActionPerformed(evt);
+            }
+        });
+
+        RegistrarSede.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarSede.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarSede.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        RegistrarSede.setPreferredSize(new java.awt.Dimension(64, 28));
+        RegistrarSede.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarSedeActionPerformed(evt);
+            }
+        });
+
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel26.setText("Codigo de usuario");
+
+        RegistrarCodigo.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarCodigo.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel27.setText("Usuario");
+
+        RegistrarUsuario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarUsuario.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel28.setText("Contraseña");
+
+        RegistrarPass.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarPass.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarPassActionPerformed(evt);
+            }
+        });
+
+        jLabel29.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel29.setText("Correo");
+
+        RegistrarCorreo.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RegistrarCorreo.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel37.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel37.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel37.setText("Programa formacion");
+
+        RegistrarProgramaFormacion.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarProgramaFormacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        RegistrarProgramaFormacion.setPreferredSize(new java.awt.Dimension(64, 28));
+        RegistrarProgramaFormacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarProgramaFormacionActionPerformed(evt);
+            }
+        });
+
+        jLabel38.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel38.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel38.setText("Numero de ficha");
+
+        RegistrarFicha.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarFicha.setPreferredSize(new java.awt.Dimension(64, 28));
+
+        RegistrarNivelFormacion.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarNivelFormacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        RegistrarNivelFormacion.setPreferredSize(new java.awt.Dimension(64, 28));
+        RegistrarNivelFormacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarNivelFormacionActionPerformed(evt);
+            }
+        });
+
+        jLabel39.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel39.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel39.setText("Jornada de formacion");
+
+        RegistrarJornada.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarJornada.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        RegistrarJornada.setPreferredSize(new java.awt.Dimension(64, 28));
+        RegistrarJornada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegistrarJornadaActionPerformed(evt);
+            }
+        });
+
+        jLabel40.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel40.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel40.setText("Nivel de formacion");
+
+        javax.swing.GroupLayout Panel_RegistrarDatosLayout = new javax.swing.GroupLayout(Panel_RegistrarDatos);
+        Panel_RegistrarDatos.setLayout(Panel_RegistrarDatosLayout);
+        Panel_RegistrarDatosLayout.setHorizontalGroup(
+            Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_RegistrarDatosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Panel_RegistrarDatosLayout.createSequentialGroup()
+                        .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(Panel_RegistrarDatosLayout.createSequentialGroup()
+                                    .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel38)
+                                        .addComponent(jLabel40))
+                                    .addGap(37, 37, 37))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_RegistrarDatosLayout.createSequentialGroup()
+                                    .addComponent(jLabel39)
+                                    .addGap(18, 18, 18)))
+                            .addGroup(Panel_RegistrarDatosLayout.createSequentialGroup()
+                                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel29)
+                                    .addComponent(jLabel14)
+                                    .addComponent(jLabel24)
+                                    .addComponent(jLabel17))
+                                .addGap(63, 63, 63)))
+                        .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(RegistrarNivelFormacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(RegistrarFicha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(RegistrarCorreo)
+                            .addComponent(RegistrarJornada, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(RegistrarSede, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(RegistrarArea, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(RegistrarRol, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(Panel_RegistrarDatosLayout.createSequentialGroup()
+                        .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel37))
+                        .addGap(25, 25, 25)
+                        .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(RegistrarTelefono)
+                            .addComponent(RegistrarProgramaFormacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Panel_RegistrarDatosLayout.createSequentialGroup()
+                        .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel23)
+                            .addComponent(jLabel22)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel20)
+                            .addComponent(jLabel26)
+                            .addComponent(jLabel27)
+                            .addComponent(jLabel28))
+                        .addGap(35, 35, 35)
+                        .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(RegistrarTipoDoc, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(RegistrarNombres, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(RegistrarApellidos, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(RegistrarGenero, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(RegistrarPass)
+                            .addComponent(RegistrarUsuario)
+                            .addComponent(RegistrarCodigo)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Panel_RegistrarDatosLayout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addGap(88, 88, 88)
+                        .addComponent(RegistrarDocumento)))
+                .addContainerGap())
+        );
+        Panel_RegistrarDatosLayout.setVerticalGroup(
+            Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel_RegistrarDatosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegistrarCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel26))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegistrarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27))
+                .addGap(9, 9, 9)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(Panel_RegistrarDatosLayout.createSequentialGroup()
+                        .addComponent(jLabel28)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel19))
+                    .addGroup(Panel_RegistrarDatosLayout.createSequentialGroup()
+                        .addComponent(RegistrarPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(RegistrarDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegistrarTipoDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegistrarNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegistrarApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegistrarGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegistrarTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegistrarProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel37))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegistrarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel38))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel40)
+                    .addComponent(RegistrarNivelFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegistrarJornada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel39))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel29)
+                    .addComponent(RegistrarCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RegistrarRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24)
+                    .addComponent(RegistrarArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel17)
+                    .addComponent(RegistrarSede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Panel_RegistrarDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(VolverHome, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 746, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(InstructorCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(AprendizCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel1)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(9, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AprendizCheck)
+                    .addComponent(InstructorCheck))
+                .addGap(8, 8, 8)
+                .addComponent(Panel_RegistrarDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(VolverHome, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14))
+        );
+
+        CrearUsuarioFrame.setBackground(new java.awt.Color(0, 34, 64));
+        CrearUsuarioFrame.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        CrearUsuarioFrame.setForeground(new java.awt.Color(255, 255, 255));
+        CrearUsuarioFrame.setText("Crear usuario");
+        CrearUsuarioFrame.setBorderPainted(false);
+        CrearUsuarioFrame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CrearUsuarioFrameActionPerformed(evt);
+            }
+        });
+
+        EliminarUsuarioFrame.setBackground(new java.awt.Color(0, 34, 64));
+        EliminarUsuarioFrame.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        EliminarUsuarioFrame.setForeground(new java.awt.Color(255, 255, 255));
+        EliminarUsuarioFrame.setText("Eliminar usuario");
+        EliminarUsuarioFrame.setBorderPainted(false);
+        EliminarUsuarioFrame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarUsuarioFrameActionPerformed(evt);
+            }
+        });
+
+        ModificarUsuarioFrame.setBackground(new java.awt.Color(0, 34, 64));
+        ModificarUsuarioFrame.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        ModificarUsuarioFrame.setForeground(new java.awt.Color(255, 255, 255));
+        ModificarUsuarioFrame.setText("Modificar usuario");
+        ModificarUsuarioFrame.setBorderPainted(false);
+        ModificarUsuarioFrame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarUsuarioFrameActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(51, 51, 51)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(104, 104, 104)
+                                .addComponent(jLabel9))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(EliminarUsuarioFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(CrearUsuarioFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(ModificarUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(CerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)))))
+                        .addGap(0, 23, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel9)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(CrearUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ModificarUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(EliminarUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(CerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(RegistrarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(RegistroApellidoInstructor)
-                    .addComponent(RegistroCorreoInstructor)
-                    .addComponent(RegistroContraInstructor)
-                    .addComponent(RegistroAreaInstructor)
-                    .addComponent(RegistroNombreInstructor)
-                    .addComponent(VolverHome, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                    .addComponent(RegistroIDInstructor))
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(RegistroIDInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addGap(4, 4, 4)
-                .addComponent(RegistroNombreInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(RegistroApellidoInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(RegistroCorreoInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(RegistroAreaInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(RegistroContraInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(RegistrarInstructor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(VolverHome)
-                .addContainerGap(37, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
     
-    // Este método se ejecuta cuando se realiza una acción en el botón RegistrarInstructor.
-    private void RegistrarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarInstructorActionPerformed
-        // Crea una nueva instancia de DB_Admin_CreateInstructor.
-        API_Admin_CreateUsuario CrearInstructor = new API_Admin_CreateUsuario();
-        
-        // Llama al método AdminCreateInstructor de la clase DB_Admin_CreateInstructor.
-        // Los parámetros del método son los textos de los campos de registro del instructor.
-        CrearInstructor.AdminCreateInstructor(Integer.parseInt(RegistroIDInstructor.getText()) ,RegistroNombreInstructor.getText(), RegistroApellidoInstructor.getText(), RegistroCorreoInstructor.getText(), RegistroAreaInstructor.getText(), RegistroContraInstructor.getText());
-        
-        // Limpia los campos de texto después de registrar al instructor.
-        RegistroNombreInstructor.setText("");
-        RegistroApellidoInstructor.setText("");
-        RegistroCorreoInstructor.setText("");
-        RegistroAreaInstructor.setText("");
-        RegistroContraInstructor.setText("");
-    }//GEN-LAST:event_RegistrarInstructorActionPerformed
+    public void AditionalConfig(){
+        DesHabilitarCampos();
+        ComboBoxModels ComboBoxModels = new ComboBoxModels();
+        try {
+            List<String> tiposDocumento = ComboBoxModels.BoxTipoDocModel();
+            if (tiposDocumento == null) {
+                // Maneja el caso en que BoxTipoDocModel() devuelva null
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los tipos de documentos de la API");
+            } else {
+                tiposDocumento.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> TipoDocBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposDocumento));
+                RegistrarTipoDoc.setModel(TipoDocBoxModel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            List<String> tiposGenero = ComboBoxModels.BoxTipoGeneroModel();
+            if (tiposGenero == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los géneros de la API");
+            } else {
+                tiposGenero.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> GeneroBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposGenero));
+                RegistrarGenero.setModel(GeneroBoxModel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            List<String> tiposRol = ComboBoxModels.BoxRolModel();
+            if (tiposRol == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los roles de la API");
+            } else {
+                tiposRol.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> RolBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposRol));
+                RegistrarRol.setModel(RolBoxModel);
+                
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            List<String> tiposSede = ComboBoxModels.BoxSedeModel();
+            if (tiposSede == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los roles de la API");
+            } else {
+                tiposSede.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> SedeBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposSede));
+                RegistrarSede.setModel(SedeBoxModel);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            List<String> tiposProgramaFormacion = ComboBoxModels.BoxProgramaFormacionModel();
+            if (tiposProgramaFormacion == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando las sedes de la API");
+            } else {
+                tiposProgramaFormacion.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> ProgramaFormacionBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposProgramaFormacion));
+                RegistrarProgramaFormacion.setModel(ProgramaFormacionBoxModel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            List<String> tiposNivelFormacion = ComboBoxModels.BoxNivelFormacionModel();
+            if (tiposNivelFormacion == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando las sedes de la API");
+            } else {
+                tiposNivelFormacion.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> NivelFormacionBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposNivelFormacion));
+                RegistrarNivelFormacion.setModel(NivelFormacionBoxModel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            List<String> tiposJornadas = ComboBoxModels.BoxJornadaFormacionModel();
+            if (tiposJornadas == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando las sedes de la API");
+            } else {
+                tiposJornadas.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> JornadasBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposJornadas));
+                RegistrarJornada.setModel(JornadasBoxModel);
+            }
+
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void DesHabilitarCampos(){
+        RegistrarCodigo.setEnabled(false);
+        RegistrarUsuario.setEnabled(false);
+        RegistrarPass.setEnabled(false);
+        RegistrarDocumento.setEnabled(false);
+        RegistrarTipoDoc.setEnabled(false);
+        RegistrarNombres.setEnabled(false);
+        RegistrarApellidos.setEnabled(false);
+        RegistrarGenero.setEnabled(false);
+        RegistrarTelefono.setEnabled(false);
+        RegistrarNivelFormacion.setEnabled(false);
+        RegistrarJornada.setEnabled(false);
+        RegistrarProgramaFormacion.setEnabled(false);
+        RegistrarCorreo.setEnabled(false);
+        RegistrarRol.setEnabled(false);
+        RegistrarArea.setEnabled(false);
+        RegistrarSede.setEnabled(false);
+    }
+    
+    private void HabilitarCampos(){
+        RegistrarCodigo.setEnabled(true);
+        RegistrarUsuario.setEnabled(true);
+        RegistrarPass.setEnabled(true);
+        RegistrarDocumento.setEnabled(true);
+        RegistrarTipoDoc.setEnabled(true);
+        RegistrarNombres.setEnabled(true);
+        RegistrarApellidos.setEnabled(true);
+        RegistrarGenero.setEnabled(true);
+        RegistrarTelefono.setEnabled(true);
+        RegistrarNivelFormacion.setEnabled(true);
+        RegistrarJornada.setEnabled(true);
+        RegistrarProgramaFormacion.setEnabled(true);
+        RegistrarCorreo.setEnabled(true);
+        RegistrarRol.setEnabled(true);
+        RegistrarArea.setEnabled(true);
+        RegistrarSede.setEnabled(true);
+    }
+
+    private void LimpiarCampos(){
+        RegistrarCodigo.setText("");
+        RegistrarUsuario.setText("");
+        RegistrarPass.setText("");
+        RegistrarDocumento.setText("");
+        RegistrarTipoDoc.setSelectedIndex(0);
+        RegistrarNombres.setText("");
+        RegistrarApellidos.setText("");
+        RegistrarGenero.setSelectedIndex(0);
+        RegistrarTelefono.setText("");
+        RegistrarCorreo.setText("");
+        RegistrarRol.setSelectedIndex(0);
+        RegistrarArea.setText("");
+        RegistrarSede.setSelectedIndex(0);
+    }
+    
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void ConfirmarRegistroUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarRegistroUsuarioActionPerformed
+        // Muestra un cuadro de diálogo de confirmación.
+        int respuesta = JOptionPane.showConfirmDialog(null, "Esta seguro que desea modificar los datos del instructor?", "Confirmacion" ,JOptionPane.YES_NO_CANCEL_OPTION);
+
+        // Procesa la respuesta del usuario.
+        switch (respuesta){
+            case JOptionPane.YES_OPTION:
+            // Si el usuario confirma, crea una instancia de DB_Admin_ModifInstructor y llama al método AdminModifPerfilUsuario con los datos del instructor.
+
+            break;
+
+            case JOptionPane.NO_OPTION:
+            // Si el usuario rechaza, no se hace nada.
+            break;
+
+            case JOptionPane.CANCEL_OPTION:
+            // Si el usuario cancela, no se hace nada.
+            break;
+        }
+    }//GEN-LAST:event_ConfirmarRegistroUsuarioActionPerformed
 
     private void VolverHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverHomeActionPerformed
+        // TODO add your handling code here:
         AdminHomeScreen adminHomre = new AdminHomeScreen();
         adminHomre.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VolverHomeActionPerformed
 
+    private void InstructorCheckItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_InstructorCheckItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            // El botón está activo, cambia el color de fondo a verde
+            InstructorCheck.setBackground(Color.decode("#39A900"));
+            InstructorCheck.setForeground(Color.WHITE);
+            HabilitarCampos();
+            RegistrarNivelFormacion.setEnabled(false);
+            RegistrarJornada.setEnabled(false);
+            RegistrarProgramaFormacion.setEnabled(false);
+        } else {
+            // El botón no está activo, cambia el color de fondo a blanco
+            InstructorCheck.setBackground(Color.WHITE);
+            InstructorCheck.setForeground(Color.BLACK);
+            DesHabilitarCampos();
+        }
+    }//GEN-LAST:event_InstructorCheckItemStateChanged
+
+    private void AprendizCheckItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_AprendizCheckItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            // El botón está activo, cambia el color de fondo a verde
+            AprendizCheck.setBackground(Color.decode("#39A900"));
+            AprendizCheck.setForeground(Color.WHITE);
+            HabilitarCampos();
+            RegistrarArea.setEnabled(false);
+        } else {
+            // El botón no está activo, cambia el color de fondo a blanco
+            AprendizCheck.setBackground(Color.WHITE);
+            AprendizCheck.setForeground(Color.BLACK);
+            DesHabilitarCampos();
+        }
+    }//GEN-LAST:event_AprendizCheckItemStateChanged
+
+    private void RegistrarTipoDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarTipoDocActionPerformed
+        ConvertirDatos convertirDatos = new ConvertirDatos();
+        System.out.println(convertirDatos.ObtenerIDTipoDoc(RegistrarTipoDoc.getSelectedItem().toString()));
+    }//GEN-LAST:event_RegistrarTipoDocActionPerformed
+
+    private void RegistrarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarGeneroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RegistrarGeneroActionPerformed
+
+    private void RegistrarRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarRolActionPerformed
+        ConvertirDatos convertirDatos = new ConvertirDatos();
+        System.out.println(convertirDatos.ObtenerIDTipoRol(RegistrarRol.getSelectedItem().toString()));
+    }//GEN-LAST:event_RegistrarRolActionPerformed
+
+    private void RegistrarSedeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarSedeActionPerformed
+
+    }//GEN-LAST:event_RegistrarSedeActionPerformed
+
+    private void RegistrarPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarPassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RegistrarPassActionPerformed
+
+    private void RegistrarProgramaFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarProgramaFormacionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RegistrarProgramaFormacionActionPerformed
+
+    private void RegistrarNivelFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarNivelFormacionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RegistrarNivelFormacionActionPerformed
+
+    private void RegistrarJornadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarJornadaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_RegistrarJornadaActionPerformed
+
+    private void InstructorCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstructorCheckActionPerformed
+        
+    }//GEN-LAST:event_InstructorCheckActionPerformed
+
+    private void CrearUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearUsuarioFrameActionPerformed
+        CreateUsuario createUsuario = new CreateUsuario();
+        createUsuario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CrearUsuarioFrameActionPerformed
+
+    private void EliminarUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarUsuarioFrameActionPerformed
+        DeleteUsuario deleteUsuario = new DeleteUsuario();
+        deleteUsuario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_EliminarUsuarioFrameActionPerformed
+
+    private void ModificarUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarUsuarioFrameActionPerformed
+        ModifUsuario modifUsuario = new ModifUsuario();
+        modifUsuario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ModificarUsuarioFrameActionPerformed
+
+    private void CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionActionPerformed
+        LoginFrame loginFrame = new LoginFrame();
+        loginFrame.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CerrarSesionActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -191,19 +982,57 @@ public class CreateUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton RegistrarInstructor;
-    private javax.swing.JTextField RegistroApellidoInstructor;
-    private javax.swing.JTextField RegistroAreaInstructor;
-    private javax.swing.JTextField RegistroContraInstructor;
-    private javax.swing.JTextField RegistroCorreoInstructor;
-    private javax.swing.JTextField RegistroIDInstructor;
-    private javax.swing.JTextField RegistroNombreInstructor;
+    private javax.swing.JToggleButton AprendizCheck;
+    private javax.swing.JButton CerrarSesion;
+    private javax.swing.JButton ConfirmarRegistroUsuario;
+    private javax.swing.JButton CrearUsuarioFrame;
+    private javax.swing.JButton EliminarUsuarioFrame;
+    private javax.swing.JToggleButton InstructorCheck;
+    private javax.swing.JButton ModificarUsuarioFrame;
+    private javax.swing.JPanel Panel_RegistrarDatos;
+    private javax.swing.JTextField RegistrarApellidos;
+    private javax.swing.JTextField RegistrarArea;
+    private javax.swing.JTextField RegistrarCodigo;
+    private javax.swing.JTextField RegistrarCorreo;
+    private javax.swing.JTextField RegistrarDocumento;
+    private javax.swing.JTextField RegistrarFicha;
+    private javax.swing.JComboBox<String> RegistrarGenero;
+    private javax.swing.JComboBox<String> RegistrarJornada;
+    private javax.swing.JComboBox<String> RegistrarNivelFormacion;
+    private javax.swing.JTextField RegistrarNombres;
+    private javax.swing.JTextField RegistrarPass;
+    private javax.swing.JComboBox<String> RegistrarProgramaFormacion;
+    private javax.swing.JComboBox<String> RegistrarRol;
+    private javax.swing.JComboBox<String> RegistrarSede;
+    private javax.swing.JTextField RegistrarTelefono;
+    private javax.swing.JComboBox<String> RegistrarTipoDoc;
+    private javax.swing.JTextField RegistrarUsuario;
     private javax.swing.JButton VolverHome;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

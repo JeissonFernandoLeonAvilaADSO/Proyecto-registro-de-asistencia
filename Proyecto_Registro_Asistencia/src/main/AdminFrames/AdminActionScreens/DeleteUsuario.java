@@ -6,6 +6,7 @@ package main.AdminFrames.AdminActionScreens;
 
 import javax.swing.JOptionPane;
 import main.AdminFrames.AdminHomeScreen;
+import main.LoginFrame;
 import main.util.API_AdminActions.API_Admin_BuscarUsuario;
 import org.json.JSONObject;
 
@@ -155,6 +156,11 @@ public class DeleteUsuario extends javax.swing.JFrame {
         CerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
         CerrarSesion.setText("Cerrar sesión");
         CerrarSesion.setBorderPainted(false);
+        CerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CerrarSesionActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -659,6 +665,11 @@ public class DeleteUsuario extends javax.swing.JFrame {
             ResultadoSede.setText(usuario.getString("sede"));
         }
     }//GEN-LAST:event_BuscarDatosInstructorActionPerformed
+
+    private void CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionActionPerformed
+        LoginFrame loginFrame = new LoginFrame();
+        loginFrame.setVisible(true);
+        this.dispose();    }//GEN-LAST:event_CerrarSesionActionPerformed
 
     /**
      * @param args the command line arguments

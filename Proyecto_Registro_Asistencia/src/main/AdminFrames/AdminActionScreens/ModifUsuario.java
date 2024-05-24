@@ -20,6 +20,7 @@ import main.util.API_AdminActions.API_Admin_BuscarUsuario;
 import main.util.API_AdminActions.API_Admin_ModifUsuario;
 import main.AdminFrames.AdminActionScreens.*;
 import main.AdminFrames.AdminHomeScreen;
+import main.LoginFrame;
 import main.util.models.ComboBoxModels;
 import org.json.JSONObject;
 
@@ -148,14 +149,14 @@ public class ModifUsuario extends javax.swing.JFrame {
         jLabel36 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        CrearInstructor = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        CrearUsuarioFrame = new javax.swing.JButton();
+        EliminarUsuarioFrame = new javax.swing.JButton();
+        ModificarUsuarioFrame = new javax.swing.JButton();
         CerrarSesion = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
@@ -1022,24 +1023,6 @@ public class ModifUsuario extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 208, 78));
         jLabel1.setText("Acciones");
 
-        CrearInstructor.setBackground(new java.awt.Color(0, 34, 64));
-        CrearInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        CrearInstructor.setForeground(new java.awt.Color(255, 255, 255));
-        CrearInstructor.setText("Crear usuario");
-        CrearInstructor.setBorderPainted(false);
-
-        jButton2.setBackground(new java.awt.Color(0, 34, 64));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Modificar usuario");
-        jButton2.setBorderPainted(false);
-
-        jButton3.setBackground(new java.awt.Color(0, 34, 64));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Eliminar usuario");
-        jButton3.setBorderPainted(false);
-
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/util/icons/LogoSena.png"))); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -1065,11 +1048,49 @@ public class ModifUsuario extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
+        CrearUsuarioFrame.setBackground(new java.awt.Color(0, 34, 64));
+        CrearUsuarioFrame.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        CrearUsuarioFrame.setForeground(new java.awt.Color(255, 255, 255));
+        CrearUsuarioFrame.setText("Crear usuario");
+        CrearUsuarioFrame.setBorderPainted(false);
+        CrearUsuarioFrame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CrearUsuarioFrameActionPerformed(evt);
+            }
+        });
+
+        EliminarUsuarioFrame.setBackground(new java.awt.Color(0, 34, 64));
+        EliminarUsuarioFrame.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        EliminarUsuarioFrame.setForeground(new java.awt.Color(255, 255, 255));
+        EliminarUsuarioFrame.setText("Eliminar usuario");
+        EliminarUsuarioFrame.setBorderPainted(false);
+        EliminarUsuarioFrame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarUsuarioFrameActionPerformed(evt);
+            }
+        });
+
+        ModificarUsuarioFrame.setBackground(new java.awt.Color(0, 34, 64));
+        ModificarUsuarioFrame.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        ModificarUsuarioFrame.setForeground(new java.awt.Color(255, 255, 255));
+        ModificarUsuarioFrame.setText("Modificar usuario");
+        ModificarUsuarioFrame.setBorderPainted(false);
+        ModificarUsuarioFrame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarUsuarioFrameActionPerformed(evt);
+            }
+        });
+
         CerrarSesion.setBackground(new java.awt.Color(57, 169, 0));
         CerrarSesion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         CerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
         CerrarSesion.setText("Cerrar sesión");
         CerrarSesion.setBorderPainted(false);
+        CerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CerrarSesionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1090,12 +1111,13 @@ public class ModifUsuario extends javax.swing.JFrame {
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(50, 50, 50)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(CrearInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
-                                    .addComponent(CerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(EliminarUsuarioFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(CrearUsuarioFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(ModificarUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(CerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 46, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -1117,15 +1139,15 @@ public class ModifUsuario extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addGap(31, 31, 31)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(CrearInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(CrearUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ModificarUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(EliminarUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(CerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addGap(34, 34, 34))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1262,7 +1284,7 @@ public void AditionalConfig(){
     }
 
 
-private void DesHabilitarCampos(){
+    private void DesHabilitarCampos(){
         ModificarCod.setEnabled(false);
         ModificarUsuario.setEnabled(false);
         ModificarPass.setEnabled(false);
@@ -1272,6 +1294,9 @@ private void DesHabilitarCampos(){
         ModificarApellido.setEnabled(false);
         ModificarGenero.setEnabled(false);
         ModificarTelefono.setEnabled(false);
+        ModificarNivelFormacion.setEnabled(false);
+        ModificarJornada.setEnabled(false);
+        ModificarProgramaFormacion.setEnabled(false);
         ModificarCorreo.setEnabled(false);
         ModificarRol.setEnabled(false);
         ModificarArea.setEnabled(false);
@@ -1288,6 +1313,9 @@ private void DesHabilitarCampos(){
         ModificarApellido.setEnabled(true);
         ModificarGenero.setEnabled(true);
         ModificarTelefono.setEnabled(true);
+        ModificarNivelFormacion.setEnabled(true);
+        ModificarJornada.setEnabled(true);
+        ModificarProgramaFormacion.setEnabled(true);
         ModificarCorreo.setEnabled(true);
         ModificarRol.setEnabled(true);
         ModificarArea.setEnabled(true);
@@ -1367,7 +1395,23 @@ private void DesHabilitarCampos(){
                 component.setEnabled(true);
             }
 
-            // Deshabilita los campos de entrada de datos.
+            
+            switch (ResultadoRol.getText()){
+                case "Instructor":
+                    CheckActivarProgramaFormacion.setEnabled(false);
+                    CheckActivarFicha.setEnabled(false);
+                    CheckActivarNivelFormacion.setEnabled(false);
+                    CheckActivarJornada.setEnabled(false);
+                    break;
+                    
+                case "Aprendiz":
+                    break;
+            }
+
+                
+
+            
+
             DesHabilitarCampos();
         } else {
             // Si el instructor no se encuentra, se muestra un mensaje de error y se deshabilitan los componentes del Panel_ModificarDatos.
@@ -1636,7 +1680,9 @@ private void DesHabilitarCampos(){
     }//GEN-LAST:event_EliminarUsuarioFrameActionPerformed
 
     private void CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionActionPerformed
-        // TODO add your handling code here:
+        LoginFrame loginFrame = new LoginFrame();
+        loginFrame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_CerrarSesionActionPerformed
 
     private void ResultadoCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResultadoCorreoActionPerformed
@@ -1720,7 +1766,8 @@ private void DesHabilitarCampos(){
     private javax.swing.JCheckBox CheckActivarTipoDoc;
     private javax.swing.JCheckBox CheckActivarUsuario;
     private javax.swing.JButton ConfirmarModificarUsuario;
-    private javax.swing.JButton CrearInstructor;
+    private javax.swing.JButton CrearUsuarioFrame;
+    private javax.swing.JButton EliminarUsuarioFrame;
     private javax.swing.JTextField IDInstructorField;
     private javax.swing.JTextField ModificarApellido;
     private javax.swing.JTextField ModificarArea;
@@ -1739,6 +1786,7 @@ private void DesHabilitarCampos(){
     private javax.swing.JTextField ModificarTelefono;
     private javax.swing.JComboBox<String> ModificarTipoDoc;
     private javax.swing.JTextField ModificarUsuario;
+    private javax.swing.JButton ModificarUsuarioFrame;
     private javax.swing.JPanel Panel_ModificarDatos;
     private javax.swing.JTextField ResultadoApellido;
     private javax.swing.JTextField ResultadoArea;
@@ -1759,8 +1807,6 @@ private void DesHabilitarCampos(){
     private javax.swing.JTextField ResultadoUsuario;
     private javax.swing.JButton VolverHome;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

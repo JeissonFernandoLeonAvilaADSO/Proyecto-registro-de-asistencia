@@ -6,6 +6,7 @@ package main.AdminFrames;
 import main.AdminFrames.AdminActionScreens.CreateUsuario;
 import main.AdminFrames.AdminActionScreens.ModifUsuario;
 import main.AdminFrames.AdminActionScreens.DeleteUsuario;
+import main.LoginFrame;
 /**
  *
  * @author Jeisson Leon
@@ -33,15 +34,15 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        CrearInstructor = new javax.swing.JButton();
-        ModificarInstructor = new javax.swing.JButton();
-        EliminarInstructor = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         CerrarSesion = new javax.swing.JButton();
+        ModificarUsuarioFrame = new javax.swing.JButton();
+        EliminarUsuarioFrame = new javax.swing.JButton();
+        CrearUsuarioFrame = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -56,24 +57,6 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 208, 78));
         jLabel3.setText("Acciones");
-
-        CrearInstructor.setBackground(new java.awt.Color(0, 34, 64));
-        CrearInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        CrearInstructor.setForeground(new java.awt.Color(255, 255, 255));
-        CrearInstructor.setText("Crear usuario instructor");
-        CrearInstructor.setBorderPainted(false);
-
-        ModificarInstructor.setBackground(new java.awt.Color(0, 34, 64));
-        ModificarInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ModificarInstructor.setForeground(new java.awt.Color(255, 255, 255));
-        ModificarInstructor.setText("Modificar usuario instructor");
-        ModificarInstructor.setBorderPainted(false);
-
-        EliminarInstructor.setBackground(new java.awt.Color(0, 34, 64));
-        EliminarInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        EliminarInstructor.setForeground(new java.awt.Color(255, 255, 255));
-        EliminarInstructor.setText("Eliminar usuario instructor");
-        EliminarInstructor.setBorderPainted(false);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/util/icons/LogoSena.png"))); // NOI18N
 
@@ -105,6 +88,44 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         CerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
         CerrarSesion.setText("Cerrar sesión");
         CerrarSesion.setBorderPainted(false);
+        CerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CerrarSesionActionPerformed(evt);
+            }
+        });
+
+        ModificarUsuarioFrame.setBackground(new java.awt.Color(0, 34, 64));
+        ModificarUsuarioFrame.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        ModificarUsuarioFrame.setForeground(new java.awt.Color(255, 255, 255));
+        ModificarUsuarioFrame.setText("Modificar usuario");
+        ModificarUsuarioFrame.setBorderPainted(false);
+        ModificarUsuarioFrame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarUsuarioFrameActionPerformed(evt);
+            }
+        });
+
+        EliminarUsuarioFrame.setBackground(new java.awt.Color(0, 34, 64));
+        EliminarUsuarioFrame.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        EliminarUsuarioFrame.setForeground(new java.awt.Color(255, 255, 255));
+        EliminarUsuarioFrame.setText("Eliminar usuario");
+        EliminarUsuarioFrame.setBorderPainted(false);
+        EliminarUsuarioFrame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarUsuarioFrameActionPerformed(evt);
+            }
+        });
+
+        CrearUsuarioFrame.setBackground(new java.awt.Color(0, 34, 64));
+        CrearUsuarioFrame.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        CrearUsuarioFrame.setForeground(new java.awt.Color(255, 255, 255));
+        CrearUsuarioFrame.setText("Crear usuario");
+        CrearUsuarioFrame.setBorderPainted(false);
+        CrearUsuarioFrame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CrearUsuarioFrameActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -125,12 +146,14 @@ public class AdminHomeScreen extends javax.swing.JFrame {
                                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(50, 50, 50)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(EliminarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(CrearInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(ModificarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
-                                    .addComponent(CerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(EliminarUsuarioFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(CrearUsuarioFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(ModificarUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(CerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 46, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -152,15 +175,15 @@ public class AdminHomeScreen extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addGap(31, 31, 31)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(CrearInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ModificarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(CrearUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(EliminarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 422, Short.MAX_VALUE)
+                .addComponent(ModificarUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(EliminarUsuarioFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(CerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addGap(254, 254, 254))
         );
 
         jLabel1.setBackground(new java.awt.Color(0, 34, 64));
@@ -224,6 +247,30 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionActionPerformed
+        LoginFrame loginFrame = new LoginFrame();
+        loginFrame.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CerrarSesionActionPerformed
+
+    private void ModificarUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarUsuarioFrameActionPerformed
+        ModifUsuario modifUsuario = new ModifUsuario();
+        modifUsuario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ModificarUsuarioFrameActionPerformed
+
+    private void EliminarUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarUsuarioFrameActionPerformed
+        DeleteUsuario deleteUsuario = new DeleteUsuario();
+        deleteUsuario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_EliminarUsuarioFrameActionPerformed
+
+    private void CrearUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearUsuarioFrameActionPerformed
+        CreateUsuario createUsuario = new CreateUsuario();
+        createUsuario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CrearUsuarioFrameActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -261,9 +308,9 @@ public class AdminHomeScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CerrarSesion;
-    private javax.swing.JButton CrearInstructor;
-    private javax.swing.JButton EliminarInstructor;
-    private javax.swing.JButton ModificarInstructor;
+    private javax.swing.JButton CrearUsuarioFrame;
+    private javax.swing.JButton EliminarUsuarioFrame;
+    private javax.swing.JButton ModificarUsuarioFrame;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
