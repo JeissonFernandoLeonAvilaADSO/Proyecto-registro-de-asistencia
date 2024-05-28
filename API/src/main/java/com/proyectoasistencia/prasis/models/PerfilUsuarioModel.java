@@ -10,7 +10,7 @@ public class PerfilUsuarioModel {
     private String Nombres;
     private String  Apellidos;
     private String Genero;
-    private int Telefono;
+    private String Telefono;
     private String ProgramaFormacion;
     private int NumeroFicha;
     private String JornadaFormacion;
@@ -84,11 +84,11 @@ public class PerfilUsuarioModel {
         Genero = genero;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return Telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         Telefono = telefono;
     }
 

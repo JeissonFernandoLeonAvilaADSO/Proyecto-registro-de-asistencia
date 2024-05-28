@@ -16,7 +16,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
      */
 
     public InstructorHomeScreen() {
-  
+        initComponents();
     }
 
     /**

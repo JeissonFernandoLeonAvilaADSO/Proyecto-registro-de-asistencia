@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import main.AdminFrames.AdminHomeScreen;
 import main.LoginFrame;
 import main.util.API_AdminActions.API_Admin_BuscarUsuario;
+import main.util.API_AdminActions.API_Admin_DeletUsuario;
 import org.json.JSONObject;
 
 /**
@@ -42,7 +43,6 @@ public class DeleteUsuario extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         CerrarSesion = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         VolverHome = new javax.swing.JButton();
@@ -83,7 +83,7 @@ public class DeleteUsuario extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         ConfirmarEliminarUsuario = new javax.swing.JButton();
-        BuscarDatosInstructor = new javax.swing.JButton();
+        BuscarDatosUsuario = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -147,10 +147,6 @@ public class DeleteUsuario extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("________________________________________________________");
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-
         CerrarSesion.setBackground(new java.awt.Color(57, 169, 0));
         CerrarSesion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         CerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
@@ -203,6 +199,11 @@ public class DeleteUsuario extends javax.swing.JFrame {
         jLabel35.setText("Programa formacion");
 
         IDInstructorField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        IDInstructorField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IDInstructorFieldActionPerformed(evt);
+            }
+        });
 
         jLabel34.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(0, 0, 0));
@@ -326,13 +327,13 @@ public class DeleteUsuario extends javax.swing.JFrame {
             }
         });
 
-        BuscarDatosInstructor.setBackground(new java.awt.Color(57, 169, 0));
-        BuscarDatosInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        BuscarDatosInstructor.setForeground(new java.awt.Color(255, 255, 255));
-        BuscarDatosInstructor.setText("Buscar");
-        BuscarDatosInstructor.addActionListener(new java.awt.event.ActionListener() {
+        BuscarDatosUsuario.setBackground(new java.awt.Color(57, 169, 0));
+        BuscarDatosUsuario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        BuscarDatosUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        BuscarDatosUsuario.setText("Buscar");
+        BuscarDatosUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BuscarDatosInstructorActionPerformed(evt);
+                BuscarDatosUsuarioActionPerformed(evt);
             }
         });
 
@@ -354,7 +355,7 @@ public class DeleteUsuario extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(IDInstructorField)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(BuscarDatosInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(2, 2, 2)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -419,7 +420,7 @@ public class DeleteUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BuscarDatosInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(54, 54, 54)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ResultadoCod, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -509,7 +510,6 @@ public class DeleteUsuario extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(51, 51, 51)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -535,10 +535,8 @@ public class DeleteUsuario extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(34, 34, 34)
                 .addComponent(jLabel11)
                 .addGap(31, 31, 31)
                 .addComponent(jLabel8)
@@ -572,6 +570,44 @@ public class DeleteUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+        private void DesHabilitarCampos(){
+        ResultadoCod.setEnabled(false);
+        ResultadoUsuario.setEnabled(false);
+        ResultadoContra.setEnabled(false);
+        ResultadoDocumento.setEnabled(false);
+        ResultadoTipoDoc.setEnabled(false);
+        ResultadoNombre.setEnabled(false);
+        ResultadoApellido.setEnabled(false);
+        ResultadoGenero.setEnabled(false);
+        ResultadoTelefono.setEnabled(false);
+        ResultadoNivelFormacion.setEnabled(false);
+        ResultadoJornada.setEnabled(false);
+        ResultadoProgramaFormacion.setEnabled(false);
+        ResultadoCorreo.setEnabled(false);
+        ResultadoRol.setEnabled(false);
+        ResultadoArea.setEnabled(false);
+        ResultadoSede.setEnabled(false);
+    }
+    
+    private void HabilitarCampos(){
+        ResultadoCod.setEnabled(true);
+        ResultadoUsuario.setEnabled(true);
+        ResultadoContra.setEnabled(true);
+        ResultadoDocumento.setEnabled(true);
+        ResultadoTipoDoc.setEnabled(true);
+        ResultadoNombre.setEnabled(true);
+        ResultadoApellido.setEnabled(true);
+        ResultadoGenero.setEnabled(true);
+        ResultadoTelefono.setEnabled(true);
+        ResultadoNivelFormacion.setEnabled(true);
+        ResultadoJornada.setEnabled(true);
+        ResultadoProgramaFormacion.setEnabled(true);
+        ResultadoCorreo.setEnabled(true);
+        ResultadoRol.setEnabled(true);
+        ResultadoArea.setEnabled(true);
+        ResultadoSede.setEnabled(true);
+    }
     
     private void LimpiarCampos(){
         IDInstructorField.setText("");
@@ -626,7 +662,10 @@ public class DeleteUsuario extends javax.swing.JFrame {
         // Procesa la respuesta del usuario.
         switch (respuesta){
             case JOptionPane.YES_OPTION:
+                API_Admin_DeletUsuario borrarUsuario = new API_Admin_DeletUsuario();
+                borrarUsuario.AdminEliminarUsuario(Integer.valueOf(ResultadoDocumento.getText()));
                 LimpiarCampos();
+                DesHabilitarCampos();
             break;
 
             case JOptionPane.NO_OPTION:
@@ -639,7 +678,7 @@ public class DeleteUsuario extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ConfirmarEliminarUsuarioActionPerformed
 
-    private void BuscarDatosInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosInstructorActionPerformed
+    private void BuscarDatosUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosUsuarioActionPerformed
         // Crea una nueva instancia de DB_AdminBuscarInstructor.
         API_Admin_BuscarUsuario buscarUsuario = new API_Admin_BuscarUsuario();
 
@@ -655,7 +694,7 @@ public class DeleteUsuario extends javax.swing.JFrame {
             ResultadoApellido.setText(usuario.getString("apellidos"));
             ResultadoGenero.setText(usuario.getString("genero"));
             ResultadoCorreo.setText(usuario.getString("correo"));
-            ResultadoTelefono.setText(String.valueOf(usuario.getInt("telefono")));
+            ResultadoTelefono.setText(usuario.getString("telefono"));
             ResultadoProgramaFormacion.setText(usuario.getString("programaFormacion"));
             ResultadoFicha.setText(String.valueOf(usuario.getInt("numeroFicha")));
             ResultadoJornada.setText(usuario.getString("jornadaFormacion"));
@@ -664,12 +703,16 @@ public class DeleteUsuario extends javax.swing.JFrame {
             ResultadoArea.setText(usuario.getString("area"));
             ResultadoSede.setText(usuario.getString("sede"));
         }
-    }//GEN-LAST:event_BuscarDatosInstructorActionPerformed
+    }//GEN-LAST:event_BuscarDatosUsuarioActionPerformed
 
     private void CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionActionPerformed
         LoginFrame loginFrame = new LoginFrame();
         loginFrame.setVisible(true);
         this.dispose();    }//GEN-LAST:event_CerrarSesionActionPerformed
+
+    private void IDInstructorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IDInstructorFieldActionPerformed
+        BuscarDatosUsuario.doClick();
+    }//GEN-LAST:event_IDInstructorFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -710,7 +753,7 @@ public class DeleteUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BuscarDatosInstructor;
+    private javax.swing.JButton BuscarDatosUsuario;
     private javax.swing.JButton CerrarSesion;
     private javax.swing.JButton ConfirmarEliminarUsuario;
     private javax.swing.JButton CrearUsuarioFrame;
@@ -738,7 +781,6 @@ public class DeleteUsuario extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;

@@ -93,6 +93,11 @@ public class LoginFrame extends javax.swing.JFrame {
 
         UserField.setBackground(new java.awt.Color(255, 255, 255));
         UserField.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        UserField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UserFieldActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
@@ -104,6 +109,11 @@ public class LoginFrame extends javax.swing.JFrame {
 
         PassField.setBackground(new java.awt.Color(255, 255, 255));
         PassField.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        PassField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PassFieldActionPerformed(evt);
+            }
+        });
 
         InstructorCheck.setBackground(new java.awt.Color(255, 255, 255));
         InstructorCheck.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
@@ -312,6 +322,14 @@ public class LoginFrame extends javax.swing.JFrame {
     private void InstructorCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstructorCheckActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_InstructorCheckActionPerformed
+
+    private void UserFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserFieldActionPerformed
+        Ingresar.doClick();
+    }//GEN-LAST:event_UserFieldActionPerformed
+
+    private void PassFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassFieldActionPerformed
+        Ingresar.doClick();
+    }//GEN-LAST:event_PassFieldActionPerformed
 
     /**
      * @param args the command line arguments

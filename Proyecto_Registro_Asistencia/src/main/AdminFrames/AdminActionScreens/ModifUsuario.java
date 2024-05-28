@@ -119,7 +119,7 @@ public class ModifUsuario extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        BuscarDatosInstructor = new javax.swing.JButton();
+        BuscarDatosUsuario = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         ResultadoDocumento = new javax.swing.JTextField();
         IDInstructorField = new javax.swing.JTextField();
@@ -153,7 +153,6 @@ public class ModifUsuario extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         CrearUsuarioFrame = new javax.swing.JButton();
         EliminarUsuarioFrame = new javax.swing.JButton();
         ModificarUsuarioFrame = new javax.swing.JButton();
@@ -552,10 +551,7 @@ public class ModifUsuario extends javax.swing.JFrame {
                             .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
                                 .addGap(23, 23, 23)
                                 .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(CheckActivarApellidos, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(CheckActivarNombres, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(CheckActivarTipoDoc, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addComponent(CheckActivarApellidos)
                                     .addComponent(CheckActivarGenero, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -563,7 +559,9 @@ public class ModifUsuario extends javax.swing.JFrame {
                                     .addComponent(CheckActivarDoc, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(CheckActivarPass, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(CheckActivarUsuario, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(CheckActivarCod, javax.swing.GroupLayout.Alignment.TRAILING))))))
+                                    .addComponent(CheckActivarCod, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(CheckActivarNombres, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(CheckActivarTipoDoc, javax.swing.GroupLayout.Alignment.TRAILING))))))
                 .addContainerGap())
         );
         Panel_ModificarDatosLayout.setVerticalGroup(
@@ -606,24 +604,24 @@ public class ModifUsuario extends javax.swing.JFrame {
                     .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
                         .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
-                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(CheckActivarTipoDoc)
+                                    .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(ModificarTipoDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel20)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(ModificarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel21))
+                                    .addComponent(CheckActivarNombres, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
-                                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(ModificarTipoDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel20))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(ModificarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel21))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(ModificarApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel22)))
                                     .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(CheckActivarTipoDoc)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(CheckActivarNombres)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(CheckActivarApellidos)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -727,13 +725,13 @@ public class ModifUsuario extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Sede");
 
-        BuscarDatosInstructor.setBackground(new java.awt.Color(57, 169, 0));
-        BuscarDatosInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        BuscarDatosInstructor.setForeground(new java.awt.Color(255, 255, 255));
-        BuscarDatosInstructor.setText("Buscar");
-        BuscarDatosInstructor.addActionListener(new java.awt.event.ActionListener() {
+        BuscarDatosUsuario.setBackground(new java.awt.Color(57, 169, 0));
+        BuscarDatosUsuario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        BuscarDatosUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        BuscarDatosUsuario.setText("Buscar");
+        BuscarDatosUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BuscarDatosInstructorActionPerformed(evt);
+                BuscarDatosUsuarioActionPerformed(evt);
             }
         });
 
@@ -746,6 +744,11 @@ public class ModifUsuario extends javax.swing.JFrame {
         ResultadoDocumento.setFocusable(false);
 
         IDInstructorField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        IDInstructorField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IDInstructorFieldActionPerformed(evt);
+            }
+        });
 
         VolverHome.setBackground(new java.awt.Color(0, 34, 64));
         VolverHome.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -866,7 +869,7 @@ public class ModifUsuario extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(IDInstructorField)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BuscarDatosInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(0, 0, Short.MAX_VALUE))))
@@ -937,7 +940,7 @@ public class ModifUsuario extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BuscarDatosInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -1044,10 +1047,6 @@ public class ModifUsuario extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("________________________________________________________");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-
         CrearUsuarioFrame.setBackground(new java.awt.Color(0, 34, 64));
         CrearUsuarioFrame.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         CrearUsuarioFrame.setForeground(new java.awt.Color(255, 255, 255));
@@ -1106,7 +1105,6 @@ public class ModifUsuario extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(51, 51, 51)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -1132,10 +1130,8 @@ public class ModifUsuario extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(34, 34, 34)
                 .addComponent(jLabel3)
                 .addGap(31, 31, 31)
                 .addComponent(jLabel1)
@@ -1347,6 +1343,10 @@ public void AditionalConfig(){
         ResultadoGenero.setText("");
         ResultadoTelefono.setText("");
         ResultadoCorreo.setText("");
+        ResultadoProgramaFormacion.setText("");
+        ResultadoNivelFormacion.setText("");
+        ResultadoFicha.setText("");
+        ResultadoJornada.setText("");
         ResultadoRol.setText("");
         ResultadoArea.setText("");
         ResultadoSede.setText("");
@@ -1366,7 +1366,7 @@ public void AditionalConfig(){
     }
 
 
-    private void BuscarDatosInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosInstructorActionPerformed
+    private void BuscarDatosUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosUsuarioActionPerformed
         // Crea una nueva instancia de DB_AdminBuscarInstructor.
         API_Admin_BuscarUsuario buscarUsuario = new API_Admin_BuscarUsuario();
 
@@ -1382,7 +1382,7 @@ public void AditionalConfig(){
             ResultadoApellido.setText(usuario.getString("apellidos"));
             ResultadoGenero.setText(usuario.getString("genero"));
             ResultadoCorreo.setText(usuario.getString("correo"));
-            ResultadoTelefono.setText(String.valueOf(usuario.getInt("telefono")));
+            ResultadoTelefono.setText(usuario.getString("telefono"));
             ResultadoProgramaFormacion.setText(usuario.getString("programaFormacion"));
             ResultadoFicha.setText(String.valueOf(usuario.getInt("numeroFicha")));
             ResultadoJornada.setText(usuario.getString("jornadaFormacion"));
@@ -1420,7 +1420,7 @@ public void AditionalConfig(){
                 component.setEnabled(false);
             }
         }
-    }//GEN-LAST:event_BuscarDatosInstructorActionPerformed
+    }//GEN-LAST:event_BuscarDatosUsuarioActionPerformed
 
     private void VolverHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverHomeActionPerformed
         AdminHomeScreen adminHomre = new AdminHomeScreen();
@@ -1497,8 +1497,7 @@ public void AditionalConfig(){
     }//GEN-LAST:event_ModificarSedeActionPerformed
 
     private void ModificarRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarRolActionPerformed
-        ConvertirDatos convertirDatos = new ConvertirDatos();
-        System.out.println(convertirDatos.ObtenerIDTipoRol(ModificarRol.getSelectedItem().toString()));
+
     }//GEN-LAST:event_ModificarRolActionPerformed
 
     private void ModificarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarGeneroActionPerformed
@@ -1506,8 +1505,7 @@ public void AditionalConfig(){
     }//GEN-LAST:event_ModificarGeneroActionPerformed
 
     private void ModificarTipoDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarTipoDocActionPerformed
-        ConvertirDatos convertirDatos = new ConvertirDatos();
-        System.out.println(convertirDatos.ObtenerIDTipoDoc(ModificarTipoDoc.getSelectedItem().toString()));
+
     }//GEN-LAST:event_ModificarTipoDocActionPerformed
 
     private void CheckActivarSedeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarSedeActionPerformed
@@ -1618,7 +1616,7 @@ public void AditionalConfig(){
             usuarioPUTModel.put("Nombres", CheckActivarNombres.isSelected() ? ModificarNombre.getText() : null);
             usuarioPUTModel.put("Apellidos", CheckActivarApellidos.isSelected() ? ModificarApellido.getText() : null);
             usuarioPUTModel.put("IDGenero", CheckActivarGenero.isSelected() ? convertirDatos.ObtenerIDTipoGenero(ModificarGenero.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("Telefono", CheckActivarTelefono.isSelected() ? Integer.valueOf(ModificarTelefono.getText()) : null);
+            usuarioPUTModel.put("Telefono", CheckActivarTelefono.isSelected() ? ModificarTelefono.getText() : null);
             usuarioPUTModel.put("IDProgramaFormacion", CheckActivarProgramaFormacion.isSelected() ? convertirDatos.ObtenerIDProgramaFormacion(ModificarProgramaFormacion.getSelectedItem().toString()) : null);
             usuarioPUTModel.put("IDNivelFormacion", CheckActivarJornada.isSelected() ? convertirDatos.ObtenerIDNivelFormacion(ModificarJornada.getSelectedItem().toString()) : null);
             usuarioPUTModel.put("NumeroFicha", CheckActivarFicha.isSelected() ? Integer.valueOf(ModificarFicha.getText()) : null);
@@ -1689,6 +1687,10 @@ public void AditionalConfig(){
         // TODO add your handling code here:
     }//GEN-LAST:event_ResultadoCorreoActionPerformed
 
+    private void IDInstructorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IDInstructorFieldActionPerformed
+        BuscarDatosUsuario.doClick();
+    }//GEN-LAST:event_IDInstructorFieldActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1746,7 +1748,7 @@ public void AditionalConfig(){
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BuscarDatosInstructor;
+    private javax.swing.JButton BuscarDatosUsuario;
     private javax.swing.JButton CerrarSesion;
     private javax.swing.JCheckBox CheckActivarApellidos;
     private javax.swing.JCheckBox CheckActivarArea;
@@ -1843,7 +1845,6 @@ public void AditionalConfig(){
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

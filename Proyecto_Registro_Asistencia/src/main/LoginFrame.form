@@ -149,6 +149,9 @@
                   <Font name="SansSerif" size="18" style="0"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UserFieldActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
@@ -181,6 +184,9 @@
                   <Font name="SansSerif" size="18" style="0"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PassFieldActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JToggleButton" name="InstructorCheck">
               <Properties>

@@ -14,10 +14,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 import java.util.Map;
 
@@ -76,7 +73,7 @@ public class PerfilUsuarioController {
                     instructor.setNombres(rs.getString("nombres"));
                     instructor.setApellidos(rs.getString("apellidos"));
                     instructor.setGenero(rs.getString("TiposGeneros"));
-                    instructor.setTelefono(rs.getInt("Telefono"));
+                    instructor.setTelefono(rs.getString("Telefono"));
                     instructor.setProgramaFormacion(rs.getString("ProgramaFormacion"));
                     instructor.setNumeroFicha(rs.getInt("NumeroFicha"));
                     instructor.setJornadaFormacion(rs.getString("JornadasFormacion"));
@@ -134,27 +131,99 @@ public class PerfilUsuarioController {
         }
     }
 
-    @RequestMapping(value = "EliminarUsuario/{IDUsuario}")
-    public ResponseEntity<String> EliminarUsuario(@PathVariable int IDUsuario){
+    @RequestMapping(value = "AgregarUsuario")
+    public ResponseEntity<String> AgregarUsuario(@RequestBody Map<String, Object> usuarioModel){
+        Map<String, Object> campos = usuarioModel;
+        System.out.println(campos);
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         TransactionStatus status = transactionManager.getTransaction(def);
 
         try (Connection conexion = dataSource.getConnection()) {
-            // Eliminar el usuario de la tabla 'usuario'
-            String consultaUsuario = "DELETE FROM usuario WHERE ID = ?";
-            try (PreparedStatement psUsuario = conexion.prepareStatement(consultaUsuario)) {
-                psUsuario.setInt(1, IDUsuario);
+            String consultaUsuario = "INSERT INTO usuario (Usuario, Contraseña) VALUES (?, ?)";
+            String consultaPerfil = """
+                                        INSERT INTO perfilusuario (ID, 
+                                                                   IDUsuario, 
+                                                                   Documento, 
+                                                                   IDTipoDocumento, 
+                                                                   Nombres, 
+                                                                   Apellidos, 
+                                                                   IDGenero, 
+                                                                   Telefono, 
+                                                                   IDProgramaFormacion, 
+                                                                   NumeroFicha, 
+                                                                   IDJornadaFormacion,
+                                                                   IDNivelFormacion,
+                                                                   Area, 
+                                                                   IDSede, 
+                                                                   Correo, 
+                                                                   IDRol) 
+                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""";
+
+            try (PreparedStatement psUsuario = conexion.prepareStatement(consultaUsuario, Statement.RETURN_GENERATED_KEYS);
+                 PreparedStatement psPerfil = conexion.prepareStatement(consultaPerfil)) {
+
+                // Establecer los valores para el usuario
+                psUsuario.setString(1, (String) campos.get("Usuario"));
+                psUsuario.setString(2, (String) campos.get("Contraseña"));
+
+                // Ejecutar la consulta de usuario y obtener el ID generado
                 int rowsAffectedUsuario = psUsuario.executeUpdate();
-                if (rowsAffectedUsuario <= 0) {
-                    transactionManager.rollback(status);
-                    return new ResponseEntity<>("No se pudo eliminar el usuario", HttpStatus.BAD_REQUEST);
+                ResultSet rs = psUsuario.getGeneratedKeys();
+                int idUsuarioGenerado = 0;
+                if (rs.next()) {
+                    idUsuarioGenerado = rs.getInt(1);
+                }
+
+                if (rowsAffectedUsuario <= 0 || idUsuarioGenerado == 0) {
+                    return new ResponseEntity<>("No se pudo agregar el usuario", HttpStatus.BAD_REQUEST);
+                }
+
+                // Establecer los valores para el perfil del usuario
+                psPerfil.setInt(1, (Integer) campos.get("ID"));
+                psPerfil.setInt(2, idUsuarioGenerado);
+                psPerfil.setInt(3, (Integer) campos.get("Documento"));
+                psPerfil.setInt(4, (Integer) campos.get("IDTipoDocumento"));
+                psPerfil.setString(5, (String) campos.get("Nombres"));
+                psPerfil.setString(6, (String) campos.get("Apellidos"));
+                psPerfil.setInt(7, (Integer) campos.get("IDGenero"));
+                psPerfil.setString(8, (String) campos.get("Telefono"));
+                psPerfil.setInt(9, (Integer) campos.get("IDProgramaFormacion"));
+                psPerfil.setInt(10, (Integer) campos.get("NumeroFicha"));
+                psPerfil.setInt(11, (Integer) campos.get("IDJornadaFormacion"));
+                psPerfil.setInt(12, (Integer) campos.get("IDNivelFormacion"));
+                psPerfil.setString(13, (String) campos.get("Area"));
+                psPerfil.setInt(14, (Integer) campos.get("IDSede"));
+                psPerfil.setString(15, (String) campos.get("Correo"));
+                psPerfil.setInt(16, (Integer) campos.get("IDRol"));
+
+                // Ejecutar la consulta de perfil
+                int rowsAffectedPerfil = psPerfil.executeUpdate();
+
+                if (rowsAffectedPerfil <= 0) {
+                    return new ResponseEntity<>("No se pudo agregar el perfil del usuario", HttpStatus.BAD_REQUEST);
                 }
             }
 
-            // Eliminar el usuario de la tabla 'perfilusuario'
-            String consultaPerfilUsuario = "DELETE FROM perfilusuario WHERE IDUsuario = ?";
+            transactionManager.commit(status);
+            return new ResponseEntity<>("Usuario agregado exitosamente", HttpStatus.OK);
+        } catch (SQLException e) {
+            transactionManager.rollback(status);
+            return new ResponseEntity<>("Error durante la inserción: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+    @RequestMapping(value = "EliminarUsuario/{DocumentoUsuario}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> EliminarUsuario(@PathVariable int DocumentoUsuario) {
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        TransactionStatus status = transactionManager.getTransaction(def);
+
+        try (Connection conexion = dataSource.getConnection()) {
+            // Eliminar el perfil del usuario de la tabla 'perfilusuario'
+            String consultaPerfilUsuario = "DELETE FROM perfilusuario WHERE Documento = ?";
             try (PreparedStatement psPerfilUsuario = conexion.prepareStatement(consultaPerfilUsuario)) {
-                psPerfilUsuario.setInt(1, IDUsuario);
+                psPerfilUsuario.setInt(1, DocumentoUsuario);
                 int rowsAffectedPerfilUsuario = psPerfilUsuario.executeUpdate();
                 if (rowsAffectedPerfilUsuario <= 0) {
                     transactionManager.rollback(status);
@@ -162,10 +231,22 @@ public class PerfilUsuarioController {
                 }
             }
 
+            // Eliminar el usuario de la tabla 'usuario' usando una subconsulta para obtener el IDUsuario
+            String consultaUsuario = "DELETE FROM usuario WHERE ID = (SELECT IDUsuario FROM perfilusuario WHERE Documento = ?)";
+            try (PreparedStatement psUsuario = conexion.prepareStatement(consultaUsuario)) {
+                psUsuario.setInt(1, DocumentoUsuario);
+                int rowsAffectedUsuario = psUsuario.executeUpdate();
+                if (rowsAffectedUsuario <= 0) {
+                    transactionManager.rollback(status);
+                    return new ResponseEntity<>("No se pudo eliminar el usuario", HttpStatus.BAD_REQUEST);
+                }
+            }
+
             transactionManager.commit(status);
             return new ResponseEntity<>("Usuario eliminado exitosamente", HttpStatus.OK);
         } catch (SQLException e) {
             transactionManager.rollback(status);
+            e.printStackTrace(); // Imprime el stack trace para más detalles
             return new ResponseEntity<>("Error al eliminar el usuario: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
