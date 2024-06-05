@@ -30,7 +30,7 @@ public class PerfilUsuarioController {
     @Autowired
     private PlatformTransactionManager transactionManager;
 
-    @RequestMapping(value = "ObtenerInstructor/{IDInstructor}")
+    @RequestMapping(value = "ObtenerUsuario/{IDInstructor}")
     public PerfilUsuarioModel getInstructor(@PathVariable Integer IDInstructor){
         String consulta = """ 
                 SELECT perfilusuario.ID,

@@ -1,8 +1,6 @@
 package main.util.models;
 
-import main.AdminFrames.APISecPass;
 import org.json.JSONArray;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -249,7 +247,7 @@ public class ComboBoxModels {
 
     public ArrayList<String> BoxProgramaFormacionModel() throws Exception {
 
-        APISecPass APIPass = new APISecPass();
+
         URL url = new URL("http://localhost:8080/ProgramaFormacionData");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");

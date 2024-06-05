@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-import main.AdminFrames.APISecPass;
 
 /**
  * Clase DB_Admin_ModifInstructor que contiene el método para modificar los datos de un instructor en la base de datos.

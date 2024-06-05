@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
-import main.AdminFrames.APISecPass;
 
 /**
  * Clase para verificar el inicio de sesión de un administrador en la base de datos.

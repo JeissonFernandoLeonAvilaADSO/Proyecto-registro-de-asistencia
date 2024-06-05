@@ -4,16 +4,14 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Base64;
 import org.json.JSONObject;
 
-import main.AdminFrames.APISecPass;
 
 public class API_Admin_BuscarUsuario {
     public JSONObject AdminBuscarUsuario(Integer IDUsuario) {
 
         try {
-            URL url = new URL("http://localhost:8080/ObtenerInstructor/" + IDUsuario);
+            URL url = new URL("http://localhost:8080/ObtenerUsuario/" + IDUsuario);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
