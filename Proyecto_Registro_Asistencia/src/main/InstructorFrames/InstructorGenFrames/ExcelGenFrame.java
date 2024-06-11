@@ -139,17 +139,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         tablaAsis.setRowHeight(44);
         tablaAsis.setSelectionBackground(new java.awt.Color(215, 213, 177));
         jScrollPane1.setViewportView(tablaAsis);
-        if (tablaAsis.getColumnModel().getColumnCount() > 0) {
-            tablaAsis.getColumnModel().getColumn(0).setHeaderValue("Nombre");
-            tablaAsis.getColumnModel().getColumn(1).setHeaderValue("Apellido");
-            tablaAsis.getColumnModel().getColumn(2).setHeaderValue("Tipo de Documento");
-            tablaAsis.getColumnModel().getColumn(3).setHeaderValue("Documento");
-            tablaAsis.getColumnModel().getColumn(4).setHeaderValue("Programa formacion");
-            tablaAsis.getColumnModel().getColumn(5).setHeaderValue("Nivel formacion");
-            tablaAsis.getColumnModel().getColumn(6).setHeaderValue("Competencia");
-            tablaAsis.getColumnModel().getColumn(7).setHeaderValue("Hora de Ingreso");
-            tablaAsis.getColumnModel().getColumn(8).setHeaderValue("Estado de asistencia");
-        }
 
         jButton1.setText("Regresar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -281,7 +270,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         Date fechaActual = new Date();
 
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-
         // Obtener la hora actual formateada en XX:XX AM/PM
         String horaFormateada = sdf.format(fechaActual);
         return horaFormateada;
@@ -289,7 +277,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     
     public String HoraTardia(){
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, 0);
+        calendar.add(Calendar.HOUR_OF_DAY, 1);
         Date fechaEn5Horas = calendar.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
         String horaFin = sdf.format(fechaEn5Horas);

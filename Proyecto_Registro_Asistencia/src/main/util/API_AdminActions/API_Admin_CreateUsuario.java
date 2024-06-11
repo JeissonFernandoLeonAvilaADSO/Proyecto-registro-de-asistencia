@@ -26,11 +26,12 @@ public class API_Admin_CreateUsuario {
     // Este método toma los detalles del instructor como parámetros y los inserta en la base de datos.
     public void CrearPerfilUsuario(Map<String, Object> usuarioModel) {
         try {
+            System.out.println(usuarioModel);
             URL url = new URL("http://localhost:8080/AgregarUsuario");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            conn.setRequestMethod("PUT");
-            conn.setRequestProperty("Content-Type", "application/json; UTF-8");
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
 
@@ -40,13 +41,14 @@ public class API_Admin_CreateUsuario {
                 os.write(input, 0, input.length);
             }
 
-            if (conn.getResponseCode() != 200) {
+            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 // Imprime el mensaje de error del servidor
                 if (conn.getErrorStream() != null) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        System.out.println(line);
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            System.out.println(line);
+                        }
                     }
                 }
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());

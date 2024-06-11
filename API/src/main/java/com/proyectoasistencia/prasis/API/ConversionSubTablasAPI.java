@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,16 +55,18 @@ public class ConversionSubTablasAPI {
 
     private ResponseEntity<Integer> obtenerID(String tabla, String columna, String valor) {
         try {
-            // Decodifica el valor del parámetro
+            // Decodifica el valor recibido
             String decodedValor = URLDecoder.decode(valor, StandardCharsets.UTF_8.toString());
-
-            String consulta = "select ID from " + tabla + " WHERE " + columna + " = ?";
-            Integer ID = jdbcTemplate.queryForObject(consulta, new Object[]{decodedValor}, Integer.class);
+            // Reemplaza el carácter especial por espacios
+            String tipoStr = decodedValor.replace("_", " ");
+            // Realiza la consulta SQL con el valor restaurado
+            String consulta = "SELECT ID FROM " + tabla + " WHERE " + columna + " = ?";
+            Integer ID = jdbcTemplate.queryForObject(consulta, new Object[]{tipoStr}, Integer.class);
             return new ResponseEntity<>(ID, HttpStatus.OK);
         } catch (EmptyResultDataAccessException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            e.printStackTrace(); // Loguea la excepción para depuración
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

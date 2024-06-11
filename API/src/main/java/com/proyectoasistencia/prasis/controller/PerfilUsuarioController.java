@@ -92,127 +92,102 @@ public class PerfilUsuarioController {
         return null;
     }
 
-    @PutMapping(value = "ModificarInstructor/{IDInstructor}")
-    public ResponseEntity<String> ModInstructor(@PathVariable int IDInstructor, @RequestBody Map<String, Object> usuarioPUTModel){
-        Map<String, Object> campos = usuarioPUTModel;
+    @RequestMapping("AgregarUsuario")
+    public ResponseEntity<String> agregarUsuario(@RequestBody Map<String, Object> usuarioModel) {
+        return upsertUsuario(usuarioModel, true, null);
+    }
+
+    @RequestMapping("ModificarUsuario/{IDComp}")
+    public ResponseEntity<String> modificarUsuario(@PathVariable Integer IDComp, @RequestBody Map<String, Object> usuarioModel) {
+        return upsertUsuario(usuarioModel, false, IDComp);
+    }
+
+    private ResponseEntity<String> upsertUsuario(Map<String, Object> campos, boolean isNewUser, Integer IDComp) {
         System.out.println(campos);
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         TransactionStatus status = transactionManager.getTransaction(def);
 
         try (Connection conexion = dataSource.getConnection()) {
-            for (Map.Entry<String, Object> entry : campos.entrySet()) {
-                if (entry.getValue() != null) {
-                    String consulta;
-                    if (entry.getKey().equals("Usuario") || entry.getKey().equals("Contraseña")) {
-                        consulta = "UPDATE usuario SET " + entry.getKey() + " = ? WHERE id = (SELECT IDUsuario FROM perfilusuario WHERE Documento = ?)";
-                    } else {
-                        consulta = "UPDATE perfilusuario SET " + entry.getKey() + " = ? WHERE Documento = ?";
+            if (isNewUser) {
+                // Inserción de nuevo usuario
+                String consultaUsuario = "INSERT INTO usuario (Usuario, Contraseña) VALUES (?, ?)";
+                try (PreparedStatement psUsuario = conexion.prepareStatement(consultaUsuario, Statement.RETURN_GENERATED_KEYS)) {
+                    psUsuario.setString(1, (String) campos.get("Usuario"));
+                    psUsuario.setString(2, (String) campos.get("Contraseña"));
+                    int rowsAffectedUsuario = psUsuario.executeUpdate();
+
+                    if (rowsAffectedUsuario <= 0) {
+                        return new ResponseEntity<>("No se pudo agregar el usuario", HttpStatus.BAD_REQUEST);
                     }
 
-                    try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-                        if (entry.getValue() instanceof Integer) {
-                            ps.setInt(1, (Integer) entry.getValue());
-                        } else if (entry.getValue() instanceof String) {
-                            ps.setString(1, (String) entry.getValue());
+                    ResultSet rs = psUsuario.getGeneratedKeys();
+                    if (rs.next()) {
+                        int idUsuarioGenerado = rs.getInt(1);
+                        setPerfilUsuarioParams(conexion, campos, true, idUsuarioGenerado, null);
+                    }
+                }
+            } else {
+                // Actualización de usuario existente
+                for (Map.Entry<String, Object> entry : campos.entrySet()) {
+                    if (entry.getValue() != null) {
+                        String consulta;
+                        if (entry.getKey().equals("Usuario") || entry.getKey().equals("Contraseña")) {
+                            consulta = "UPDATE usuario SET " + entry.getKey() + " = ? WHERE ID = (SELECT IDUsuario FROM perfilusuario WHERE Documento = ?)";
+                        } else {
+                            consulta = "UPDATE perfilusuario SET " + entry.getKey() + " = ? WHERE Documento = ?";
                         }
-                        ps.setInt(2, IDInstructor);
-                        int rowsAffected = ps.executeUpdate();
-                        if (rowsAffected <= 0) {
-                            return new ResponseEntity<>("No se pudo actualizar " + entry.getKey(), HttpStatus.BAD_REQUEST);
+
+                        try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
+                            if (entry.getValue() instanceof Integer) {
+                                ps.setInt(1, (Integer) entry.getValue());
+                            } else if (entry.getValue() instanceof String) {
+                                ps.setString(1, (String) entry.getValue());
+                            }
+                            ps.setInt(2, IDComp);
+                            int rowsAffected = ps.executeUpdate();
+                            if (rowsAffected <= 0) {
+                                return new ResponseEntity<>("No se pudo actualizar " + entry.getKey(), HttpStatus.BAD_REQUEST);
+                            }
                         }
                     }
                 }
             }
+
             transactionManager.commit(status);
-            return new ResponseEntity<>("Actualización exitosa", HttpStatus.OK);
+            return new ResponseEntity<>("Usuario " + (isNewUser ? "agregado" : "modificado") + " exitosamente", HttpStatus.OK);
         } catch (SQLException e) {
             transactionManager.rollback(status);
-            return new ResponseEntity<>("Error durante la actualización: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error durante la " + (isNewUser ? "inserción" : "modificación") + ": " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @RequestMapping(value = "AgregarUsuario")
-    public ResponseEntity<String> AgregarUsuario(@RequestBody Map<String, Object> usuarioModel){
-        Map<String, Object> campos = usuarioModel;
-        System.out.println(campos);
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        TransactionStatus status = transactionManager.getTransaction(def);
+    private void setPerfilUsuarioParams(Connection conexion, Map<String, Object> campos, boolean isNewUser, int idUsuarioGenerado, Integer IDComp) throws SQLException {
+        String consultaPerfil = "INSERT INTO perfilusuario (ID, IDUsuario, Documento, IDTipoDocumento, Nombres, Apellidos, IDGenero, Telefono, IDProgramaFormacion, NumeroFicha, IDJornadaFormacion, IDNivelFormacion, Area, IDSede, Correo, IDRol) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement psPerfil = conexion.prepareStatement(consultaPerfil)) {
+            psPerfil.setInt(1, (Integer) campos.get("ID"));
+            psPerfil.setInt(2, idUsuarioGenerado);
+            psPerfil.setInt(3, (Integer) campos.get("Documento"));
+            psPerfil.setInt(4, (Integer) campos.get("IDTipoDocumento"));
+            psPerfil.setString(5, (String) campos.get("Nombres"));
+            psPerfil.setString(6, (String) campos.get("Apellidos"));
+            psPerfil.setInt(7, (Integer) campos.get("IDGenero"));
+            psPerfil.setString(8, (String) campos.get("Telefono"));
+            psPerfil.setInt(9, (Integer) campos.get("IDProgramaFormacion"));
+            psPerfil.setInt(10, (Integer) campos.get("NumeroFicha"));
+            psPerfil.setInt(11, (Integer) campos.get("IDJornadaFormacion"));
+            psPerfil.setInt(12, (Integer) campos.get("IDNivelFormacion"));
+            psPerfil.setString(13, (String) campos.get("Area"));
+            psPerfil.setInt(14, (Integer) campos.get("IDSede"));
+            psPerfil.setString(15, (String) campos.get("Correo"));
+            psPerfil.setInt(16, (Integer) campos.get("IDRol"));
 
-        try (Connection conexion = dataSource.getConnection()) {
-            String consultaUsuario = "INSERT INTO usuario (Usuario, Contraseña) VALUES (?, ?)";
-            String consultaPerfil = """
-                                        INSERT INTO perfilusuario (ID, 
-                                                                   IDUsuario, 
-                                                                   Documento, 
-                                                                   IDTipoDocumento, 
-                                                                   Nombres, 
-                                                                   Apellidos, 
-                                                                   IDGenero, 
-                                                                   Telefono, 
-                                                                   IDProgramaFormacion, 
-                                                                   NumeroFicha, 
-                                                                   IDJornadaFormacion,
-                                                                   IDNivelFormacion,
-                                                                   Area, 
-                                                                   IDSede, 
-                                                                   Correo, 
-                                                                   IDRol) 
-                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""";
+            int rowsAffectedPerfil = psPerfil.executeUpdate();
 
-            try (PreparedStatement psUsuario = conexion.prepareStatement(consultaUsuario, Statement.RETURN_GENERATED_KEYS);
-                 PreparedStatement psPerfil = conexion.prepareStatement(consultaPerfil)) {
-
-                // Establecer los valores para el usuario
-                psUsuario.setString(1, (String) campos.get("Usuario"));
-                psUsuario.setString(2, (String) campos.get("Contraseña"));
-
-                // Ejecutar la consulta de usuario y obtener el ID generado
-                int rowsAffectedUsuario = psUsuario.executeUpdate();
-                ResultSet rs = psUsuario.getGeneratedKeys();
-                int idUsuarioGenerado = 0;
-                if (rs.next()) {
-                    idUsuarioGenerado = rs.getInt(1);
-                }
-
-                if (rowsAffectedUsuario <= 0 || idUsuarioGenerado == 0) {
-                    return new ResponseEntity<>("No se pudo agregar el usuario", HttpStatus.BAD_REQUEST);
-                }
-
-                // Establecer los valores para el perfil del usuario
-                psPerfil.setInt(1, (Integer) campos.get("ID"));
-                psPerfil.setInt(2, idUsuarioGenerado);
-                psPerfil.setInt(3, (Integer) campos.get("Documento"));
-                psPerfil.setInt(4, (Integer) campos.get("IDTipoDocumento"));
-                psPerfil.setString(5, (String) campos.get("Nombres"));
-                psPerfil.setString(6, (String) campos.get("Apellidos"));
-                psPerfil.setInt(7, (Integer) campos.get("IDGenero"));
-                psPerfil.setString(8, (String) campos.get("Telefono"));
-                psPerfil.setInt(9, (Integer) campos.get("IDProgramaFormacion"));
-                psPerfil.setInt(10, (Integer) campos.get("NumeroFicha"));
-                psPerfil.setInt(11, (Integer) campos.get("IDJornadaFormacion"));
-                psPerfil.setInt(12, (Integer) campos.get("IDNivelFormacion"));
-                psPerfil.setString(13, (String) campos.get("Area"));
-                psPerfil.setInt(14, (Integer) campos.get("IDSede"));
-                psPerfil.setString(15, (String) campos.get("Correo"));
-                psPerfil.setInt(16, (Integer) campos.get("IDRol"));
-
-                // Ejecutar la consulta de perfil
-                int rowsAffectedPerfil = psPerfil.executeUpdate();
-
-                if (rowsAffectedPerfil <= 0) {
-                    return new ResponseEntity<>("No se pudo agregar el perfil del usuario", HttpStatus.BAD_REQUEST);
-                }
+            if (rowsAffectedPerfil <= 0) {
+                throw new SQLException("No se pudo agregar el perfil del usuario");
             }
-
-            transactionManager.commit(status);
-            return new ResponseEntity<>("Usuario agregado exitosamente", HttpStatus.OK);
-        } catch (SQLException e) {
-            transactionManager.rollback(status);
-            return new ResponseEntity<>("Error durante la inserción: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 
     @RequestMapping(value = "EliminarUsuario/{DocumentoUsuario}", method = RequestMethod.DELETE)
     public ResponseEntity<String> EliminarUsuario(@PathVariable int DocumentoUsuario) {
@@ -250,6 +225,39 @@ public class PerfilUsuarioController {
             return new ResponseEntity<>("Error al eliminar el usuario: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public void validarDatosUsuario(Map<String, Object> datos) {
+        String[] camposRequeridos = {
+                "IDUsuario", "IDTipoDocumento", "Documento", "Nombres", "Apellidos", "IDGenero",
+                "Telefono", "IDProgramaFormacion", "NumeroFicha", "IDJornadaFormacion",
+                "IDNivelFormacion", "Area", "IDSede", "Correo", "IDRol"
+        };
+
+        for (String campo : camposRequeridos) {
+            if (!datos.containsKey(campo) || datos.get(campo) == null) {
+                throw new IllegalArgumentException("Falta el campo requerido: " + campo);
+            }
+        }
+    }
+
+    public void upsertUsuario(Map<String, Object> datos) {
+        try {
+            // Validar que todos los datos requeridos están presentes
+            validarDatosUsuario(datos);
+
+            // Ahora puedes proceder con la lógica de inserción o actualización en la base de datos
+            // tu lógica de base de datos aquí
+        } catch (IllegalArgumentException e) {
+            // Manejar la excepción de validación
+            System.err.println("Error de validación: " + e.getMessage());
+            // Aquí puedes lanzar una excepción, retornar un error o manejarlo según tu lógica de negocio
+        } catch (Exception e) {
+            // Manejar otras excepciones
+            System.err.println("Error al insertar o actualizar usuario: " + e.getMessage());
+        }
+    }
+
+
 
 }
 

@@ -200,47 +200,47 @@
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title value="Nombre"/>
+                      <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title value="Apellido"/>
+                      <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title value="Tipo de Documento"/>
+                      <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title value="Documento"/>
+                      <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title value="Programa formacion"/>
+                      <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title value="Nivel formacion"/>
+                      <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title value="Competencia"/>
+                      <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title value="Hora de Ingreso"/>
+                      <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title value="Estado de asistencia"/>
+                      <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>

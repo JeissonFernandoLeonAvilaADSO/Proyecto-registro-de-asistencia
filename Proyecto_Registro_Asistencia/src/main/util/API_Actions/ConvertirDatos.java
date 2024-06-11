@@ -48,9 +48,16 @@ public class ConvertirDatos {
 
     private Integer obtenerID(String endpoint, String tipoStr) {
         try {
-            String encodedTipoStr = URLEncoder.encode(tipoStr, StandardCharsets.UTF_8.toString());
+            // Reemplaza los espacios con un carácter especial
+            String tipoStrReplaced = tipoStr.replace(" ", "_");
+
+            // Codifica el texto reemplazado
+            String encodedTipoStr = URLEncoder.encode(tipoStrReplaced, StandardCharsets.UTF_8.toString());
+
+            // Construye la URL con el texto codificado
             URL url = new URL("http://localhost:8080/Conversion/" + endpoint + "/" + encodedTipoStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            System.out.println(url);
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
@@ -65,7 +72,11 @@ public class ConvertirDatos {
                     content.append(inputLine);
                 }
                 // Cierra las conexiones
-                return Integer.valueOf(content.toString());
+                String result = content.toString();
+                if (result.isEmpty() || "null".equals(result)) {
+                    return null;
+                }
+                return Integer.valueOf(result);
             }
         } catch (Exception e) {
             // Maneja la excepción apropiadamente (lanza o registra)

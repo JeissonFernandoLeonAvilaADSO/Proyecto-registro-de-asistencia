@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 import main.util.API_Actions.ConvertirDatos;
 import main.util.API_AdminActions.API_Admin_BuscarUsuario;
 import main.util.API_AdminActions.API_Admin_ModifUsuario;
-import main.AdminFrames.AdminActionScreens.*;
 import main.AdminFrames.AdminHomeScreen;
 import main.LoginFrame;
 import main.util.models.ComboBoxModels;
@@ -1292,6 +1291,7 @@ public void AditionalConfig(){
         ModificarTelefono.setEnabled(false);
         ModificarNivelFormacion.setEnabled(false);
         ModificarJornada.setEnabled(false);
+        ModificarFicha.setEnabled(false);
         ModificarProgramaFormacion.setEnabled(false);
         ModificarCorreo.setEnabled(false);
         ModificarRol.setEnabled(false);
@@ -1433,7 +1433,11 @@ public void AditionalConfig(){
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void CheckActivarJornadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarJornadaActionPerformed
-        // TODO add your handling code here:
+        if (CheckActivarJornada.isSelected()){
+            ModificarJornada.setEnabled(true);
+        } else {
+            ModificarJornada.setEnabled(false);
+        }
     }//GEN-LAST:event_CheckActivarJornadaActionPerformed
 
     private void ModificarJornadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarJornadaActionPerformed
@@ -1441,7 +1445,11 @@ public void AditionalConfig(){
     }//GEN-LAST:event_ModificarJornadaActionPerformed
 
     private void CheckActivarNivelFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarNivelFormacionActionPerformed
-        // TODO add your handling code here:
+        if (CheckActivarNivelFormacion.isSelected()){
+            ModificarNivelFormacion.setEnabled(true);
+        } else {
+            ModificarNivelFormacion.setEnabled(false);
+        }
     }//GEN-LAST:event_CheckActivarNivelFormacionActionPerformed
 
     private void ModificarNivelFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarNivelFormacionActionPerformed
@@ -1449,7 +1457,11 @@ public void AditionalConfig(){
     }//GEN-LAST:event_ModificarNivelFormacionActionPerformed
 
     private void CheckActivarFichaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarFichaActionPerformed
-        // TODO add your handling code here:
+        if (CheckActivarFicha.isSelected()){
+            ModificarFicha.setEnabled(true);
+        } else {
+            ModificarFicha.setEnabled(false);
+        }
     }//GEN-LAST:event_CheckActivarFichaActionPerformed
 
     private void ModificarProgramaFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarProgramaFormacionActionPerformed
@@ -1457,7 +1469,11 @@ public void AditionalConfig(){
     }//GEN-LAST:event_ModificarProgramaFormacionActionPerformed
 
     private void CheckActivarProgramaFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarProgramaFormacionActionPerformed
-        // TODO add your handling code here:
+        if (CheckActivarProgramaFormacion.isSelected()){
+            ModificarProgramaFormacion.setEnabled(true);
+        } else {
+            ModificarProgramaFormacion.setEnabled(false);
+        }
     }//GEN-LAST:event_CheckActivarProgramaFormacionActionPerformed
 
     private void CheckActivarCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarCorreoActionPerformed
@@ -1598,47 +1614,42 @@ public void AditionalConfig(){
      *
      */
     private void ConfirmarModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarModificarUsuarioActionPerformed
-        // Muestra un cuadro de diálogo de confirmación.
-        int respuesta = JOptionPane.showConfirmDialog(null, "Esta seguro que desea modificar los datos del instructor?", "Confirmacion" ,JOptionPane.YES_NO_CANCEL_OPTION);
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea modificar los datos del instructor?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
 
-        // Procesa la respuesta del usuario.
-        switch (respuesta){
+        switch (respuesta) {
             case JOptionPane.YES_OPTION:
-            // Si el usuario confirma, crea una instancia de DB_Admin_ModifInstructor y llama al método AdminModifPerfilUsuario con los datos del instructor.
-            API_Admin_ModifUsuario modifUsuario = new API_Admin_ModifUsuario();
-            ConvertirDatos convertirDatos = new ConvertirDatos();
-            Map<String, Object> usuarioPUTModel = new HashMap<>();
-            usuarioPUTModel.put("ID", CheckActivarCod.isSelected() ? Integer.valueOf(ModificarCod.getText()) : null);
-            usuarioPUTModel.put("Usuario", CheckActivarUsuario.isSelected() ? ModificarUsuario.getText() : null);
-            usuarioPUTModel.put("Contraseña", CheckActivarPass.isSelected() ? ModificarPass.getText() : null);
-            usuarioPUTModel.put("Documento", CheckActivarDoc.isSelected() ? Integer.valueOf(ModificarDocumento.getText()) : null);
-            usuarioPUTModel.put("IDTipoDocumento", CheckActivarTipoDoc.isSelected() ? convertirDatos.ObtenerIDTipoDoc(ModificarTipoDoc.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("Nombres", CheckActivarNombres.isSelected() ? ModificarNombre.getText() : null);
-            usuarioPUTModel.put("Apellidos", CheckActivarApellidos.isSelected() ? ModificarApellido.getText() : null);
-            usuarioPUTModel.put("IDGenero", CheckActivarGenero.isSelected() ? convertirDatos.ObtenerIDTipoGenero(ModificarGenero.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("Telefono", CheckActivarTelefono.isSelected() ? ModificarTelefono.getText() : null);
-            usuarioPUTModel.put("IDProgramaFormacion", CheckActivarProgramaFormacion.isSelected() ? convertirDatos.ObtenerIDProgramaFormacion(ModificarProgramaFormacion.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("IDNivelFormacion", CheckActivarJornada.isSelected() ? convertirDatos.ObtenerIDNivelFormacion(ModificarJornada.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("NumeroFicha", CheckActivarFicha.isSelected() ? Integer.valueOf(ModificarFicha.getText()) : null);
-            usuarioPUTModel.put("IDJornadaFormacion", CheckActivarNivelFormacion.isSelected() ? convertirDatos.ObtenerIDJornadaFormacion(ModificarNivelFormacion.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("Area", CheckActivarArea.isSelected() ?  ModificarArea.getText() : null);
-            usuarioPUTModel.put("Correo", CheckActivarCorreo.isSelected() ? ModificarCorreo.getText() : null);
-            usuarioPUTModel.put("IDRol", CheckActivarRol.isSelected() ? convertirDatos.ObtenerIDTipoRol(ModificarRol.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("IDSede", CheckActivarSede.isSelected() ? convertirDatos.ObtenerIDTipoSede(ModificarSede.getSelectedItem().toString()) : null);
+                API_Admin_ModifUsuario modifUsuario = new API_Admin_ModifUsuario();
+                ConvertirDatos convertirDatos = new ConvertirDatos();
+                Map<String, Object> usuarioPUTModel = new HashMap<>();
 
-            System.out.println(usuarioPUTModel);
-            modifUsuario.AdminModifPerfilUsuario(Integer.valueOf(IDInstructorField.getText()), usuarioPUTModel);
-            DesHabilitarCampos();
-            LimpiarCampos();
-            break;
+                usuarioPUTModel.put("ID", CheckActivarCod.isSelected() ? Integer.valueOf(ModificarCod.getText()) : null);
+                usuarioPUTModel.put("Usuario", CheckActivarUsuario.isSelected() ? ModificarUsuario.getText() : null);
+                usuarioPUTModel.put("Contraseña", CheckActivarPass.isSelected() ? ModificarPass.getText() : null);
+                usuarioPUTModel.put("Documento", CheckActivarDoc.isSelected() ? Integer.valueOf(ModificarDocumento.getText()) : null);
+                usuarioPUTModel.put("IDTipoDocumento", CheckActivarTipoDoc.isSelected() ? convertirDatos.ObtenerIDTipoDoc(ModificarTipoDoc.getSelectedItem().toString()) : null);
+                usuarioPUTModel.put("Nombres", CheckActivarNombres.isSelected() ? ModificarNombre.getText() : null);
+                usuarioPUTModel.put("Apellidos", CheckActivarApellidos.isSelected() ? ModificarApellido.getText() : null);
+                usuarioPUTModel.put("IDGenero", CheckActivarGenero.isSelected() ? convertirDatos.ObtenerIDTipoGenero(ModificarGenero.getSelectedItem().toString()) : null);
+                usuarioPUTModel.put("Telefono", CheckActivarTelefono.isSelected() ? ModificarTelefono.getText() : null);
+                usuarioPUTModel.put("IDProgramaFormacion", CheckActivarProgramaFormacion.isSelected() ? convertirDatos.ObtenerIDProgramaFormacion(ModificarProgramaFormacion.getSelectedItem().toString()) : null);
+                usuarioPUTModel.put("IDNivelFormacion", CheckActivarNivelFormacion.isSelected() ? convertirDatos.ObtenerIDNivelFormacion(ModificarNivelFormacion.getSelectedItem().toString()) : null);
+                usuarioPUTModel.put("NumeroFicha", CheckActivarFicha.isSelected() ? Integer.valueOf(ModificarFicha.getText()) : null);
+                usuarioPUTModel.put("IDJornadaFormacion", CheckActivarJornada.isSelected() ? convertirDatos.ObtenerIDJornadaFormacion(ModificarJornada.getSelectedItem().toString()) : null);
+                usuarioPUTModel.put("Area", CheckActivarArea.isSelected() ? ModificarArea.getText() : null);
+                usuarioPUTModel.put("Correo", CheckActivarCorreo.isSelected() ? ModificarCorreo.getText() : null);
+                usuarioPUTModel.put("IDRol", CheckActivarRol.isSelected() ? convertirDatos.ObtenerIDTipoRol(ModificarRol.getSelectedItem().toString()) : null);
+                usuarioPUTModel.put("IDSede", CheckActivarSede.isSelected() ? convertirDatos.ObtenerIDTipoSede(ModificarSede.getSelectedItem().toString()) : null);
+
+                System.out.println(usuarioPUTModel);
+                modifUsuario.AdminModifPerfilUsuario(Integer.valueOf(IDInstructorField.getText()), usuarioPUTModel);
+                DesHabilitarCampos();
+                LimpiarCampos();
+                break;
 
             case JOptionPane.NO_OPTION:
-            // Si el usuario rechaza, no se hace nada.
-            break;
-
             case JOptionPane.CANCEL_OPTION:
-            // Si el usuario cancela, no se hace nada.
-            break;
+                // No se hace nada si el usuario rechaza o cancela.
+                break;
         }
     }//GEN-LAST:event_ConfirmarModificarUsuarioActionPerformed
 

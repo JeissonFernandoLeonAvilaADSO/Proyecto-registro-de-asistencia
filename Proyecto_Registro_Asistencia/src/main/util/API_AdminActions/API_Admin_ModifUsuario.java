@@ -19,12 +19,12 @@ import org.json.JSONObject;
 public class API_Admin_ModifUsuario {
 
     public void AdminModifPerfilUsuario(Integer DocumentoComparativo, Map<String, Object> usuarioPUTModel) {
-        try {
-            URL url = new URL("http://localhost:8080/ModificarInstructor/" + DocumentoComparativo);
+try {
+            URL url = new URL("http://localhost:8080/ModificarUsuario/" + DocumentoComparativo);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("PUT");
-            conn.setRequestProperty("Content-Type", "application/json; UTF-8");
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
 
@@ -34,13 +34,14 @@ public class API_Admin_ModifUsuario {
                 os.write(input, 0, input.length);
             }
 
-            if (conn.getResponseCode() != 200) {
+            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 // Imprime el mensaje de error del servidor
                 if (conn.getErrorStream() != null) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        System.out.println(line);
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            System.out.println(line);
+                        }
                     }
                 }
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
