@@ -5,7 +5,9 @@
 package main.InstructorFrames;
 
 
+import javax.swing.table.DefaultTableModel;
 import main.InstructorFrames.InstructorGenFrames.ExcelGenFrame;
+import main.util.API_Actions.ListarAsitenciasInstructorAPI;
 
 /**
  *
@@ -17,9 +19,10 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
      * Creates new form InstructorHomeScreen
      */
 
-    
+    public DefaultTableModel modeloTabla;
     public InstructorHomeScreen() {
         initComponents();
+        AditionalConfig();
         this.setLocationRelativeTo(null);
     }
 
@@ -50,7 +53,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         GenerarNuevaAsistencia = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaAsis = new javax.swing.JTable();
+        TablaAsitencias = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -134,7 +137,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
 
         NombreUsuarioInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         NombreUsuarioInstructor.setForeground(new java.awt.Color(255, 255, 255));
-        NombreUsuarioInstructor.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        NombreUsuarioInstructor.setText("Enzy");
 
         jButton7.setBackground(new java.awt.Color(255, 208, 78));
         jButton7.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -241,9 +244,9 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
             }
         });
 
-        tablaAsis.setBackground(new java.awt.Color(255, 255, 255));
-        tablaAsis.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        tablaAsis.setModel(new javax.swing.table.DefaultTableModel(
+        TablaAsitencias.setBackground(new java.awt.Color(255, 255, 255));
+        TablaAsitencias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        TablaAsitencias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -282,10 +285,10 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                 "Ambiente", "Competencia", "Instructor", "Fecha", "Hora inicio", "Hora fin", "Tabla"
             }
         ));
-        tablaAsis.setName(""); // NOI18N
-        tablaAsis.setRowHeight(44);
-        tablaAsis.setSelectionBackground(new java.awt.Color(215, 213, 177));
-        jScrollPane1.setViewportView(tablaAsis);
+        TablaAsitencias.setName(""); // NOI18N
+        TablaAsitencias.setRowHeight(44);
+        TablaAsitencias.setSelectionBackground(new java.awt.Color(215, 213, 177));
+        jScrollPane1.setViewportView(TablaAsitencias);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -342,6 +345,16 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    
+
+    public void AditionalConfig(){
+        ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
+        DefaultTableModel modeloTabla = listarAsis.llenarTablaAsistencias(NombreUsuarioInstructor.getText());
+        TablaAsitencias.setModel(modeloTabla);
+    }
+    
     private void MenuBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuBusquedaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_MenuBusquedaActionPerformed
@@ -424,6 +437,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
     private javax.swing.JButton MenuSubirAsis;
     private javax.swing.JButton MenuUsuario;
     private javax.swing.JLabel NombreUsuarioInstructor;
+    private javax.swing.JTable TablaAsitencias;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
@@ -434,6 +448,5 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable tablaAsis;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,28 +6,37 @@ package main.InstructorFrames.InstructorGenFrames;
 
 
 
-import java.awt.Color;
-import java.awt.Component;
+
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.Timestamp;
+import java.io.IOException;
+
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
+
 import javax.swing.table.DefaultTableModel;
+
+import main.util.InstructorMethods.InstructorAsisDocs.UploadFileAPI;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import main.InstructorFrames.InstructorHomeScreen;
+import main.util.API_Actions.ConvertirDatos;
 import main.util.API_AdminActions.API_Admin_BuscarUsuario;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
+
+import main.util.models.ComboBoxModels;
+
 
 /**
  *
@@ -59,7 +68,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        InstructorNombre = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         HoraFin = new javax.swing.JLabel();
@@ -71,13 +80,19 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         FinalizarAsis = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        Competencia = new javax.swing.JLabel();
+        Competencia = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        Ambiente = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        Ficha = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        ProgramaFormacionCB = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Instructor:");
 
-        jLabel2.setText("XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        InstructorNombre.setText("Enzy");
 
         jLabel3.setText("Fecha Fin:");
 
@@ -154,9 +169,15 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Area:");
+        jLabel5.setText("Competencia");
 
-        Competencia.setText("Algoritmia");
+        jLabel6.setText("Ambiente");
+
+        jLabel7.setText("Ficha");
+
+        jLabel8.setText("Programa de Formacion");
+
+        ProgramaFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -164,41 +185,54 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(IngresoCodAprendiz))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(Competencia)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(HoraFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(HoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 402, Short.MAX_VALUE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(RegistrarAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
-                            .addComponent(FinalizarAsis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Ambiente, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Competencia, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                                .addComponent(InstructorNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(HoraFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(HoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(95, 95, 95)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Ficha, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(115, 115, 115)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(FinalizarAsis, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(IngresoCodAprendiz, javax.swing.GroupLayout.PREFERRED_SIZE, 1071, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(RegistrarAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -207,28 +241,45 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(HoraInicio)
-                            .addComponent(jButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3)
-                                .addComponent(HoraFin))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel5)
-                                .addComponent(Competencia))))
-                    .addComponent(FinalizarAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(InstructorNombre))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(Competencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(HoraInicio))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(HoraFin))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(Ambiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(FinalizarAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(Ficha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))))
+                .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IngresoCodAprendiz)
                     .addComponent(RegistrarAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(30, 30, 30))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -249,13 +300,28 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     public void modif(){
         workbook = new XSSFWorkbook(); // O cualquier otra inicialización necesaria
         sheet = workbook.createSheet("Asistencia");
-        modeloTabla = new DefaultTableModel();
         modeloTabla = new DefaultTableModel(
             new Object[][] {},
             new String[] {
                 "Nombres", "Apellidos", "Tipo Documento", "Documento", "Programa Formación", "Nivel Formación", "Curso", "Fecha", "Estado"
             }
         );
+        ComboBoxModels ComboBoxModels = new ComboBoxModels();
+        
+        try {
+            List<String> tiposProgramaFormacion = ComboBoxModels.BoxProgramaFormacionModel();
+            if (tiposProgramaFormacion == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando las sedes de la API");
+            } else {
+                tiposProgramaFormacion.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> ProgramaFormacionBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposProgramaFormacion));
+                ProgramaFormacionCB.setModel(ProgramaFormacionBoxModel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         this.setLocationRelativeTo(null);
         IngresoCodAprendiz.requestFocusInWindow();
         tablaAsis.setModel(modeloTabla);
@@ -336,7 +402,17 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                     });
                     IngresoCodAprendiz.setText("");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Aprendiz no encontrado.");
+                    int respuesta = JOptionPane.showConfirmDialog(null, "No se han encontrado coincidencias, desea registrar al Aprendiz?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
+                    
+                    switch (respuesta) {
+                        case JOptionPane.YES_OPTION:
+                            InstructorRegAprendiz regAprendiz = new InstructorRegAprendiz();
+                            regAprendiz.setVisible(true);
+                            
+                        case JOptionPane.NO_OPTION:break;
+                        case JOptionPane.CANCEL_OPTION:break;
+                        case JOptionPane.CLOSED_OPTION:break;
+                    }
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error al conectar con la API.");
@@ -350,9 +426,19 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     
     
     private void FinalizarAsisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FinalizarAsisActionPerformed
+       Workbook workbook = null;
+
         try {
+            ConvertirDatos convertirDatos = new ConvertirDatos();
+            Map<String, Object> params = new HashMap<>();
+            params.put("Instructor", InstructorNombre.getText());
+            params.put("Competencia", Competencia.getText());
+            params.put("Ambiente", Ambiente.getText());
+            params.put("Ficha", Integer.valueOf(Ficha.getText()));
+            params.put("IDProgramaFormacion", convertirDatos.ObtenerIDProgramaFormacion(ProgramaFormacionCB.getSelectedItem().toString()));
+            System.out.println(params);
             workbook = new XSSFWorkbook();
-            sheet = workbook.createSheet("Asistencia");
+            Sheet sheet = workbook.createSheet("Asistencia");
 
             // Crear encabezados
             Row headerRow = sheet.createRow(0);
@@ -372,23 +458,34 @@ public class ExcelGenFrame extends javax.swing.JFrame {
 
             // Guardar el archivo en el sistema
             String filePath = "asistencia.xlsx";
-            FileOutputStream fileOut = new FileOutputStream(filePath);
-            workbook.write(fileOut);
-            fileOut.close();
+            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+                workbook.write(fileOut);
+            }
 
-            // Abrir el archivo guardado
+            // Enviar el archivo a la API
             File file = new File(filePath);
+            UploadFileAPI uploadFileAPI = new UploadFileAPI();
+            uploadFileAPI.uploadFileAPI(file, params);
+
+            // Abrir el archivo guardado (opcional)
             if (Desktop.isDesktopSupported() && file.exists()) {
                 Desktop.getDesktop().open(file);
             }
 
-            JOptionPane.showMessageDialog(this, "Archivo Excel generado exitosamente.");
+            JOptionPane.showMessageDialog(null, "Archivo Excel generado y subido exitosamente.");
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al generar el archivo Excel.");
+            JOptionPane.showMessageDialog(null, "Error al generar el archivo Excel.");
             e.printStackTrace();
+        } finally {
+            if (workbook != null) {
+                try {
+                    workbook.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-       
     }//GEN-LAST:event_FinalizarAsisActionPerformed
 
 
@@ -429,18 +526,24 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Competencia;
+    private javax.swing.JTextField Ambiente;
+    private javax.swing.JTextField Competencia;
+    private javax.swing.JTextField Ficha;
     private javax.swing.JButton FinalizarAsis;
     private javax.swing.JLabel HoraFin;
     private javax.swing.JLabel HoraInicio;
     private javax.swing.JTextField IngresoCodAprendiz;
+    private javax.swing.JLabel InstructorNombre;
+    private javax.swing.JComboBox<String> ProgramaFormacionCB;
     private javax.swing.JButton RegistrarAsistencia;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaAsis;
