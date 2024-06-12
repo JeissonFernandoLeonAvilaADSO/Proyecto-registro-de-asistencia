@@ -30,6 +30,7 @@ public class LoginFrame extends javax.swing.JFrame {
     /**
      * Creates new form LoginFrame
      */
+
     public LoginFrame() {
         initComponents();
         ModifComponent();

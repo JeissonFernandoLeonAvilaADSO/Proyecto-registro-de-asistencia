@@ -6,8 +6,11 @@ package main.InstructorFrames;
 
 
 import javax.swing.table.DefaultTableModel;
+
 import main.InstructorFrames.InstructorGenFrames.ExcelGenFrame;
+import main.LoginFrame;
 import main.util.API_Actions.ListarAsitenciasInstructorAPI;
+import main.util.models.UserSession;
 
 /**
  *
@@ -19,7 +22,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
      * Creates new form InstructorHomeScreen
      */
 
-    public DefaultTableModel modeloTabla;
+    
     public InstructorHomeScreen() {
         initComponents();
         AditionalConfig();
@@ -137,7 +140,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
 
         NombreUsuarioInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         NombreUsuarioInstructor.setForeground(new java.awt.Color(255, 255, 255));
-        NombreUsuarioInstructor.setText("Enzy");
+        NombreUsuarioInstructor.setText("XXXXXXXXXXXXXXXXXX");
 
         jButton7.setBackground(new java.awt.Color(255, 208, 78));
         jButton7.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -350,9 +353,12 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
     
 
     public void AditionalConfig(){
+        NombreUsuarioInstructor.setText(UserSession.getInstance().getNombres() + " " + UserSession.getInstance().getApellidos());
         ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
-        DefaultTableModel modeloTabla = listarAsis.llenarTablaAsistencias(NombreUsuarioInstructor.getText());
+        DefaultTableModel modeloTabla = listarAsis.llenarTablaAsistencias(UserSession.getInstance().getNombres());
         TablaAsitencias.setModel(modeloTabla);
+        
+
     }
     
     private void MenuBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuBusquedaActionPerformed
@@ -380,7 +386,10 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_GenerarNuevaAsistenciaActionPerformed
 
     private void CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionActionPerformed
-        // TODO add your handling code here:
+       LoginFrame login = new LoginFrame();
+       login.setVisible(true);
+       this.dispose();
+       UserSession.getInstance().clearSession();
     }//GEN-LAST:event_CerrarSesionActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

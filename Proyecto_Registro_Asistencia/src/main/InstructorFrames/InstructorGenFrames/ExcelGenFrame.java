@@ -36,6 +36,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
 
 import main.util.models.ComboBoxModels;
+import main.util.models.UserSession;
 
 
 /**
@@ -92,7 +93,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Instructor:");
 
-        InstructorNombre.setText("Enzy");
+        InstructorNombre.setText("XXXXXXXXXXXXXXXXXX");
 
         jLabel3.setText("Fecha Fin:");
 
@@ -298,6 +299,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
 
     
     public void modif(){
+        InstructorNombre.setText(UserSession.getInstance().getNombres());
         workbook = new XSSFWorkbook(); // O cualquier otra inicialización necesaria
         sheet = workbook.createSheet("Asistencia");
         modeloTabla = new DefaultTableModel(

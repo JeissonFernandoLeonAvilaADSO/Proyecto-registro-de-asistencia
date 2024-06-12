@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import main.util.models.UserSession;
 
 
 /**
@@ -41,6 +42,12 @@ public class API_Login_Instructor {
 
                     ObjectMapper mapper = new ObjectMapper();
                     instructorCred = mapper.readValue(response.toString(), new TypeReference<Map<String, Object>>() {});
+                    UserSession userSession = UserSession.getInstance();
+                    userSession.setID((Integer) instructorCred.get("ID"));
+                    userSession.setDocumento((Integer) instructorCred.get("documento"));
+                    userSession.setNombres((String) instructorCred.get("nombres"));
+                    userSession.setApellidos((String) instructorCred.get("apellidos"));
+                    System.out.println(instructorCred);
                     return true;
                 }
             } else {

@@ -38,24 +38,15 @@ public class LoginAPI {
 
             if (documento != null) {
                 String consulta2 = """
-                        SELECT perfilusuario.Documento, perfilusuario.Nombres, perfilusuario.Apellidos, perfilusuario.Telefono, perfilusuario.Area, TipoDocumento.TipoDocumento, Genero.TiposGeneros, Rol.TipoRol, Sede.CentroFormacion 
+                        SELECT perfilusuario.ID, perfilusuario.Documento, perfilusuario.Nombres, perfilusuario.Apellidos 
                         FROM perfilusuario
-                        INNER JOIN TipoDocumento ON perfilusuario.IDTipoDocumento = TipoDocumento.ID
-                        INNER JOIN Genero ON perfilusuario.IDGenero = Genero.ID
-                        INNER JOIN Rol ON perfilusuario.IDRol = Rol.ID
-                        INNER JOIN Sede ON perfilusuario.IDSede = Sede.ID
                         WHERE perfilusuario.Documento = ?""";
 
                 jdbcTemplate.queryForObject(consulta2, new Object[]{documento}, (rs, rowNum) -> {
+                    response.put("ID", rs.getInt("ID"));
                     response.put("documento", rs.getInt("Documento"));
-                    response.put("tipoDocumento", rs.getString("TipoDocumento"));
                     response.put("nombres", rs.getString("Nombres"));
                     response.put("apellidos", rs.getString("Apellidos"));
-                    response.put("genero", rs.getString("TiposGeneros"));
-                    response.put("telefono", rs.getInt("Telefono"));
-                    response.put("area", rs.getString("Area"));
-                    response.put("rol", rs.getString("TipoRol"));
-                    response.put("sede", rs.getString("CentroFormacion"));
                     return null; // Este valor no se utiliza
                 });
                 return new ResponseEntity<>(response, HttpStatus.OK);
