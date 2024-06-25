@@ -5,11 +5,14 @@
 package main.InstructorFrames;
 
 
+import javax.swing.JCheckBox;
 import javax.swing.table.DefaultTableModel;
 
 import main.InstructorFrames.InstructorGenFrames.ExcelGenFrame;
 import main.LoginFrame;
 import main.util.API_Actions.ListarAsitenciasInstructorAPI;
+import main.util.models.ButtonEditor;
+import main.util.models.ButtonRenderer;
 import main.util.models.UserSession;
 
 /**
@@ -218,11 +221,10 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 34, 64));
-        jLabel2.setText("Bienvenido al sistema de");
+        jLabel2.setText("Bienvenido al sistema de registro de asistencia");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 34, 64));
-        jLabel3.setText("registro de asistencia");
 
         GenerarNuevaAsistencia.setBackground(new java.awt.Color(57, 169, 0));
         GenerarNuevaAsistencia.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -299,15 +301,8 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addComponent(jLabel3)))
-                        .addGap(533, 533, 533))
+                .addGap(150, 150, 150)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1117, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -315,16 +310,21 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                                 .addComponent(GenerarNuevaAsistencia)
                                 .addGap(42, 42, 42)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(57, 57, 57))))
+                        .addGap(57, 57, 57))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(445, 445, 445))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(92, 92, 92)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(GenerarNuevaAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -357,8 +357,8 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
         DefaultTableModel modeloTabla = listarAsis.llenarTablaAsistencias(UserSession.getInstance().getNombres());
         TablaAsitencias.setModel(modeloTabla);
-        
-
+        TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+        TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
     }
     
     private void MenuBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuBusquedaActionPerformed

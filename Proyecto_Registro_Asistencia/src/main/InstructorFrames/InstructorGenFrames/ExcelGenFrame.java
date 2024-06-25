@@ -7,6 +7,7 @@ package main.InstructorFrames.InstructorGenFrames;
 
 
 
+import java.awt.Color;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,6 +38,14 @@ import org.json.JSONObject;
 
 import main.util.models.ComboBoxModels;
 import main.util.models.UserSession;
+import org.apache.poi.ss.usermodel.ComparisonOperator;
+import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.PatternFormatting;
+import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFPatternFormatting;
 
 
 /**
@@ -102,6 +111,12 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         HoraFin.setText("XX:XX");
 
         HoraInicio.setText("XX:XX");
+
+        IngresoCodAprendiz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IngresoCodAprendizActionPerformed(evt);
+            }
+        });
 
         RegistrarAsistencia.setText("Registrar Asistencia");
         RegistrarAsistencia.addActionListener(new java.awt.event.ActionListener() {
@@ -345,7 +360,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     
     public String HoraTardia(){
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, 1);
+        calendar.add(Calendar.HOUR_OF_DAY, 1/2);
         Date fechaEn5Horas = calendar.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
         String horaFin = sdf.format(fechaEn5Horas);
@@ -428,7 +443,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     
     
     private void FinalizarAsisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FinalizarAsisActionPerformed
-       Workbook workbook = null;
+        Workbook workbook = null;
 
         try {
             ConvertirDatos convertirDatos = new ConvertirDatos();
@@ -458,6 +473,45 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                 }
             }
 
+            // Crear formato condicional
+            SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
+
+            // Definir un color verde claro personalizado
+            XSSFColor lightGreen = new XSSFColor(new Color(198, 224, 180), null);
+
+            // Definir un naranja personalizado para "Tarde"
+            XSSFColor orange = new XSSFColor(new Color(244, 176, 132), null);
+
+            // Definir un rojo personalizado para "Inasistencia"
+            XSSFColor red = new XSSFColor(new Color(255, 71, 71), null);
+
+            // Condición para "A tiempo" (verde claro)
+            ConditionalFormattingRule ruleAtempo = sheetCF.createConditionalFormattingRule(ComparisonOperator.EQUAL, "\"A tiempo\"");
+            PatternFormatting fillAtempo = ruleAtempo.createPatternFormatting();
+            ((XSSFPatternFormatting) fillAtempo).setFillBackgroundColor(lightGreen);
+            fillAtempo.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
+
+            // Condición para "Tarde" (naranja)
+            ConditionalFormattingRule ruleTarde = sheetCF.createConditionalFormattingRule(ComparisonOperator.EQUAL, "\"Tarde\"");
+            PatternFormatting fillTarde = ruleTarde.createPatternFormatting();
+            ((XSSFPatternFormatting) fillTarde).setFillBackgroundColor(orange);
+            fillTarde.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
+
+            // Condición para "Inasistencia" (rojo)
+            ConditionalFormattingRule ruleInasistencia = sheetCF.createConditionalFormattingRule(ComparisonOperator.EQUAL, "\"Inasistencia\"");
+            PatternFormatting fillInasistencia = ruleInasistencia.createPatternFormatting();
+            ((XSSFPatternFormatting) fillInasistencia).setFillBackgroundColor(red);
+            fillInasistencia.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
+
+            // Rango de celdas a las que se aplicarán las reglas de formato condicional
+            CellRangeAddress[] regions = {
+                CellRangeAddress.valueOf("I2:I" + (modeloTabla.getRowCount() + 1)) // Columna "Estado"
+            };
+
+            // Aplicar formato condicional usando un array de reglas
+            ConditionalFormattingRule[] rules = {ruleAtempo, ruleTarde, ruleInasistencia};
+            sheetCF.addConditionalFormatting(regions, rules);
+            
             // Guardar el archivo en el sistema
             String filePath = "asistencia.xlsx";
             try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
@@ -489,6 +543,10 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_FinalizarAsisActionPerformed
+
+    private void IngresoCodAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresoCodAprendizActionPerformed
+        RegistrarAsistencia.doClick();
+    }//GEN-LAST:event_IngresoCodAprendizActionPerformed
 
 
 

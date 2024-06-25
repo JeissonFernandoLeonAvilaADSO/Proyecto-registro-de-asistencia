@@ -2,7 +2,9 @@ package com.proyectoasistencia.prasis.API;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -97,21 +99,47 @@ public class ExcelManagerAPI {
     }
 
     @GetMapping("/ListarAsistencias")
-    public List<Map<String, Object>> listarAsistencias(@RequestParam String instructor) {
-        String sqlAsistencia = "SELECT * FROM registroasistencias WHERE Instructor = ?";
-        return jdbcTemplate.query(sqlAsistencia, new Object[]{instructor}, new RowMapper<Map<String, Object>>() {
-            @Override
-            public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Map<String, Object> asistencia = new HashMap<>();
-                asistencia.put("instructor", rs.getString("Instructor"));
-                asistencia.put("competencia", rs.getString("Competencia"));
-                asistencia.put("ambiente", rs.getString("Ambiente"));
-                asistencia.put("ficha", rs.getInt("Ficha"));
-                asistencia.put("IDProgramaFormacion", rs.getInt("IDProgramaFormacion"));
-                asistencia.put("fecha", rs.getDate("Fecha"));
-                asistencia.put("IDArchivo", rs.getInt("IDArchivo"));
-                return asistencia;
-            }
-        });
+    public ResponseEntity<List<Map<String, Object>>> listarAsistencias(@RequestParam String instructor) {
+        try {
+            String sqlAsistencia = """
+                                SELECT * FROM registroasistencias 
+                                    INNER JOIN asistencia ON asistencia.ID = registroasistencias.IDArchivo
+                                    WHERE registroasistencias.Instructor = ?""";
+            List<Map<String, Object>> asistencias = jdbcTemplate.query(sqlAsistencia, new Object[]{instructor}, new RowMapper<Map<String, Object>>() {
+                @Override
+                public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Map<String, Object> asistencia = new HashMap<>();
+                    asistencia.put("instructor", rs.getString("Instructor"));
+                    asistencia.put("competencia", rs.getString("Competencia"));
+                    asistencia.put("ambiente", rs.getString("Ambiente"));
+                    asistencia.put("ficha", rs.getInt("Ficha"));
+                    asistencia.put("IDProgramaFormacion", rs.getInt("IDProgramaFormacion"));
+                    asistencia.put("fecha", rs.getDate("Fecha"));
+                    asistencia.put("IDArchivo", rs.getInt("IDArchivo")); // Asegúrate de que sea un int y no un Blob
+                    return asistencia;
+                }
+            });
+            return new ResponseEntity<>(asistencias, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace(); // Esto imprimirá el error en los logs del servidor
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+    @GetMapping("/descargarArchivo/{id}")
+    public ResponseEntity<byte[]> descargarArchivo(@PathVariable int id) {
+        String sql = "SELECT archivo_excel FROM asistencia WHERE ID = ?";
+        byte[] archivoExcel = jdbcTemplate.queryForObject(sql, new Object[]{id}, byte[].class);
+
+        if (archivoExcel == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "asistencia_" + id + ".xlsx");
+
+        return new ResponseEntity<>(archivoExcel, headers, HttpStatus.OK);
+    }
+
 }

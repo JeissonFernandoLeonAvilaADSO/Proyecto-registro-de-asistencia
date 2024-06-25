@@ -4,25 +4,32 @@
  */
 package main.util.API_Actions;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
 import main.util.models.ComboBoxModels;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 /**
  *
  * @author Propietario
  */
 public class ListarAsitenciasInstructorAPI {
-public List<Map<String, Object>> obtenerAsistencias(String instructor) throws Exception {
+    public List<Map<String, Object>> obtenerAsistencias(String instructor) throws Exception {
         String urlString = "http://localhost:8080/Archives/ListarAsistencias?instructor=" + instructor;
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -53,7 +60,7 @@ public List<Map<String, Object>> obtenerAsistencias(String instructor) throws Ex
         return asistencias;
     }
 
-public DefaultTableModel llenarTablaAsistencias(String instructor) {
+    public DefaultTableModel llenarTablaAsistencias(String instructor) {
         String[] columnNames = {"Instructor", "Competencia", "Ambiente", "Ficha", "Programa Formación", "Fecha", "Archivo"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
         ComboBoxModels Programas = new ComboBoxModels();
@@ -66,9 +73,20 @@ public DefaultTableModel llenarTablaAsistencias(String instructor) {
                 rowData[1] = asistencia.get("competencia");
                 rowData[2] = asistencia.get("ambiente");
                 rowData[3] = asistencia.get("ficha");
-                rowData[4] = Programas.BoxProgramaFormacionModel().get((Integer) asistencia.get("IDProgramaFormacion") - 1); // "IDProgramaFormacion"  "Programa Formación"
+                rowData[4] = Programas.BoxProgramaFormacionModel().get((Integer) asistencia.get("IDProgramaFormacion") - 1);
                 rowData[5] = asistencia.get("fecha");
-                rowData[6] = asistencia.get("IDArchivo"); // "IDArchivo"  "Archivo"
+                
+                JButton downloadButton = new JButton("Abrir");
+                downloadButton.addActionListener(e -> {
+                    try {
+                        int archivoId = (Integer) asistencia.get("IDArchivo");
+                        abrirArchivoExcel(archivoId);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
+                rowData[6] = downloadButton;
+
                 tableModel.addRow(rowData);
             }
         } catch (Exception e) {
@@ -78,4 +96,22 @@ public DefaultTableModel llenarTablaAsistencias(String instructor) {
         return tableModel;
     }
 
+    private void abrirArchivoExcel(int archivoId) throws IOException {
+        String urlString = "http://localhost:8080/Archives/descargarArchivo/" + archivoId;
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Accept", "application/octet-stream");
+
+        if (conn.getResponseCode() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+        }
+
+        try (InputStream inputStream = conn.getInputStream()) {
+            Files.copy(inputStream, Paths.get("asistencia_" + archivoId + ".xlsx"), StandardCopyOption.REPLACE_EXISTING);
+            Desktop.getDesktop().open(new File("asistencia_" + archivoId + ".xlsx"));
+        } finally {
+            conn.disconnect();
+        }
+    }
 }
