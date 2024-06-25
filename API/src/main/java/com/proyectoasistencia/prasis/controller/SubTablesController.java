@@ -167,4 +167,42 @@ public class SubTablesController {
         }
         return null;
     }
+
+    @RequestMapping(value = "AmbientesData")
+    public List<String> getAmbientes(){
+        String consulta = "SELECT Ambiente from ambientes";
+        try {
+            return jdbcTemplate.query(consulta, new RowMapper<String>() {
+                @Override
+                public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    return rs.getString("Ambiente");
+                }
+            });
+        } catch (Exception e) {
+            // Imprime la traza de la pila de la excepción en caso de que ocurra un error.
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "FichasData")
+    public List<String> getFichas(){
+        String consulta = "SELECT NumeroFicha from fichas";
+        try {
+            return jdbcTemplate.query(consulta, new RowMapper<String>() {
+                @Override
+                public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    return rs.getString("NumeroFicha");
+                }
+            });
+        } catch (Exception e) {
+            // Imprime la traza de la pila de la excepción en caso de que ocurra un error.
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
 }

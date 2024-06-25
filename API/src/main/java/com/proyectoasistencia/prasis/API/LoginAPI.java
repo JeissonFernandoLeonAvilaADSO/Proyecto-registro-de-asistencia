@@ -27,7 +27,7 @@ public class LoginAPI {
 
     @RequestMapping(value = "Registro/Instructor/{User}/{Pass}")
     public ResponseEntity<Map<String, Object>> LoginInstructor(@PathVariable String User, @PathVariable String Pass) {
-        String consulta1 = "SELECT Documento FROM perfilusuario INNER JOIN usuario ON perfilusuario.IDUsuario = usuario.ID WHERE usuario.Usuario = ? AND usuario.Contraseña = ?";
+        String consulta1 = "SELECT Documento FROM perfilusuario INNER JOIN usuario ON perfilusuario.IDUsuario = usuario.ID WHERE usuario.Usuario = ? AND usuario.Contraseña = ? AND perfilusuario.IDRol = 3";
         Map<String, Object> response = new HashMap<>();
 
         try {

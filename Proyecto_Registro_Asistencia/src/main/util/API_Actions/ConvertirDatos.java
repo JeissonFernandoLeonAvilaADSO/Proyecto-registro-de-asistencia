@@ -10,6 +10,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import org.json.JSONArray;
 
 
 /**
@@ -37,6 +40,10 @@ public class ConvertirDatos {
     public Integer ObtenerIDProgramaFormacion(String programaFormacionStr) {
         return obtenerID("ProgramaFormacion_Str_to_ID", programaFormacionStr);
     }
+    
+    public Integer ObtenerIDAmbiente(String AmbienteStr) {
+        return obtenerID("Ambiente_Str_to_ID", AmbienteStr);
+    }
 
     public Integer ObtenerIDNivelFormacion(String nivelFormacionStr) {
         return obtenerID("NivelFormacion_Str_to_ID", nivelFormacionStr);
@@ -44,6 +51,10 @@ public class ConvertirDatos {
 
     public Integer ObtenerIDJornadaFormacion(String jornadaFormacionStr) {
         return obtenerID("JornadaFormacion_Str_to_ID", jornadaFormacionStr);
+    }
+    
+    public Integer ObtenerIDFicha(Integer ficha) throws Exception {
+        return obtenerIDFichaFromAPI(ficha);
     }
 
     private Integer obtenerID(String endpoint, String tipoStr) {
@@ -53,7 +64,9 @@ public class ConvertirDatos {
 
             // Codifica el texto reemplazado
             String encodedTipoStr = URLEncoder.encode(tipoStrReplaced, StandardCharsets.UTF_8.toString());
-
+            
+            System.out.println(endpoint);
+            System.out.println(tipoStr);
             // Construye la URL con el texto codificado
             URL url = new URL("http://localhost:8080/Conversion/" + endpoint + "/" + encodedTipoStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -84,4 +97,61 @@ public class ConvertirDatos {
         }
         return null;
     }
+    
+    private Integer obtenerIDFichaFromAPI(Integer ficha) throws Exception {
+        URL url = new URL("http://localhost:8080/Conversion/Ficha_Int_to_ID/" + ficha);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Accept", "application/json");
+
+        if (conn.getResponseCode() != 200) {
+            throw new RuntimeException("Failed: HTTP error code: " + conn.getResponseCode());
+        }
+
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+            StringBuilder content = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+
+            String result = content.toString();
+            if (result.isEmpty() || "null".equals(result)) {
+                return null;
+            }
+            return Integer.valueOf(result);
+        }
+    }
+    
+    public List<Integer> ObtenerFichasPorPrograma(Integer idPrograma) throws Exception {
+        return obtenerFichasFromAPI(idPrograma);
+    }
+
+    private List<Integer> obtenerFichasFromAPI(Integer idPrograma) throws Exception {
+        URL url = new URL("http://localhost:8080/Conversion/FichasPorPrograma/" + idPrograma);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Accept", "application/json");
+
+        if (conn.getResponseCode() != 200) {
+            throw new RuntimeException("Failed: HTTP error code: " + conn.getResponseCode());
+        }
+
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+            StringBuilder content = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+
+            String result = content.toString();
+            JSONArray jsonArray = new JSONArray(result);
+            List<Integer> fichasList = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                fichasList.add(jsonArray.getInt(i));
+            }
+            return fichasList;
+        }
+    }
 }
+

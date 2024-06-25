@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
@@ -92,11 +93,11 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         Competencia = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        Ambiente = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        Ficha = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         ProgramaFormacionCB = new javax.swing.JComboBox<>();
+        FichaCB = new javax.swing.JComboBox<>();
+        AmbienteCB = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -194,6 +195,16 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         jLabel8.setText("Programa de Formacion");
 
         ProgramaFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ProgramaFormacionCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProgramaFormacionCBActionPerformed(evt);
+            }
+        });
+
+        FichaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        FichaCB.setEnabled(false);
+
+        AmbienteCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -208,7 +219,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel6)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(Ambiente, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel5)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -228,15 +239,13 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(HoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(95, 95, 95)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Ficha, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ProgramaFormacionCB, 0, 181, Short.MAX_VALUE)
+                            .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(115, 115, 115)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(FinalizarAsis, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -254,7 +263,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,26 +278,24 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
-                                    .addComponent(HoraInicio))
+                                    .addComponent(HoraInicio)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(ProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel8)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel3)
-                                    .addComponent(HoraFin))))
+                                    .addComponent(HoraFin)
+                                    .addComponent(jLabel7)
+                                    .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(Ambiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(FinalizarAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel7)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(Ficha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))))
+                        .addComponent(FinalizarAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IngresoCodAprendiz)
@@ -328,7 +335,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         try {
             List<String> tiposProgramaFormacion = ComboBoxModels.BoxProgramaFormacionModel();
             if (tiposProgramaFormacion == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando las sedes de la API");
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los programas de formacion de la API");
             } else {
                 tiposProgramaFormacion.add(0, "Seleccionar...");
                 DefaultComboBoxModel<String> ProgramaFormacionBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposProgramaFormacion));
@@ -338,6 +345,22 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        try {
+            List<String> tiposAmbientes = ComboBoxModels.BoxAmbientesModel();
+            if (tiposAmbientes == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los Ambientes de la API");
+            } else {
+                tiposAmbientes.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> AmbientesBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposAmbientes));
+                AmbienteCB.setModel(AmbientesBoxModel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+
         
         this.setLocationRelativeTo(null);
         IngresoCodAprendiz.requestFocusInWindow();
@@ -393,21 +416,36 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             try {
                 JSONObject aprendizData = buscarUsuario.AdminBuscarUsuario(codigoAprendiz);
                 if (aprendizData != null) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-                    Date horaActual = sdf.parse(HoraActual());
-                    Date horaTardia = sdf.parse(HoraTardia());
-                    Date horaInasistencia = sdf.parse(HoraInasistencia());
-
-                    String estado;
-                    if (horaActual.before(horaTardia)) {
-                        estado = "A tiempo";
-                    } else if (horaActual.before(horaInasistencia)) {
-                        estado = "Tarde";
-                    } else {
-                        estado = "Inasistencia";
+                    // Verificar si el aprendiz ya ha sido registrado
+                    boolean yaRegistrado = false;
+                    for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+                        int documento = Integer.parseInt(modeloTabla.getValueAt(i, 3).toString());
+                        if (documento == codigoAprendiz) {
+                            yaRegistrado = true;
+                            break;
+                        }
                     }
-                    // Añadir estos datos a la JTable
-                    modeloTabla.addRow(new Object[]{aprendizData.getString("nombres"), 
+
+                    if (yaRegistrado) {
+                        JOptionPane.showMessageDialog(this, "El aprendiz ya ha sido registrado.");
+                        IngresoCodAprendiz.setText("");
+                    } else {
+                        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+                        Date horaActual = sdf.parse(HoraActual());
+                        Date horaTardia = sdf.parse(HoraTardia());
+                        Date horaInasistencia = sdf.parse(HoraInasistencia());
+
+                        String estado;
+                        if (horaActual.before(horaTardia)) {
+                            estado = "A tiempo";
+                        } else if (horaActual.before(horaInasistencia)) {
+                            estado = "Tarde";
+                        } else {
+                            estado = "Inasistencia";
+                        }
+
+                        // Añadir estos datos a la JTable
+                        modeloTabla.addRow(new Object[]{aprendizData.getString("nombres"),
                             aprendizData.getString("apellidos"),
                             aprendizData.getString("tipoDocumento"),
                             aprendizData.getInt("documento"),
@@ -416,19 +454,21 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                             Competencia.getText(),
                             HoraActual(),
                             estado
-                    });
-                    IngresoCodAprendiz.setText("");
+                        });
+                        IngresoCodAprendiz.setText("");
+                    }
                 } else {
-                    int respuesta = JOptionPane.showConfirmDialog(null, "No se han encontrado coincidencias, desea registrar al Aprendiz?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
-                    
+                    int respuesta = JOptionPane.showConfirmDialog(null, "No se han encontrado coincidencias, ¿desea registrar al Aprendiz?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
+
                     switch (respuesta) {
                         case JOptionPane.YES_OPTION:
                             InstructorRegAprendiz regAprendiz = new InstructorRegAprendiz();
                             regAprendiz.setVisible(true);
-                            
-                        case JOptionPane.NO_OPTION:break;
-                        case JOptionPane.CANCEL_OPTION:break;
-                        case JOptionPane.CLOSED_OPTION:break;
+                            break;
+                        case JOptionPane.NO_OPTION:
+                        case JOptionPane.CANCEL_OPTION:
+                        case JOptionPane.CLOSED_OPTION:
+                            break;
                     }
                 }
             } catch (Exception e) {
@@ -450,8 +490,8 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             Map<String, Object> params = new HashMap<>();
             params.put("Instructor", InstructorNombre.getText());
             params.put("Competencia", Competencia.getText());
-            params.put("Ambiente", Ambiente.getText());
-            params.put("Ficha", Integer.valueOf(Ficha.getText()));
+            params.put("Ambiente", AmbienteCB.getSelectedItem().toString());
+            params.put("Ficha", Integer.valueOf(FichaCB.getSelectedItem().toString()));
             params.put("IDProgramaFormacion", convertirDatos.ObtenerIDProgramaFormacion(ProgramaFormacionCB.getSelectedItem().toString()));
             System.out.println(params);
             workbook = new XSSFWorkbook();
@@ -548,7 +588,41 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         RegistrarAsistencia.doClick();
     }//GEN-LAST:event_IngresoCodAprendizActionPerformed
 
+    private void ProgramaFormacionCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProgramaFormacionCBActionPerformed
+        if (!ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...") && !ProgramaFormacionCB.getSelectedItem().equals("No aplica")) {
+            try {
+                ConvertirDatos convertirDatos = new ConvertirDatos();
 
+                // Obtén el ID del programa de formación
+                Integer idProgramaFormacion = convertirDatos.ObtenerIDProgramaFormacion(ProgramaFormacionCB.getSelectedItem().toString());
+
+                // Obtén la lista de fichas como enteros
+                List<Integer> tiposFichas = convertirDatos.ObtenerFichasPorPrograma(idProgramaFormacion);
+
+                if (tiposFichas == null) {
+                    JOptionPane.showMessageDialog(null, "Hubo un error cargando las Fichas de la API");
+                } else {
+                    // Convierte la lista de enteros a una lista de cadenas
+                    List<String> tiposFichasStr = tiposFichas.stream()
+                            .map(String::valueOf)
+                            .collect(Collectors.toList());
+
+                    // Añade la opción "Seleccionar..." al inicio de la lista
+                    tiposFichasStr.add(0, "Seleccionar...");
+
+                    // Convierte la lista de cadenas a un array y configura el modelo del combo box
+                    DefaultComboBoxModel<String> FichasBoxModel = new DefaultComboBoxModel<>(tiposFichasStr.toArray(new String[0]));
+                    FichaCB.setModel(FichasBoxModel);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            FichaCB.setEnabled(true);
+        } else {
+            FichaCB.setSelectedItem("Seleccionar...");
+            FichaCB.setEnabled(false);
+        }
+    }//GEN-LAST:event_ProgramaFormacionCBActionPerformed
 
     /**
      * @param args the command line arguments
@@ -586,9 +660,9 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField Ambiente;
+    private javax.swing.JComboBox<String> AmbienteCB;
     private javax.swing.JTextField Competencia;
-    private javax.swing.JTextField Ficha;
+    private javax.swing.JComboBox<String> FichaCB;
     private javax.swing.JButton FinalizarAsis;
     private javax.swing.JLabel HoraFin;
     private javax.swing.JLabel HoraInicio;
