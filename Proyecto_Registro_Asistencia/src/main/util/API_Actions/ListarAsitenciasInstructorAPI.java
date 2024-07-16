@@ -29,44 +29,55 @@ import org.json.JSONObject;
  * @author Propietario
  */
 public class ListarAsitenciasInstructorAPI {
-    public List<Map<String, Object>> obtenerAsistencias(String instructor) throws Exception {
-        String urlString = "http://localhost:8080/Archives/ListarAsistencias?instructor=" + instructor;
-        URL url = new URL(urlString);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Accept", "application/json");
+public List<Map<String, Object>> obtenerAsistencias(String instructor, String ambiente, Integer idProgramaFormacion, Integer ficha) throws Exception {
+    String urlString = "http://localhost:8080/Archives/ListarAsistencias?instructor=" + instructor;
 
-        if (conn.getResponseCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-        }
-
-        BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-        StringBuilder sb = new StringBuilder();
-        String output;
-        while ((output = br.readLine()) != null) {
-            sb.append(output);
-        }
-
-        conn.disconnect();
-
-        JSONArray jsonArray = new JSONArray(sb.toString());
-        List<Map<String, Object>> asistencias = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            Map<String, Object> asistencia = jsonObject.toMap();
-            asistencias.add(asistencia);
-        }
-
-        return asistencias;
+    if (ambiente != null && !ambiente.equals("Seleccionar...")) {
+        urlString += "&ambiente=" + ambiente;
+    }
+    if (idProgramaFormacion != null) {
+        urlString += "&idProgramaFormacion=" + idProgramaFormacion;
+    }
+    if (ficha != null) {
+        urlString += "&ficha=" + ficha;
     }
 
-    public DefaultTableModel llenarTablaAsistencias(String instructor) {
+    URL url = new URL(urlString);
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    conn.setRequestMethod("GET");
+    conn.setRequestProperty("Accept", "application/json");
+
+    if (conn.getResponseCode() != 200) {
+        throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+    }
+
+    BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+    StringBuilder sb = new StringBuilder();
+    String output;
+    while ((output = br.readLine()) != null) {
+        sb.append(output);
+    }
+
+    conn.disconnect();
+
+    JSONArray jsonArray = new JSONArray(sb.toString());
+    List<Map<String, Object>> asistencias = new ArrayList<>();
+    for (int i = 0; i < jsonArray.length(); i++) {
+        JSONObject jsonObject = jsonArray.getJSONObject(i);
+        Map<String, Object> asistencia = jsonObject.toMap();
+        asistencias.add(asistencia);
+    }
+
+    return asistencias;
+}
+
+    public DefaultTableModel llenarTablaAsistencias(String instructor, String ambiente, Integer idProgramaFormacion, Integer ficha) {
         String[] columnNames = {"Instructor", "Competencia", "Ambiente", "Ficha", "Programa Formación", "Fecha", "Archivo"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
         ComboBoxModels Programas = new ComboBoxModels();
 
         try {
-            List<Map<String, Object>> asistencias = obtenerAsistencias(instructor);
+            List<Map<String, Object>> asistencias = obtenerAsistencias(instructor, ambiente, idProgramaFormacion, ficha);
             for (Map<String, Object> asistencia : asistencias) {
                 Object[] rowData = new Object[columnNames.length];
                 rowData[0] = asistencia.get("instructor");
@@ -75,7 +86,7 @@ public class ListarAsitenciasInstructorAPI {
                 rowData[3] = asistencia.get("ficha");
                 rowData[4] = Programas.BoxProgramaFormacionModel().get((Integer) asistencia.get("IDProgramaFormacion") - 1);
                 rowData[5] = asistencia.get("fecha");
-                
+
                 JButton downloadButton = new JButton("Abrir");
                 downloadButton.addActionListener(e -> {
                     try {

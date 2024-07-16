@@ -5,34 +5,35 @@
 package main.InstructorFrames;
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-import main.InstructorFrames.InstructorGenFrames.ExcelGenFrame;
 import main.LoginFrame;
 import main.util.API_Actions.ListarAsitenciasInstructorAPI;
 import main.util.models.ButtonEditor;
 import main.util.models.ButtonRenderer;
 import main.util.models.ButtonStyler;
+import main.util.models.ComboBoxModels;
 import main.util.models.UserSession;
-
-import java.awt.*;
+import main.util.API_Actions.ConvertirDatos;
 
 /**
  *
  * @author Propietario
  */
-public class InstructorHomeScreen extends javax.swing.JFrame {
+public class InstructorSearchScreen extends javax.swing.JFrame {
 
     /**
      * Creates new form InstructorHomeScreen
      */
 
     
-    public InstructorHomeScreen() {
+    public InstructorSearchScreen() {
         initComponents();
         AditionalConfig();
-        ModifComponent();
         this.setLocationRelativeTo(null);
     }
 
@@ -58,11 +59,12 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         NombreUsuarioInstructor = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
         CerrarSesion = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        GenerarNuevaAsistencia = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaAsitencias = new javax.swing.JTable();
+        ProgramaFormacionCB = new javax.swing.JComboBox<>();
+        AmbienteCB = new javax.swing.JComboBox<>();
+        FichaCB = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -173,27 +175,22 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(107, 107, 107)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(NombreUsuarioInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                        .addGap(0, 42, Short.MAX_VALUE))
+                        .addGap(107, 107, 107)
+                        .addComponent(jLabel1))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(CerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addComponent(MenuInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(45, 45, 45)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(NombreUsuarioInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addContainerGap(48, Short.MAX_VALUE))
+            .addComponent(MenuInicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(MenuBusqueda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(MenuSubirAsis, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(MenuConfig, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(MenuUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(MenuSubirAsis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(MenuUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(MenuConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(CerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,23 +219,8 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 34, 64));
-        jLabel2.setText("Bienvenido al sistema de registro de asistencia");
-
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 34, 64));
-
-        GenerarNuevaAsistencia.setBackground(new java.awt.Color(57, 169, 0));
-        GenerarNuevaAsistencia.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        GenerarNuevaAsistencia.setForeground(new java.awt.Color(255, 255, 255));
-        GenerarNuevaAsistencia.setText("Nueva tabla de asistencia");
-        GenerarNuevaAsistencia.setBorderPainted(false);
-        GenerarNuevaAsistencia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GenerarNuevaAsistenciaActionPerformed(evt);
-            }
-        });
 
         TablaAsitencias.setBackground(new java.awt.Color(255, 255, 255));
         TablaAsitencias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -286,38 +268,65 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         TablaAsitencias.setSelectionBackground(new java.awt.Color(215, 213, 177));
         jScrollPane1.setViewportView(TablaAsitencias);
 
+        ProgramaFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ProgramaFormacionCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProgramaFormacionCBActionPerformed(evt);
+            }
+        });
+
+        AmbienteCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        AmbienteCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AmbienteCBActionPerformed(evt);
+            }
+        });
+
+        FichaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        FichaCB.setEnabled(false);
+        FichaCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FichaCBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(150, 150, 150)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(150, 150, 150)
                         .addComponent(jLabel3)
-                        .addGap(445, 445, 445))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(GenerarNuevaAsistencia)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(57, 57, 57))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 1117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(92, 92, 92)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addComponent(GenerarNuevaAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(72, 72, 72)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -336,42 +345,84 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
 
     
     
-    
+   
+    public void AditionalConfig() {
+        NombreUsuarioInstructor.setText(UserSession.getInstance().getNombres() + " " + UserSession.getInstance().getApellidos());
+        ComboBoxModels ComboBoxModels = new ComboBoxModels();
+        try {
+            List<String> tiposProgramaFormacion = ComboBoxModels.BoxProgramaFormacionModel();
+            if (tiposProgramaFormacion == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los programas de formacion de la API");
+            } else {
+                tiposProgramaFormacion.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> ProgramaFormacionBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposProgramaFormacion));
+                ProgramaFormacionCB.setModel(ProgramaFormacionBoxModel);
+            }
 
-public void AditionalConfig() {
-    NombreUsuarioInstructor.setText(UserSession.getInstance().getNombres() + " " + UserSession.getInstance().getApellidos());
-    
-    ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
-    DefaultTableModel modeloTablaCompleto = listarAsis.llenarTablaAsistencias(UserSession.getInstance().getNombres(), null, null, null);
-
-    // Obtener el número de filas y columnas del modelo completo
-    int totalFilas = modeloTablaCompleto.getRowCount();
-    int columnas = modeloTablaCompleto.getColumnCount();
-    
-    // Crear un nuevo modelo de tabla para las últimas 6 filas
-    DefaultTableModel modeloTabla = new DefaultTableModel();
-
-    // Copiar los nombres de las columnas
-    for (int i = 0; i < columnas; i++) {
-        modeloTabla.addColumn(modeloTablaCompleto.getColumnName(i));
-    }
-
-    // Copiar las últimas 6 filas
-    for (int i = Math.max(totalFilas - 6, 0); i < totalFilas; i++) {
-        Object[] fila = new Object[columnas];
-        for (int j = 0; j < columnas; j++) {
-            fila[j] = modeloTablaCompleto.getValueAt(i, j);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        modeloTabla.addRow(fila);
+        
+        try {
+            List<String> tiposAmbientes = ComboBoxModels.BoxAmbientesModel();
+            if (tiposAmbientes == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los Ambientes de la API");
+            } else {
+                tiposAmbientes.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> AmbientesBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposAmbientes));
+                AmbienteCB.setModel(AmbientesBoxModel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        try {
+            List<String> tiposFicha = ComboBoxModels.BoxAmbientesModel();
+            if (tiposFicha == null) {
+                JOptionPane.showMessageDialog(null, "Hubo un error cargando los Ambientes de la API");
+            } else {
+                tiposFicha.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> FichasBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposFicha));
+                FichaCB.setModel(FichasBoxModel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        
+        ModifComponent();
+        actualizarTablaAsistencias();
     }
+    
+    private void actualizarTablaAsistencias() {
+        String instructor = UserSession.getInstance().getNombres();
+        String ambiente = AmbienteCB.getSelectedItem().equals("Seleccionar...") ? null : AmbienteCB.getSelectedItem().toString();
+        Integer idProgramaFormacion = null;
+        if (!ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...") && !ProgramaFormacionCB.getSelectedItem().equals("No aplica")) {
+            try {
+                idProgramaFormacion = Integer.parseInt(ProgramaFormacionCB.getSelectedItem().toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        Integer ficha = null;
+        if (!FichaCB.getSelectedItem().equals("Seleccionar...")) {
+            try {
+                ficha = Integer.parseInt(FichaCB.getSelectedItem().toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
 
-    // Asignar el nuevo modelo a la tabla
-    TablaAsitencias.setModel(modeloTabla);
-
-    // Configurar el renderizador y el editor de botones
-    TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
-    TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
-}
+        ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
+        DefaultTableModel modeloTabla = listarAsis.llenarTablaAsistencias(instructor, ambiente, idProgramaFormacion, ficha);
+        TablaAsitencias.setModel(modeloTabla);
+        TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+        TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
+    }
 
     private void ModifComponent(){
 
@@ -383,10 +434,9 @@ public void AditionalConfig() {
         ButtonStyler.applySecondaryStyle(MenuConfig);
         
         ButtonStyler.applyPrimaryStyle(CerrarSesion);
-        ButtonStyler.applyPrimaryStyle(GenerarNuevaAsistencia);
 
     }
-
+    
     private void MenuBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuBusquedaActionPerformed
         InstructorSearchScreen InstructorSearchScreen = new InstructorSearchScreen();
         InstructorSearchScreen.setVisible(true);
@@ -407,14 +457,6 @@ public void AditionalConfig() {
         // TODO add your handling code here:
     }//GEN-LAST:event_MenuSubirAsisActionPerformed
 
-    private void GenerarNuevaAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerarNuevaAsistenciaActionPerformed
-        ExcelGenFrame abrirExcelFrame = new ExcelGenFrame();
-        this.setFocusableWindowState(false);
-        this.setEnabled(false);
-        abrirExcelFrame.setVisible(true);
-        
-    }//GEN-LAST:event_GenerarNuevaAsistenciaActionPerformed
-
     private void CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionActionPerformed
        LoginFrame login = new LoginFrame();
        login.setVisible(true);
@@ -428,6 +470,45 @@ public void AditionalConfig() {
         this.dispose();
     }//GEN-LAST:event_MenuUsuarioActionPerformed
 
+
+    
+    private void ProgramaFormacionCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProgramaFormacionCBActionPerformed
+        if (!ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...") && !ProgramaFormacionCB.getSelectedItem().equals("No aplica")) {
+            try {
+                ConvertirDatos convertirDatos = new ConvertirDatos();
+
+                Integer idProgramaFormacion = convertirDatos.ObtenerIDProgramaFormacion(ProgramaFormacionCB.getSelectedItem().toString());
+                List<Integer> tiposFichas = convertirDatos.ObtenerFichasPorPrograma(idProgramaFormacion);
+
+                if (tiposFichas == null) {
+                    JOptionPane.showMessageDialog(null, "Hubo un error cargando las Fichas de la API");
+                } else {
+                    List<String> tiposFichasStr = tiposFichas.stream().map(String::valueOf).collect(Collectors.toList());
+                    tiposFichasStr.add(0, "Seleccionar...");
+                    DefaultComboBoxModel<String> FichasBoxModel = new DefaultComboBoxModel<>(tiposFichasStr.toArray(new String[0]));
+                    FichaCB.setModel(FichasBoxModel);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            FichaCB.setEnabled(true);
+        } else {
+            FichaCB.setSelectedItem("Seleccionar...");
+            FichaCB.setEnabled(false);
+        }
+        actualizarTablaAsistencias();
+    }//GEN-LAST:event_ProgramaFormacionCBActionPerformed
+
+    private void AmbienteCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmbienteCBActionPerformed
+        actualizarTablaAsistencias();
+    }//GEN-LAST:event_AmbienteCBActionPerformed
+
+    private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
+        actualizarTablaAsistencias();
+    }//GEN-LAST:event_FichaCBActionPerformed
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -445,37 +526,39 @@ public void AditionalConfig() {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InstructorHomeScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstructorSearchScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InstructorHomeScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstructorSearchScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InstructorHomeScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstructorSearchScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InstructorHomeScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstructorSearchScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InstructorHomeScreen().setVisible(true);
+                new InstructorSearchScreen().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> AmbienteCB;
     private javax.swing.JButton CerrarSesion;
-    private javax.swing.JButton GenerarNuevaAsistencia;
+    private javax.swing.JComboBox<String> FichaCB;
     private javax.swing.JButton MenuBusqueda;
     private javax.swing.JButton MenuConfig;
     private javax.swing.JButton MenuInicio;
     private javax.swing.JButton MenuSubirAsis;
     private javax.swing.JButton MenuUsuario;
     private javax.swing.JLabel NombreUsuarioInstructor;
+    private javax.swing.JComboBox<String> ProgramaFormacionCB;
     private javax.swing.JTable TablaAsitencias;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;

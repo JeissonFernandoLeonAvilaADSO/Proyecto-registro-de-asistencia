@@ -99,13 +99,38 @@ public class ExcelManagerAPI {
     }
 
     @GetMapping("/ListarAsistencias")
-    public ResponseEntity<List<Map<String, Object>>> listarAsistencias(@RequestParam String instructor) {
+    public ResponseEntity<List<Map<String, Object>>> listarAsistencias(
+            @RequestParam String instructor,
+            @RequestParam(required = false) String ambiente,
+            @RequestParam(required = false) Integer idProgramaFormacion,
+            @RequestParam(required = false) Integer ficha
+    ) {
         try {
-            String sqlAsistencia = """
-                                SELECT * FROM registroasistencias 
-                                    INNER JOIN asistencia ON asistencia.ID = registroasistencias.IDArchivo
-                                    WHERE registroasistencias.Instructor = ?""";
-            List<Map<String, Object>> asistencias = jdbcTemplate.query(sqlAsistencia, new Object[]{instructor}, new RowMapper<Map<String, Object>>() {
+            StringBuilder sql = new StringBuilder("""
+            SELECT * FROM registroasistencias 
+            INNER JOIN asistencia ON asistencia.ID = registroasistencias.IDArchivo
+            WHERE registroasistencias.Instructor = ?
+        """);
+
+            List<Object> params = new ArrayList<>();
+            params.add(instructor);
+
+            if (ambiente != null) {
+                sql.append(" AND registroasistencias.Ambiente = ?");
+                params.add(ambiente);
+            }
+
+            if (idProgramaFormacion != null) {
+                sql.append(" AND registroasistencias.IDProgramaFormacion = ?");
+                params.add(idProgramaFormacion);
+            }
+
+            if (ficha != null) {
+                sql.append(" AND registroasistencias.Ficha = ?");
+                params.add(ficha);
+            }
+
+            List<Map<String, Object>> asistencias = jdbcTemplate.query(sql.toString(), params.toArray(), new RowMapper<Map<String, Object>>() {
                 @Override
                 public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Map<String, Object> asistencia = new HashMap<>();
@@ -141,5 +166,6 @@ public class ExcelManagerAPI {
 
         return new ResponseEntity<>(archivoExcel, headers, HttpStatus.OK);
     }
+
 
 }
