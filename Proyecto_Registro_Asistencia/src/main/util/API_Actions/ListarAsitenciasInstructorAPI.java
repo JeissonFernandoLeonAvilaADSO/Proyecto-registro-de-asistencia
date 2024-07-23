@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -29,47 +31,49 @@ import org.json.JSONObject;
  * @author Propietario
  */
 public class ListarAsitenciasInstructorAPI {
-public List<Map<String, Object>> obtenerAsistencias(String instructor, String ambiente, Integer idProgramaFormacion, Integer ficha) throws Exception {
-    String urlString = "http://localhost:8080/Archives/ListarAsistencias?instructor=" + instructor;
 
-    if (ambiente != null && !ambiente.equals("Seleccionar...")) {
-        urlString += "&ambiente=" + ambiente;
+
+    public List<Map<String, Object>> obtenerAsistencias(String instructor, String ambiente, Integer idProgramaFormacion, Integer ficha) throws Exception {
+        StringBuilder urlString = new StringBuilder("http://localhost:8080/Archives/ListarAsistencias?instructor=" + URLEncoder.encode(instructor, StandardCharsets.UTF_8.toString()));
+
+        if (ambiente != null && !ambiente.equals("Seleccionar...")) {
+            urlString.append("&ambiente=").append(URLEncoder.encode(ambiente, StandardCharsets.UTF_8.toString()));
+        }
+        if (idProgramaFormacion != null) {
+            urlString.append("&idProgramaFormacion=").append(idProgramaFormacion);
+        }
+        if (ficha != null) {
+            urlString.append("&ficha=").append(ficha);
+        }
+
+        URL url = new URL(urlString.toString());
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Accept", "application/json");
+
+        if (conn.getResponseCode() != 200) {
+            throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+        }
+
+        BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+        StringBuilder sb = new StringBuilder();
+        String output;
+        while ((output = br.readLine()) != null) {
+            sb.append(output);
+        }
+
+        conn.disconnect();
+
+        JSONArray jsonArray = new JSONArray(sb.toString());
+        List<Map<String, Object>> asistencias = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            Map<String, Object> asistencia = jsonObject.toMap();
+            asistencias.add(asistencia);
+        }
+        return asistencias;
     }
-    if (idProgramaFormacion != null) {
-        urlString += "&idProgramaFormacion=" + idProgramaFormacion;
-    }
-    if (ficha != null) {
-        urlString += "&ficha=" + ficha;
-    }
 
-    URL url = new URL(urlString);
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    conn.setRequestMethod("GET");
-    conn.setRequestProperty("Accept", "application/json");
-
-    if (conn.getResponseCode() != 200) {
-        throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-    }
-
-    BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-    StringBuilder sb = new StringBuilder();
-    String output;
-    while ((output = br.readLine()) != null) {
-        sb.append(output);
-    }
-
-    conn.disconnect();
-
-    JSONArray jsonArray = new JSONArray(sb.toString());
-    List<Map<String, Object>> asistencias = new ArrayList<>();
-    for (int i = 0; i < jsonArray.length(); i++) {
-        JSONObject jsonObject = jsonArray.getJSONObject(i);
-        Map<String, Object> asistencia = jsonObject.toMap();
-        asistencias.add(asistencia);
-    }
-
-    return asistencias;
-}
 
     public DefaultTableModel llenarTablaAsistencias(String instructor, String ambiente, Integer idProgramaFormacion, Integer ficha) {
         String[] columnNames = {"Instructor", "Competencia", "Ambiente", "Ficha", "Programa Formación", "Fecha", "Archivo"};

@@ -106,16 +106,14 @@ public class ExcelManagerAPI {
             @RequestParam(required = false) Integer ficha
     ) {
         try {
-            StringBuilder sql = new StringBuilder("""
-            SELECT * FROM registroasistencias 
-            INNER JOIN asistencia ON asistencia.ID = registroasistencias.IDArchivo
-            WHERE registroasistencias.Instructor = ?
-        """);
-
+            System.out.println(ambiente);
+            System.out.println(idProgramaFormacion);
+            System.out.println(ficha);
+            StringBuilder sql = new StringBuilder("SELECT * FROM registroasistencias INNER JOIN asistencia ON asistencia.ID = registroasistencias.IDArchivo WHERE registroasistencias.Instructor = ?");
             List<Object> params = new ArrayList<>();
             params.add(instructor);
 
-            if (ambiente != null) {
+            if (ambiente != null && !ambiente.isEmpty()) {
                 sql.append(" AND registroasistencias.Ambiente = ?");
                 params.add(ambiente);
             }
@@ -140,16 +138,18 @@ public class ExcelManagerAPI {
                     asistencia.put("ficha", rs.getInt("Ficha"));
                     asistencia.put("IDProgramaFormacion", rs.getInt("IDProgramaFormacion"));
                     asistencia.put("fecha", rs.getDate("Fecha"));
-                    asistencia.put("IDArchivo", rs.getInt("IDArchivo")); // Asegúrate de que sea un int y no un Blob
+                    asistencia.put("IDArchivo", rs.getInt("IDArchivo"));
                     return asistencia;
                 }
             });
             return new ResponseEntity<>(asistencias, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace(); // Esto imprimirá el error en los logs del servidor
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
     @GetMapping("/descargarArchivo/{id}")
     public ResponseEntity<byte[]> descargarArchivo(@PathVariable int id) {

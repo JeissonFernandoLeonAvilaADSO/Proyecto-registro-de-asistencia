@@ -53,7 +53,6 @@ public class InstructorSearchScreen extends javax.swing.JFrame {
         MenuBusqueda = new javax.swing.JButton();
         MenuSubirAsis = new javax.swing.JButton();
         MenuUsuario = new javax.swing.JButton();
-        MenuConfig = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
         NombreUsuarioInstructor = new javax.swing.JLabel();
@@ -127,19 +126,6 @@ public class InstructorSearchScreen extends javax.swing.JFrame {
             }
         });
 
-        MenuConfig.setBackground(new java.awt.Color(0, 34, 64));
-        MenuConfig.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        MenuConfig.setForeground(new java.awt.Color(255, 255, 255));
-        MenuConfig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/util/icons/ConfigIcon.png"))); // NOI18N
-        MenuConfig.setText("Configuración");
-        MenuConfig.setBorderPainted(false);
-        MenuConfig.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        MenuConfig.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenuConfigActionPerformed(evt);
-            }
-        });
-
         jSeparator1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -189,7 +175,6 @@ public class InstructorSearchScreen extends javax.swing.JFrame {
             .addComponent(MenuBusqueda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(MenuSubirAsis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(MenuUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(MenuConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(CerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
@@ -212,9 +197,7 @@ public class InstructorSearchScreen extends javax.swing.JFrame {
                 .addComponent(MenuSubirAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(MenuUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(MenuConfig, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(CerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -326,7 +309,7 @@ public class InstructorSearchScreen extends javax.swing.JFrame {
                     .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -396,18 +379,24 @@ public class InstructorSearchScreen extends javax.swing.JFrame {
         ModifComponent();
         actualizarTablaAsistencias();
     }
-    
+
     private void actualizarTablaAsistencias() {
         String instructor = UserSession.getInstance().getNombres();
-        String ambiente = AmbienteCB.getSelectedItem().equals("Seleccionar...") ? null : AmbienteCB.getSelectedItem().toString();
+        String ambiente = AmbienteCB.getSelectedItem().equals("Seleccionar...") || AmbienteCB.getSelectedItem().equals("No Aplica") ? null : AmbienteCB.getSelectedItem().toString();
+
         Integer idProgramaFormacion = null;
         if (!ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...") && !ProgramaFormacionCB.getSelectedItem().equals("No aplica")) {
             try {
-                idProgramaFormacion = Integer.parseInt(ProgramaFormacionCB.getSelectedItem().toString());
+                ConvertirDatos convertirDatos = new ConvertirDatos();
+                idProgramaFormacion = convertirDatos.ObtenerIDProgramaFormacion(ProgramaFormacionCB.getSelectedItem().toString());
+                System.out.println(idProgramaFormacion);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "El programa de formación seleccionado no es válido. Por favor, seleccione un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+
             }
         }
+
         Integer ficha = null;
         if (!FichaCB.getSelectedItem().equals("Seleccionar...")) {
             try {
@@ -417,12 +406,19 @@ public class InstructorSearchScreen extends javax.swing.JFrame {
             }
         }
 
-        ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
-        DefaultTableModel modeloTabla = listarAsis.llenarTablaAsistencias(instructor, ambiente, idProgramaFormacion, ficha);
-        TablaAsitencias.setModel(modeloTabla);
-        TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
-        TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
+        try {
+            ButtonStyler ButtonStyler = new ButtonStyler();
+            ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
+            DefaultTableModel modeloTabla = listarAsis.llenarTablaAsistencias(instructor, ambiente, idProgramaFormacion, ficha);
+            TablaAsitencias.setModel(modeloTabla);
+            TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+            TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al actualizar la tabla de asistencias: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
+
 
     private void ModifComponent(){
 
@@ -431,7 +427,6 @@ public class InstructorSearchScreen extends javax.swing.JFrame {
         ButtonStyler.applySecondaryStyle(MenuBusqueda);
         ButtonStyler.applySecondaryStyle(MenuSubirAsis);
         ButtonStyler.applySecondaryStyle(MenuUsuario);
-        ButtonStyler.applySecondaryStyle(MenuConfig);
         
         ButtonStyler.applyPrimaryStyle(CerrarSesion);
 
@@ -448,10 +443,6 @@ public class InstructorSearchScreen extends javax.swing.JFrame {
         instructorHomeScreen.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_MenuInicioActionPerformed
-
-    private void MenuConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuConfigActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_MenuConfigActionPerformed
 
     private void MenuSubirAsisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuSubirAsisActionPerformed
         // TODO add your handling code here:
@@ -550,7 +541,6 @@ public class InstructorSearchScreen extends javax.swing.JFrame {
     private javax.swing.JButton CerrarSesion;
     private javax.swing.JComboBox<String> FichaCB;
     private javax.swing.JButton MenuBusqueda;
-    private javax.swing.JButton MenuConfig;
     private javax.swing.JButton MenuInicio;
     private javax.swing.JButton MenuSubirAsis;
     private javax.swing.JButton MenuUsuario;

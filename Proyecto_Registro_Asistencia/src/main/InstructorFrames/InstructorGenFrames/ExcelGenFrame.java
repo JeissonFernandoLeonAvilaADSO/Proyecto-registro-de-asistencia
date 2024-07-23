@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
 
+import main.util.API_Actions.ListarUsuarios;
 import main.util.InstructorMethods.InstructorAsisDocs.UploadFileAPI;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -98,6 +99,8 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         ProgramaFormacionCB = new javax.swing.JComboBox<>();
         FichaCB = new javax.swing.JComboBox<>();
         AmbienteCB = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ListarAprendices = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -169,6 +172,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         tablaAsis.setFocusable(false);
         tablaAsis.setName(""); // NOI18N
         tablaAsis.setRowHeight(44);
+        tablaAsis.setRowSelectionAllowed(false);
         tablaAsis.setSelectionBackground(new java.awt.Color(215, 213, 177));
         jScrollPane1.setViewportView(tablaAsis);
 
@@ -203,8 +207,31 @@ public class ExcelGenFrame extends javax.swing.JFrame {
 
         FichaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         FichaCB.setEnabled(false);
+        FichaCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FichaCBActionPerformed(evt);
+            }
+        });
 
         AmbienteCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        ListarAprendices.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        ListarAprendices.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Documento", "Aprendiz"
+            }
+        ));
+        ListarAprendices.setFocusable(false);
+        ListarAprendices.setRequestFocusEnabled(false);
+        ListarAprendices.setRowHeight(40);
+        ListarAprendices.setRowSelectionAllowed(false);
+        jScrollPane2.setViewportView(ListarAprendices);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -228,7 +255,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                                 .addComponent(InstructorNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -244,20 +271,22 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ProgramaFormacionCB, 0, 181, Short.MAX_VALUE)
-                            .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(115, 115, 115)
+                            .addComponent(ProgramaFormacionCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(355, 355, 355)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(FinalizarAsis, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(FinalizarAsis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(IngresoCodAprendiz, javax.swing.GroupLayout.PREFERRED_SIZE, 1071, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(RegistrarAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
-                            .addComponent(jScrollPane1))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(IngresoCodAprendiz)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1286, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                            .addComponent(RegistrarAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -302,7 +331,9 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                     .addComponent(IngresoCodAprendiz)
                     .addComponent(RegistrarAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addGap(30, 30, 30))
         );
 
@@ -625,6 +656,11 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ProgramaFormacionCBActionPerformed
 
+    private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
+        DefaultTableModel TableModel = ListarUsuarios.getAprendices(Integer.valueOf(FichaCB.getSelectedItem().toString()));
+        ListarAprendices.setModel(TableModel);
+    }//GEN-LAST:event_FichaCBActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -669,6 +705,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     private javax.swing.JLabel HoraInicio;
     private javax.swing.JTextField IngresoCodAprendiz;
     private javax.swing.JLabel InstructorNombre;
+    private javax.swing.JTable ListarAprendices;
     private javax.swing.JComboBox<String> ProgramaFormacionCB;
     private javax.swing.JButton RegistrarAsistencia;
     private javax.swing.JButton jButton1;
@@ -681,6 +718,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tablaAsis;
     // End of variables declaration//GEN-END:variables
 }
