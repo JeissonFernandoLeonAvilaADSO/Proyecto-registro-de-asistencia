@@ -30,8 +30,8 @@ public class PerfilUsuarioController {
     @Autowired
     private PlatformTransactionManager transactionManager;
 
-    @RequestMapping(value = "ObtenerUsuario/{IDInstructor}")
-    public PerfilUsuarioModel getInstructor(@PathVariable Integer IDInstructor){
+    @RequestMapping(value = "ObtenerUsuario/{IDUsuario}")
+    public PerfilUsuarioModel getUsuario(@PathVariable String IDUsuario){
         String consulta = """ 
                 SELECT perfilusuario.ID,
                                    usuario.Usuario,
@@ -61,14 +61,14 @@ public class PerfilUsuarioController {
                                      INNER JOIN rol ON perfilusuario.IDRol = rol.ID
                             WHERE perfilusuario.Documento = ?""";
         try {
-            return jdbcTemplate.queryForObject(consulta, new Object[]{IDInstructor}, new RowMapper<PerfilUsuarioModel>() {
+            return jdbcTemplate.queryForObject(consulta, new Object[]{IDUsuario}, new RowMapper<PerfilUsuarioModel>() {
                 @Override
                 public PerfilUsuarioModel mapRow(ResultSet rs, int rowNum) throws SQLException {
                     PerfilUsuarioModel instructor = new PerfilUsuarioModel();
                     instructor.setID(rs.getInt("ID"));
                     instructor.setUser(rs.getString("Usuario"));
                     instructor.setPass(rs.getString("Contraseña"));
-                    instructor.setDocumento(rs.getInt("Documento"));
+                    instructor.setDocumento(rs.getString("Documento"));
                     instructor.setTipoDocumento(rs.getString("TipoDocumento"));
                     instructor.setNombres(rs.getString("nombres"));
                     instructor.setApellidos(rs.getString("apellidos"));
@@ -98,11 +98,11 @@ public class PerfilUsuarioController {
     }
 
     @RequestMapping("ModificarUsuario/{IDComp}")
-    public ResponseEntity<String> modificarUsuario(@PathVariable Integer IDComp, @RequestBody Map<String, Object> usuarioModel) {
+    public ResponseEntity<String> modificarUsuario(@PathVariable String IDComp, @RequestBody Map<String, Object> usuarioModel) {
         return upsertUsuario(usuarioModel, false, IDComp);
     }
 
-    private ResponseEntity<String> upsertUsuario(Map<String, Object> campos, boolean isNewUser, Integer IDComp) {
+    private ResponseEntity<String> upsertUsuario(Map<String, Object> campos, boolean isNewUser, String IDComp) {
         System.out.println(campos);
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         TransactionStatus status = transactionManager.getTransaction(def);
@@ -143,7 +143,7 @@ public class PerfilUsuarioController {
                             } else if (entry.getValue() instanceof String) {
                                 ps.setString(1, (String) entry.getValue());
                             }
-                            ps.setInt(2, IDComp);
+                            ps.setString(2, IDComp);
                             int rowsAffected = ps.executeUpdate();
                             if (rowsAffected <= 0) {
                                 return new ResponseEntity<>("No se pudo actualizar " + entry.getKey(), HttpStatus.BAD_REQUEST);
@@ -166,7 +166,7 @@ public class PerfilUsuarioController {
         try (PreparedStatement psPerfil = conexion.prepareStatement(consultaPerfil)) {
             psPerfil.setInt(1, (Integer) campos.get("ID"));
             psPerfil.setInt(2, idUsuarioGenerado);
-            psPerfil.setInt(3, (Integer) campos.get("Documento"));
+            psPerfil.setString(3, (String) campos.get("Documento"));
             psPerfil.setInt(4, (Integer) campos.get("IDTipoDocumento"));
             psPerfil.setString(5, (String) campos.get("Nombres"));
             psPerfil.setString(6, (String) campos.get("Apellidos"));
@@ -190,7 +190,7 @@ public class PerfilUsuarioController {
     }
 
     @RequestMapping(value = "EliminarUsuario/{DocumentoUsuario}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> EliminarUsuario(@PathVariable int DocumentoUsuario) {
+    public ResponseEntity<String> EliminarUsuario(@PathVariable String DocumentoUsuario) {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         TransactionStatus status = transactionManager.getTransaction(def);
 
@@ -198,7 +198,7 @@ public class PerfilUsuarioController {
             // Eliminar el perfil del usuario de la tabla 'perfilusuario'
             String consultaPerfilUsuario = "DELETE FROM perfilusuario WHERE Documento = ?";
             try (PreparedStatement psPerfilUsuario = conexion.prepareStatement(consultaPerfilUsuario)) {
-                psPerfilUsuario.setInt(1, DocumentoUsuario);
+                psPerfilUsuario.setString(1, DocumentoUsuario);
                 int rowsAffectedPerfilUsuario = psPerfilUsuario.executeUpdate();
                 if (rowsAffectedPerfilUsuario <= 0) {
                     transactionManager.rollback(status);
@@ -209,7 +209,7 @@ public class PerfilUsuarioController {
             // Eliminar el usuario de la tabla 'usuario' usando una subconsulta para obtener el IDUsuario
             String consultaUsuario = "DELETE FROM usuario WHERE ID = (SELECT IDUsuario FROM perfilusuario WHERE Documento = ?)";
             try (PreparedStatement psUsuario = conexion.prepareStatement(consultaUsuario)) {
-                psUsuario.setInt(1, DocumentoUsuario);
+                psUsuario.setString(1, DocumentoUsuario);
                 int rowsAffectedUsuario = psUsuario.executeUpdate();
                 if (rowsAffectedUsuario <= 0) {
                     transactionManager.rollback(status);
@@ -226,38 +226,25 @@ public class PerfilUsuarioController {
         }
     }
 
-    public void validarDatosUsuario(Map<String, Object> datos) {
-        String[] camposRequeridos = {
-                "IDUsuario", "IDTipoDocumento", "Documento", "Nombres", "Apellidos", "IDGenero",
-                "Telefono", "IDProgramaFormacion", "NumeroFicha", "IDJornadaFormacion",
-                "IDNivelFormacion", "Area", "IDSede", "Correo", "IDRol"
-        };
+    public ResponseEntity<Integer> getIDUsuario(@RequestParam String Documento) {
+        String consulta = "SELECT IDUsuario FROM perfilusuario WHERE Documento = ?";
 
-        for (String campo : camposRequeridos) {
-            if (!datos.containsKey(campo) || datos.get(campo) == null) {
-                throw new IllegalArgumentException("Falta el campo requerido: " + campo);
-            }
-        }
-    }
-
-    public void upsertUsuario(Map<String, Object> datos) {
         try {
-            // Validar que todos los datos requeridos están presentes
-            validarDatosUsuario(datos);
+            // Ejecutar la consulta
+            Integer idUsuario = jdbcTemplate.queryForObject(consulta, new Object[]{Documento}, Integer.class);
 
-            // Ahora puedes proceder con la lógica de inserción o actualización en la base de datos
-            // tu lógica de base de datos aquí
-        } catch (IllegalArgumentException e) {
-            // Manejar la excepción de validación
-            System.err.println("Error de validación: " + e.getMessage());
-            // Aquí puedes lanzar una excepción, retornar un error o manejarlo según tu lógica de negocio
+            // Verificar si se obtuvo un IDUsuario
+            if (idUsuario != null) {
+                return ResponseEntity.ok(idUsuario);
+            } else {
+                return null;
+            }
         } catch (Exception e) {
-            // Manejar otras excepciones
-            System.err.println("Error al insertar o actualizar usuario: " + e.getMessage());
+
+            e.printStackTrace();
+            return null;
         }
     }
-
-
 
 }
 

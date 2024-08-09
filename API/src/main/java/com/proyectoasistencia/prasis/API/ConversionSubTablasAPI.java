@@ -16,9 +16,12 @@ import java.util.List;
 @RestController
 public class ConversionSubTablasAPI {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    public ConversionSubTablasAPI(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
 
     @RequestMapping(value = "Conversion/TipoDoc_Str_to_ID/{TipoDocStr}")

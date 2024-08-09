@@ -683,12 +683,12 @@ public class DeleteUsuario extends javax.swing.JFrame {
         API_Admin_BuscarUsuario buscarUsuario = new API_Admin_BuscarUsuario();
 
         // Intenta buscar al instructor en la base de datos.
-        JSONObject usuario = buscarUsuario.AdminBuscarUsuario(Integer.parseInt(IDInstructorField.getText()));
+        JSONObject usuario = buscarUsuario.AdminBuscarUsuario(IDInstructorField.getText());
         if (usuario != null){
             ResultadoCod.setText(String.valueOf(usuario.getInt("id")));
             ResultadoUsuario.setText(usuario.getString("user"));
             ResultadoContra.setText(usuario.getString("pass"));
-            ResultadoDocumento.setText(String.valueOf(usuario.getInt("documento")));
+            ResultadoDocumento.setText(usuario.getString("documento"));
             ResultadoTipoDoc.setText(usuario.getString("tipoDocumento"));
             ResultadoNombre.setText(usuario.getString("nombres"));
             ResultadoApellido.setText(usuario.getString("apellidos"));

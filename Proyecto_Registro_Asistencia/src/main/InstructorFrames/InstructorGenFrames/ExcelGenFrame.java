@@ -15,11 +15,7 @@ import java.io.IOException;
 
 import java.text.SimpleDateFormat;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -28,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import main.util.API_Actions.ListarUsuarios;
 import main.util.InstructorMethods.InstructorAsisDocs.UploadFileAPI;
+import main.util.models.CustomCellRenderer;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -42,7 +39,6 @@ import main.util.models.ComboBoxModels;
 import main.util.models.UserSession;
 import org.apache.poi.ss.usermodel.ComparisonOperator;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.PatternFormatting;
 import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -60,9 +56,11 @@ public class ExcelGenFrame extends javax.swing.JFrame {
      * Creates new form ExcelGenFrame
      */
     public DefaultTableModel modeloTabla;
+    public DefaultTableModel ListarAprendicesModel;
     public Workbook workbook;
     public Sheet sheet;
     public int rowNum;
+    private CustomCellRenderer cellRenderer = new CustomCellRenderer();
     
     public ExcelGenFrame() {
         initComponents();
@@ -354,6 +352,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     
     public void modif(){
         InstructorNombre.setText(UserSession.getInstance().getNombres());
+
         workbook = new XSSFWorkbook(); // O cualquier otra inicialización necesaria
         sheet = workbook.createSheet("Asistencia");
         modeloTabla = new DefaultTableModel(
@@ -362,6 +361,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                 "Nombres", "Apellidos", "Tipo Documento", "Documento", "Programa Formación", "Nivel Formación", "Curso", "Fecha", "Estado"
             }
         );
+        tablaAsis.setModel(modeloTabla);
         ComboBoxModels ComboBoxModels = new ComboBoxModels();
         
         try {
@@ -396,10 +396,12 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         
         this.setLocationRelativeTo(null);
         IngresoCodAprendiz.requestFocusInWindow();
-        tablaAsis.setModel(modeloTabla);
-
         HoraInicio.setText(String.valueOf(HoraActual()));
         HoraFin.setText(String.valueOf(HoraInasistencia()));
+    }
+
+    private void initializeTable() {
+        ListarAprendices.setDefaultRenderer(Object.class, new CustomCellRenderer());
     }
     
     
@@ -415,7 +417,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     
     public String HoraTardia(){
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, 1/2);
+        calendar.add(Calendar.HOUR_OF_DAY, 1);
         Date fechaEn5Horas = calendar.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
         String horaFin = sdf.format(fechaEn5Horas);
@@ -442,78 +444,79 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void RegistrarAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarAsistenciaActionPerformed
-        API_Admin_BuscarUsuario buscarUsuario = new API_Admin_BuscarUsuario();
-        Integer codigoAprendiz = Integer.valueOf(IngresoCodAprendiz.getText());
-        if (codigoAprendiz != null) {
-            try {
-                JSONObject aprendizData = buscarUsuario.AdminBuscarUsuario(codigoAprendiz);
-                if (aprendizData != null) {
-                    // Verificar si el aprendiz ya ha sido registrado
-                    boolean yaRegistrado = false;
-                    for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-                        int documento = Integer.parseInt(modeloTabla.getValueAt(i, 3).toString());
-                        if (documento == codigoAprendiz) {
-                            yaRegistrado = true;
-                            break;
-                        }
+    API_Admin_BuscarUsuario buscarUsuario = new API_Admin_BuscarUsuario();
+    String codigoAprendiz = IngresoCodAprendiz.getText();
+    if (codigoAprendiz != null) {
+        try {
+            JSONObject aprendizData = buscarUsuario.AdminBuscarUsuario(codigoAprendiz);
+            System.out.println(aprendizData);
+            if (aprendizData != null) {
+
+                boolean yaRegistrado = false;
+                for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+
+                    int documento = Integer.parseInt(modeloTabla.getValueAt(i, 3).toString());
+                    if (documento == Integer.parseInt(codigoAprendiz)) {
+                        yaRegistrado = true;
+                        break;
+                    }
+                }
+
+                if (yaRegistrado) {
+                    JOptionPane.showMessageDialog(this, "El aprendiz ya ha sido registrado.");
+                    IngresoCodAprendiz.setText("");
+                } else {
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+                    Date horaActual = sdf.parse(HoraActual());
+                    Date horaTardia = sdf.parse(HoraTardia());
+                    Date horaInasistencia = sdf.parse(HoraInasistencia());
+
+                    String estado;
+                    if (horaActual.before(horaTardia)) {
+                        estado = "A tiempo";
+                    } else if (horaActual.before(horaInasistencia)) {
+                        estado = "Tarde";
+                    } else {
+                        estado = "Inasistencia";
                     }
 
-                    if (yaRegistrado) {
-                        JOptionPane.showMessageDialog(this, "El aprendiz ya ha sido registrado.");
-                        IngresoCodAprendiz.setText("");
-                    } else {
-                        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-                        Date horaActual = sdf.parse(HoraActual());
-                        Date horaTardia = sdf.parse(HoraTardia());
-                        Date horaInasistencia = sdf.parse(HoraInasistencia());
-
-                        String estado;
-                        if (horaActual.before(horaTardia)) {
-                            estado = "A tiempo";
-                        } else if (horaActual.before(horaInasistencia)) {
-                            estado = "Tarde";
-                        } else {
-                            estado = "Inasistencia";
-                        }
-
-                        // Añadir estos datos a la JTable
-                        modeloTabla.addRow(new Object[]{aprendizData.getString("nombres"),
+                    modeloTabla.addRow(new Object[]{
+                            aprendizData.getString("nombres"),
                             aprendizData.getString("apellidos"),
                             aprendizData.getString("tipoDocumento"),
-                            aprendizData.getInt("documento"),
+                            aprendizData.getString("documento"),
                             aprendizData.getString("programaFormacion"),
                             aprendizData.getString("nivelFormacion"),
                             Competencia.getText(),
                             HoraActual(),
                             estado
-                        });
-                        IngresoCodAprendiz.setText("");
-                    }
-                } else {
-                    int respuesta = JOptionPane.showConfirmDialog(null, "No se han encontrado coincidencias, ¿desea registrar al Aprendiz?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
-
-                    switch (respuesta) {
-                        case JOptionPane.YES_OPTION:
-                            InstructorRegAprendiz regAprendiz = new InstructorRegAprendiz();
-                            regAprendiz.setVisible(true);
-                            break;
-                        case JOptionPane.NO_OPTION:
-                        case JOptionPane.CANCEL_OPTION:
-                        case JOptionPane.CLOSED_OPTION:
-                            break;
-                    }
+                    });
+                    IngresoCodAprendiz.setText("");
                 }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al conectar con la API.");
-                e.printStackTrace();
+            } else {
+                int respuesta = JOptionPane.showConfirmDialog(null, "No se han encontrado coincidencias, ¿desea registrar al Aprendiz?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
+
+                switch (respuesta) {
+                    case JOptionPane.YES_OPTION:
+                        InstructorRegAprendiz regAprendiz = new InstructorRegAprendiz();
+                        regAprendiz.setVisible(true);
+                        break;
+                    case JOptionPane.NO_OPTION:
+                    case JOptionPane.CANCEL_OPTION:
+                    case JOptionPane.CLOSED_OPTION:
+                        break;
+                }
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Ingrese el código del aprendiz.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al conectar con la API.");
+            e.printStackTrace();
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "Ingrese el código del aprendiz.");
+    }
     }//GEN-LAST:event_RegistrarAsistenciaActionPerformed
 
-    
-    
+
     private void FinalizarAsisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FinalizarAsisActionPerformed
         Workbook workbook = null;
 
@@ -657,8 +660,8 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_ProgramaFormacionCBActionPerformed
 
     private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
-        DefaultTableModel TableModel = ListarUsuarios.getAprendices(Integer.valueOf(FichaCB.getSelectedItem().toString()));
-        ListarAprendices.setModel(TableModel);
+        ListarAprendicesModel = ListarUsuarios.getAprendices(Integer.valueOf(FichaCB.getSelectedItem().toString()));
+        ListarAprendices.setModel(ListarAprendicesModel);
     }//GEN-LAST:event_FichaCBActionPerformed
 
     /**

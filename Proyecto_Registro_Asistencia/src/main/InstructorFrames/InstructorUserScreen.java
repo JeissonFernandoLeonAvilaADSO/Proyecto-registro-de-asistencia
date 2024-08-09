@@ -479,7 +479,7 @@ public class InstructorUserScreen extends javax.swing.JFrame {
         API_Admin_BuscarUsuario buscarUsuario = new API_Admin_BuscarUsuario();
 
         // Intenta buscar al instructor en la base de datos.
-        JSONObject usuario = buscarUsuario.AdminBuscarUsuario(UserSession.getInstance().getDocumento());
+        JSONObject usuario = buscarUsuario.AdminBuscarUsuario(String.valueOf(UserSession.getInstance().getDocumento()));
 
             ResultadoUsuario.setText(usuario.getString("user"));
             ResultadoContra.setText(usuario.getString("pass"));

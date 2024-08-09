@@ -1371,12 +1371,12 @@ public void AditionalConfig(){
         API_Admin_BuscarUsuario buscarUsuario = new API_Admin_BuscarUsuario();
 
         // Intenta buscar al instructor en la base de datos.
-        JSONObject usuario = buscarUsuario.AdminBuscarUsuario(Integer.parseInt(IDInstructorField.getText()));
+        JSONObject usuario = buscarUsuario.AdminBuscarUsuario(IDInstructorField.getText());
         if (usuario != null){
             ResultadoCod.setText(String.valueOf(usuario.getInt("id")));
             ResultadoUsuario.setText(usuario.getString("user"));
             ResultadoContra.setText(usuario.getString("pass"));
-            ResultadoDocumento.setText(String.valueOf(usuario.getInt("documento")));
+            ResultadoDocumento.setText(usuario.getString("documento"));
             ResultadoTipoDoc.setText(usuario.getString("tipoDocumento"));
             ResultadoNombre.setText(usuario.getString("nombres"));
             ResultadoApellido.setText(usuario.getString("apellidos"));
@@ -1625,7 +1625,7 @@ public void AditionalConfig(){
                 usuarioPUTModel.put("ID", CheckActivarCod.isSelected() ? Integer.valueOf(ModificarCod.getText()) : null);
                 usuarioPUTModel.put("Usuario", CheckActivarUsuario.isSelected() ? ModificarUsuario.getText() : null);
                 usuarioPUTModel.put("Contraseña", CheckActivarPass.isSelected() ? ModificarPass.getText() : null);
-                usuarioPUTModel.put("Documento", CheckActivarDoc.isSelected() ? Integer.valueOf(ModificarDocumento.getText()) : null);
+                usuarioPUTModel.put("Documento", CheckActivarDoc.isSelected() ? ModificarDocumento.getText() : null);
                 usuarioPUTModel.put("IDTipoDocumento", CheckActivarTipoDoc.isSelected() ? convertirDatos.ObtenerIDTipoDoc(ModificarTipoDoc.getSelectedItem().toString()) : null);
                 usuarioPUTModel.put("Nombres", CheckActivarNombres.isSelected() ? ModificarNombre.getText() : null);
                 usuarioPUTModel.put("Apellidos", CheckActivarApellidos.isSelected() ? ModificarApellido.getText() : null);

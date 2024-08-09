@@ -485,7 +485,7 @@ public class InstructorRegAprendiz extends javax.swing.JFrame {
             usuarioModel.put("ID", Integer.valueOf(RegistrarCodigo.getText()));
             usuarioModel.put("Usuario", RegistrarUsuario.getText());
             usuarioModel.put("Contraseña", RegistrarPass.getText());
-            usuarioModel.put("Documento", Integer.valueOf(RegistrarDocumento.getText()));
+            usuarioModel.put("Documento", RegistrarDocumento.getText());
             usuarioModel.put("IDTipoDocumento", convertirDatos.ObtenerIDTipoDoc(RegistrarTipoDoc.getSelectedItem().toString()));
             usuarioModel.put("Nombres", RegistrarNombres.getText());
             usuarioModel.put("Apellidos", RegistrarApellidos.getText());

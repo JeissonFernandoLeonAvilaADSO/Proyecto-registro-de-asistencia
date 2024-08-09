@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 
 public class API_Admin_BuscarUsuario {
-    public JSONObject AdminBuscarUsuario(Integer IDUsuario) {
+    public JSONObject AdminBuscarUsuario(String IDUsuario) {
 
         try {
             URL url = new URL("http://localhost:8080/ObtenerUsuario/" + IDUsuario);

@@ -5,7 +5,7 @@ public class PerfilUsuarioModel {
     private int ID;
     private String User;
     private String Pass;
-    private int Documento;
+    private String Documento;
     private String TipoDocumento;
     private String Nombres;
     private String  Apellidos;
@@ -44,11 +44,11 @@ public class PerfilUsuarioModel {
         Pass = pass;
     }
 
-    public int getDocumento() {
+    public String getDocumento() {
         return Documento;
     }
 
-    public void setDocumento(int documento) {
+    public void setDocumento(String documento) {
         Documento = documento;
     }
 
