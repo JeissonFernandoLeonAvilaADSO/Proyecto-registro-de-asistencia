@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class SubTablesController {
@@ -202,7 +205,25 @@ public class SubTablesController {
         return null;
     }
 
+    @RequestMapping(value = "Fichas-FormacionData")
+    public List<Map<String, Object>> getFichasFormacion() {
+        String consulta = """
+                SELECT pf.ProgramaFormacion, NumeroFicha FROM fichas
+                INNER JOIN programaformacion AS pf ON pf.ID = fichas.IDProgramaFormacion""";
 
-
-
+        try {
+            return jdbcTemplate.query(consulta, new RowMapper<Map<String, Object>>() {
+                @Override
+                public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Map<String, Object> row = new HashMap<>();
+                    row.put("ProgramaFormacion", rs.getString("ProgramaFormacion"));
+                    row.put("NumeroFicha", rs.getString("NumeroFicha"));
+                    return row;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace(); // Imprime la traza de la excepción
+            return new ArrayList<>(); // Retorna una lista vacía en caso de error
+        }
+    }
 }

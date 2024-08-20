@@ -3,8 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package main.AdminFrames;
-import main.AdminFrames.AdminActionScreens.CreateUsuario;
-import main.AdminFrames.AdminActionScreens.DataManager;
+import java.awt.CardLayout;
+import main.AdminFrames.AdminActionScreens.BorrarUsuarioPanel;
+import main.AdminFrames.AdminActionScreens.CrearUsuarioPanel;
+import main.AdminFrames.AdminActionScreens.DataManagerPanel;
+import main.AdminFrames.AdminActionScreens.ModificarUsuarioPanel;
 import main.AdminFrames.AdminActionScreens.ModifUsuario;
 import main.AdminFrames.AdminActionScreens.DeleteUsuario;
 import main.LoginFrame;
@@ -24,6 +27,8 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
     }
     
+    private CardLayout cardLayout;
+    
     private void AditionalConfig(){
         ButtonStyler ButtonStyler = new ButtonStyler();
         ButtonStyler.applyPrimaryStyle(CerrarSesion);
@@ -31,6 +36,21 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         ButtonStyler.applySecondaryStyle(ModificarUsuarioFrame);
         ButtonStyler.applySecondaryStyle(EliminarUsuarioFrame);
         ButtonStyler.applySecondaryStyle(DataFrame);
+        
+        cardLayout = new CardLayout();
+        MainPanel.setLayout(cardLayout);
+        
+        CrearUsuarioPanel crearUsuario = new CrearUsuarioPanel();
+        DataManagerPanel dataMan = new DataManagerPanel();
+        ModificarUsuarioPanel ModUsuario = new ModificarUsuarioPanel();
+        BorrarUsuarioPanel delUsuario = new BorrarUsuarioPanel();
+        
+        MainPanel.add(HomePanel, "HomePanel");
+        MainPanel.add(crearUsuario, "CrearUsuarioPanel");
+        MainPanel.add(dataMan, "DataManagerPanel");
+        MainPanel.add(ModUsuario, "ModUsuarioPanel");
+        MainPanel.add(delUsuario, "EliminarUsuarioPanel");
+        
     }
 
     /**
@@ -56,6 +76,8 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         CrearUsuarioFrame = new javax.swing.JButton();
         DataFrame = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        MainPanel = new javax.swing.JPanel();
+        HomePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -160,7 +182,10 @@ public class AdminHomeScreen extends javax.swing.JFrame {
             .addComponent(CrearUsuarioFrame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(ModificarUsuarioFrame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(EliminarUsuarioFrame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(CerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -183,12 +208,11 @@ public class AdminHomeScreen extends javax.swing.JFrame {
                         .addGap(0, 46, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(DataFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(DataFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(CerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,9 +238,12 @@ public class AdminHomeScreen extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(DataFrame, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
-                .addComponent(CerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(105, 105, 105)
+                .addComponent(CerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        MainPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setBackground(new java.awt.Color(0, 34, 64));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
@@ -228,29 +255,67 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 34, 64));
         jLabel2.setText("registro de asistencia");
 
+        javax.swing.GroupLayout HomePanelLayout = new javax.swing.GroupLayout(HomePanel);
+        HomePanel.setLayout(HomePanelLayout);
+        HomePanelLayout.setHorizontalGroup(
+            HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 414, Short.MAX_VALUE)
+            .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(HomePanelLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addGroup(HomePanelLayout.createSequentialGroup()
+                            .addGap(35, 35, 35)
+                            .addComponent(jLabel2)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        HomePanelLayout.setVerticalGroup(
+            HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 120, Short.MAX_VALUE)
+            .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(HomePanelLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel1)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel2)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
+        MainPanel.setLayout(MainPanelLayout);
+        MainPanelLayout.setHorizontalGroup(
+            MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MainPanelLayout.createSequentialGroup()
+                .addGap(183, 183, 183)
+                .addComponent(HomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(542, Short.MAX_VALUE))
+        );
+        MainPanelLayout.setVerticalGroup(
+            MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MainPanelLayout.createSequentialGroup()
+                .addGap(171, 171, 171)
+                .addComponent(HomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(437, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 344, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jLabel2)))
-                .addGap(293, 293, 293))
+                .addGap(18, 18, 18)
+                .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(179, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -261,7 +326,9 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -271,35 +338,27 @@ public class AdminHomeScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void ModificarUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarUsuarioFrameActionPerformed
+        cardLayout.show(MainPanel, "ModUsuarioPanel");
+    }//GEN-LAST:event_ModificarUsuarioFrameActionPerformed
+
+    private void EliminarUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarUsuarioFrameActionPerformed
+        cardLayout.show(MainPanel, "EliminarUsuarioPanel");
+    }//GEN-LAST:event_EliminarUsuarioFrameActionPerformed
+
+    private void CrearUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearUsuarioFrameActionPerformed
+        cardLayout.show(MainPanel, "CrearUsuarioPanel");
+    }//GEN-LAST:event_CrearUsuarioFrameActionPerformed
+
+    private void DataFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DataFrameActionPerformed
+        cardLayout.show(MainPanel, "DataManagerPanel");
+    }//GEN-LAST:event_DataFrameActionPerformed
+
     private void CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionActionPerformed
         LoginFrame loginFrame = new LoginFrame();
         loginFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_CerrarSesionActionPerformed
-
-    private void ModificarUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarUsuarioFrameActionPerformed
-        ModifUsuario modifUsuario = new ModifUsuario();
-        modifUsuario.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_ModificarUsuarioFrameActionPerformed
-
-    private void EliminarUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarUsuarioFrameActionPerformed
-        DeleteUsuario deleteUsuario = new DeleteUsuario();
-        deleteUsuario.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_EliminarUsuarioFrameActionPerformed
-
-    private void CrearUsuarioFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearUsuarioFrameActionPerformed
-        CreateUsuario createUsuario = new CreateUsuario();
-        createUsuario.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_CrearUsuarioFrameActionPerformed
-
-    private void DataFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DataFrameActionPerformed
-        DataManager DtMn = new DataManager();
-        DtMn.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_DataFrameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -341,6 +400,8 @@ public class AdminHomeScreen extends javax.swing.JFrame {
     private javax.swing.JButton CrearUsuarioFrame;
     private javax.swing.JButton DataFrame;
     private javax.swing.JButton EliminarUsuarioFrame;
+    private javax.swing.JPanel HomePanel;
+    private javax.swing.JPanel MainPanel;
     private javax.swing.JButton ModificarUsuarioFrame;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
