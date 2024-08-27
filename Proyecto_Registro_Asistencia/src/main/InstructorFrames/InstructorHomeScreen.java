@@ -17,6 +17,11 @@ import main.util.models.ButtonStyler;
 import main.util.models.UserSession;
 
 import java.awt.*;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -202,7 +207,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                 .addComponent(MenuSubirAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(MenuUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 306, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 266, Short.MAX_VALUE)
                 .addComponent(CerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -310,16 +315,16 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         MainPanelLayout.setHorizontalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(12, 12, 12)
                 .addComponent(HomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1035, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addGap(87, 87, 87)
+                .addGap(24, 24, 24)
                 .addComponent(HomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(495, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -328,35 +333,38 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
-                .addGap(431, 431, 431))
+                .addGap(407, 407, 407))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(92, 92, 92)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1610, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1571, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 842, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -367,48 +375,97 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
     private CardLayout cardLayout;
 
 public void AditionalConfig() {
-    NombreUsuarioInstructor.setText(UserSession.getInstance().getNombres() + " " + UserSession.getInstance().getApellidos());
+    // Configuración de la pantalla y del frame
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    int frameWidth = (int) (screenSize.width * 0.95);
+    int frameHeight = (int) (screenSize.height * 0.95);
     
+    int screenWidth = screenSize.width;
+    int screenHeight = screenSize.height;
+
+    // Configurar el tamaño del JFrame
+    this.setSize(frameWidth, frameHeight);
+    this.setLocationRelativeTo(null); // Centrar el JFrame
+    
+    // Configurar el nombre del usuario
+    NombreUsuarioInstructor.setText(UserSession.getInstance().getNombres() + " " + UserSession.getInstance().getApellidos());
+
+    // Configuración del CardLayout para el panel principal
     cardLayout = new CardLayout();
     MainPanel.setLayout(cardLayout);
     InstructorUserPanel UserPanel = new InstructorUserPanel();
     InstructorSearchPanel SearchPanel = new InstructorSearchPanel();
-    
     MainPanel.add(HomePanel, "HomePanel");
     MainPanel.add(UserPanel, "UserPanel");
     MainPanel.add(SearchPanel, "SearchPanel");
     
+    if (screenWidth < 1920 || screenHeight < 1080) {
+    
+        // Crear un JScrollPane con barras de desplazamiento visibles
+        JScrollPane scrollPane = new JScrollPane(jPanel1);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        // Establecer el layout del JFrame a BorderLayout para que el scrollPane ocupe todo el espacio
+        this.setLayout(new BorderLayout());
+
+        // Agregar el JScrollPane al JFrame
+        this.add(scrollPane, BorderLayout.CENTER);
+
+        // Manejar el desplazamiento con la rueda del ratón en cualquier parte del JFrame
+        this.addMouseWheelListener(e -> {
+            JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+            JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
+            int notches = e.getWheelRotation();
+
+            if (e.isShiftDown()) {
+                // Si se presiona Shift, desplazarse horizontalmente
+                int newValue = horizontalScrollBar.getValue() + notches * 20; // Ajustar la velocidad de desplazamiento
+                horizontalScrollBar.setValue(newValue);
+            } else {
+                // De lo contrario, desplazarse verticalmente
+                int newValue = verticalScrollBar.getValue() + notches * 20; // Ajustar la velocidad de desplazamiento
+                verticalScrollBar.setValue(newValue);
+            }
+        });
+    }
+
+    // Configuración de la tabla de asistencias
     ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
     DefaultTableModel modeloTablaCompleto = listarAsis.llenarTablaAsistencias(UserSession.getInstance().getNombres(), null, null, null);
+    DefaultTableModel modeloTabla = crearUltimasFilasModelo(modeloTablaCompleto, 6);
+    TablaAsitencias.setModel(modeloTabla);
 
-    // Obtener el número de filas y columnas del modelo completo
-    int totalFilas = modeloTablaCompleto.getRowCount();
-    int columnas = modeloTablaCompleto.getColumnCount();
+    // Configurar el renderizador y el editor de botones en la tabla
+    TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+    TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
     
-    // Crear un nuevo modelo de tabla para las últimas 6 filas
+    // Finalmente, hacer visible el JFrame
+    this.setVisible(true);
+}
+
+private DefaultTableModel crearUltimasFilasModelo(DefaultTableModel modeloCompleto, int filas) {
     DefaultTableModel modeloTabla = new DefaultTableModel();
+    int totalFilas = modeloCompleto.getRowCount();
+    int columnas = modeloCompleto.getColumnCount();
 
     // Copiar los nombres de las columnas
     for (int i = 0; i < columnas; i++) {
-        modeloTabla.addColumn(modeloTablaCompleto.getColumnName(i));
+        modeloTabla.addColumn(modeloCompleto.getColumnName(i));
     }
 
-    // Copiar las últimas 6 filas
-    for (int i = Math.max(totalFilas - 6, 0); i < totalFilas; i++) {
+    // Copiar las últimas filas indicadas
+    for (int i = Math.max(totalFilas - filas, 0); i < totalFilas; i++) {
         Object[] fila = new Object[columnas];
         for (int j = 0; j < columnas; j++) {
-            fila[j] = modeloTablaCompleto.getValueAt(i, j);
+            fila[j] = modeloCompleto.getValueAt(i, j);
         }
         modeloTabla.addRow(fila);
     }
 
-    // Asignar el nuevo modelo a la tabla
-    TablaAsitencias.setModel(modeloTabla);
-
-    // Configurar el renderizador y el editor de botones
-    TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
-    TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
+    return modeloTabla;
 }
+
 
     private void ModifComponent(){
 

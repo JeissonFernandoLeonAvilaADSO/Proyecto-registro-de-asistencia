@@ -3,15 +3,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package main.AdminFrames;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import main.AdminFrames.AdminActionScreens.BorrarUsuarioPanel;
 import main.AdminFrames.AdminActionScreens.CrearUsuarioPanel;
 import main.AdminFrames.AdminActionScreens.DataManagerPanel;
 import main.AdminFrames.AdminActionScreens.ModificarUsuarioPanel;
-import main.AdminFrames.AdminActionScreens.ModifUsuario;
-import main.AdminFrames.AdminActionScreens.DeleteUsuario;
+import main.InstructorFrames.InstructorSearchPanel;
+import main.InstructorFrames.InstructorUserPanel;
 import main.LoginFrame;
 import main.util.models.ButtonStyler;
+import main.util.models.UserSession;
 /**
  *
  * @author Jeisson Leon
@@ -30,6 +37,48 @@ public class AdminHomeScreen extends javax.swing.JFrame {
     private CardLayout cardLayout;
     
     private void AditionalConfig(){
+        
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    int frameWidth = (int) (screenSize.width * 0.95);
+    int frameHeight = (int) (screenSize.height * 0.95);
+    
+    int screenWidth = screenSize.width;
+    int screenHeight = screenSize.height;
+
+    // Configurar el tamaño del JFrame
+    this.setSize(frameWidth, frameHeight);
+    this.setLocationRelativeTo(null); // Centrar el JFrame
+
+    if (screenWidth < 1920 || screenHeight < 1080) {
+    
+        // Crear un JScrollPane con barras de desplazamiento visibles
+        JScrollPane scrollPane = new JScrollPane(jPanel1);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        // Establecer el layout del JFrame a BorderLayout para que el scrollPane ocupe todo el espacio
+        this.setLayout(new BorderLayout());
+
+        // Agregar el JScrollPane al JFrame
+        this.add(scrollPane, BorderLayout.CENTER);
+
+        // Manejar el desplazamiento con la rueda del ratón en cualquier parte del JFrame
+        this.addMouseWheelListener(e -> {
+            JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+            JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
+            int notches = e.getWheelRotation();
+
+            if (e.isShiftDown()) {
+                // Si se presiona Shift, desplazarse horizontalmente
+                int newValue = horizontalScrollBar.getValue() + notches * 20; // Ajustar la velocidad de desplazamiento
+                horizontalScrollBar.setValue(newValue);
+            } else {
+                // De lo contrario, desplazarse verticalmente
+                int newValue = verticalScrollBar.getValue() + notches * 20; // Ajustar la velocidad de desplazamiento
+                verticalScrollBar.setValue(newValue);
+            }
+        });
+    }
         ButtonStyler ButtonStyler = new ButtonStyler();
         ButtonStyler.applyPrimaryStyle(CerrarSesion);
         ButtonStyler.applySecondaryStyle(CrearUsuarioFrame);
