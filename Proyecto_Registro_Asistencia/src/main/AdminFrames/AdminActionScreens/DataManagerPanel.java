@@ -10,11 +10,17 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.table.DefaultTableModel;
+import main.util.API_AdminActions.API_Admin_DataManager;
+
+import main.util.models.ButtonStyler;
 import main.util.models.ComboBoxModels;
+import main.util.models.ModTableRequest;
+import main.util.models.ToggleButtonStyler;
 
 /**
  *
@@ -25,46 +31,86 @@ public class DataManagerPanel extends javax.swing.JPanel {
     /**
      * Creates new form DataManagerPanel
      */
+    
+    private DefaultTableModel previousTipoDocModel;
+    private DefaultTableModel previousAmbModel;
+    private DefaultTableModel previousGenModel;
+    private DefaultTableModel previousProgramFormacionModel;
+    private DefaultTableModel previousSedeModel;
+    
     public DataManagerPanel() {
         initComponents();
         AditionalConfig();
+        ModifComponents();
     }
 
-    private void AditionalConfig(){
+    private void AditionalConfig() {
         ToggleButtons(ModTipoDocs, TipoDocTable);
         ToggleButtons(ModAmb, AmbienteTable);
         ToggleButtons(ModGen, GenerosTable);
         ToggleButtons(ModProgramFormacion, ProgramaFormacionTable);
         ToggleButtons(ModSedes, SedesTable);
+     
 
         try {
             ComboBoxModels TableModels = new ComboBoxModels();
-            ArrayList<String> TipoDocTableData =  TableModels.BoxTipoDocModel();
+            ArrayList<String> TipoDocTableData = TableModels.BoxTipoDocModel();
             TipoDocTable.setModel(LlenarTabla(TipoDocTableData, "Tipo de documento"));
+            previousTipoDocModel = copyTableModel((DefaultTableModel) TipoDocTable.getModel()); // Inicializar estado anterior
             desHabilitarTabla(TipoDocTable);
 
-            ArrayList<String> AmbientesTableData =  TableModels.BoxAmbientesModel();
+            ArrayList<String> AmbientesTableData = TableModels.BoxAmbientesModel();
             AmbienteTable.setModel(LlenarTabla(AmbientesTableData, "Ambientes"));
+            previousAmbModel = copyTableModel((DefaultTableModel) AmbienteTable.getModel()); // Inicializar estado anterior
             desHabilitarTabla(AmbienteTable);
 
             ArrayList<String> GeneroTableData = TableModels.BoxTipoGeneroModel();
             GenerosTable.setModel(LlenarTabla(GeneroTableData, "Generos"));
+            previousGenModel = copyTableModel((DefaultTableModel) GenerosTable.getModel()); // Inicializar estado anterior
             desHabilitarTabla(GenerosTable);
 
             ArrayList<String> ProgramaFormacionTableData = TableModels.BoxProgramaFormacionModel();
             ProgramaFormacionTable.setModel(LlenarTabla(ProgramaFormacionTableData, "Programas de Formacion"));
+            previousProgramFormacionModel = copyTableModel((DefaultTableModel) ProgramaFormacionTable.getModel()); // Inicializar estado anterior
             desHabilitarTabla(ProgramaFormacionTable);
 
             ArrayList<String> SedesTableData = TableModels.BoxSedeModel();
             SedesTable.setModel(LlenarTabla(SedesTableData, "Sedes"));
+            previousSedeModel = copyTableModel((DefaultTableModel) SedesTable.getModel()); // Inicializar estado anterior
             desHabilitarTabla(SedesTable);
 
             List<Map<String, Object>> FichasTableData = TableModels.BoxFichasFormModel();
-
+            FichasTable.setModel(LlenarTabla(FichasTableData, new String[]{"Numero Ficha", "Programa de Formacion Asociado"}));
+            desHabilitarTabla(FichasTable);
 
         } catch (Exception ex) {
             Logger.getLogger(DataManagerPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private DefaultTableModel copyTableModel(DefaultTableModel original) {
+        DefaultTableModel copy = new DefaultTableModel();
+        for (int i = 0; i < original.getColumnCount(); i++) {
+            copy.addColumn(original.getColumnName(i));
+        }
+        for (int i = 0; i < original.getRowCount(); i++) {
+            Object[] rowData = new Object[original.getColumnCount()];
+            for (int j = 0; j < original.getColumnCount(); j++) {
+                rowData[j] = original.getValueAt(i, j);
+            }
+            copy.addRow(rowData);
+        }
+        return copy;
+    }
+    
+    private void ModifComponents(){
+        ToggleButtonStyler.applyPrimaryStyle(ModTipoDocs);
+        ToggleButtonStyler.applyPrimaryStyle(ModGen);
+        ToggleButtonStyler.applyPrimaryStyle(ModProgramFormacion);
+        ToggleButtonStyler.applyPrimaryStyle(ModSedes);
+        ToggleButtonStyler.applyPrimaryStyle(ModAmb);
+        ToggleButtonStyler.applyPrimaryStyle(ModFichas);
+        ButtonStyler.applyPrimaryStyle(Actualizar);
     }
     
     private void ToggleButtons(JToggleButton toggleButton, JTable Tabla){
@@ -77,8 +123,39 @@ public class DataManagerPanel extends javax.swing.JPanel {
             desHabilitarTabla(Tabla);
         }
 
-    });
+     });
     }
+
+    private DefaultTableModel LlenarTabla(ArrayList<String> Datos, String NombreTabla) {
+        DefaultTableModel Tabla = new DefaultTableModel();
+        Tabla.addColumn(NombreTabla);
+
+        for (String dato : Datos) {
+            Tabla.addRow(new Object[]{dato});
+        }
+        return Tabla;
+    }
+
+    private DefaultTableModel LlenarTabla(List<Map<String, Object>> Datos, String[] columnNames) {
+        DefaultTableModel Tabla = new DefaultTableModel();
+
+        // Añadir las columnas a la tabla
+        for (String columnName : columnNames) {
+            Tabla.addColumn(columnName);
+        }
+
+        // Llenar las filas de la tabla
+        for (Map<String, Object> fila : Datos) {
+            Object[] rowData = new Object[columnNames.length];
+            rowData[0] = fila.get("NumeroFicha");
+            rowData[1] = fila.get("ProgramaFormacion");
+            Tabla.addRow(rowData);
+        }
+
+        return Tabla;
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,7 +179,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
         ProgramaFormacionTable = new javax.swing.JTable();
         jScrollPane24 = new javax.swing.JScrollPane();
         SedesTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        Actualizar = new javax.swing.JButton();
         ModAmb = new javax.swing.JToggleButton();
         ModTipoDocs = new javax.swing.JToggleButton();
         ModGen = new javax.swing.JToggleButton();
@@ -136,7 +213,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 "Tipos de documentos"
             }
         ));
-        TipoDocTable.setColumnSelectionAllowed(false);
         TipoDocTable.setRequestFocusEnabled(false);
         jScrollPane20.setViewportView(TipoDocTable);
 
@@ -192,10 +268,10 @@ public class DataManagerPanel extends javax.swing.JPanel {
         ));
         jScrollPane24.setViewportView(SedesTable);
 
-        jButton1.setText("Actualizar base de datos");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Actualizar.setText("Actualizar base de datos");
+        Actualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                ActualizarActionPerformed(evt);
             }
         });
 
@@ -217,7 +293,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 912, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 912, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane20, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -271,7 +347,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(jScrollPane24, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane19, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -287,15 +363,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private DefaultTableModel LlenarTabla(ArrayList<String> Datos, String NombreTabla){
-        DefaultTableModel Tabla = new DefaultTableModel();
-        Tabla.addColumn(NombreTabla);
-        
-        for(String dato : Datos){
-            Tabla.addRow(new Object[]{dato});
-        }
-        return Tabla;
-    }
+
     
     private void desHabilitarTabla(JTable Table){
         Table.setRowSelectionAllowed(false);
@@ -313,23 +381,45 @@ public class DataManagerPanel extends javax.swing.JPanel {
         
     
     
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
+        API_Admin_DataManager client = new API_Admin_DataManager();
 
-        
-        int rowCount = TipoDocTable.getRowCount();
-        int columnCount = TipoDocTable.getColumnCount();
-
-        // Imprimir los datos de las filas
-        for (int row = 0; row < rowCount; row++) {
-            for (int col = 0; col < columnCount; col++) {
-                System.out.print(TipoDocTable.getValueAt(row, col) + "\t");
-            }
-            System.out.println(); // Nueva línea después de cada fila
+        if (ModTipoDocs.isSelected()) {
+            ModTableRequest request = ModTableRequest.fromTable(previousTipoDocModel, TipoDocTable);
+            client.enviarDatosTabla("ModTipoDocTable", request);
+            previousTipoDocModel = (DefaultTableModel) TipoDocTable.getModel(); // Actualizar estado anterior
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+
+        if (ModAmb.isSelected()) {
+            ModTableRequest request = ModTableRequest.fromTable(previousAmbModel, AmbienteTable);
+            client.enviarDatosTabla("ModAmbientesTable", request);
+            previousAmbModel = (DefaultTableModel) AmbienteTable.getModel(); // Actualizar estado anterior
+        }
+
+        if (ModGen.isSelected()) {
+            ModTableRequest request = ModTableRequest.fromTable(previousGenModel, GenerosTable);
+            client.enviarDatosTabla("ModGeneroTable", request);
+            previousGenModel = (DefaultTableModel) GenerosTable.getModel(); // Actualizar estado anterior
+        }
+
+        if (ModProgramFormacion.isSelected()) {
+            ModTableRequest request = ModTableRequest.fromTable(previousProgramFormacionModel, ProgramaFormacionTable);
+            client.enviarDatosTabla("ModProgramaFormacionTable", request);
+            previousProgramFormacionModel = (DefaultTableModel) ProgramaFormacionTable.getModel(); // Actualizar estado anterior
+        }
+
+        if (ModSedes.isSelected()) {
+            ModTableRequest request = ModTableRequest.fromTable(previousSedeModel, SedesTable);
+            client.enviarDatosTabla("ModSedeTable", request);
+            previousSedeModel = (DefaultTableModel) SedesTable.getModel(); // Actualizar estado anterior
+        }
+
+        JOptionPane.showMessageDialog(null, "Tablas seleccionadas actualizadas correctamente", "Actualización", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_ActualizarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Actualizar;
     private javax.swing.JTable AmbienteTable;
     private javax.swing.JTable FichasTable;
     private javax.swing.JTable GenerosTable;
@@ -342,7 +432,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JTable ProgramaFormacionTable;
     private javax.swing.JTable SedesTable;
     private javax.swing.JTable TipoDocTable;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane19;
     private javax.swing.JScrollPane jScrollPane20;

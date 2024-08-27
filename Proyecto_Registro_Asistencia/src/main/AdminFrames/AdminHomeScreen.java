@@ -14,11 +14,9 @@ import main.AdminFrames.AdminActionScreens.BorrarUsuarioPanel;
 import main.AdminFrames.AdminActionScreens.CrearUsuarioPanel;
 import main.AdminFrames.AdminActionScreens.DataManagerPanel;
 import main.AdminFrames.AdminActionScreens.ModificarUsuarioPanel;
-import main.InstructorFrames.InstructorSearchPanel;
-import main.InstructorFrames.InstructorUserPanel;
 import main.LoginFrame;
 import main.util.models.ButtonStyler;
-import main.util.models.UserSession;
+
 /**
  *
  * @author Jeisson Leon
@@ -45,8 +43,12 @@ public class AdminHomeScreen extends javax.swing.JFrame {
     int screenWidth = screenSize.width;
     int screenHeight = screenSize.height;
 
+
     // Configurar el tamaño del JFrame
-    this.setSize(frameWidth, frameHeight);
+    if (screenWidth < 1700 && screenHeight < 900){
+        this.setSize(frameWidth, frameHeight);
+    }
+    
     this.setLocationRelativeTo(null); // Centrar el JFrame
 
     if (screenWidth < 1920 || screenHeight < 1080) {

@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
+import main.util.models.ToggleButtonStyler;
 
 
 /**
@@ -214,6 +215,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
 
     private void ModifComponent(){
+        
         ButtonGroup CheckButtons = new ButtonGroup();
         CheckButtons.add(InstructorCheck);
         CheckButtons.add(AdminCheck);
@@ -237,6 +239,8 @@ public class LoginFrame extends javax.swing.JFrame {
 
         UserField.setBorder(border);
         PassField.setBorder(border);
+         ToggleButtonStyler.applyPrimaryStyle(AdminCheck);
+         ToggleButtonStyler.applyPrimaryStyle(InstructorCheck);
 
     }
 
@@ -299,27 +303,11 @@ public class LoginFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_IngresarMouseReleased
 
     private void InstructorCheckItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_InstructorCheckItemStateChanged
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            // El botón está activo, cambia el color de fondo a verde
-            InstructorCheck.setBackground(Color.decode("#39A900"));
-            InstructorCheck.setForeground(Color.WHITE);
-        } else {
-            // El botón no está activo, cambia el color de fondo a blanco
-            InstructorCheck.setBackground(Color.WHITE);
-            InstructorCheck.setForeground(Color.BLACK);
-        }
+
     }//GEN-LAST:event_InstructorCheckItemStateChanged
 
     private void AdminCheckItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_AdminCheckItemStateChanged
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            // El botón está activo, cambia el color de fondo a verde
-            AdminCheck.setBackground(Color.decode("#39A900"));
-            AdminCheck.setForeground(Color.WHITE);
-        } else {
-            // El botón no está activo, cambia el color de fondo a blanco
-            AdminCheck.setBackground(Color.WHITE);
-            AdminCheck.setForeground(Color.BLACK);
-        }
+
     }//GEN-LAST:event_AdminCheckItemStateChanged
 
     private void InstructorCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstructorCheckActionPerformed

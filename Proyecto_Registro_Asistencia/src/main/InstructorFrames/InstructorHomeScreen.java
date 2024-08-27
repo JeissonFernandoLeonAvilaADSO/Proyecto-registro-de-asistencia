@@ -383,8 +383,14 @@ public void AditionalConfig() {
     int screenWidth = screenSize.width;
     int screenHeight = screenSize.height;
 
+    System.out.println(screenWidth);
+    System.out.println(screenHeight);
+    
     // Configurar el tamaño del JFrame
-    this.setSize(frameWidth, frameHeight);
+    if (screenWidth < 1700 && screenHeight < 900){
+        this.setSize(frameWidth, frameHeight);
+    }
+
     this.setLocationRelativeTo(null); // Centrar el JFrame
     
     // Configurar el nombre del usuario
