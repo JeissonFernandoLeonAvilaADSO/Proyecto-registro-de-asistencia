@@ -74,27 +74,42 @@ public class DataManagerAPI {
             // Agregar nuevos registros
             for (Map.Entry<String, Object> entry : TablaEntrante.entrySet()) {
                 if (!TablaAnterior.containsKey(entry.getKey())) {
-                    // Insertar nueva entrada en la base de datos, sin el ID porque es autoincrementable
-                    String insertQuery = "INSERT INTO " + tableName + " (" + columnName + ") VALUES (?)";
-                    try (PreparedStatement psInsert = conexion.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-                        psInsert.setObject(1, entry.getValue()); // El valor del map es el valor de la columna
-                        psInsert.executeUpdate();
-
-                        // Obtener el ID generado automáticamente
-                        try (ResultSet generatedKeys = psInsert.getGeneratedKeys()) {
-                            if (generatedKeys.next()) {
-                                long generatedId = generatedKeys.getLong(1);
-                                // Aquí podrías hacer algo con el ID generado si es necesario
-                            }
+                    // Inserción especial para tablas con claves foráneas (fichas)
+                    if ("fichas".equalsIgnoreCase(tableName)) {
+                        Map<String, Object> values = (Map<String, Object>) entry.getValue(); // Assumes value is a map with multiple fields
+                        String insertQuery = "INSERT INTO " + tableName + " (NumeroFicha, IDProgramaFormacion) VALUES (?, ?)";
+                        try (PreparedStatement psInsert = conexion.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+                            psInsert.setObject(1, values.get("NumeroFicha"));
+                            psInsert.setObject(2, values.get("IDProgramaFormacion"));
+                            psInsert.executeUpdate();
+                        }
+                    } else {
+                        // Inserción estándar
+                        String insertQuery = "INSERT INTO " + tableName + " (" + columnName + ") VALUES (?)";
+                        try (PreparedStatement psInsert = conexion.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+                            psInsert.setObject(1, entry.getValue());
+                            psInsert.executeUpdate();
                         }
                     }
                 } else if (!entry.getValue().equals(TablaAnterior.get(entry.getKey()))) {
-                    // Modificar la entrada existente si es diferente
-                    String updateQuery = "UPDATE " + tableName + " SET " + columnName + " = ? WHERE ID = ?";
-                    try (PreparedStatement psUpdate = conexion.prepareStatement(updateQuery)) {
-                        psUpdate.setObject(1, entry.getValue()); // El valor del map es el nuevo valor para la columna
-                        psUpdate.setObject(2, entry.getKey());   // Suponiendo que la clave del map es el ID
-                        psUpdate.executeUpdate();
+                    // Actualización para tablas con claves foráneas (fichas)
+                    if ("fichas".equalsIgnoreCase(tableName)) {
+                        Map<String, Object> values = (Map<String, Object>) entry.getValue();
+                        String updateQuery = "UPDATE " + tableName + " SET NumeroFicha = ?, IDProgramaFormacion = ? WHERE ID = ?";
+                        try (PreparedStatement psUpdate = conexion.prepareStatement(updateQuery)) {
+                            psUpdate.setObject(1, values.get("NumeroFicha"));
+                            psUpdate.setObject(2, values.get("IDProgramaFormacion"));
+                            psUpdate.setObject(3, entry.getKey());
+                            psUpdate.executeUpdate();
+                        }
+                    } else {
+                        // Actualización estándar
+                        String updateQuery = "UPDATE " + tableName + " SET " + columnName + " = ? WHERE ID = ?";
+                        try (PreparedStatement psUpdate = conexion.prepareStatement(updateQuery)) {
+                            psUpdate.setObject(1, entry.getValue());
+                            psUpdate.setObject(2, entry.getKey());
+                            psUpdate.executeUpdate();
+                        }
                     }
                 }
             }
@@ -127,7 +142,7 @@ public class DataManagerAPI {
                     // Paso 3: Luego, eliminar el registro en la tabla principal
                     String deleteQuery = "DELETE FROM " + tableName + " WHERE ID = ?";
                     try (PreparedStatement psDelete = conexion.prepareStatement(deleteQuery)) {
-                        psDelete.setObject(1, key); // Suponiendo que la clave del map es el ID
+                        psDelete.setObject(1, key);
                         psDelete.executeUpdate();
                     }
                 }
@@ -141,8 +156,6 @@ public class DataManagerAPI {
             return new ResponseEntity<>("Error durante la modificación: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }
 
 

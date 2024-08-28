@@ -7,7 +7,6 @@ package main.util.API_AdminActions;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Map;
 import org.json.JSONObject;
 import main.util.models.ModTableRequest;
 
@@ -17,6 +16,13 @@ import main.util.models.ModTableRequest;
  */
 public class API_Admin_DataManager {
     public void enviarDatosTabla(String endpoint, ModTableRequest request) {
+        System.out.println(request.getTablaAnterior());
+        System.out.println(request.getTablaEntrante());
+        if (endpoint == null || endpoint.isEmpty() || request == null) {
+            System.err.println("El endpoint o el request no pueden ser nulos o vacíos.");
+            return;
+        }
+
         try {
             URL url = new URL("http://localhost:8080/DataMg/" + endpoint);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -26,25 +32,29 @@ public class API_Admin_DataManager {
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
 
-            // Convertir ModTableRequest a JSON
             JSONObject json = new JSONObject();
             json.put("TablaAnterior", new JSONObject(request.getTablaAnterior()));
             json.put("TablaEntrante", new JSONObject(request.getTablaEntrante()));
 
-            // Enviar la solicitud
+            // Depuración: Imprimir los JSON antes de enviar
+            System.out.println("Datos enviados: " + json.toString());
+
             byte[] input = json.toString().getBytes("utf-8");
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(input, 0, input.length);
             }
 
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            int responseCode = conn.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                System.err.println("Error: Código de respuesta HTTP " + responseCode);
+            } else {
+                System.out.println("Datos enviados correctamente a " + endpoint);
             }
 
-            // Cerrar la conexión
             conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
+

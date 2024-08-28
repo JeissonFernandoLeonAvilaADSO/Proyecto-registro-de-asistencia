@@ -37,6 +37,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private DefaultTableModel previousGenModel;
     private DefaultTableModel previousProgramFormacionModel;
     private DefaultTableModel previousSedeModel;
+    private DefaultTableModel previousFichasModel;
     
     public DataManagerPanel() {
         initComponents();
@@ -50,42 +51,42 @@ public class DataManagerPanel extends javax.swing.JPanel {
         ToggleButtons(ModGen, GenerosTable);
         ToggleButtons(ModProgramFormacion, ProgramaFormacionTable);
         ToggleButtons(ModSedes, SedesTable);
-     
+        ToggleButtons(ModFichas, FichasTable); // Añadir para Fichas
 
         try {
             ComboBoxModels TableModels = new ComboBoxModels();
-            ArrayList<String> TipoDocTableData = TableModels.BoxTipoDocModel();
-            TipoDocTable.setModel(LlenarTabla(TipoDocTableData, "Tipo de documento"));
-            previousTipoDocModel = copyTableModel((DefaultTableModel) TipoDocTable.getModel()); // Inicializar estado anterior
-            desHabilitarTabla(TipoDocTable);
 
-            ArrayList<String> AmbientesTableData = TableModels.BoxAmbientesModel();
-            AmbienteTable.setModel(LlenarTabla(AmbientesTableData, "Ambientes"));
-            previousAmbModel = copyTableModel((DefaultTableModel) AmbienteTable.getModel()); // Inicializar estado anterior
-            desHabilitarTabla(AmbienteTable);
+            // Cargar y configurar la tabla de Tipo de Documento
+            previousTipoDocModel = setUpTableWithModel(TableModels.BoxTipoDocModel(), "Tipo de documento", TipoDocTable);
 
-            ArrayList<String> GeneroTableData = TableModels.BoxTipoGeneroModel();
-            GenerosTable.setModel(LlenarTabla(GeneroTableData, "Generos"));
-            previousGenModel = copyTableModel((DefaultTableModel) GenerosTable.getModel()); // Inicializar estado anterior
-            desHabilitarTabla(GenerosTable);
+            // Cargar y configurar la tabla de Ambientes
+            previousAmbModel = setUpTableWithModel(TableModels.BoxAmbientesModel(), "Ambientes", AmbienteTable);
 
-            ArrayList<String> ProgramaFormacionTableData = TableModels.BoxProgramaFormacionModel();
-            ProgramaFormacionTable.setModel(LlenarTabla(ProgramaFormacionTableData, "Programas de Formacion"));
-            previousProgramFormacionModel = copyTableModel((DefaultTableModel) ProgramaFormacionTable.getModel()); // Inicializar estado anterior
-            desHabilitarTabla(ProgramaFormacionTable);
+            // Cargar y configurar la tabla de Géneros
+            previousGenModel = setUpTableWithModel(TableModels.BoxTipoGeneroModel(), "Generos", GenerosTable);
 
-            ArrayList<String> SedesTableData = TableModels.BoxSedeModel();
-            SedesTable.setModel(LlenarTabla(SedesTableData, "Sedes"));
-            previousSedeModel = copyTableModel((DefaultTableModel) SedesTable.getModel()); // Inicializar estado anterior
-            desHabilitarTabla(SedesTable);
+            // Cargar y configurar la tabla de Programas de Formación
+            previousProgramFormacionModel = setUpTableWithModel(TableModels.BoxProgramaFormacionModel(), "Programas de Formacion", ProgramaFormacionTable);
 
+            // Cargar y configurar la tabla de Sedes
+            previousSedeModel = setUpTableWithModel(TableModels.BoxSedeModel(), "Sedes", SedesTable);
+
+            // Cargar y configurar la tabla de Fichas (especial)
             List<Map<String, Object>> FichasTableData = TableModels.BoxFichasFormModel();
             FichasTable.setModel(LlenarTabla(FichasTableData, new String[]{"Numero Ficha", "Programa de Formacion Asociado"}));
+            previousFichasModel = copyTableModel((DefaultTableModel) FichasTable.getModel());
             desHabilitarTabla(FichasTable);
 
         } catch (Exception ex) {
             Logger.getLogger(DataManagerPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private DefaultTableModel setUpTableWithModel(ArrayList<String> data, String columnName, JTable table) {
+        table.setModel(LlenarTabla(data, columnName));
+        DefaultTableModel previousModel = copyTableModel((DefaultTableModel) table.getModel());
+        desHabilitarTabla(table);
+        return previousModel;
     }
 
     private DefaultTableModel copyTableModel(DefaultTableModel original) {
@@ -102,28 +103,27 @@ public class DataManagerPanel extends javax.swing.JPanel {
         }
         return copy;
     }
-    
-    private void ModifComponents(){
+
+    private void ModifComponents() {
         ToggleButtonStyler.applyPrimaryStyle(ModTipoDocs);
         ToggleButtonStyler.applyPrimaryStyle(ModGen);
         ToggleButtonStyler.applyPrimaryStyle(ModProgramFormacion);
         ToggleButtonStyler.applyPrimaryStyle(ModSedes);
         ToggleButtonStyler.applyPrimaryStyle(ModAmb);
-        ToggleButtonStyler.applyPrimaryStyle(ModFichas);
+        ToggleButtonStyler.applyPrimaryStyle(ModFichas); // Añadir para Fichas
         ButtonStyler.applyPrimaryStyle(Actualizar);
     }
-    
-    private void ToggleButtons(JToggleButton toggleButton, JTable Tabla){
-        toggleButton.addActionListener(e -> {
-        if (toggleButton.isSelected()) {
-            toggleButton.setText("DesHabilitar Edición");
-            HabilitarTabla(Tabla);
-        } else {
-            toggleButton.setText("Habilitar Edición");
-            desHabilitarTabla(Tabla);
-        }
 
-     });
+    private void ToggleButtons(JToggleButton toggleButton, JTable Tabla) {
+        toggleButton.addActionListener(e -> {
+            if (toggleButton.isSelected()) {
+                toggleButton.setText("DesHabilitar Edición");
+                HabilitarTabla(Tabla);
+            } else {
+                toggleButton.setText("Habilitar Edición");
+                desHabilitarTabla(Tabla);
+            }
+        });
     }
 
     private DefaultTableModel LlenarTabla(ArrayList<String> Datos, String NombreTabla) {
@@ -154,7 +154,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
 
         return Tabla;
     }
-
 
 
     /**
@@ -382,39 +381,71 @@ public class DataManagerPanel extends javax.swing.JPanel {
     
     
     private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
-        API_Admin_DataManager client = new API_Admin_DataManager();
+ API_Admin_DataManager client = new API_Admin_DataManager();
 
-        if (ModTipoDocs.isSelected()) {
+    if (ModTipoDocs.isSelected()) {
+        // Verifica que previousTipoDocModel esté correctamente inicializado
+        if (previousTipoDocModel != null && TipoDocTable.getModel() instanceof DefaultTableModel) {
             ModTableRequest request = ModTableRequest.fromTable(previousTipoDocModel, TipoDocTable);
             client.enviarDatosTabla("ModTipoDocTable", request);
-            previousTipoDocModel = (DefaultTableModel) TipoDocTable.getModel(); // Actualizar estado anterior
+            previousTipoDocModel = copyTableModel((DefaultTableModel) TipoDocTable.getModel()); // Actualizar estado anterior
+        } else {
+            System.err.println("Error: previousTipoDocModel es nulo o TipoDocTable no tiene el modelo correcto.");
         }
+    }
 
-        if (ModAmb.isSelected()) {
+    if (ModAmb.isSelected()) {
+        if (previousAmbModel != null && AmbienteTable.getModel() instanceof DefaultTableModel) {
             ModTableRequest request = ModTableRequest.fromTable(previousAmbModel, AmbienteTable);
             client.enviarDatosTabla("ModAmbientesTable", request);
-            previousAmbModel = (DefaultTableModel) AmbienteTable.getModel(); // Actualizar estado anterior
+            previousAmbModel = copyTableModel((DefaultTableModel) AmbienteTable.getModel()); // Actualizar estado anterior
+        } else {
+            System.err.println("Error: previousAmbModel es nulo o AmbienteTable no tiene el modelo correcto.");
         }
+    }
 
-        if (ModGen.isSelected()) {
+    if (ModGen.isSelected()) {
+        if (previousGenModel != null && GenerosTable.getModel() instanceof DefaultTableModel) {
             ModTableRequest request = ModTableRequest.fromTable(previousGenModel, GenerosTable);
             client.enviarDatosTabla("ModGeneroTable", request);
-            previousGenModel = (DefaultTableModel) GenerosTable.getModel(); // Actualizar estado anterior
+            previousGenModel = copyTableModel((DefaultTableModel) GenerosTable.getModel()); // Actualizar estado anterior
+        } else {
+            System.err.println("Error: previousGenModel es nulo o GenerosTable no tiene el modelo correcto.");
         }
+    }
 
-        if (ModProgramFormacion.isSelected()) {
+    if (ModProgramFormacion.isSelected()) {
+        if (previousProgramFormacionModel != null && ProgramaFormacionTable.getModel() instanceof DefaultTableModel) {
             ModTableRequest request = ModTableRequest.fromTable(previousProgramFormacionModel, ProgramaFormacionTable);
             client.enviarDatosTabla("ModProgramaFormacionTable", request);
-            previousProgramFormacionModel = (DefaultTableModel) ProgramaFormacionTable.getModel(); // Actualizar estado anterior
+            previousProgramFormacionModel = copyTableModel((DefaultTableModel) ProgramaFormacionTable.getModel()); // Actualizar estado anterior
+        } else {
+            System.err.println("Error: previousProgramFormacionModel es nulo o ProgramaFormacionTable no tiene el modelo correcto.");
         }
+    }
 
-        if (ModSedes.isSelected()) {
+    if (ModSedes.isSelected()) {
+        if (previousSedeModel != null && SedesTable.getModel() instanceof DefaultTableModel) {
             ModTableRequest request = ModTableRequest.fromTable(previousSedeModel, SedesTable);
             client.enviarDatosTabla("ModSedeTable", request);
-            previousSedeModel = (DefaultTableModel) SedesTable.getModel(); // Actualizar estado anterior
+            previousSedeModel = copyTableModel((DefaultTableModel) SedesTable.getModel()); // Actualizar estado anterior
+        } else {
+            System.err.println("Error: previousSedeModel es nulo o SedesTable no tiene el modelo correcto.");
         }
+    }
+    
+    
+        if (ModFichas.isSelected()) {
+        if (previousFichasModel != null && FichasTable.getModel() instanceof DefaultTableModel) {
+            ModTableRequest request = ModTableRequest.fromTable(previousFichasModel, FichasTable);
+            client.enviarDatosTabla("ModFichasTable", request);
+            previousFichasModel = copyTableModel((DefaultTableModel) FichasTable.getModel()); // Actualizar estado anterior
+        } else {
+            System.err.println("Error: previousFichasModel es nulo o FichasTable no tiene el modelo correcto.");
+        }
+    }
 
-        JOptionPane.showMessageDialog(null, "Tablas seleccionadas actualizadas correctamente", "Actualización", JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(null, "Tablas seleccionadas actualizadas correctamente", "Actualización", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_ActualizarActionPerformed
 
 
