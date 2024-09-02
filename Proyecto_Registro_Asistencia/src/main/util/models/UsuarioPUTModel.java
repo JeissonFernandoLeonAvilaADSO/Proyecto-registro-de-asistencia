@@ -10,7 +10,6 @@ public class UsuarioPUTModel {
     private boolean CambiarApellidos;
     private boolean CambiarGenero;
     private boolean CambiarTelefono;
-    private boolean CambiarProgramaFormacion;
     private boolean CambiarNumeroFicha;
     private boolean CambiarJornada;
     private boolean CambiarArea;
@@ -26,7 +25,6 @@ public class UsuarioPUTModel {
     private String NuevosApellidos;
     private int NuevoGenero;
     private int NuevoTelefono;
-    private int NuevoProgramaFormacion;
     private int NuevaFicha;
     private int NuevaJornada;
     private int NuevoNivelFormacion;
@@ -69,10 +67,6 @@ public class UsuarioPUTModel {
 
     public void setCambiarTelefono(boolean cambiarTelefono) {
         CambiarTelefono = cambiarTelefono;
-    }
-
-    public void setCambiarProgramaFormacion(boolean cambiarProgramaFormacion) {
-        CambiarProgramaFormacion = cambiarProgramaFormacion;
     }
 
     public void setCambiarNumeroFicha(boolean cambiarNumeroFicha) {
@@ -135,9 +129,6 @@ public class UsuarioPUTModel {
         NuevoTelefono = nuevoTelefono;
     }
 
-    public void setNuevoProgramaFormacion(int nuevoProgramaFormacion) {
-        NuevoProgramaFormacion = nuevoProgramaFormacion;
-    }
 
     public void setNuevaFicha(int nuevaFicha) {
         NuevaFicha = nuevaFicha;
@@ -147,9 +138,6 @@ public class UsuarioPUTModel {
         NuevaJornada = nuevaJornada;
     }
 
-    public void setNuevoNivelFormacion(int nuevoNivelFormacion) {
-        NuevoNivelFormacion = nuevoNivelFormacion;
-    }
 
     public void setNuevoArea(String nuevoArea) {
         NuevoArea = nuevoArea;

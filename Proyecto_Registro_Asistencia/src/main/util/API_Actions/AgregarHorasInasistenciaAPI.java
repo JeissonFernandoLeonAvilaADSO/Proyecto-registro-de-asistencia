@@ -12,24 +12,31 @@ import java.util.List;
 import java.util.Map;
 
 public class AgregarHorasInasistenciaAPI {
-    public boolean SubirHorasInasistencias(Integer ficha,
-                                           Map<String, List<Map<String, Object>>> ListaAprendices){
+    public boolean SubirHorasInasistencias(Map<String, List<Map<String, Object>>> listaAprendices) {
         try {
-            URL url = new URL("http://localhost:8080/Horas/HorasInasistencia?ficha=" + ficha);
+            // Configurar la URL para el endpoint correcto
+            URL url = new URL("http://localhost:8080/ActualizarHoras");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
 
-            JSONObject obj = new JSONObject(ListaAprendices);
+            // Crear el JSON desde el mapa de aprendices
+            JSONObject obj = new JSONObject(listaAprendices);
             byte[] json = obj.toString().getBytes("UTF-8");
 
+            // Enviar la solicitud
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(json, 0, json.length);
             }
 
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+            // Manejo de la respuesta
+            int responseCode = conn.getResponseCode();
+            System.out.println("Response Code : " + responseCode);
+
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                // Leer la respuesta de error si existe
                 if (conn.getErrorStream() != null) {
                     try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
                         String line;
@@ -38,16 +45,15 @@ public class AgregarHorasInasistenciaAPI {
                         }
                     }
                 }
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+                // Lanza excepción con el código de error
+                throw new RuntimeException("Failed : HTTP error code : " + responseCode);
             }
-            int code = conn.getResponseCode();
-            System.out.println("Response Code : " + code);
 
             conn.disconnect();
+            return true; // Retorna true si la solicitud fue exitosa
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return false; // Retorna false si ocurre cualquier error
         }
-        return false;
     }
 }

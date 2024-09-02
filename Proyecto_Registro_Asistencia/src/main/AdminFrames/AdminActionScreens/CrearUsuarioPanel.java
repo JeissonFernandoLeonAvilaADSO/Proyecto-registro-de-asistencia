@@ -70,8 +70,6 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
         RegistrarPass = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         RegistrarCorreo = new javax.swing.JTextField();
-        jLabel37 = new javax.swing.JLabel();
-        RegistrarProgramaFormacion = new javax.swing.JComboBox<>();
         jLabel38 = new javax.swing.JLabel();
         RegistrarFicha = new javax.swing.JTextField();
         RegistrarNivelFormacion = new javax.swing.JComboBox<>();
@@ -225,19 +223,6 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
         RegistrarCorreo.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         RegistrarCorreo.setForeground(new java.awt.Color(0, 0, 0));
 
-        jLabel37.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel37.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel37.setText("Programa formacion");
-
-        RegistrarProgramaFormacion.setForeground(new java.awt.Color(0, 0, 0));
-        RegistrarProgramaFormacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        RegistrarProgramaFormacion.setPreferredSize(new java.awt.Dimension(64, 28));
-        RegistrarProgramaFormacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RegistrarProgramaFormacionActionPerformed(evt);
-            }
-        });
-
         jLabel38.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel38.setForeground(new java.awt.Color(0, 0, 0));
         jLabel38.setText("Numero de ficha");
@@ -310,13 +295,9 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
                                     .addComponent(RegistrarCorreo)
                                     .addComponent(RegistrarJornada, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_RegistrarDatosLayout.createSequentialGroup()
-                                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel18)
-                                    .addComponent(jLabel37))
-                                .addGap(25, 25, 25)
-                                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(RegistrarTelefono)
-                                    .addComponent(RegistrarProgramaFormacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jLabel18)
+                                .addGap(109, 109, 109)
+                                .addComponent(RegistrarTelefono))
                             .addGroup(Panel_RegistrarDatosLayout.createSequentialGroup()
                                 .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel23)
@@ -391,11 +372,7 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
                 .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RegistrarTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel18))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(RegistrarProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel37))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(40, 40, 40)
                 .addGroup(Panel_RegistrarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RegistrarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel38))
@@ -528,19 +505,6 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
             e.printStackTrace();
         }
 
-        try {
-            List<String> tiposProgramaFormacion = ComboBoxModels.BoxProgramaFormacionModel();
-            if (tiposProgramaFormacion == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando las sedes de la API");
-            } else {
-                tiposProgramaFormacion.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> ProgramaFormacionBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposProgramaFormacion));
-                RegistrarProgramaFormacion.setModel(ProgramaFormacionBoxModel);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         try {
             List<String> tiposNivelFormacion = ComboBoxModels.BoxNivelFormacionModel();
@@ -584,7 +548,6 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
         RegistrarTelefono.setEnabled(false);
         RegistrarNivelFormacion.setEnabled(false);
         RegistrarJornada.setEnabled(false);
-        RegistrarProgramaFormacion.setEnabled(false);
         RegistrarFicha.setEnabled(false);
         RegistrarCorreo.setEnabled(false);
         RegistrarArea.setEnabled(false);
@@ -604,7 +567,7 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
         RegistrarNivelFormacion.setEnabled(true);
         RegistrarJornada.setEnabled(true);
         RegistrarFicha.setEnabled(true);
-        RegistrarProgramaFormacion.setEnabled(true);
+
         RegistrarCorreo.setEnabled(true);
         RegistrarArea.setEnabled(true);
         RegistrarSede.setEnabled(true);
@@ -634,7 +597,6 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
             HabilitarCampos();
             RegistrarNivelFormacion.setEnabled(false);
             RegistrarJornada.setEnabled(false);
-            RegistrarProgramaFormacion.setEnabled(false);
             RegistrarFicha.setEnabled(false);
         } else {
             // El botón no está activo, cambia el color de fondo a blanco
@@ -679,10 +641,6 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_RegistrarPassActionPerformed
 
-    private void RegistrarProgramaFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarProgramaFormacionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_RegistrarProgramaFormacionActionPerformed
-
     private void RegistrarNivelFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarNivelFormacionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_RegistrarNivelFormacionActionPerformed
@@ -719,7 +677,6 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
                     usuarioModel.put("Area", RegistrarArea.getText());
                     usuarioModel.put("IDRol", 3);
                 } else {
-                    usuarioModel.put("IDProgramaFormacion", convertirDatos.ObtenerIDProgramaFormacion(RegistrarProgramaFormacion.getSelectedItem().toString()));
                     usuarioModel.put("IDNivelFormacion", convertirDatos.ObtenerIDNivelFormacion(RegistrarNivelFormacion.getSelectedItem().toString()));
                     usuarioModel.put("NumeroFicha", Integer.valueOf(RegistrarFicha.getText()));
                     usuarioModel.put("IDJornadaFormacion", convertirDatos.ObtenerIDJornadaFormacion(RegistrarJornada.getSelectedItem().toString()));
@@ -754,7 +711,6 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> RegistrarNivelFormacion;
     private javax.swing.JTextField RegistrarNombres;
     private javax.swing.JTextField RegistrarPass;
-    private javax.swing.JComboBox<String> RegistrarProgramaFormacion;
     private javax.swing.JComboBox<String> RegistrarSede;
     private javax.swing.JTextField RegistrarTelefono;
     private javax.swing.JComboBox<String> RegistrarTipoDoc;
@@ -772,7 +728,6 @@ public class CrearUsuarioPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel40;

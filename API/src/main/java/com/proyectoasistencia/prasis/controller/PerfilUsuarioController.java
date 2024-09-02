@@ -1,6 +1,7 @@
 package com.proyectoasistencia.prasis.controller;
 
 
+import com.proyectoasistencia.prasis.API.ConversionSubTablasAPI;
 import com.proyectoasistencia.prasis.models.PerfilUsuarioModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,11 @@ public class PerfilUsuarioController {
     @Autowired
     private PlatformTransactionManager transactionManager;
 
+    // Método para obtener un usuario por ID
     @RequestMapping(value = "ObtenerUsuario/{IDUsuario}")
-    public PerfilUsuarioModel getUsuario(@PathVariable String IDUsuario){
-        String consulta = """ 
-                SELECT perfilusuario.ID,
+    public PerfilUsuarioModel getUsuario(@PathVariable String IDUsuario) {
+        String consulta = """
+                            SELECT perfilusuario.ID,
                                    usuario.Usuario,
                                    usuario.Contraseña,
                                    perfilusuario.Documento,
@@ -43,7 +45,7 @@ public class PerfilUsuarioController {
                                    genero.TiposGeneros,
                                    perfilusuario.Telefono,
                                    programaformacion.ProgramaFormacion,
-                                   perfilusuario.NumeroFicha,
+                                   fichas.NumeroFicha,
                                    jornadaformacion.JornadasFormacion,
                                    nivelformacion.NivelFormacion,
                                    perfilusuario.Area,
@@ -54,7 +56,8 @@ public class PerfilUsuarioController {
                                      INNER JOIN usuario ON perfilusuario.IDUsuario = usuario.ID
                                      INNER JOIN tipoDocumento ON perfilusuario.IDTipoDocumento = tipoDocumento.ID
                                      INNER JOIN genero ON perfilusuario.IDGenero = genero.ID
-                                     INNER JOIN programaformacion ON perfilusuario.IDProgramaFormacion = programaformacion.ID
+                                     INNER JOIN fichas ON perfilusuario.IDFicha = fichas.ID
+                                     INNER JOIN programaformacion ON fichas.IDProgramaFormacion = programaformacion.ID
                                      INNER JOIN jornadaformacion ON perfilusuario.IDJornadaFormacion = jornadaformacion.ID
                                      INNER JOIN nivelformacion ON perfilusuario.IDNivelFormacion = nivelformacion.ID
                                      INNER JOIN sede ON perfilusuario.IDSede = sede.ID
@@ -64,48 +67,50 @@ public class PerfilUsuarioController {
             return jdbcTemplate.queryForObject(consulta, new Object[]{IDUsuario}, new RowMapper<PerfilUsuarioModel>() {
                 @Override
                 public PerfilUsuarioModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    PerfilUsuarioModel instructor = new PerfilUsuarioModel();
-                    instructor.setID(rs.getInt("ID"));
-                    instructor.setUser(rs.getString("Usuario"));
-                    instructor.setPass(rs.getString("Contraseña"));
-                    instructor.setDocumento(rs.getString("Documento"));
-                    instructor.setTipoDocumento(rs.getString("TipoDocumento"));
-                    instructor.setNombres(rs.getString("nombres"));
-                    instructor.setApellidos(rs.getString("apellidos"));
-                    instructor.setGenero(rs.getString("TiposGeneros"));
-                    instructor.setTelefono(rs.getString("Telefono"));
-                    instructor.setProgramaFormacion(rs.getString("ProgramaFormacion"));
-                    instructor.setNumeroFicha(rs.getInt("NumeroFicha"));
-                    instructor.setJornadaFormacion(rs.getString("JornadasFormacion"));
-                    instructor.setNivelFormacion(rs.getString("NivelFormacion"));
-                    instructor.setArea(rs.getString("Area"));
-                    instructor.setSede(rs.getString("CentroFormacion"));
-                    instructor.setCorreo(rs.getString("Correo"));
-                    instructor.setRol(rs.getString("TipoRol"));
-                    return instructor;
+                    PerfilUsuarioModel usuario = new PerfilUsuarioModel();
+                    usuario.setID(rs.getInt("ID"));
+                    usuario.setUser(rs.getString("Usuario"));
+                    usuario.setPass(rs.getString("Contraseña"));
+                    usuario.setDocumento(rs.getString("Documento"));
+                    usuario.setTipoDocumento(rs.getString("TipoDocumento"));
+                    usuario.setNombres(rs.getString("Nombres"));
+                    usuario.setApellidos(rs.getString("Apellidos"));
+                    usuario.setGenero(rs.getString("TiposGeneros"));
+                    usuario.setTelefono(rs.getString("Telefono"));
+                    usuario.setProgramaFormacion(rs.getString("ProgramaFormacion"));
+                    usuario.setNumeroFicha(rs.getInt("NumeroFicha"));
+                    usuario.setJornadaFormacion(rs.getString("JornadasFormacion"));
+                    usuario.setNivelFormacion(rs.getString("NivelFormacion"));
+                    usuario.setArea(rs.getString("Area"));
+                    usuario.setSede(rs.getString("CentroFormacion"));
+                    usuario.setCorreo(rs.getString("Correo"));
+                    usuario.setRol(rs.getString("TipoRol"));
+                    return usuario;
                 }
             });
         } catch (Exception e) {
-            // Imprime la traza de la pila de la excepción en caso de que ocurra un error.
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
+    // Método para agregar un usuario
     @RequestMapping("AgregarUsuario")
     public ResponseEntity<String> agregarUsuario(@RequestBody Map<String, Object> usuarioModel) {
         return upsertUsuario(usuarioModel, true, null);
     }
 
+    // Método para modificar un usuario
     @RequestMapping("ModificarUsuario/{IDComp}")
     public ResponseEntity<String> modificarUsuario(@PathVariable String IDComp, @RequestBody Map<String, Object> usuarioModel) {
         return upsertUsuario(usuarioModel, false, IDComp);
     }
 
+    // Método principal para insertar o actualizar un usuario
     private ResponseEntity<String> upsertUsuario(Map<String, Object> campos, boolean isNewUser, String IDComp) {
-        System.out.println(campos);
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         TransactionStatus status = transactionManager.getTransaction(def);
+        System.out.println("Datos recibidos: " + campos);
 
         try (Connection conexion = dataSource.getConnection()) {
             if (isNewUser) {
@@ -133,20 +138,46 @@ public class PerfilUsuarioController {
                         String consulta;
                         if (entry.getKey().equals("Usuario") || entry.getKey().equals("Contraseña")) {
                             consulta = "UPDATE usuario SET " + entry.getKey() + " = ? WHERE ID = (SELECT IDUsuario FROM perfilusuario WHERE Documento = ?)";
+                            System.out.println("Actualizando " + entry.getKey() + " para Documento: " + IDComp);
+                            try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
+                                ps.setString(1, (String) entry.getValue());
+                                ps.setString(2, IDComp);
+                                int rowsAffected = ps.executeUpdate();
+                                System.out.println("Filas afectadas: " + rowsAffected);
+                                if (rowsAffected <= 0) {
+                                    return new ResponseEntity<>("No se pudo actualizar " + entry.getKey(), HttpStatus.BAD_REQUEST);
+                                }
+                            }
+                        } else if (entry.getKey().equals("NumeroFicha")) {
+                            // Obtener el ID de la ficha desde el API
+                            ConversionSubTablasAPI conversionSubTablas = new ConversionSubTablasAPI(jdbcTemplate);
+                            ResponseEntity<Integer> response = conversionSubTablas.FichaToID((Integer) entry.getValue());
+                            Integer fichaID = response.getBody();
+                            if (fichaID == null) {
+                                return new ResponseEntity<>("No se pudo encontrar el ID para la ficha " + entry.getValue(), HttpStatus.BAD_REQUEST);
+                            }
+                            consulta = "UPDATE perfilusuario SET IDFicha = ? WHERE Documento = ?";
+                            try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
+                                ps.setInt(1, fichaID);
+                                ps.setString(2, IDComp);
+                                int rowsAffected = ps.executeUpdate();
+                                if (rowsAffected <= 0) {
+                                    return new ResponseEntity<>("No se pudo actualizar el ID de Ficha", HttpStatus.BAD_REQUEST);
+                                }
+                            }
                         } else {
                             consulta = "UPDATE perfilusuario SET " + entry.getKey() + " = ? WHERE Documento = ?";
-                        }
-
-                        try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
-                            if (entry.getValue() instanceof Integer) {
-                                ps.setInt(1, (Integer) entry.getValue());
-                            } else if (entry.getValue() instanceof String) {
-                                ps.setString(1, (String) entry.getValue());
-                            }
-                            ps.setString(2, IDComp);
-                            int rowsAffected = ps.executeUpdate();
-                            if (rowsAffected <= 0) {
-                                return new ResponseEntity<>("No se pudo actualizar " + entry.getKey(), HttpStatus.BAD_REQUEST);
+                            try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
+                                if (entry.getValue() instanceof Integer) {
+                                    ps.setInt(1, (Integer) entry.getValue());
+                                } else if (entry.getValue() instanceof String) {
+                                    ps.setString(1, (String) entry.getValue());
+                                }
+                                ps.setString(2, IDComp);
+                                int rowsAffected = ps.executeUpdate();
+                                if (rowsAffected <= 0) {
+                                    return new ResponseEntity<>("No se pudo actualizar " + entry.getKey(), HttpStatus.BAD_REQUEST);
+                                }
                             }
                         }
                     }
@@ -161,25 +192,24 @@ public class PerfilUsuarioController {
         }
     }
 
+    // Método para configurar los parámetros del perfil del usuario
     private void setPerfilUsuarioParams(Connection conexion, Map<String, Object> campos, boolean isNewUser, int idUsuarioGenerado, Integer IDComp) throws SQLException {
-        String consultaPerfil = "INSERT INTO perfilusuario (ID, IDUsuario, Documento, IDTipoDocumento, Nombres, Apellidos, IDGenero, Telefono, IDProgramaFormacion, NumeroFicha, IDJornadaFormacion, IDNivelFormacion, Area, IDSede, Correo, IDRol) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String consultaPerfil = "INSERT INTO perfilusuario (IDUsuario, Documento, IDTipoDocumento, Nombres, Apellidos, IDGenero, Telefono, IDFicha, IDJornadaFormacion, IDNivelFormacion, Area, IDSede, Correo, IDRol) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement psPerfil = conexion.prepareStatement(consultaPerfil)) {
-            psPerfil.setInt(1, (Integer) campos.get("ID"));
-            psPerfil.setInt(2, idUsuarioGenerado);
-            psPerfil.setString(3, (String) campos.get("Documento"));
-            psPerfil.setInt(4, (Integer) campos.get("IDTipoDocumento"));
-            psPerfil.setString(5, (String) campos.get("Nombres"));
-            psPerfil.setString(6, (String) campos.get("Apellidos"));
-            psPerfil.setInt(7, (Integer) campos.get("IDGenero"));
-            psPerfil.setString(8, (String) campos.get("Telefono"));
-            psPerfil.setInt(9, (Integer) campos.get("IDProgramaFormacion"));
-            psPerfil.setInt(10, (Integer) campos.get("NumeroFicha"));
-            psPerfil.setInt(11, (Integer) campos.get("IDJornadaFormacion"));
-            psPerfil.setInt(12, (Integer) campos.get("IDNivelFormacion"));
-            psPerfil.setString(13, (String) campos.get("Area"));
-            psPerfil.setInt(14, (Integer) campos.get("IDSede"));
-            psPerfil.setString(15, (String) campos.get("Correo"));
-            psPerfil.setInt(16, (Integer) campos.get("IDRol"));
+            psPerfil.setInt(1, idUsuarioGenerado);
+            psPerfil.setString(2, (String) campos.get("Documento"));
+            psPerfil.setInt(3, (Integer) campos.get("IDTipoDocumento"));
+            psPerfil.setString(4, (String) campos.get("Nombres"));
+            psPerfil.setString(5, (String) campos.get("Apellidos"));
+            psPerfil.setInt(6, (Integer) campos.get("IDGenero"));
+            psPerfil.setString(7, (String) campos.get("Telefono"));
+            psPerfil.setInt(8, (Integer) campos.get("IDFicha"));
+            psPerfil.setInt(9, (Integer) campos.get("IDJornadaFormacion"));
+            psPerfil.setInt(10, (Integer) campos.get("IDNivelFormacion"));
+            psPerfil.setString(11, (String) campos.get("Area"));
+            psPerfil.setInt(12, (Integer) campos.get("IDSede"));
+            psPerfil.setString(13, (String) campos.get("Correo"));
+            psPerfil.setInt(14, (Integer) campos.get("IDRol"));
 
             int rowsAffectedPerfil = psPerfil.executeUpdate();
 
@@ -189,13 +219,14 @@ public class PerfilUsuarioController {
         }
     }
 
+    // Método para eliminar un usuario
     @RequestMapping(value = "EliminarUsuario/{DocumentoUsuario}", method = RequestMethod.DELETE)
     public ResponseEntity<String> EliminarUsuario(@PathVariable String DocumentoUsuario) {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         TransactionStatus status = transactionManager.getTransaction(def);
 
         try (Connection conexion = dataSource.getConnection()) {
-            // Eliminar el perfil del usuario de la tabla 'perfilusuario'
+            // Primero elimina el perfil del usuario
             String consultaPerfilUsuario = "DELETE FROM perfilusuario WHERE Documento = ?";
             try (PreparedStatement psPerfilUsuario = conexion.prepareStatement(consultaPerfilUsuario)) {
                 psPerfilUsuario.setString(1, DocumentoUsuario);
@@ -206,7 +237,7 @@ public class PerfilUsuarioController {
                 }
             }
 
-            // Eliminar el usuario de la tabla 'usuario' usando una subconsulta para obtener el IDUsuario
+            // Luego elimina el usuario relacionado
             String consultaUsuario = "DELETE FROM usuario WHERE ID = (SELECT IDUsuario FROM perfilusuario WHERE Documento = ?)";
             try (PreparedStatement psUsuario = conexion.prepareStatement(consultaUsuario)) {
                 psUsuario.setString(1, DocumentoUsuario);
@@ -221,30 +252,27 @@ public class PerfilUsuarioController {
             return new ResponseEntity<>("Usuario eliminado exitosamente", HttpStatus.OK);
         } catch (SQLException e) {
             transactionManager.rollback(status);
-            e.printStackTrace(); // Imprime el stack trace para más detalles
+            e.printStackTrace();
             return new ResponseEntity<>("Error al eliminar el usuario: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    // Método para obtener el ID de usuario a partir del documento
     public ResponseEntity<Integer> getIDUsuario(@RequestParam String Documento) {
         String consulta = "SELECT IDUsuario FROM perfilusuario WHERE Documento = ?";
 
         try {
-            // Ejecutar la consulta
             Integer idUsuario = jdbcTemplate.queryForObject(consulta, new Object[]{Documento}, Integer.class);
 
-            // Verificar si se obtuvo un IDUsuario
             if (idUsuario != null) {
                 return ResponseEntity.ok(idUsuario);
             } else {
-                return null;
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-
             e.printStackTrace();
-            return null;
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
 

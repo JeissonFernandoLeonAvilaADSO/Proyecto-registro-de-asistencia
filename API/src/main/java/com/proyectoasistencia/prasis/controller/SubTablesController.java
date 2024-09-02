@@ -226,4 +226,27 @@ public class SubTablesController {
             return new ArrayList<>(); // Retorna una lista vacía en caso de error
         }
     }
+
+    @RequestMapping(value = "claseFormacionData")
+    public List<Map<String, Object>> getClaseFormacion(){
+        String consulta = """
+                        SELECT claseformacion.NombreClase, f.NumeroFicha, p.ProgramaFormacion FROM claseformacion
+                            INNER JOIN fichas f on claseformacion.IDFicha = f.ID
+                            INNER JOIN programaformacion p on f.IDProgramaFormacion = p.ID""";
+        try {
+            return jdbcTemplate.query(consulta, new RowMapper<Map<String, Object>>() {
+                @Override
+                public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Map<String, Object> row = new HashMap<>();
+                    row.put("NombreClase", rs.getString("NombreClase"));
+                    row.put("NumeroFicha", rs.getString("NumeroFicha"));
+                    row.put("ProgramaFormacion", rs.getString("ProgramaFormacion"));
+                    return row;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace(); // Imprime la traza de la excepción
+            return new ArrayList<>(); // Retorna una lista vacía en caso de error
+        }
+    }
 }

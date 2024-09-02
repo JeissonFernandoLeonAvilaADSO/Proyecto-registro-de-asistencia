@@ -61,6 +61,44 @@ public class LoginAPI {
         }
     }
 
+
+    @RequestMapping(value = "Registro/Aprendiz/{User}/{Pass}")
+    public ResponseEntity<Map<String, Object>> LoginAprendiz(@PathVariable String User, @PathVariable String Pass) {
+        String consulta1 = "SELECT Documento FROM perfilusuario INNER JOIN usuario ON perfilusuario.IDUsuario = usuario.ID WHERE usuario.Usuario = ? AND usuario.Contraseña = ? AND perfilusuario.IDRol = 4";
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            String decodedUser = URLDecoder.decode(User, StandardCharsets.UTF_8.toString());
+            String decodedPass = URLDecoder.decode(Pass, StandardCharsets.UTF_8.toString());
+
+            Integer documento = jdbcTemplate.queryForObject(consulta1, new Object[]{decodedUser, decodedPass}, Integer.class);
+
+            if (documento != null) {
+                String consulta2 = """
+                        SELECT perfilusuario.ID, perfilusuario.Documento, perfilusuario.Nombres, perfilusuario.Apellidos 
+                        FROM perfilusuario
+                        WHERE perfilusuario.Documento = ?""";
+
+                jdbcTemplate.queryForObject(consulta2, new Object[]{documento}, (rs, rowNum) -> {
+                    response.put("ID", rs.getInt("ID"));
+                    response.put("documento", rs.getInt("Documento"));
+                    response.put("nombres", rs.getString("Nombres"));
+                    response.put("apellidos", rs.getString("Apellidos"));
+                    return null; // Este valor no se utiliza
+                });
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     @RequestMapping(value = "Registro/Administrador/{User}/{Pass}")
     public boolean LoginAdministrador(@PathVariable String User, @PathVariable String Pass) {
         String consulta = """

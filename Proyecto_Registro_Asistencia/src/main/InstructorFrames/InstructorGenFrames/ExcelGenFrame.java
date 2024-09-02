@@ -30,6 +30,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import main.InstructorFrames.InstructorHomeScreen;
+import main.util.API_Actions.AgregarHorasInasistenciaAPI;
 import main.util.API_Actions.ConvertirDatos;
 import main.util.API_AdminActions.API_Admin_BuscarUsuario;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -521,6 +522,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         Workbook workbook = null;
 
         try {
+            // Preparar los parámetros para el archivo Excel y la API
             ConvertirDatos convertirDatos = new ConvertirDatos();
             Map<String, Object> params = new HashMap<>();
             params.put("Instructor", InstructorNombre.getText());
@@ -529,10 +531,12 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             params.put("Ficha", Integer.valueOf(FichaCB.getSelectedItem().toString()));
             params.put("IDProgramaFormacion", convertirDatos.ObtenerIDProgramaFormacion(ProgramaFormacionCB.getSelectedItem().toString()));
             System.out.println(params);
+
+            // Crear un nuevo archivo Excel
             workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet("Asistencia");
 
-            // Crear encabezados
+            // Crear encabezados en el Excel
             Row headerRow = sheet.createRow(0);
             for (int i = 0; i < modeloTabla.getColumnCount(); i++) {
                 Cell cell = headerRow.createCell(i);
@@ -548,52 +552,41 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                 }
             }
 
-            // Crear formato condicional
-            SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
+            // Consultar todos los aprendices asociados a la ficha
+            int ficha = Integer.valueOf(FichaCB.getSelectedItem().toString());
+            DefaultTableModel listarAprendicesModel = ListarUsuarios.getAprendices(ficha);
 
-            // Definir un color verde claro personalizado
-            XSSFColor lightGreen = new XSSFColor(new Color(198, 224, 180), null);
+            // Identificar los aprendices que no están registrados en la tabla de asistencia y asignar 5 horas de inasistencia
+            for (int i = 0; i < listarAprendicesModel.getRowCount(); i++) {
+                String documentoAprendiz = listarAprendicesModel.getValueAt(i, 0).toString();
+                boolean registrado = false;
 
-            // Definir un naranja personalizado para "Tarde"
-            XSSFColor orange = new XSSFColor(new Color(244, 176, 132), null);
+                for (int j = 0; j < modeloTabla.getRowCount(); j++) {
+                    if (modeloTabla.getValueAt(j, 3).toString().equals(documentoAprendiz)) { // Columna 3 asume ser Documento
+                        registrado = true;
+                        String estado = modeloTabla.getValueAt(j, 8).toString(); // Columna de estado, asumiendo índice 8
+                        if (estado.equals("Tarde")) {
+                            // Calcular y agregar horas de retardo a las inasistencias
+                            int horasRetorno = calcularHorasRetardo(modeloTabla.getValueAt(j, 7).toString()); // Columna 7 asume ser Hora de llegada
+                            agregarInasistencia(documentoAprendiz, horasRetorno);
+                        }
+                        break;
+                    }
+                }
 
-            // Definir un rojo personalizado para "Inasistencia"
-            XSSFColor red = new XSSFColor(new Color(255, 71, 71), null);
+                if (!registrado) {
+                    // Agregar 5 horas de inasistencia si el aprendiz no está registrado
+                    agregarInasistencia(documentoAprendiz, 5);
+                }
+            }
 
-            // Condición para "A tiempo" (verde claro)
-            ConditionalFormattingRule ruleAtempo = sheetCF.createConditionalFormattingRule(ComparisonOperator.EQUAL, "\"A tiempo\"");
-            PatternFormatting fillAtempo = ruleAtempo.createPatternFormatting();
-            ((XSSFPatternFormatting) fillAtempo).setFillBackgroundColor(lightGreen);
-            fillAtempo.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
-
-            // Condición para "Tarde" (naranja)
-            ConditionalFormattingRule ruleTarde = sheetCF.createConditionalFormattingRule(ComparisonOperator.EQUAL, "\"Tarde\"");
-            PatternFormatting fillTarde = ruleTarde.createPatternFormatting();
-            ((XSSFPatternFormatting) fillTarde).setFillBackgroundColor(orange);
-            fillTarde.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
-
-            // Condición para "Inasistencia" (rojo)
-            ConditionalFormattingRule ruleInasistencia = sheetCF.createConditionalFormattingRule(ComparisonOperator.EQUAL, "\"Inasistencia\"");
-            PatternFormatting fillInasistencia = ruleInasistencia.createPatternFormatting();
-            ((XSSFPatternFormatting) fillInasistencia).setFillBackgroundColor(red);
-            fillInasistencia.setFillPattern(PatternFormatting.SOLID_FOREGROUND);
-
-            // Rango de celdas a las que se aplicarán las reglas de formato condicional
-            CellRangeAddress[] regions = {
-                CellRangeAddress.valueOf("I2:I" + (modeloTabla.getRowCount() + 1)) // Columna "Estado"
-            };
-
-            // Aplicar formato condicional usando un array de reglas
-            ConditionalFormattingRule[] rules = {ruleAtempo, ruleTarde, ruleInasistencia};
-            sheetCF.addConditionalFormatting(regions, rules);
-            
-            // Guardar el archivo en el sistema
+            // Guardar el archivo Excel en el sistema
             String filePath = "asistencia.xlsx";
             try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
                 workbook.write(fileOut);
             }
 
-            // Enviar el archivo a la API
+            // Enviar el archivo Excel a la API
             File file = new File(filePath);
             UploadFileAPI uploadFileAPI = new UploadFileAPI();
             uploadFileAPI.uploadFileAPI(file, params);
@@ -619,6 +612,55 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_FinalizarAsisActionPerformed
 
+        // Método para calcular las horas de retardo basadas en la hora de llegada
+    private int calcularHorasRetardo(String horaLlegada) {
+        // Implementa la lógica para calcular las horas de retardo con base en la hora de llegada
+        // Por ejemplo, calcula la diferencia con la hora esperada y convierte a horas
+        // Este es un ejemplo simple que retorna 1 hora de retardo
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+            Date horaActual = sdf.parse(HoraActual());
+            Date horaLlegadaParsed = sdf.parse(horaLlegada);
+
+            // Calcular la diferencia en horas
+            long diferenciaMilisegundos = horaActual.getTime() - horaLlegadaParsed.getTime();
+            int horasRetardo = (int) (diferenciaMilisegundos / (1000 * 60 * 60));
+            return Math.max(horasRetardo, 0); // Asegurarse que no sea negativo
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0; // En caso de error, retornar 0 como retardo
+        }
+    }
+
+
+    // Método para agregar horas de inasistencia usando la API de inasistencias
+    private void agregarInasistencia(String documentoAprendiz, int horas) {
+        try {
+            // Obtener el ID del instructor
+            Integer idInstructor = UserSession.getInstance().getID(); // Asumiendo que UserSession tiene el ID del instructor
+
+            // Crear el objeto JSON para la solicitud
+            Map<String, List<Map<String, Object>>> listaAprendices = new HashMap<>();
+            Map<String, Object> aprendizData = new HashMap<>();
+            aprendizData.put("Documento", documentoAprendiz);
+            aprendizData.put("HorasInasistencia", horas);
+            aprendizData.put("NombreClase", Competencia.getText()); // Asegúrate de que el nombre de la clase esté correcto
+            aprendizData.put("IDInstructor", idInstructor); // Incluir el ID del instructor
+            listaAprendices.put("aprendices", List.of(aprendizData));
+
+            // Llamar a la API para subir las horas de inasistencia
+            AgregarHorasInasistenciaAPI api = new AgregarHorasInasistenciaAPI();
+            boolean resultado = api.SubirHorasInasistencias(listaAprendices);
+
+            if (!resultado) {
+                System.out.println("Error al agregar inasistencia para el documento: " + documentoAprendiz);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
     private void IngresoCodAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresoCodAprendizActionPerformed
         RegistrarAsistencia.doClick();
     }//GEN-LAST:event_IngresoCodAprendizActionPerformed

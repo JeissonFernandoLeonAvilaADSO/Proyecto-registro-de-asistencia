@@ -16,9 +16,10 @@ import org.json.JSONObject;
  */
 public class API_Admin_ModifUsuario {
 
-    public void AdminModifPerfilUsuario(Integer DocumentoComparativo, Map<String, Object> usuarioPUTModel) {
-try {
-            URL url = new URL("http://localhost:8080/ModificarUsuario/" + DocumentoComparativo);
+    public void AdminModifPerfilUsuario(Integer documentoComparativo, Map<String, Object> usuarioPUTModel) {
+        try {
+            // Verifica que la URL tenga el prefijo correcto para coincidir con el servidor
+            URL url = new URL("http://localhost:8080/ModificarUsuario/" + documentoComparativo);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("PUT");
@@ -32,8 +33,9 @@ try {
                 os.write(input, 0, input.length);
             }
 
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                // Imprime el mensaje de error del servidor
+            int responseCode = conn.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                // Manejo de errores
                 if (conn.getErrorStream() != null) {
                     try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
                         String line;
@@ -42,14 +44,10 @@ try {
                         }
                     }
                 }
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+                throw new RuntimeException("Failed : HTTP error code : " + responseCode);
             }
 
-            // Obtiene la respuesta del servidor
-            int code = conn.getResponseCode();
-            System.out.println("Response Code : " + code);
-
-            // Cierra la conexión
+            System.out.println("Response Code : " + responseCode);
             conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();

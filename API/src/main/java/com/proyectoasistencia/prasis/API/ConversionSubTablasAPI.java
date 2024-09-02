@@ -125,5 +125,40 @@ public class ConversionSubTablasAPI {
                                     WHERE IDProgramaFormacion = ?""";
         return jdbcTemplate.query(consulta, new Object[]{idPrograma}, (rs, rowNum) -> rs.getInt("NumeroFicha"));
     }
+
+    @RequestMapping(value = "Conversion/ClaseToID/{NombreClase}/{IDInstructor}")
+    public ResponseEntity<Integer> ClaseToID(@PathVariable String NombreClase, @PathVariable Integer IDInstructor) {
+        try {
+            // Decodificar el parámetro para asegurar que los espacios y caracteres especiales sean manejados
+            String nombreClaseDecodificado = URLDecoder.decode(NombreClase, StandardCharsets.UTF_8);
+            System.out.println("Buscando ID Clase Formacion para NombreClase: " + nombreClaseDecodificado + " y IDInstructor: " + IDInstructor);
+
+            // Consulta SQL para obtener el IDClaseFormacion basado en NombreClase y IDInstructor
+            String consulta = """
+            SELECT c.ID
+            FROM claseformacion c
+                     INNER JOIN fichas f ON c.IDFicha = f.ID
+                     INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
+                    INNER JOIN perfilusuario pu ON c.IDInstructor = pu.ID
+            WHERE c.NombreClase = ? AND c.IDInstructor = ? AND pu.IDRol = 3
+        """;
+
+            // Ejecutar la consulta para obtener el ID de la clase
+            Integer idClaseFormacion = jdbcTemplate.queryForObject(consulta, new Object[]{nombreClaseDecodificado, IDInstructor}, Integer.class);
+            System.out.println("Resultado ID Clase Formacion: " + idClaseFormacion);
+
+            return ResponseEntity.ok(idClaseFormacion);
+
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println("No se encontró Clase Para: " + NombreClase + " y IDInstructor: " + IDInstructor);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            System.out.println("Error al obtener el ID de Clase Formación: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+
 }
 

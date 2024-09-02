@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import main.util.API_Actions.ConvertirDatos;
 import main.util.API_AdminActions.API_Admin_BuscarUsuario;
@@ -25,7 +26,7 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
     /**
      * Creates new form ModificarUsuarioPanel
      */
-    public ModificarUsuarioPanel() {
+    public ModificarUsuarioPanel() throws Exception {
         initComponents();
         AditionalConfig();
     }
@@ -81,9 +82,6 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
         jLabel29 = new javax.swing.JLabel();
         ModificarCorreo = new javax.swing.JTextField();
         CheckActivarCorreo = new javax.swing.JCheckBox();
-        jLabel37 = new javax.swing.JLabel();
-        CheckActivarProgramaFormacion = new javax.swing.JCheckBox();
-        ModificarProgramaFormacion = new javax.swing.JComboBox<>();
         jLabel38 = new javax.swing.JLabel();
         ModificarFicha = new javax.swing.JTextField();
         CheckActivarFicha = new javax.swing.JCheckBox();
@@ -359,25 +357,6 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel37.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel37.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel37.setText("Programa formacion");
-
-        CheckActivarProgramaFormacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckActivarProgramaFormacionActionPerformed(evt);
-            }
-        });
-
-        ModificarProgramaFormacion.setForeground(new java.awt.Color(0, 0, 0));
-        ModificarProgramaFormacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        ModificarProgramaFormacion.setPreferredSize(new java.awt.Dimension(64, 28));
-        ModificarProgramaFormacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ModificarProgramaFormacionActionPerformed(evt);
-            }
-        });
-
         jLabel38.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel38.setForeground(new java.awt.Color(0, 0, 0));
         jLabel38.setText("Numero de ficha");
@@ -438,13 +417,9 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
                 .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(ConfirmarModificarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
-                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel37))
-                        .addGap(25, 25, 25)
-                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ModificarProgramaFormacion, 0, 316, Short.MAX_VALUE)
-                            .addComponent(ModificarTelefono))
+                        .addComponent(jLabel18)
+                        .addGap(109, 109, 109)
+                        .addComponent(ModificarTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
                         .addGap(23, 23, 23)
                         .addComponent(CheckActivarTelefono))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Panel_ModificarDatosLayout.createSequentialGroup()
@@ -478,9 +453,7 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
                                 .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
                                     .addGap(23, 23, 23)
                                     .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(CheckActivarFicha)
-                                            .addComponent(CheckActivarProgramaFormacion, javax.swing.GroupLayout.Alignment.TRAILING))
+                                        .addComponent(CheckActivarFicha)
                                         .addComponent(CheckActivarNivelFormacion, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(CheckActivarJornada)))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createSequentialGroup()
@@ -571,46 +544,40 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
-                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(CheckActivarTipoDoc)
+                            .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(ModificarTipoDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel20)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(ModificarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel21))
+                            .addComponent(CheckActivarNombres, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
-                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(CheckActivarTipoDoc)
-                                    .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(ModificarTipoDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel20)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(ModificarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel21))
-                                    .addComponent(CheckActivarNombres, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(ModificarApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel22)))
-                                    .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(CheckActivarApellidos)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(ModificarGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel23)))
-                            .addComponent(CheckActivarGenero))
+                                    .addComponent(ModificarApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel22)))
+                            .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(CheckActivarApellidos)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(CheckActivarTelefono)
-                            .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(ModificarTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel18)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(CheckActivarProgramaFormacion)
-                            .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(ModificarProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel37)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ModificarGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel23)))
+                    .addComponent(CheckActivarGenero))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(CheckActivarTelefono)
+                    .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(ModificarTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel18)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(Panel_ModificarDatosLayout.createSequentialGroup()
                         .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(Panel_ModificarDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(ModificarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -651,7 +618,7 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
                     .addComponent(CheckActivarSede, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ConfirmarModificarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -997,155 +964,72 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_CheckActivarNombresActionPerformed
 
-    public void AditionalConfig(){
+    public void AditionalConfig() throws Exception{
+        disableAllComponents();  // Deshabilita todos los componentes inicialmente
+        cargarCombos();  
+    }
+
+    private void disableAllComponents() {
         for (Component component : Panel_ModificarDatos.getComponents()) {
             component.setEnabled(false);
         }
-
-        ComboBoxModels ComboBoxModels = new ComboBoxModels();
-        try {
-            List<String> tiposDocumento = ComboBoxModels.BoxTipoDocModel();
-            if (tiposDocumento == null) {
-                // Maneja el caso en que BoxTipoDocModel() devuelva null
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando los tipos de documentos de la API");
-            } else {
-                tiposDocumento.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> TipoDocBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposDocumento));
-                ModificarTipoDoc.setModel(TipoDocBoxModel);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            List<String> tiposGenero = ComboBoxModels.BoxTipoGeneroModel();
-            if (tiposGenero == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando los géneros de la API");
-            } else {
-                tiposGenero.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> GeneroBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposGenero));
-                ModificarGenero.setModel(GeneroBoxModel);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            List<String> tiposRol = ComboBoxModels.BoxRolModel();
-            if (tiposRol == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando los roles de la API");
-            } else {
-                tiposRol.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> RolBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposRol));
-                ModificarRol.setModel(RolBoxModel);
-                
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            List<String> tiposSede = ComboBoxModels.BoxSedeModel();
-            if (tiposSede == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando los roles de la API");
-            } else {
-                tiposSede.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> SedeBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposSede));
-                ModificarSede.setModel(SedeBoxModel);
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            List<String> tiposProgramaFormacion = ComboBoxModels.BoxProgramaFormacionModel();
-            if (tiposProgramaFormacion == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando las sedes de la API");
-            } else {
-                tiposProgramaFormacion.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> ProgramaFormacionBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposProgramaFormacion));
-                ModificarProgramaFormacion.setModel(ProgramaFormacionBoxModel);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            List<String> tiposNivelFormacion = ComboBoxModels.BoxNivelFormacionModel();
-            if (tiposNivelFormacion == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando las sedes de la API");
-            } else {
-                tiposNivelFormacion.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> NivelFormacionBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposNivelFormacion));
-                ModificarNivelFormacion.setModel(NivelFormacionBoxModel);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            List<String> tiposJornadas = ComboBoxModels.BoxJornadaFormacionModel();
-            if (tiposJornadas == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando las sedes de la API");
-            } else {
-                tiposJornadas.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> JornadasBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposJornadas));
-                ModificarJornada.setModel(JornadasBoxModel);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-
-    private void DesHabilitarCampos(){
-        ModificarCod.setEnabled(false);
-        ModificarUsuario.setEnabled(false);
-        ModificarPass.setEnabled(false);
-        ModificarDocumento.setEnabled(false);
-        ModificarTipoDoc.setEnabled(false);
-        ModificarNombre.setEnabled(false);
-        ModificarApellido.setEnabled(false);
-        ModificarGenero.setEnabled(false);
-        ModificarTelefono.setEnabled(false);
-        ModificarNivelFormacion.setEnabled(false);
-        ModificarJornada.setEnabled(false);
-        ModificarFicha.setEnabled(false);
-        ModificarProgramaFormacion.setEnabled(false);
-        ModificarCorreo.setEnabled(false);
-        ModificarRol.setEnabled(false);
-        ModificarArea.setEnabled(false);
-        ModificarSede.setEnabled(false);
-    }
+        private void cargarCombos() throws Exception {
+            ComboBoxModels comboBoxModels = new ComboBoxModels();
+            cargarComboBox(ModificarTipoDoc, comboBoxModels.BoxTipoDocModel(), "tipos de documentos");
+            cargarComboBox(ModificarGenero, comboBoxModels.BoxTipoGeneroModel(), "géneros");
+            cargarComboBox(ModificarRol, comboBoxModels.BoxRolModel(), "roles");
+            cargarComboBox(ModificarSede, comboBoxModels.BoxSedeModel(), "sedes");
+            cargarComboBox(ModificarNivelFormacion, comboBoxModels.BoxNivelFormacionModel(), "niveles de formación");
+            cargarComboBox(ModificarJornada, comboBoxModels.BoxJornadaFormacionModel(), "jornadas de formación");
+         }
+        
+        private void cargarComboBox(JComboBox<String> comboBox, List<String> data, String dataType) {
+            try {
+                if (data == null) {
+                    JOptionPane.showMessageDialog(null, "Hubo un error cargando " + dataType + " de la API");
+                } else {
+                    data.add(0, "Seleccionar...");
+                    comboBox.setModel(new DefaultComboBoxModel<>(data.toArray(new String[0])));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     
-    private void HabilitarCampos(){
-        ModificarCod.setEnabled(true);
-        ModificarUsuario.setEnabled(true);
-        ModificarPass.setEnabled(true);
-        ModificarDocumento.setEnabled(true);
-        ModificarTipoDoc.setEnabled(true);
-        ModificarNombre.setEnabled(true);
-        ModificarApellido.setEnabled(true);
-        ModificarGenero.setEnabled(true);
-        ModificarTelefono.setEnabled(true);
-        ModificarNivelFormacion.setEnabled(true);
-        ModificarJornada.setEnabled(true);
-        ModificarProgramaFormacion.setEnabled(true);
-        ModificarCorreo.setEnabled(true);
-        ModificarRol.setEnabled(true);
-        ModificarArea.setEnabled(true);
-        ModificarSede.setEnabled(true);
+    // Método para deshabilitar los campos
+    private void desHabilitarCampos() {
+        setCamposEnabled(false);
     }
 
-    private void LimpiarCampos(){
+    // Método para habilitar los campos
+    private void habilitarCampos() {
+        setCamposEnabled(true);
+    }
+
+    // Método común para habilitar o deshabilitar los campos
+    private void setCamposEnabled(boolean enabled) {
+        ModificarCod.setEnabled(enabled);
+        ModificarUsuario.setEnabled(enabled);
+        ModificarPass.setEnabled(enabled);
+        ModificarDocumento.setEnabled(enabled);
+        ModificarTipoDoc.setEnabled(enabled);
+        ModificarNombre.setEnabled(enabled);
+        ModificarApellido.setEnabled(enabled);
+        ModificarGenero.setEnabled(enabled);
+        ModificarTelefono.setEnabled(enabled);
+        ModificarNivelFormacion.setEnabled(enabled);
+        ModificarJornada.setEnabled(enabled);
+        ModificarFicha.setEnabled(enabled);
+        ModificarCorreo.setEnabled(enabled);
+        ModificarRol.setEnabled(enabled);
+        ModificarArea.setEnabled(enabled);
+        ModificarSede.setEnabled(enabled);
+    }
+
+    // Método para limpiar los campos del formulario
+    private void limpiarCampos() {
         IDInstructorField.setText("");
         ModificarCod.setText("");
         ModificarUsuario.setText("");
@@ -1160,6 +1044,12 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
         ModificarRol.setSelectedIndex(0);
         ModificarArea.setText("");
         ModificarSede.setSelectedIndex(0);
+        limpiarResultados();
+        desactivarChecks();
+    }
+
+    // Método para limpiar los campos de resultados
+    private void limpiarResultados() {
         ResultadoCod.setText("");
         ResultadoUsuario.setText("");
         ResultadoContra.setText("");
@@ -1177,6 +1067,10 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
         ResultadoRol.setText("");
         ResultadoArea.setText("");
         ResultadoSede.setText("");
+    }
+
+    // Método para desactivar todos los checks
+    private void desactivarChecks() {
         CheckActivarCod.setSelected(false);
         CheckActivarUsuario.setSelected(false);
         CheckActivarPass.setSelected(false);
@@ -1192,43 +1086,38 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
         CheckActivarSede.setSelected(false);
     }
     
+        // Construir el modelo de datos para la modificación del usuario
+    private Map<String, Object> construirModeloUsuarioPUT(ConvertirDatos convertirDatos) {
+        Map<String, Object> usuarioPUTModel = new HashMap<>();
+        usuarioPUTModel.put("ID", CheckActivarCod.isSelected() ? Integer.valueOf(ModificarCod.getText()) : null);
+        usuarioPUTModel.put("Usuario", CheckActivarUsuario.isSelected() ? ModificarUsuario.getText() : null);
+        usuarioPUTModel.put("Contraseña", CheckActivarPass.isSelected() ? ModificarPass.getText() : null);
+        usuarioPUTModel.put("Documento", CheckActivarDoc.isSelected() ? ModificarDocumento.getText() : null);
+        usuarioPUTModel.put("IDTipoDocumento", CheckActivarTipoDoc.isSelected() ? convertirDatos.ObtenerIDTipoDoc(ModificarTipoDoc.getSelectedItem().toString()) : null);
+        usuarioPUTModel.put("Nombres", CheckActivarNombres.isSelected() ? ModificarNombre.getText() : null);
+        usuarioPUTModel.put("Apellidos", CheckActivarApellidos.isSelected() ? ModificarApellido.getText() : null);
+        usuarioPUTModel.put("IDGenero", CheckActivarGenero.isSelected() ? convertirDatos.ObtenerIDTipoGenero(ModificarGenero.getSelectedItem().toString()) : null);
+        usuarioPUTModel.put("Telefono", CheckActivarTelefono.isSelected() ? ModificarTelefono.getText() : null);
+        usuarioPUTModel.put("IDNivelFormacion", CheckActivarNivelFormacion.isSelected() ? convertirDatos.ObtenerIDNivelFormacion(ModificarNivelFormacion.getSelectedItem().toString()) : null);
+        usuarioPUTModel.put("NumeroFicha", CheckActivarFicha.isSelected() ? Integer.valueOf(ModificarFicha.getText()) : null);
+        usuarioPUTModel.put("IDJornadaFormacion", CheckActivarJornada.isSelected() ? convertirDatos.ObtenerIDJornadaFormacion(ModificarJornada.getSelectedItem().toString()) : null);
+        usuarioPUTModel.put("Area", CheckActivarArea.isSelected() ? ModificarArea.getText() : null);
+        usuarioPUTModel.put("Correo", CheckActivarCorreo.isSelected() ? ModificarCorreo.getText() : null);
+        usuarioPUTModel.put("IDRol", CheckActivarRol.isSelected() ? convertirDatos.ObtenerIDTipoRol(ModificarRol.getSelectedItem().toString()) : null);
+        usuarioPUTModel.put("IDSede", CheckActivarSede.isSelected() ? convertirDatos.ObtenerIDTipoSede(ModificarSede.getSelectedItem().toString()) : null);
+        return usuarioPUTModel;
+    }
+    
     private void ConfirmarModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarModificarUsuarioActionPerformed
         int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea modificar los datos del instructor?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
 
-        switch (respuesta) {
-            case JOptionPane.YES_OPTION:
+        if (respuesta == JOptionPane.YES_OPTION) {
             API_Admin_ModifUsuario modifUsuario = new API_Admin_ModifUsuario();
             ConvertirDatos convertirDatos = new ConvertirDatos();
-            Map<String, Object> usuarioPUTModel = new HashMap<>();
-
-            usuarioPUTModel.put("ID", CheckActivarCod.isSelected() ? Integer.valueOf(ModificarCod.getText()) : null);
-            usuarioPUTModel.put("Usuario", CheckActivarUsuario.isSelected() ? ModificarUsuario.getText() : null);
-            usuarioPUTModel.put("Contraseña", CheckActivarPass.isSelected() ? ModificarPass.getText() : null);
-            usuarioPUTModel.put("Documento", CheckActivarDoc.isSelected() ? ModificarDocumento.getText() : null);
-            usuarioPUTModel.put("IDTipoDocumento", CheckActivarTipoDoc.isSelected() ? convertirDatos.ObtenerIDTipoDoc(ModificarTipoDoc.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("Nombres", CheckActivarNombres.isSelected() ? ModificarNombre.getText() : null);
-            usuarioPUTModel.put("Apellidos", CheckActivarApellidos.isSelected() ? ModificarApellido.getText() : null);
-            usuarioPUTModel.put("IDGenero", CheckActivarGenero.isSelected() ? convertirDatos.ObtenerIDTipoGenero(ModificarGenero.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("Telefono", CheckActivarTelefono.isSelected() ? ModificarTelefono.getText() : null);
-            usuarioPUTModel.put("IDProgramaFormacion", CheckActivarProgramaFormacion.isSelected() ? convertirDatos.ObtenerIDProgramaFormacion(ModificarProgramaFormacion.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("IDNivelFormacion", CheckActivarNivelFormacion.isSelected() ? convertirDatos.ObtenerIDNivelFormacion(ModificarNivelFormacion.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("NumeroFicha", CheckActivarFicha.isSelected() ? Integer.valueOf(ModificarFicha.getText()) : null);
-            usuarioPUTModel.put("IDJornadaFormacion", CheckActivarJornada.isSelected() ? convertirDatos.ObtenerIDJornadaFormacion(ModificarJornada.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("Area", CheckActivarArea.isSelected() ? ModificarArea.getText() : null);
-            usuarioPUTModel.put("Correo", CheckActivarCorreo.isSelected() ? ModificarCorreo.getText() : null);
-            usuarioPUTModel.put("IDRol", CheckActivarRol.isSelected() ? convertirDatos.ObtenerIDTipoRol(ModificarRol.getSelectedItem().toString()) : null);
-            usuarioPUTModel.put("IDSede", CheckActivarSede.isSelected() ? convertirDatos.ObtenerIDTipoSede(ModificarSede.getSelectedItem().toString()) : null);
-
-            System.out.println(usuarioPUTModel);
+            Map<String, Object> usuarioPUTModel = construirModeloUsuarioPUT(convertirDatos);
             modifUsuario.AdminModifPerfilUsuario(Integer.valueOf(IDInstructorField.getText()), usuarioPUTModel);
-            DesHabilitarCampos();
-            LimpiarCampos();
-            break;
-
-            case JOptionPane.NO_OPTION:
-            case JOptionPane.CANCEL_OPTION:
-            // No se hace nada si el usuario rechaza o cancela.
-            break;
+            desHabilitarCampos();
+            limpiarCampos();
         }
     }//GEN-LAST:event_ConfirmarModificarUsuarioActionPerformed
 
@@ -1348,18 +1237,6 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_CheckActivarCorreoActionPerformed
 
-    private void CheckActivarProgramaFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarProgramaFormacionActionPerformed
-        if (CheckActivarProgramaFormacion.isSelected()){
-            ModificarProgramaFormacion.setEnabled(true);
-        } else {
-            ModificarProgramaFormacion.setEnabled(false);
-        }
-    }//GEN-LAST:event_CheckActivarProgramaFormacionActionPerformed
-
-    private void ModificarProgramaFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarProgramaFormacionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ModificarProgramaFormacionActionPerformed
-
     private void CheckActivarFichaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckActivarFichaActionPerformed
         if (CheckActivarFicha.isSelected()){
             ModificarFicha.setEnabled(true);
@@ -1423,7 +1300,6 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
 
             switch (ResultadoRol.getText()){
                 case "Instructor":
-                CheckActivarProgramaFormacion.setEnabled(false);
                 CheckActivarFicha.setEnabled(false);
                 CheckActivarNivelFormacion.setEnabled(false);
                 CheckActivarJornada.setEnabled(false);
@@ -1433,7 +1309,7 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
                 break;
             }
 
-            DesHabilitarCampos();
+            desHabilitarCampos();
         } else {
             // Si el instructor no se encuentra, se muestra un mensaje de error y se deshabilitan los componentes del Panel_ModificarDatos.
             JOptionPane.showMessageDialog(null, "No se encontraron coincidencias");
@@ -1465,7 +1341,6 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox CheckActivarNivelFormacion;
     private javax.swing.JCheckBox CheckActivarNombres;
     private javax.swing.JCheckBox CheckActivarPass;
-    private javax.swing.JCheckBox CheckActivarProgramaFormacion;
     private javax.swing.JCheckBox CheckActivarRol;
     private javax.swing.JCheckBox CheckActivarSede;
     private javax.swing.JCheckBox CheckActivarTelefono;
@@ -1484,7 +1359,6 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> ModificarNivelFormacion;
     private javax.swing.JTextField ModificarNombre;
     private javax.swing.JTextField ModificarPass;
-    private javax.swing.JComboBox<String> ModificarProgramaFormacion;
     private javax.swing.JComboBox<String> ModificarRol;
     private javax.swing.JComboBox<String> ModificarSede;
     private javax.swing.JTextField ModificarTelefono;
@@ -1535,7 +1409,6 @@ public class ModificarUsuarioPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel40;
