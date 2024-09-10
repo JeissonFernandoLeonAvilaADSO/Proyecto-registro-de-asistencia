@@ -26,10 +26,10 @@ public class ListarAprendicesAPI {
     public ResponseEntity<Map<String, Object>> ListarAprendices(@RequestParam("ficha") Integer ficha) {
         Map<String, Object> respuesta = new HashMap<>();
         String consulta = """
-                SELECT Documento, Nombres, Apellidos, TipoDocumento.TipoDocumento from perfilusuario
-                    INNER JOIN tipodocumento as TipoDocumento ON perfilusuario.IDTipoDocumento = TipoDocumento.ID
-                    WHERE NumeroFicha = ?
-                """;
+                        SELECT Documento, Nombres, Apellidos, td.TipoDocumento from perfilusuario pu
+                            INNER JOIN tipodocumento td ON pu.IDTipoDocumento = td.ID
+                            INNER JOIN fichas fc ON pu.IDFicha = fc.ID                                                          \s
+                        WHERE NumeroFicha = ?""";
         try {
             List<Map<String, Object>> aprendices = jdbcTemplate.query(consulta, new Object[]{ficha}, new RowMapper<Map<String, Object>>() {
                 @Override

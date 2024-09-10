@@ -38,15 +38,21 @@ public class LoginAPI {
 
             if (documento != null) {
                 String consulta2 = """
-                        SELECT perfilusuario.ID, perfilusuario.Documento, perfilusuario.Nombres, perfilusuario.Apellidos 
-                        FROM perfilusuario
-                        WHERE perfilusuario.Documento = ?""";
+                                    SELECT perfilusuario.ID,
+                                           perfilusuario.Documento,
+                                           perfilusuario.Nombres,
+                                           perfilusuario.Apellidos,
+                                           rol.TipoRol
+                                    FROM perfilusuario
+                                        INNER JOIN rol ON rol.ID = perfilusuario.IDRol
+                                    WHERE perfilusuario.Documento = ?""";
 
                 jdbcTemplate.queryForObject(consulta2, new Object[]{documento}, (rs, rowNum) -> {
                     response.put("ID", rs.getInt("ID"));
                     response.put("documento", rs.getInt("Documento"));
                     response.put("nombres", rs.getString("Nombres"));
                     response.put("apellidos", rs.getString("Apellidos"));
+                    response.put("rol", rs.getString("TipoRol"));
                     return null; // Este valor no se utiliza
                 });
                 return new ResponseEntity<>(response, HttpStatus.OK);
@@ -75,15 +81,21 @@ public class LoginAPI {
 
             if (documento != null) {
                 String consulta2 = """
-                        SELECT perfilusuario.ID, perfilusuario.Documento, perfilusuario.Nombres, perfilusuario.Apellidos 
-                        FROM perfilusuario
-                        WHERE perfilusuario.Documento = ?""";
+                                    SELECT perfilusuario.ID,
+                                           perfilusuario.Documento,
+                                           perfilusuario.Nombres,
+                                           perfilusuario.Apellidos,
+                                           rol.TipoRol
+                                    FROM perfilusuario
+                                        INNER JOIN rol ON rol.ID = perfilusuario.IDRol
+                                    WHERE perfilusuario.Documento = ?""";
 
                 jdbcTemplate.queryForObject(consulta2, new Object[]{documento}, (rs, rowNum) -> {
                     response.put("ID", rs.getInt("ID"));
                     response.put("documento", rs.getInt("Documento"));
                     response.put("nombres", rs.getString("Nombres"));
                     response.put("apellidos", rs.getString("Apellidos"));
+                    response.put("rol", rs.getString("TipoRol"));
                     return null; // Este valor no se utiliza
                 });
                 return new ResponseEntity<>(response, HttpStatus.OK);

@@ -41,6 +41,9 @@ public class ExcelManagerAPI {
     @Autowired
     private DataSourceTransactionManager transactionManager;
 
+    @Autowired
+    private ConversionSubTablasAPI conversionSubTablasAPI;
+
     @PostMapping("/ExcelUp")
     public ResponseEntity<String> agregarAsistencia(
             @RequestParam("archivo") MultipartFile archivo,
@@ -86,45 +89,88 @@ public class ExcelManagerAPI {
     }
 
     private void insertarAsistencia(Connection conexion, Map<String, String> params, int archivoId) throws SQLException {
-        String sqlAsistencia = "INSERT INTO registroasistencias (instructor, competencia, ambiente, ficha, IDProgramaFormacion, IDArchivo) VALUES (?, ?, ?, ?, ?, ?)";
+        // Validar que todos los campos obligatorios estén presentes
+        System.out.println(params);
+        System.out.println(archivoId);
+        if (!params.containsKey("DocumentoInstructor") ||
+                !params.containsKey("Ambiente") ||
+                !params.containsKey("Ficha") ||
+                !params.containsKey("ProgramaFormacion") ||
+                !params.containsKey("Clase")) {
+            throw new SQLException("Todos los campos son obligatorios.");
+        }
+
+        // Obtener IDs necesarios usando ConversionSubTablasAPI
+        Integer idInstructor = conversionSubTablasAPI.obtenerIDInstructorPorDocumento(params.get("DocumentoInstructor")).getBody();
+        Integer idAmbiente = conversionSubTablasAPI.Ambiente(params.get("Ambiente")).getBody();
+        Integer idFicha = conversionSubTablasAPI.obtenerIDPorFicha(Integer.parseInt(params.get("Ficha"))).getBody();
+        Integer idProgramaFormacion = conversionSubTablasAPI.ProgramaFormacion(params.get("ProgramaFormacion")).getBody();
+        Integer idClaseFormacion = conversionSubTablasAPI.ClaseToID(params.get("Clase"), idInstructor).getBody();
+
+        // Validar que todos los IDs se obtuvieron correctamente
+        if (idInstructor == null || idAmbiente == null || idFicha == null || idProgramaFormacion == null || idClaseFormacion == null) {
+            throw new SQLException("Error al obtener uno de los IDs necesarios.");
+        }
+
+        // Inserción en la base de datos
+        String sqlAsistencia = """
+        INSERT INTO registroasistencias (IDInstructor, 
+                                 IDClaseFormacion, 
+                                 IDAmbiente, 
+                                 IDFicha,
+                                 IDArchivo) VALUES (?, ?, ?, ?, ?)""";
         try (PreparedStatement psAsistencia = conexion.prepareStatement(sqlAsistencia)) {
-            psAsistencia.setString(1, params.get("Instructor"));
-            psAsistencia.setString(2, params.get("Competencia"));
-            psAsistencia.setString(3, params.get("Ambiente"));
-            psAsistencia.setInt(4, Integer.parseInt(params.get("Ficha")));
-            psAsistencia.setInt(5, Integer.parseInt(params.get("IDProgramaFormacion")));
-            psAsistencia.setInt(6, archivoId);
+            psAsistencia.setInt(1, idInstructor);
+            psAsistencia.setInt(2, idClaseFormacion);
+            psAsistencia.setInt(3, idAmbiente);
+            psAsistencia.setInt(4, idFicha);
+            psAsistencia.setInt(5, archivoId);
             psAsistencia.executeUpdate();
         }
     }
 
     @GetMapping("/ListarAsistencias")
     public ResponseEntity<List<Map<String, Object>>> listarAsistencias(
-            @RequestParam String instructor,
-            @RequestParam(required = false) String ambiente,
-            @RequestParam(required = false) Integer idProgramaFormacion,
-            @RequestParam(required = false) Integer ficha
+            @RequestParam(value = "IDInstructor") Integer IDinstructor,
+            @RequestParam(required = false, value = "ambiente") String ambiente,
+            @RequestParam(required = false, value = "ProgramaFormacion") String ProgramaFormacion,
+            @RequestParam(required = false, value = "ficha") Integer ficha
     ) {
         try {
             System.out.println(ambiente);
-            System.out.println(idProgramaFormacion);
+            System.out.println(ProgramaFormacion);
             System.out.println(ficha);
-            StringBuilder sql = new StringBuilder("SELECT * FROM registroasistencias INNER JOIN asistencia ON asistencia.ID = registroasistencias.IDArchivo WHERE registroasistencias.Instructor = ?");
+            StringBuilder sql = new StringBuilder("""
+                                    SELECT CONCAT(pu.Nombres, ' ', pu.Apellidos) AS Instructor,
+                                        cf.NombreClase,
+                                        amb.Ambiente,
+                                        fc.NumeroFicha,
+                                        ra.Fecha,
+                                        ra.IDArchivo,
+                                        pf.ProgramaFormacion
+                                    FROM registroasistencias ra
+                                        INNER JOIN asistencia ac ON ra.IDArchivo = ac.ID
+                                        INNER JOIN perfilusuario pu ON ra.IDInstructor = pu.ID
+                                        INNER JOIN claseformacion cf ON ra.IDClaseFormacion = cf.ID
+                                        INNER JOIN ambientes amb ON ra.IDAmbiente = amb.ID
+                                        INNER JOIN fichas fc ON ra.IDFicha = fc.ID
+                                        INNER JOIN programaformacion pf ON fc.IDProgramaFormacion = pf.ID
+                                    WHERE pu.Documento = ?""");
             List<Object> params = new ArrayList<>();
-            params.add(instructor);
+            params.add(IDinstructor);
 
             if (ambiente != null && !ambiente.isEmpty()) {
-                sql.append(" AND registroasistencias.Ambiente = ?");
+                sql.append(" AND amb.Ambiente = ?");
                 params.add(ambiente);
             }
 
-            if (idProgramaFormacion != null) {
-                sql.append(" AND registroasistencias.IDProgramaFormacion = ?");
-                params.add(idProgramaFormacion);
+            if (ProgramaFormacion != null) {
+                sql.append(" AND pf.ProgramaFormacion = ?");
+                params.add(ProgramaFormacion);
             }
 
             if (ficha != null) {
-                sql.append(" AND registroasistencias.Ficha = ?");
+                sql.append(" AND fc.NumeroFicha = ?");
                 params.add(ficha);
             }
 
@@ -133,10 +179,10 @@ public class ExcelManagerAPI {
                 public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Map<String, Object> asistencia = new HashMap<>();
                     asistencia.put("instructor", rs.getString("Instructor"));
-                    asistencia.put("competencia", rs.getString("Competencia"));
+                    asistencia.put("clase", rs.getString("NombreClase"));
                     asistencia.put("ambiente", rs.getString("Ambiente"));
-                    asistencia.put("ficha", rs.getInt("Ficha"));
-                    asistencia.put("IDProgramaFormacion", rs.getInt("IDProgramaFormacion"));
+                    asistencia.put("ficha", rs.getInt("NumeroFicha"));
+                    asistencia.put("ProgramaFormacion", rs.getString("ProgramaFormacion"));
                     asistencia.put("fecha", rs.getDate("Fecha"));
                     asistencia.put("IDArchivo", rs.getInt("IDArchivo"));
                     return asistencia;

@@ -33,11 +33,11 @@ import org.json.JSONObject;
 public class ListarAsitenciasInstructorAPI {
 
 
-    public List<Map<String, Object>> obtenerAsistencias(String instructor, String ambiente, Integer idProgramaFormacion, Integer ficha) throws Exception {
-        StringBuilder urlString = new StringBuilder("http://localhost:8080/Archives/ListarAsistencias?instructor=" + URLEncoder.encode(instructor, StandardCharsets.UTF_8.toString()));
+    public List<Map<String, Object>> obtenerAsistencias(Integer instructor, String ambiente, String idProgramaFormacion, Integer ficha) throws Exception {
+        StringBuilder urlString = new StringBuilder("http://localhost:8080/Archives/ListarAsistencias?IDInstructor=" + instructor);
 
         if (ambiente != null && !ambiente.equals("Seleccionar...")) {
-            urlString.append("&ambiente=").append(URLEncoder.encode(ambiente, StandardCharsets.UTF_8.toString()));
+            urlString.append("&ambiente=").append(URLEncoder.encode(ambiente, StandardCharsets.UTF_8));
         }
         if (idProgramaFormacion != null) {
             urlString.append("&idProgramaFormacion=").append(idProgramaFormacion);
@@ -55,27 +55,27 @@ public class ListarAsitenciasInstructorAPI {
             throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
         }
 
-        BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-        StringBuilder sb = new StringBuilder();
-        String output;
-        while ((output = br.readLine()) != null) {
-            sb.append(output);
-        }
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+            StringBuilder sb = new StringBuilder();
+            String output;
+            while ((output = br.readLine()) != null) {
+                sb.append(output);
+            }
 
-        conn.disconnect();
-
-        JSONArray jsonArray = new JSONArray(sb.toString());
-        List<Map<String, Object>> asistencias = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            Map<String, Object> asistencia = jsonObject.toMap();
-            asistencias.add(asistencia);
+            JSONArray jsonArray = new JSONArray(sb.toString());
+            List<Map<String, Object>> asistencias = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Map<String, Object> asistencia = jsonObject.toMap();
+                asistencias.add(asistencia);
+            }
+            return asistencias;
+        } finally {
+            conn.disconnect();
         }
-        return asistencias;
     }
 
-
-    public DefaultTableModel llenarTablaAsistencias(String instructor, String ambiente, Integer idProgramaFormacion, Integer ficha) {
+    public DefaultTableModel llenarTablaAsistencias(Integer instructor, String ambiente, String idProgramaFormacion, Integer ficha) {
         String[] columnNames = {"Instructor", "Competencia", "Ambiente", "Ficha", "Programa Formación", "Fecha", "Archivo"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
         ComboBoxModels Programas = new ComboBoxModels();
@@ -85,16 +85,16 @@ public class ListarAsitenciasInstructorAPI {
             for (Map<String, Object> asistencia : asistencias) {
                 Object[] rowData = new Object[columnNames.length];
                 rowData[0] = asistencia.get("instructor");
-                rowData[1] = asistencia.get("competencia");
+                rowData[1] = asistencia.get("clase");
                 rowData[2] = asistencia.get("ambiente");
                 rowData[3] = asistencia.get("ficha");
-                rowData[4] = Programas.BoxProgramaFormacionModel().get((Integer) asistencia.get("IDProgramaFormacion") - 1);
+                rowData[4] = asistencia.get("ProgramaFormacion");
                 rowData[5] = asistencia.get("fecha");
 
                 JButton downloadButton = new JButton("Abrir");
                 downloadButton.addActionListener(e -> {
                     try {
-                        int archivoId = (Integer) asistencia.get("IDArchivo");
+                        int archivoId = ((Number) asistencia.get("IDArchivo")).intValue();
                         abrirArchivoExcel(archivoId);
                     } catch (Exception ex) {
                         ex.printStackTrace();

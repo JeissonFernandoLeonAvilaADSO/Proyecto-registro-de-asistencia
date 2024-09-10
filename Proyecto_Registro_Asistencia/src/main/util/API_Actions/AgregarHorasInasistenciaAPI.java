@@ -15,7 +15,7 @@ public class AgregarHorasInasistenciaAPI {
     public boolean SubirHorasInasistencias(Map<String, List<Map<String, Object>>> listaAprendices) {
         try {
             // Configurar la URL para el endpoint correcto
-            URL url = new URL("http://localhost:8080/ActualizarHoras");
+            URL url = new URL("http://localhost:8080/Horas/ActualizarHoras");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
@@ -46,6 +46,8 @@ public class AgregarHorasInasistenciaAPI {
                     }
                 }
                 // Lanza excepción con el código de error
+                System.out.println("Datos enviados a la API: " + listaAprendices);
+
                 throw new RuntimeException("Failed : HTTP error code : " + responseCode);
             }
 

@@ -7,8 +7,11 @@ package main.InstructorFrames.InstructorGenFrames;
 
 
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,6 +22,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -66,6 +72,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     public ExcelGenFrame() {
         initComponents();
         modif();
+        AditionalConfig();
     }
 
     /**
@@ -350,7 +357,55 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void AditionalConfig(){
+        
+            // Configuración de la pantalla y del frame
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    int frameWidth = (int) (screenSize.width * 0.95);
+    int frameHeight = (int) (screenSize.height * 0.95);
     
+    int screenWidth = screenSize.width;
+    int screenHeight = screenSize.height;
+
+    System.out.println(screenWidth);
+    System.out.println(screenHeight);
+    
+    // Configurar el tamaño del JFrame
+    if (screenWidth < 1700 && screenHeight < 900){
+        this.setSize(frameWidth, frameHeight);
+    
+    }
+        if (screenWidth < 1920 || screenHeight < 1080) {
+    
+        // Crear un JScrollPane con barras de desplazamiento visibles
+        JScrollPane scrollPane = new JScrollPane(jPanel1);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        // Establecer el layout del JFrame a BorderLayout para que el scrollPane ocupe todo el espacio
+        this.setLayout(new BorderLayout());
+
+        // Agregar el JScrollPane al JFrame
+        this.add(scrollPane, BorderLayout.CENTER);
+
+        // Manejar el desplazamiento con la rueda del ratón en cualquier parte del JFrame
+        this.addMouseWheelListener(e -> {
+            JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+            JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
+            int notches = e.getWheelRotation();
+
+            if (e.isShiftDown()) {
+                // Si se presiona Shift, desplazarse horizontalmente
+                int newValue = horizontalScrollBar.getValue() + notches * 20; // Ajustar la velocidad de desplazamiento
+                horizontalScrollBar.setValue(newValue);
+            } else {
+                // De lo contrario, desplazarse verticalmente
+                int newValue = verticalScrollBar.getValue() + notches * 20; // Ajustar la velocidad de desplazamiento
+                verticalScrollBar.setValue(newValue);
+            }
+        });
+    }
+    }
     public void modif(){
         InstructorNombre.setText(UserSession.getInstance().getNombres());
 
@@ -438,10 +493,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
-        InstructorHomeScreen instructorHomeScreen = new InstructorHomeScreen();
-        instructorHomeScreen.dispose();
-        this.dispose();
-        instructorHomeScreen.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void RegistrarAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarAsistenciaActionPerformed
@@ -525,11 +576,11 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             // Preparar los parámetros para el archivo Excel y la API
             ConvertirDatos convertirDatos = new ConvertirDatos();
             Map<String, Object> params = new HashMap<>();
-            params.put("Instructor", InstructorNombre.getText());
-            params.put("Competencia", Competencia.getText());
+            params.put("DocumentoInstructor", UserSession.getInstance().getDocumento());
+            params.put("Clase", Competencia.getText());
             params.put("Ambiente", AmbienteCB.getSelectedItem().toString());
             params.put("Ficha", Integer.valueOf(FichaCB.getSelectedItem().toString()));
-            params.put("IDProgramaFormacion", convertirDatos.ObtenerIDProgramaFormacion(ProgramaFormacionCB.getSelectedItem().toString()));
+            params.put("ProgramaFormacion", ProgramaFormacionCB.getSelectedItem().toString());
             System.out.println(params);
 
             // Crear un nuevo archivo Excel

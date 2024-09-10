@@ -19,6 +19,7 @@ import main.util.models.UserSession;
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -434,11 +435,12 @@ public void AditionalConfig() {
                 verticalScrollBar.setValue(newValue);
             }
         });
+        actualizarTablaAsistencias();
     }
 
     // Configuración de la tabla de asistencias
     ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
-    DefaultTableModel modeloTablaCompleto = listarAsis.llenarTablaAsistencias(UserSession.getInstance().getNombres(), null, null, null);
+    DefaultTableModel modeloTablaCompleto = listarAsis.llenarTablaAsistencias(UserSession.getInstance().getDocumento(), null, null, null);
     DefaultTableModel modeloTabla = crearUltimasFilasModelo(modeloTablaCompleto, 6);
     TablaAsitencias.setModel(modeloTabla);
 
@@ -486,6 +488,28 @@ private DefaultTableModel crearUltimasFilasModelo(DefaultTableModel modeloComple
 
     }
 
+    
+private void actualizarTablaAsistencias() {
+    try {
+        ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
+        DefaultTableModel modeloTablaCompleto = listarAsis.llenarTablaAsistencias(
+            UserSession.getInstance().getDocumento(),
+            null,
+            null,
+            null
+        );
+        DefaultTableModel modeloTabla = crearUltimasFilasModelo(modeloTablaCompleto, 6);
+        TablaAsitencias.setModel(modeloTabla);
+
+        // Configurar el renderizador y el editor de botones en la tabla
+        TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+        TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al cargar las asistencias: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    
     private void MenuBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuBusquedaActionPerformed
         cardLayout.show(MainPanel, "SearchPanel");
     }//GEN-LAST:event_MenuBusquedaActionPerformed

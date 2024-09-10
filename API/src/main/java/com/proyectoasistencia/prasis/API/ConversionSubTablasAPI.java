@@ -89,7 +89,7 @@ public class ConversionSubTablasAPI {
         }
     }
 
-    private ResponseEntity<Integer> obtenerIDPorFicha(Integer ficha) {
+    ResponseEntity<Integer> obtenerIDPorFicha(Integer ficha) {
         try {
             // Realiza la consulta SQL con el valor de la ficha
             String consulta = "SELECT ID FROM fichas WHERE NumeroFicha = ?";
@@ -158,7 +158,21 @@ public class ConversionSubTablasAPI {
         }
     }
 
+    @RequestMapping(value = "Conversion/InstructorDocumentoToID/{documento}")
+    public ResponseEntity<Integer> obtenerIDInstructorPorDocumento(@PathVariable String documento) {
+        try {
+            // Consulta SQL para obtener el ID del instructor basado en el documento
+            String consulta = "SELECT ID FROM perfilusuario WHERE Documento = ? AND IDRol = 3"; // Suponiendo que el rol 3 es para instructores
+            Integer idInstructor = jdbcTemplate.queryForObject(consulta, new Object[]{documento}, Integer.class);
 
+            return new ResponseEntity<>(idInstructor, HttpStatus.OK);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }
 

@@ -223,6 +223,7 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
 
                 Integer idProgramaFormacion = convertirDatos.ObtenerIDProgramaFormacion(ProgramaFormacionCB.getSelectedItem().toString());
                 List<Integer> tiposFichas = convertirDatos.ObtenerFichasPorPrograma(idProgramaFormacion);
+                
 
                 if (tiposFichas == null) {
                     JOptionPane.showMessageDialog(null, "Hubo un error cargando las Fichas de la API");
@@ -252,37 +253,35 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_FichaCBActionPerformed
 
     
-        private void actualizarTablaAsistencias() {
-        String instructor = UserSession.getInstance().getNombres();
-        String ambiente = AmbienteCB.getSelectedItem().equals("Seleccionar...") || AmbienteCB.getSelectedItem().equals("No Aplica") ? null : AmbienteCB.getSelectedItem().toString();
+    private void actualizarTablaAsistencias() {
+        Integer instructor = UserSession.getInstance().getDocumento();
+        String ambiente = (String) AmbienteCB.getSelectedItem();
+        if ("Seleccionar...".equals(ambiente) || "No Aplica".equals(ambiente)) {
+            ambiente = null;
+        }
 
-        Integer idProgramaFormacion = null;
-        if (!ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...") && !ProgramaFormacionCB.getSelectedItem().equals("No aplica")) {
-            try {
-                ConvertirDatos convertirDatos = new ConvertirDatos();
-                idProgramaFormacion = convertirDatos.ObtenerIDProgramaFormacion(ProgramaFormacionCB.getSelectedItem().toString());
-                System.out.println(idProgramaFormacion);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "El programa de formación seleccionado no es válido. Por favor, seleccione un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-
-            }
+        String programaFormacion = (String) ProgramaFormacionCB.getSelectedItem();
+        if ("Seleccionar...".equals(programaFormacion) || "No aplica".equals(programaFormacion)) {
+            programaFormacion = null;
         }
 
         Integer ficha = null;
-        if (!FichaCB.getSelectedItem().equals("Seleccionar...")) {
+        String fichaSeleccionada = (String) FichaCB.getSelectedItem();
+        if (!"Seleccionar...".equals(fichaSeleccionada)) {
             try {
-                ficha = Integer.parseInt(FichaCB.getSelectedItem().toString());
+                ficha = Integer.parseInt(fichaSeleccionada);
             } catch (NumberFormatException e) {
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Ficha no válida.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
         }
 
         try {
-            ButtonStyler ButtonStyler = new ButtonStyler();
             ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
-            DefaultTableModel modeloTabla = listarAsis.llenarTablaAsistencias(instructor, ambiente, idProgramaFormacion, ficha);
+            DefaultTableModel modeloTabla = listarAsis.llenarTablaAsistencias(instructor, ambiente, programaFormacion, ficha);
             TablaAsitencias.setModel(modeloTabla);
+
+            // Configurar el renderizador y el editor de botones en la tabla
             TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
             TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
         } catch (Exception e) {

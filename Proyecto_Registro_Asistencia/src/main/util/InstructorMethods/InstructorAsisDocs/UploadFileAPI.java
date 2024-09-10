@@ -39,6 +39,7 @@ public class UploadFileAPI {
         }
 
         try {
+            System.out.println(params);
             HttpURLConnection connection = (HttpURLConnection) new URL(targetUrl).openConnection();
             connection.setDoOutput(true);
             connection.setDoInput(true);
