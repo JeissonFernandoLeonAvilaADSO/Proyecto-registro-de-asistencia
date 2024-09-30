@@ -148,9 +148,9 @@ public class AsisService {
                     INNER JOIN usuario us ON pf.IDUsuario = us.ID
                     INNER JOIN tipodocumento td ON pf.IDTipoDocumento = td.ID
                     INNER JOIN genero ge ON pf.IDGenero = ge.ID
-                    INNER JOIN barrios ON pf.IDBarrio = barrios.id_barrio
-                    INNER JOIN municipios mun ON barrios.id_municipio = mun.id_municipio
-                    INNER JOIN departamentos dept ON mun.id_departamento = dept.id_departamento
+                    INNER JOIN barrios ON pf.IDBarrio = barrios.ID
+                    INNER JOIN municipios mun ON barrios.id_municipio = mun.ID
+                    INNER JOIN departamentos dept ON mun.id_departamento = dept.ID
                     INNER JOIN fichas fc ON ap.IDFicha = fc.ID
                     INNER JOIN programaformacion pform ON fc.IDProgramaFormacion = pform.ID
                     INNER JOIN jornadaformacion jf ON pform.IDJornadaFormacion = jf.ID
@@ -382,6 +382,94 @@ public class AsisService {
             return asistencia;
         });
     }
+
+    public List<Map<String, Object>> listarAsistenciasPorInstructor(String documentoInstructor) throws SQLException {
+        String sql = """
+            SELECT 
+                ra.Fecha AS FechaRegistro,
+                cf.NombreClase AS ClaseFormacion,
+                a.Ambiente AS Ambiente,
+                f.NumeroFicha AS Ficha,
+                CONCAT(pu.Nombres, ' ', pu.Apellidos) AS Instructor,
+                ta.TipoActividad AS TipoAsistencia,
+                ass.AsistenciaExcel AS ArchivoExcel
+            FROM registroasistencias ra
+            INNER JOIN claseformacion cf ON ra.IDClaseFormacion = cf.ID
+            INNER JOIN ambientes a ON ra.IDAmbiente = a.ID
+            INNER JOIN fichas f ON ra.IDFicha = f.ID
+            INNER JOIN instructor i ON cf.IDInstructor = i.ID
+            INNER JOIN perfilusuario pu ON i.IDPerfilUsuario = pu.ID
+            INNER JOIN actividad ta ON ra.IDTipoActividad = ta.ID
+            INNER JOIN asistencia ass ON ra.IDArchivo = ass.ID
+            WHERE pu.Documento = ?
+        """;
+
+        return jdbcTemplate.query(sql, new Object[]{documentoInstructor}, (rs, rowNum) -> {
+            Map<String, Object> asistencia = new HashMap<>();
+            asistencia.put("FechaRegistro", rs.getTimestamp("FechaRegistro"));
+            asistencia.put("ClaseFormacion", rs.getString("ClaseFormacion"));
+            asistencia.put("Ambiente", rs.getString("Ambiente"));
+            asistencia.put("Ficha", rs.getInt("Ficha"));
+            asistencia.put("Instructor", rs.getString("Instructor"));
+            asistencia.put("TipoAsistencia", rs.getString("TipoAsistencia"));
+            asistencia.put("ArchivoExcel", rs.getBytes("ArchivoExcel"));  // Obtiene el archivo en formato BLOB
+            return asistencia;
+        });
+    }
+
+    public List<Map<String, Object>> FiltroListarAsistencias(String documentoInstructor, String ambiente, String programaFormacion, Integer ficha) {
+        StringBuilder sql = new StringBuilder("""
+            SELECT CONCAT(pu.Nombres, ' ', pu.Apellidos) AS Instructor,
+                   cf.NombreClase,
+                   amb.Ambiente,
+                   fc.NumeroFicha,
+                   ra.Fecha,
+                   ac.AsistenciaExcel,
+                   av.TipoActividad
+            FROM registroasistencias ra
+                     INNER JOIN asistencia ac ON ra.IDArchivo = ac.ID
+                     INNER JOIN claseformacion cf ON ra.IDClaseFormacion = cf.ID
+                     INNER JOIN instructor i ON cf.IDInstructor = i.ID
+                     INNER JOIN perfilusuario pu ON i.IDPerfilUsuario = pu.ID
+                     INNER JOIN ambientes amb ON ra.IDAmbiente = amb.ID
+                     INNER JOIN fichas fc ON ra.IDFicha = fc.ID
+                     INNER JOIN programaformacion pf ON fc.IDProgramaFormacion = pf.ID
+                     INNER JOIN actividad av ON ra.IDTipoActividad = av.ID
+            WHERE pu.Documento = ?""");
+
+        List<Object> params = new ArrayList<>();
+        params.add(documentoInstructor);
+
+        if (ambiente != null && !ambiente.isEmpty()) {
+            sql.append(" AND amb.Ambiente = ?");
+            params.add(ambiente);
+        }
+
+        if (programaFormacion != null && !programaFormacion.isEmpty()) {
+            sql.append(" AND pf.ProgramaFormacion = ?");
+            params.add(programaFormacion);
+        }
+
+        if (ficha != null) {
+            sql.append(" AND fc.NumeroFicha = ?");
+            params.add(ficha);
+        }
+
+        return jdbcTemplate.query(sql.toString(), params.toArray(), (rs, rowNum) -> {
+            Map<String, Object> asistencia = new HashMap<>();
+
+            asistencia.put("ClaseFormacion", rs.getString("NombreClase"));
+            asistencia.put("Ambiente", rs.getString("Ambiente"));
+            asistencia.put("Ficha", rs.getInt("NumeroFicha"));
+            asistencia.put("Instructor", rs.getString("Instructor"));
+            asistencia.put("Fecha", rs.getTimestamp("Fecha"));
+            asistencia.put("TipoAsistencia", rs.getString("TipoActividad"));
+            asistencia.put("ArchivoExcel", rs.getBytes("AsistenciaExcel"));
+            return asistencia;
+        });
+    }
+
+
 }
 
 

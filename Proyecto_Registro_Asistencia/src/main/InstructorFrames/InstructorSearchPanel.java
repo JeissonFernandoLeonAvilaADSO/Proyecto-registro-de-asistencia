@@ -4,19 +4,20 @@
  */
 package main.InstructorFrames;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import main.util.API_Actions.ConvertirDatos;
-import main.util.API_Actions.ListarAsitenciasInstructorAPI;
-import main.util.models.ButtonEditor;
-import main.util.models.ButtonRenderer;
-import main.util.models.ButtonStyler;
+import main.util.API_Actions.API_AsistenciasApplications;
+import main.util.models.ButtonColumnHelper;
 import main.util.models.ComboBoxModels;
+import main.util.models.DataTables;
 import main.util.models.UserSession;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -32,50 +33,13 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
         AditionalConfig();
     }
     
-        public void AditionalConfig() {
-        ComboBoxModels ComboBoxModels = new ComboBoxModels();
-        try {
-            List<String> tiposProgramaFormacion = ComboBoxModels.BoxProgramaFormacionModel();
-            if (tiposProgramaFormacion == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando los programas de formacion de la API");
-            } else {
-                tiposProgramaFormacion.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> ProgramaFormacionBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposProgramaFormacion));
-                ProgramaFormacionCB.setModel(ProgramaFormacionBoxModel);
-            }
+    public void AditionalConfig() {
+        ComboBoxModels cbm = new ComboBoxModels();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        try {
-            List<String> tiposAmbientes = ComboBoxModels.BoxAmbientesModel();
-            if (tiposAmbientes == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando los Ambientes de la API");
-            } else {
-                tiposAmbientes.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> AmbientesBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposAmbientes));
-                AmbienteCB.setModel(AmbientesBoxModel);
-            }
+        AmbienteCB.setModel(cbm.generarComboBoxModelPorTipo("Ambientes"));
+        ProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ProgramaFormacion"));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        try {
-            List<String> tiposFicha = ComboBoxModels.BoxAmbientesModel();
-            if (tiposFicha == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando los Ambientes de la API");
-            } else {
-                tiposFicha.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> FichasBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposFicha));
-                FichaCB.setModel(FichasBoxModel);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        actualizarTablaAsistencias();
+        llenarTablaAsistencias(null, null, null);
     }
 
     /**
@@ -90,7 +54,7 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TablaAsitencias = new javax.swing.JTable();
+        TablaAsistencias = new javax.swing.JTable();
         ProgramaFormacionCB = new javax.swing.JComboBox<>();
         AmbienteCB = new javax.swing.JComboBox<>();
         FichaCB = new javax.swing.JComboBox<>();
@@ -101,9 +65,9 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
         jLabel3.setForeground(new java.awt.Color(0, 34, 64));
         jLabel3.setText("Buscardor");
 
-        TablaAsitencias.setBackground(new java.awt.Color(255, 255, 255));
-        TablaAsitencias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        TablaAsitencias.setModel(new javax.swing.table.DefaultTableModel(
+        TablaAsistencias.setBackground(new java.awt.Color(255, 255, 255));
+        TablaAsistencias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        TablaAsistencias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -142,10 +106,10 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
                 "Ambiente", "Competencia", "Instructor", "Fecha", "Hora inicio", "Hora fin", "Tabla"
             }
         ));
-        TablaAsitencias.setName(""); // NOI18N
-        TablaAsitencias.setRowHeight(44);
-        TablaAsitencias.setSelectionBackground(new java.awt.Color(215, 213, 177));
-        jScrollPane1.setViewportView(TablaAsitencias);
+        TablaAsistencias.setName(""); // NOI18N
+        TablaAsistencias.setRowHeight(44);
+        TablaAsistencias.setSelectionBackground(new java.awt.Color(215, 213, 177));
+        jScrollPane1.setViewportView(TablaAsistencias);
 
         ProgramaFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         ProgramaFormacionCB.addActionListener(new java.awt.event.ActionListener() {
@@ -219,19 +183,20 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
     private void ProgramaFormacionCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProgramaFormacionCBActionPerformed
         if (!ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...") && !ProgramaFormacionCB.getSelectedItem().equals("No aplica")) {
             try {
-                ConvertirDatos convertirDatos = new ConvertirDatos();
+                DataTables dt = new DataTables();
+                List<Map<String, Object>> tiposFichas = dt.obtenerFichasPorPrograma(ProgramaFormacionCB.getSelectedItem().toString());
+                List<String> tiposFichasStr = tiposFichas.stream()
+                        .map(ficha -> ficha.get("NumeroFicha").toString()) // Asegúrate de usar la clave correcta para obtener el número de la ficha
+                        .collect(Collectors.toList());
 
-                Integer idProgramaFormacion = convertirDatos.ObtenerIDProgramaFormacion(ProgramaFormacionCB.getSelectedItem().toString());
-                List<Integer> tiposFichas = convertirDatos.ObtenerFichasPorPrograma(idProgramaFormacion);
-                
-
-                if (tiposFichas == null) {
-                    JOptionPane.showMessageDialog(null, "Hubo un error cargando las Fichas de la API");
-                } else {
-                    List<String> tiposFichasStr = tiposFichas.stream().map(String::valueOf).collect(Collectors.toList());
-                    tiposFichasStr.add(0, "Seleccionar...");
-                    DefaultComboBoxModel<String> FichasBoxModel = new DefaultComboBoxModel<>(tiposFichasStr.toArray(new String[0]));
-                    FichaCB.setModel(FichasBoxModel);
+                // Añadir la opción "Seleccionar..." al inicio de la lista
+                tiposFichasStr.add(0, "Seleccionar...");
+                DefaultComboBoxModel<String> FichasBoxModel = new DefaultComboBoxModel<>(tiposFichasStr.toArray(new String[0]));
+                FichaCB.setModel(FichasBoxModel);
+                if(!AmbienteCB.getSelectedItem().equals("Seleccionar...")) {
+                    llenarTablaAsistencias(AmbienteCB.getSelectedItem().toString(), ProgramaFormacionCB.getSelectedItem().toString(), null);
+                } else if(!AmbienteCB.getSelectedItem().equals("Seleccionar...")) {
+                    llenarTablaAsistencias(null, ProgramaFormacionCB.getSelectedItem().toString(), null);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -241,60 +206,78 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
             FichaCB.setSelectedItem("Seleccionar...");
             FichaCB.setEnabled(false);
         }
-        actualizarTablaAsistencias();
+
     }//GEN-LAST:event_ProgramaFormacionCBActionPerformed
 
     private void AmbienteCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmbienteCBActionPerformed
-        actualizarTablaAsistencias();
+        if(!ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...") && !FichaCB.getSelectedItem().equals("Seleccionar...")) {
+            llenarTablaAsistencias(AmbienteCB.getSelectedItem().toString(), ProgramaFormacionCB.getSelectedItem().toString(), (Integer)FichaCB.getSelectedItem());
+        } else if (!ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...")) {
+            llenarTablaAsistencias(AmbienteCB.getSelectedItem().toString(), ProgramaFormacionCB.getSelectedItem().toString(), null);
+        } else {
+            llenarTablaAsistencias(AmbienteCB.getSelectedItem().toString(), null, null);
+        }
     }//GEN-LAST:event_AmbienteCBActionPerformed
 
     private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
-        actualizarTablaAsistencias();
+        if(!FichaCB.getSelectedItem().equals("Seleccionar...")) {
+            llenarTablaAsistencias(AmbienteCB.getSelectedItem().toString(), ProgramaFormacionCB.getSelectedItem().toString(), (Integer)FichaCB.getSelectedItem());
+        }
     }//GEN-LAST:event_FichaCBActionPerformed
 
-    
-    private void actualizarTablaAsistencias() {
-        Integer instructor = UserSession.getInstance().getDocumento();
-        String ambiente = (String) AmbienteCB.getSelectedItem();
-        if ("Seleccionar...".equals(ambiente) || "No Aplica".equals(ambiente)) {
-            ambiente = null;
-        }
 
-        String programaFormacion = (String) ProgramaFormacionCB.getSelectedItem();
-        if ("Seleccionar...".equals(programaFormacion) || "No aplica".equals(programaFormacion)) {
-            programaFormacion = null;
-        }
+    private void llenarTablaAsistencias(String ambiente, String programaFormacion, Integer ficha) {
+        DefaultTableModel modeloTabla = new DefaultTableModel(
+                new Object[]{"Fecha", "Clase", "Ambiente", "Ficha", "Instructor", "Tipo Asistencia", "Archivo Excel"},
+                0
+        );
 
-        Integer ficha = null;
-        String fichaSeleccionada = (String) FichaCB.getSelectedItem();
-        if (!"Seleccionar...".equals(fichaSeleccionada)) {
+        // Obtener el documento del usuario actual (Instructor) desde la sesión
+        String documentoInstructor = UserSession.getInstance().getDocumento();
+
+        // Llamar a la API para obtener las asistencias del instructor
+        API_AsistenciasApplications asistenciasInstructor = new API_AsistenciasApplications();
+        List<Map<String, Object>> asistencias = asistenciasInstructor.obtenerAsistenciasFiltradas(documentoInstructor, ambiente, programaFormacion, ficha);
+
+        // Rellenar el modelo de la tabla con los datos obtenidos
+        for (Map<String, Object> asistencia : asistencias) {
+            String Fecha = null;
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             try {
-                ficha = Integer.parseInt(fichaSeleccionada);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Ficha no válida.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+                Date date = inputFormat.parse((String) asistencia.get("Fecha"));
+
+                // Formatear la fecha a un formato más legible
+                SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Fecha = outputFormat.format(date);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
+
+            modeloTabla.addRow(new Object[]{
+                    Fecha,
+                    asistencia.get("ClaseFormacion"),
+                    asistencia.get("Ambiente"),
+                    asistencia.get("Ficha"),
+                    asistencia.get("Instructor"),
+                    asistencia.get("TipoAsistencia"),
+                    "Abrir Excel"  // Botón en la última columna para abrir el archivo
+            });
         }
 
-        try {
-            ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
-            DefaultTableModel modeloTabla = listarAsis.llenarTablaAsistencias(instructor, ambiente, programaFormacion, ficha);
-            TablaAsitencias.setModel(modeloTabla);
+        // Configurar el modelo en la tabla
+        TablaAsistencias.setModel(modeloTabla);
 
-            // Configurar el renderizador y el editor de botones en la tabla
-            TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
-            TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al actualizar la tabla de asistencias: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        // Configurar el botón en la última columna para abrir el archivo Excel
+        TableColumn archivoColumn = TablaAsistencias.getColumnModel().getColumn(6); // Columna de "Archivo Excel"
+        archivoColumn.setCellRenderer(new ButtonColumnHelper.ButtonRendererExcel());  // Renderizador del botón
+        archivoColumn.setCellEditor(new ButtonColumnHelper.ButtonEditorExcel(new JCheckBox(), TablaAsistencias, asistencias)); // Editor del botón con JTable y lista de asistencias
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> AmbienteCB;
     private javax.swing.JComboBox<String> FichaCB;
     private javax.swing.JComboBox<String> ProgramaFormacionCB;
-    private javax.swing.JTable TablaAsitencias;
+    private javax.swing.JTable TablaAsistencias;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

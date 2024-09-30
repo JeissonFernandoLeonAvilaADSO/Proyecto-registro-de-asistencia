@@ -172,8 +172,8 @@ public class ExcelService {
         // Convertir el workbook en un array de bytes
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
+        guardarExcel(workbook, "asistencia.xlsx");
         workbook.close();
-
         return outputStream.toByteArray();
     }
 

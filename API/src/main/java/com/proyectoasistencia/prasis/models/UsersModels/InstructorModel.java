@@ -15,6 +15,9 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class InstructorModel extends PerfilUsuarioModel {
 
+    @JsonProperty("ClaseFormacion")
+    private String ClaseFormacion;
+
     @JsonProperty("Fichas")
     private List<Integer> fichas;
 

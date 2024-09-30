@@ -8,49 +8,32 @@ package main.InstructorFrames.InstructorGenFrames;
 
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.*;
 
 import javax.swing.table.DefaultTableModel;
 
-import main.util.API_Actions.ListarUsuarios;
-import main.util.InstructorMethods.InstructorAsisDocs.UploadFileAPI;
-import main.util.models.CustomCellRenderer;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import main.InstructorFrames.InstructorHomeScreen;
-import main.util.API_Actions.AgregarHorasInasistenciaAPI;
-import main.util.API_Actions.ConvertirDatos;
-import main.util.API_AdminActions.API_Admin_BuscarUsuario;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.json.JSONObject;
-
+import main.util.API_Actions.API_AsistenciasApplications;
+import main.util.API_Actions.API_BuscarUsuario;
+import main.util.models.DataTables;
 import main.util.models.ComboBoxModels;
 import main.util.models.UserSession;
-import org.apache.poi.ss.usermodel.ComparisonOperator;
-import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
-import org.apache.poi.ss.usermodel.PatternFormatting;
-import org.apache.poi.ss.usermodel.SheetConditionalFormatting;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFPatternFormatting;
+import main.util.models.UsersModels.AprendizModel;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 /**
@@ -62,13 +45,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     /**
      * Creates new form ExcelGenFrame
      */
-    public DefaultTableModel modeloTabla;
-    public DefaultTableModel ListarAprendicesModel;
-    public Workbook workbook;
-    public Sheet sheet;
-    public int rowNum;
-    private CustomCellRenderer cellRenderer = new CustomCellRenderer();
-    
     public ExcelGenFrame() {
         initComponents();
         modif();
@@ -91,22 +67,24 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         HoraFin = new javax.swing.JLabel();
         HoraInicio = new javax.swing.JLabel();
-        IngresoCodAprendiz = new javax.swing.JTextField();
+        DocumentoAprendiz = new javax.swing.JTextField();
         RegistrarAsistencia = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaAsis = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         FinalizarAsis = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        Competencia = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         ProgramaFormacionCB = new javax.swing.JComboBox<>();
         FichaCB = new javax.swing.JComboBox<>();
-        AmbienteCB = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         ListarAprendices = new javax.swing.JTable();
+        AmbienteCB = new javax.swing.JComboBox<>();
+        InstructorClaseFormacion = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        ActividadCB = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -122,13 +100,15 @@ public class ExcelGenFrame extends javax.swing.JFrame {
 
         HoraInicio.setText("XX:XX");
 
-        IngresoCodAprendiz.addActionListener(new java.awt.event.ActionListener() {
+        DocumentoAprendiz.setEnabled(false);
+        DocumentoAprendiz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                IngresoCodAprendizActionPerformed(evt);
+                DocumentoAprendizActionPerformed(evt);
             }
         });
 
         RegistrarAsistencia.setText("Registrar Asistencia");
+        RegistrarAsistencia.setEnabled(false);
         RegistrarAsistencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RegistrarAsistenciaActionPerformed(evt);
@@ -175,6 +155,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                 "Nombre", "Apellido", "Tipo de Documento", "Documento", "Programa formacion", "Nivel formacion", "Competencia", "Hora de Ingreso", "Estado de asistencia"
             }
         ));
+        tablaAsis.setEnabled(false);
         tablaAsis.setFocusable(false);
         tablaAsis.setName(""); // NOI18N
         tablaAsis.setRowHeight(44);
@@ -190,13 +171,14 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         });
 
         FinalizarAsis.setText("Finalizar asistencia");
+        FinalizarAsis.setEnabled(false);
         FinalizarAsis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FinalizarAsisActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("Competencia");
+        jLabel5.setText("Clase formacion");
 
         jLabel6.setText("Ambiente");
 
@@ -219,8 +201,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             }
         });
 
-        AmbienteCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         ListarAprendices.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ListarAprendices.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -233,11 +213,20 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                 "Documento", "Aprendiz"
             }
         ));
+        ListarAprendices.setEnabled(false);
         ListarAprendices.setFocusable(false);
         ListarAprendices.setRequestFocusEnabled(false);
         ListarAprendices.setRowHeight(40);
         ListarAprendices.setRowSelectionAllowed(false);
         jScrollPane2.setViewportView(ListarAprendices);
+
+        AmbienteCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        InstructorClaseFormacion.setText("XXXXXXXXXXXXXXXXXX");
+
+        jLabel9.setText("Actividad");
+
+        ActividadCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -247,46 +236,51 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel6)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel5)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(Competencia, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                                .addComponent(InstructorNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(HoraFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(HoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(95, 95, 95)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ProgramaFormacionCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(355, 355, 355)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addGap(50, 50, 50)
+                                        .addComponent(InstructorNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel6))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(InstructorClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(ActividadCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(HoraFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(HoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(95, 95, 95)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel7))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(ProgramaFormacionCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(355, 355, 355))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(FinalizarAsis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(IngresoCodAprendiz)
+                            .addComponent(DocumentoAprendiz)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1286, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -302,39 +296,41 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel1)
-                                    .addComponent(InstructorNombre))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel5)
-                                    .addComponent(Competencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(ProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel8))
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel4)
-                                        .addComponent(HoraInicio)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(HoraFin)
-                                    .addComponent(jLabel7)
-                                    .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(ProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel8))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel4)
+                                .addComponent(HoraInicio)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel3)
+                            .addComponent(HoraFin)
+                            .addComponent(jLabel7)
+                            .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(FinalizarAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(35, 35, 35)
+                        .addComponent(FinalizarAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(InstructorNombre))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(InstructorClaseFormacion))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(ActividadCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(IngresoCodAprendiz)
+                    .addComponent(DocumentoAprendiz)
                     .addComponent(RegistrarAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -358,404 +354,456 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void AditionalConfig(){
-        
+        // Definir las columnas del modelo
+        // Asignar el modelo a la tabla asisTable
+        tablaAsis.setModel(new DefaultTableModel(new String[]{"Nombre", "Tipo de Documento", "Documento", "Programa Formación", "Nivel Formación", "Hora de Ingreso", "Estado de Asistencia"}, 0));
             // Configuración de la pantalla y del frame
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    int frameWidth = (int) (screenSize.width * 0.95);
-    int frameHeight = (int) (screenSize.height * 0.95);
-    
-    int screenWidth = screenSize.width;
-    int screenHeight = screenSize.height;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int frameWidth = (int) (screenSize.width * 0.95);
+        int frameHeight = (int) (screenSize.height * 0.95);
 
-    System.out.println(screenWidth);
-    System.out.println(screenHeight);
-    
-    // Configurar el tamaño del JFrame
-    if (screenWidth < 1700 && screenHeight < 900){
-        this.setSize(frameWidth, frameHeight);
-    
-    }
-        if (screenWidth < 1920 || screenHeight < 1080) {
-    
-        // Crear un JScrollPane con barras de desplazamiento visibles
-        JScrollPane scrollPane = new JScrollPane(jPanel1);
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        int screenWidth = screenSize.width;
+        int screenHeight = screenSize.height;
 
-        // Establecer el layout del JFrame a BorderLayout para que el scrollPane ocupe todo el espacio
-        this.setLayout(new BorderLayout());
+        System.out.println(screenWidth);
+        System.out.println(screenHeight);
 
-        // Agregar el JScrollPane al JFrame
-        this.add(scrollPane, BorderLayout.CENTER);
+        // Configurar el tamaño del JFrame
+        if (screenWidth < 1700 && screenHeight < 900){
+            this.setSize(frameWidth, frameHeight);
 
-        // Manejar el desplazamiento con la rueda del ratón en cualquier parte del JFrame
-        this.addMouseWheelListener(e -> {
-            JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
-            JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
-            int notches = e.getWheelRotation();
+        }
+            if (screenWidth < 1920 || screenHeight < 1080) {
 
-            if (e.isShiftDown()) {
-                // Si se presiona Shift, desplazarse horizontalmente
-                int newValue = horizontalScrollBar.getValue() + notches * 20; // Ajustar la velocidad de desplazamiento
-                horizontalScrollBar.setValue(newValue);
-            } else {
-                // De lo contrario, desplazarse verticalmente
-                int newValue = verticalScrollBar.getValue() + notches * 20; // Ajustar la velocidad de desplazamiento
-                verticalScrollBar.setValue(newValue);
-            }
-        });
-    }
+            // Crear un JScrollPane con barras de desplazamiento visibles
+            JScrollPane scrollPane = new JScrollPane(jPanel1);
+            scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+            // Establecer el layout del JFrame a BorderLayout para que el scrollPane ocupe todo el espacio
+            this.setLayout(new BorderLayout());
+
+            // Agregar el JScrollPane al JFrame
+            this.add(scrollPane, BorderLayout.CENTER);
+
+            // Manejar el desplazamiento con la rueda del ratón en cualquier parte del JFrame
+            this.addMouseWheelListener(e -> {
+                JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+                JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
+                int notches = e.getWheelRotation();
+
+                if (e.isShiftDown()) {
+                    // Si se presiona Shift, desplazarse horizontalmente
+                    int newValue = horizontalScrollBar.getValue() + notches * 20; // Ajustar la velocidad de desplazamiento
+                    horizontalScrollBar.setValue(newValue);
+                } else {
+                    // De lo contrario, desplazarse verticalmente
+                    int newValue = verticalScrollBar.getValue() + notches * 20; // Ajustar la velocidad de desplazamiento
+                    verticalScrollBar.setValue(newValue);
+                }
+            });
+        }
+
+        try {
+            ComboBoxModels cbm = new ComboBoxModels();
+            InstructorNombre.setText(UserSession.getInstance().getNombres());
+            InstructorClaseFormacion.setText(UserSession.getInstance().getClaseFormacion());
+            AmbienteCB.setModel(cbm.generarComboBoxModelPorTipo("Ambientes"));
+            ProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ProgramaFormacion"));
+            ActividadCB.setModel(cbm.generarComboBoxModelPorTipo("Actividades"));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     public void modif(){
         InstructorNombre.setText(UserSession.getInstance().getNombres());
 
-        workbook = new XSSFWorkbook(); // O cualquier otra inicialización necesaria
-        sheet = workbook.createSheet("Asistencia");
-        modeloTabla = new DefaultTableModel(
-            new Object[][] {},
-            new String[] {
-                "Nombres", "Apellidos", "Tipo Documento", "Documento", "Programa Formación", "Nivel Formación", "Curso", "Fecha", "Estado"
-            }
-        );
-        tablaAsis.setModel(modeloTabla);
-        ComboBoxModels ComboBoxModels = new ComboBoxModels();
-        
-        try {
-            List<String> tiposProgramaFormacion = ComboBoxModels.BoxProgramaFormacionModel();
-            if (tiposProgramaFormacion == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando los programas de formacion de la API");
-            } else {
-                tiposProgramaFormacion.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> ProgramaFormacionBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposProgramaFormacion));
-                ProgramaFormacionCB.setModel(ProgramaFormacionBoxModel);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        try {
-            List<String> tiposAmbientes = ComboBoxModels.BoxAmbientesModel();
-            if (tiposAmbientes == null) {
-                JOptionPane.showMessageDialog(null, "Hubo un error cargando los Ambientes de la API");
-            } else {
-                tiposAmbientes.add(0, "Seleccionar...");
-                DefaultComboBoxModel<String> AmbientesBoxModel = new DefaultComboBoxModel<>(ComboBoxModels.toArray(tiposAmbientes));
-                AmbienteCB.setModel(AmbientesBoxModel);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-
         
         this.setLocationRelativeTo(null);
-        IngresoCodAprendiz.requestFocusInWindow();
+        DocumentoAprendiz.requestFocusInWindow();
         HoraInicio.setText(String.valueOf(HoraActual()));
-        HoraFin.setText(String.valueOf(HoraInasistencia()));
+        HoraFin.setText(calcularHoraFin(HoraInicio.getText()));
+
     }
 
-    private void initializeTable() {
-        ListarAprendices.setDefaultRenderer(Object.class, new CustomCellRenderer());
-    }
-    
-    
-    public String HoraActual(){
-        Calendar calendar = Calendar.getInstance();
+    public String HoraActual() {
         Date fechaActual = new Date();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+        // Asegurarse de usar un formato en inglés para AM/PM
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+
         // Obtener la hora actual formateada en XX:XX AM/PM
         String horaFormateada = sdf.format(fechaActual);
         return horaFormateada;
     }
-    
-    public String HoraTardia(){
+
+    public String HoraTardia() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, 1);
-        Date fechaEn5Horas = calendar.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-        String horaFin = sdf.format(fechaEn5Horas);
-        return horaFin;
+        calendar.add(Calendar.HOUR_OF_DAY, 1); // Añadir 1 hora
+
+        Date fechaEn1Hora = calendar.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+        return sdf.format(fechaEn1Hora);
     }
-    
-    
-    public String HoraInasistencia(){
+
+    public String HoraInasistencia() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, 5);
+        calendar.add(Calendar.HOUR_OF_DAY, 5); // Añadir 5 horas
+
         Date fechaEn5Horas = calendar.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-        String horaFin = sdf.format(fechaEn5Horas);
-        return horaFin;
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+        return sdf.format(fechaEn5Horas);
     }
-    
-    
+
+    // Método para calcular la hora final sumando 5 horas a la hora de inicio
+    public String calcularHoraFin(String horaInicio) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+            Date horaInicioParsed = sdf.parse(horaInicio);
+
+            // Añadir 5 horas a la hora de inicio
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(horaInicioParsed);
+            calendar.add(Calendar.HOUR_OF_DAY, 5);
+
+            return sdf.format(calendar.getTime());  // Retorna la hora final en formato AM/PM
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";  // En caso de error, retornar una cadena vacía
+        }
+    }
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+
     private void RegistrarAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarAsistenciaActionPerformed
-    API_Admin_BuscarUsuario buscarUsuario = new API_Admin_BuscarUsuario();
-    String codigoAprendiz = IngresoCodAprendiz.getText();
-    if (codigoAprendiz != null) {
-        try {
-            JSONObject aprendizData = buscarUsuario.AdminBuscarUsuario(codigoAprendiz);
-            System.out.println(aprendizData);
-            if (aprendizData != null) {
 
-                boolean yaRegistrado = false;
-                for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+        String documentoAprendiz = DocumentoAprendiz.getText();
+        DocumentoAprendiz.setText("");
+        API_BuscarUsuario buscarAprendiz = new API_BuscarUsuario();
 
-                    int documento = Integer.parseInt(modeloTabla.getValueAt(i, 3).toString());
-                    if (documento == Integer.parseInt(codigoAprendiz)) {
-                        yaRegistrado = true;
-                        break;
-                    }
-                }
+        // Buscar al aprendiz por el documento
+        AprendizModel aprendiz = buscarAprendiz.buscarAprendizPorDocumento(documentoAprendiz);
 
-                if (yaRegistrado) {
-                    JOptionPane.showMessageDialog(this, "El aprendiz ya ha sido registrado.");
-                    IngresoCodAprendiz.setText("");
-                } else {
-                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-                    Date horaActual = sdf.parse(HoraActual());
-                    Date horaTardia = sdf.parse(HoraTardia());
-                    Date horaInasistencia = sdf.parse(HoraInasistencia());
+        if (aprendiz != null) {
+            // Crear el modelo de la tabla si aún no existe
+            DefaultTableModel modelo = (DefaultTableModel) tablaAsis.getModel();
+            DefaultTableModel modeloListarAprendices = (DefaultTableModel) ListarAprendices.getModel();
+            boolean perteneceAFicha = false;
 
-                    String estado;
-                    if (horaActual.before(horaTardia)) {
-                        estado = "A tiempo";
-                    } else if (horaActual.before(horaInasistencia)) {
-                        estado = "Tarde";
-                    } else {
-                        estado = "Inasistencia";
-                    }
-
-                    modeloTabla.addRow(new Object[]{
-                            aprendizData.getString("nombres"),
-                            aprendizData.getString("apellidos"),
-                            aprendizData.getString("tipoDocumento"),
-                            aprendizData.getString("documento"),
-                            aprendizData.getString("programaFormacion"),
-                            aprendizData.getString("nivelFormacion"),
-                            Competencia.getText(),
-                            HoraActual(),
-                            estado
-                    });
-                    IngresoCodAprendiz.setText("");
-                }
-            } else {
-                int respuesta = JOptionPane.showConfirmDialog(null, "No se han encontrado coincidencias, ¿desea registrar al Aprendiz?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
-
-                switch (respuesta) {
-                    case JOptionPane.YES_OPTION:
-                        InstructorRegAprendiz regAprendiz = new InstructorRegAprendiz();
-                        regAprendiz.setVisible(true);
-                        break;
-                    case JOptionPane.NO_OPTION:
-                    case JOptionPane.CANCEL_OPTION:
-                    case JOptionPane.CLOSED_OPTION:
-                        break;
+            for (int i = 0; i < modeloListarAprendices.getRowCount(); i++) {
+                String documentoFicha = modeloListarAprendices.getValueAt(i, 1).toString();
+                System.out.println(documentoFicha);
+                if (documentoFicha.equals(documentoAprendiz)) {
+                    perteneceAFicha = true;
+                    break;
                 }
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al conectar con la API.");
-            e.printStackTrace();
+            // Si el aprendiz no pertenece a la ficha, mostrar un mensaje y no registrar
+            if (!perteneceAFicha) {
+                JOptionPane.showMessageDialog(this, "El aprendiz con el documento " + documentoAprendiz + " no pertenece a la ficha actual.");
+                return;
+            }
+
+            // Verificar si el documento ya está registrado en la tabla
+            boolean existe = false;
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                String documentoExistente = modelo.getValueAt(i, 2).toString(); // Columna del documento
+                if (documentoExistente.equals(documentoAprendiz)) {
+                    existe = true;
+                    break;
+                }
+            }
+
+            // Si el documento ya existe, mostrar un mensaje y no registrar
+            if (existe) {
+                JOptionPane.showMessageDialog(this, "El aprendiz con el documento " + documentoAprendiz + " ya está registrado.");
+                return;
+            }
+
+            // Registrar la asistencia si no existe
+            String horaLlegada = HoraActual();
+            int horasRetardo = calcularHorasRetardo(HoraInicio.getText(), horaLlegada);
+
+            System.out.println(horaLlegada);
+            System.out.println(horasRetardo);
+            // Llenar la tabla de asistencia
+            String estadoAsistencia = horasRetardo == 0 ? "A tiempo" : horasRetardo + " horas de retardo";
+            System.out.println(estadoAsistencia);
+
+            // Añadir la fila con los datos del aprendiz
+            modelo.addRow(new Object[] {
+                    aprendiz.getNombres(), // Columna: Nombre
+                    aprendiz.getTipoDocumento(), // Columna: Tipo de Documento
+                    aprendiz.getDocumento(), // Columna: Documento
+                    aprendiz.getProgramaFormacion(), // Columna: Programa de Formación
+                    aprendiz.getNivelFormacion(), // Columna: Nivel de Formación
+                    horaLlegada, // Columna: Hora de Ingreso
+                    estadoAsistencia // Columna: Estado de asistencia
+            });
+
+        } else {
+            // Mostrar un mensaje si no se encontró al aprendiz
+            JOptionPane.showMessageDialog(this, "No se encontró el aprendiz con el documento: " + documentoAprendiz);
+            int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea registrar un nuevo aprendiz?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
+
+            switch (respuesta) {
+                case JOptionPane.YES_OPTION:
+                    System.out.println("creando aprendiz");
+                    InstructorRegAprendiz instructorRegAprendiz = new InstructorRegAprendiz();
+                    instructorRegAprendiz.setVisible(true);
+                    break;
+
+                case JOptionPane.YES_NO_CANCEL_OPTION:
+                    System.out.println("no creando aprendiz");
+                    break;
+            }
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Ingrese el código del aprendiz.");
-    }
     }//GEN-LAST:event_RegistrarAsistenciaActionPerformed
 
 
     private void FinalizarAsisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FinalizarAsisActionPerformed
-        Workbook workbook = null;
+        if (AmbienteCB.getSelectedItem().equals("Seleccionar...")) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona un Ambiente.");
+            return;
+        }
+
+        if (ActividadCB.getSelectedItem().equals("Seleccionar...")) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona una Actividad.");
+            return;
+        }
+
+        if (ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...")) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona un Programa de Formación.");
+            return;
+        }
+
+        if (FichaCB.getSelectedItem().equals("Seleccionar...")) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona una Ficha.");
+            return;
+        }
 
         try {
-            // Preparar los parámetros para el archivo Excel y la API
-            ConvertirDatos convertirDatos = new ConvertirDatos();
-            Map<String, Object> params = new HashMap<>();
-            params.put("DocumentoInstructor", UserSession.getInstance().getDocumento());
-            params.put("Clase", Competencia.getText());
-            params.put("Ambiente", AmbienteCB.getSelectedItem().toString());
-            params.put("Ficha", Integer.valueOf(FichaCB.getSelectedItem().toString()));
-            params.put("ProgramaFormacion", ProgramaFormacionCB.getSelectedItem().toString());
-            System.out.println(params);
+            // Crear el objeto JSON principal
+            JSONObject asistenciaJSON = new JSONObject();
 
-            // Crear un nuevo archivo Excel
-            workbook = new XSSFWorkbook();
-            Sheet sheet = workbook.createSheet("Asistencia");
+            // Valores estáticos para el ejemplo
+            asistenciaJSON.put("TipoAsistencia", ActividadCB.getSelectedItem().toString());
 
-            // Crear encabezados en el Excel
-            Row headerRow = sheet.createRow(0);
-            for (int i = 0; i < modeloTabla.getColumnCount(); i++) {
-                Cell cell = headerRow.createCell(i);
-                cell.setCellValue(modeloTabla.getColumnName(i));
-            }
+            asistenciaJSON.put("Ficha", Integer.parseInt((String) FichaCB.getSelectedItem()));
+            asistenciaJSON.put("ClaseFormacion", InstructorClaseFormacion.getText());
+            asistenciaJSON.put("Ambiente", AmbienteCB.getSelectedItem().toString());  // Ambiente (por ejemplo: "Aula 101")
 
-            // Rellenar filas con los datos de la JTable
-            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-                Row row = sheet.createRow(i + 1);
-                for (int j = 0; j < modeloTabla.getColumnCount(); j++) {
-                    Cell cell = row.createCell(j);
-                    cell.setCellValue(modeloTabla.getValueAt(i, j).toString());
-                }
-            }
+            // Crear el arreglo de aprendices
+            JSONArray listaAprendices = new JSONArray();
 
-            // Consultar todos los aprendices asociados a la ficha
-            int ficha = Integer.valueOf(FichaCB.getSelectedItem().toString());
-            DefaultTableModel listarAprendicesModel = ListarUsuarios.getAprendices(ficha);
+            // Recorrer la tabla `tablaAsis` para obtener los datos de los aprendices
+            for (int i = 0; i < tablaAsis.getRowCount(); i++) {
+                String documento = tablaAsis.getValueAt(i, 2).toString();
+                String estadoInasistencia = tablaAsis.getValueAt(i, 6).toString();
 
-            // Identificar los aprendices que no están registrados en la tabla de asistencia y asignar 5 horas de inasistencia
-            for (int i = 0; i < listarAprendicesModel.getRowCount(); i++) {
-                String documentoAprendiz = listarAprendicesModel.getValueAt(i, 0).toString();
-                boolean registrado = false;
-
-                for (int j = 0; j < modeloTabla.getRowCount(); j++) {
-                    if (modeloTabla.getValueAt(j, 3).toString().equals(documentoAprendiz)) { // Columna 3 asume ser Documento
-                        registrado = true;
-                        String estado = modeloTabla.getValueAt(j, 8).toString(); // Columna de estado, asumiendo índice 8
-                        if (estado.equals("Tarde")) {
-                            // Calcular y agregar horas de retardo a las inasistencias
-                            int horasRetorno = calcularHorasRetardo(modeloTabla.getValueAt(j, 7).toString()); // Columna 7 asume ser Hora de llegada
-                            agregarInasistencia(documentoAprendiz, horasRetorno);
-                        }
-                        break;
+                // Determinar las horas de inasistencia
+                int horasInasistencia;
+                if (estadoInasistencia.equalsIgnoreCase("A tiempo")) {
+                    horasInasistencia = 0;  // Si está a tiempo, asignamos 0 horas de inasistencia
+                } else {
+                    // Si no está "A tiempo", obtener las horas de inasistencia desde el texto
+                    try {
+                        // Extraer el número del texto (ejemplo: "2 horas de retardo")
+                        horasInasistencia = Integer.parseInt(estadoInasistencia.replaceAll("\\D+", ""));  // Extrae solo los números
+                    } catch (NumberFormatException e) {
+                        horasInasistencia = 0;  // Si no se puede convertir, se asigna 0 como fallback
                     }
                 }
 
-                if (!registrado) {
-                    // Agregar 5 horas de inasistencia si el aprendiz no está registrado
-                    agregarInasistencia(documentoAprendiz, 5);
-                }
+                // Crear un objeto JSON para cada aprendiz
+                JSONObject aprendizJSON = new JSONObject();
+                aprendizJSON.put("Documento", documento);
+                aprendizJSON.put("HorasInasistencia", horasInasistencia);
+
+                // Añadir el aprendiz al arreglo de aprendices
+                listaAprendices.put(aprendizJSON);
             }
 
-            // Guardar el archivo Excel en el sistema
-            String filePath = "asistencia.xlsx";
-            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
-                workbook.write(fileOut);
-            }
+            // Agregar la lista de aprendices al objeto principal
+            asistenciaJSON.put("ListaAprendices", listaAprendices);
 
-            // Enviar el archivo Excel a la API
-            File file = new File(filePath);
-            UploadFileAPI uploadFileAPI = new UploadFileAPI();
-            uploadFileAPI.uploadFileAPI(file, params);
-
-            // Abrir el archivo guardado (opcional)
-            if (Desktop.isDesktopSupported() && file.exists()) {
-                Desktop.getDesktop().open(file);
-            }
-
-            JOptionPane.showMessageDialog(null, "Archivo Excel generado y subido exitosamente.");
+            // Llamar al método que envía el JSON a la API
+            System.out.println(asistenciaJSON);
+            API_AsistenciasApplications asistenciasApplications = new API_AsistenciasApplications();
+            String respuesta = asistenciasApplications.enviarAsistencia(asistenciaJSON);
+            JOptionPane.showMessageDialog(null, respuesta);
+            this.dispose();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al generar el archivo Excel.");
             e.printStackTrace();
-        } finally {
-            if (workbook != null) {
-                try {
-                    workbook.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            JOptionPane.showMessageDialog(this, "Error al enviar la asistencia: " + e.getMessage());
         }
     }//GEN-LAST:event_FinalizarAsisActionPerformed
 
-        // Método para calcular las horas de retardo basadas en la hora de llegada
-    private int calcularHorasRetardo(String horaLlegada) {
-        // Implementa la lógica para calcular las horas de retardo con base en la hora de llegada
-        // Por ejemplo, calcula la diferencia con la hora esperada y convierte a horas
-        // Este es un ejemplo simple que retorna 1 hora de retardo
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-            Date horaActual = sdf.parse(HoraActual());
-            Date horaLlegadaParsed = sdf.parse(horaLlegada);
 
-            // Calcular la diferencia en horas
-            long diferenciaMilisegundos = horaActual.getTime() - horaLlegadaParsed.getTime();
-            int horasRetardo = (int) (diferenciaMilisegundos / (1000 * 60 * 60));
-            return Math.max(horasRetardo, 0); // Asegurarse que no sea negativo
-        } catch (Exception e) {
+    public int calcularHorasRetardo(String horaInicio, String horaLlegada) {
+        try {
+            // Formato de la hora: 12 horas con AM/PM
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
+
+            // Obtener la fecha actual
+            LocalDate fechaHoy = LocalDate.now();
+
+            // Convertir la hora de inicio y hora de llegada a objetos LocalDateTime (combinando con la fecha actual)
+            LocalDateTime horaInicioParsed = LocalDateTime.of(fechaHoy, LocalTime.parse(horaInicio, formatter));
+            LocalDateTime horaLlegadaParsed = LocalDateTime.of(fechaHoy, LocalTime.parse(horaLlegada, formatter));
+
+            // Si la hora de llegada es antes de la hora de inicio, asumimos que es del día siguiente
+            if (horaLlegadaParsed.isBefore(horaInicioParsed)) {
+                horaLlegadaParsed = horaLlegadaParsed.plusDays(1);
+            }
+
+            // Obtener la hora final (5 horas después de la hora de inicio)
+            LocalDateTime horaFin = horaInicioParsed.plusHours(5);
+
+            // Verificar si la hora de llegada está después de la hora final
+            if (horaLlegadaParsed.isAfter(horaFin)) {
+                // Si la hora de llegada es después de la hora fin, se considera una falta total
+                return 5;  // Puedes ajustar este valor según tu necesidad
+            }
+
+            // Calcular la diferencia en minutos entre la hora de llegada y la hora de inicio
+            Duration duracion = Duration.between(horaInicioParsed, horaLlegadaParsed);
+
+            // Si la hora de llegada es dentro de la primera hora, retornar 0 horas de retardo
+            if (duracion.toMinutes() <= 60) {
+                return 0;  // Dentro del periodo de gracia
+            }
+
+            // Si la hora de llegada es posterior a la primera hora, calcular el retardo en horas enteras
+            long horasRetardo = (long) Math.ceil((double) (duracion.toMinutes() - 60) / 60);
+
+            return (int) Math.max(horasRetardo, 0); // Asegurarse de que no sea negativo
+
+        } catch (DateTimeParseException e) {
             e.printStackTrace();
             return 0; // En caso de error, retornar 0 como retardo
         }
     }
 
-
-    // Método para agregar horas de inasistencia usando la API de inasistencias
-    private void agregarInasistencia(String documentoAprendiz, int horas) {
-        try {
-            // Obtener el ID del instructor
-            Integer idInstructor = UserSession.getInstance().getID(); // Asumiendo que UserSession tiene el ID del instructor
-
-            // Crear el objeto JSON para la solicitud
-            Map<String, List<Map<String, Object>>> listaAprendices = new HashMap<>();
-            Map<String, Object> aprendizData = new HashMap<>();
-            aprendizData.put("Documento", documentoAprendiz);
-            aprendizData.put("HorasInasistencia", horas);
-            aprendizData.put("NombreClase", Competencia.getText()); // Asegúrate de que el nombre de la clase esté correcto
-            aprendizData.put("IDInstructor", idInstructor); // Incluir el ID del instructor
-            listaAprendices.put("aprendices", List.of(aprendizData));
-
-            // Llamar a la API para subir las horas de inasistencia
-            AgregarHorasInasistenciaAPI api = new AgregarHorasInasistenciaAPI();
-            boolean resultado = api.SubirHorasInasistencias(listaAprendices);
-
-            if (!resultado) {
-                System.out.println("Error al agregar inasistencia para el documento: " + documentoAprendiz);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    
-    private void IngresoCodAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresoCodAprendizActionPerformed
+    private void DocumentoAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DocumentoAprendizActionPerformed
         RegistrarAsistencia.doClick();
-    }//GEN-LAST:event_IngresoCodAprendizActionPerformed
+    }//GEN-LAST:event_DocumentoAprendizActionPerformed
 
     private void ProgramaFormacionCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProgramaFormacionCBActionPerformed
-        if (!ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...") && !ProgramaFormacionCB.getSelectedItem().equals("No aplica")) {
+        String seleccionPrograma = ProgramaFormacionCB.getSelectedItem().toString();
+        // Definir las columnas del modelo
+        // Asignar el modelo a la tabla asisTable
+        tablaAsis.setModel(new DefaultTableModel(new String[]{"Nombre", "Tipo de Documento", "Documento", "Programa Formación", "Nivel Formación", "Hora de Ingreso", "Estado de Asistencia"}, 0));
+        // Si la ficha no es válida, deshabilitar elementos y limpiar la tabla
+            desactivarAsis();
+
+        if (seleccionPrograma.equals("Seleccionar...") || seleccionPrograma.equals("No aplica")) {
+            // Deshabilitar el ComboBox de Fichas y limpiar los ítems
+            FichaCB.setModel(new DefaultComboBoxModel<>(new String[]{"Seleccionar..."}));
+            FichaCB.setEnabled(false);
+            String[] columnasVacias = {"Nombre", "Documento"};
+            DefaultTableModel modeloVacio = new DefaultTableModel(columnasVacias, 0);
+            ListarAprendices.setModel(modeloVacio);
+            // Si la ficha no es válida, deshabilitar elementos y limpiar la tabla
+            desactivarAsis();
+        } else {
             try {
-                ConvertirDatos convertirDatos = new ConvertirDatos();
+                DataTables dt = new DataTables();
 
-                // Obtén el ID del programa de formación
-                Integer idProgramaFormacion = convertirDatos.ObtenerIDProgramaFormacion(ProgramaFormacionCB.getSelectedItem().toString());
-
-                // Obtén la lista de fichas como enteros
-                List<Integer> tiposFichas = convertirDatos.ObtenerFichasPorPrograma(idProgramaFormacion);
+                // Realizar la consulta solo si no se ha seleccionado "Seleccionar..." o "No aplica"
+                List<Map<String, Object>> tiposFichas = dt.obtenerFichasPorPrograma(seleccionPrograma);
 
                 if (tiposFichas == null) {
                     JOptionPane.showMessageDialog(null, "Hubo un error cargando las Fichas de la API");
                 } else {
-                    // Convierte la lista de enteros a una lista de cadenas
+                    // Convertir la lista de enteros a una lista de cadenas
                     List<String> tiposFichasStr = tiposFichas.stream()
-                            .map(String::valueOf)
+                            .map(ficha -> ficha.get("NumeroFicha").toString()) // Asegúrate de usar la clave correcta para obtener el número de la ficha
                             .collect(Collectors.toList());
 
-                    // Añade la opción "Seleccionar..." al inicio de la lista
+                    // Añadir la opción "Seleccionar..." al inicio de la lista
                     tiposFichasStr.add(0, "Seleccionar...");
 
                     // Convierte la lista de cadenas a un array y configura el modelo del combo box
                     DefaultComboBoxModel<String> FichasBoxModel = new DefaultComboBoxModel<>(tiposFichasStr.toArray(new String[0]));
                     FichaCB.setModel(FichasBoxModel);
+                    FichaCB.setEnabled(true); // Habilitar la ComboBox de Fichas
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            FichaCB.setEnabled(true);
-        } else {
-            FichaCB.setSelectedItem("Seleccionar...");
-            FichaCB.setEnabled(false);
         }
     }//GEN-LAST:event_ProgramaFormacionCBActionPerformed
 
     private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
-        ListarAprendicesModel = ListarUsuarios.getAprendices(Integer.valueOf(FichaCB.getSelectedItem().toString()));
-        ListarAprendices.setModel(ListarAprendicesModel);
+        try {
+            DataTables dt = new DataTables();
+            desactivarAsis();
+            tablaAsis.setModel(new DefaultTableModel(new String[]{"Nombre", "Tipo de Documento", "Documento", "Programa Formación", "Nivel Formación", "Hora de Ingreso", "Estado de Asistencia"}, 0));
+
+            if (!FichaCB.getSelectedItem().toString().equals("Seleccionar...")) {
+                // Si la ficha es válida, habilitar los elementos y cargar aprendices
+                activarAsis();
+
+                // Obtener el número de ficha seleccionado
+                Integer numeroFicha = Integer.parseInt(FichaCB.getSelectedItem().toString());
+                // Obtener los aprendices para la ficha seleccionada
+                List<Map<String, Object>> aprendices = dt.obtenerAprendicesPorFicha(numeroFicha);
+
+                // Definir las columnas del modelo
+                String[] columnas = {"Nombre", "Documento"};
+                DefaultTableModel aprendicesFicha = new DefaultTableModel(columnas, 0);
+
+                // Rellenar el modelo con los datos de los aprendices
+                for (Map<String, Object> aprendiz : aprendices) {
+                    Object[] fila = new Object[] {
+                            aprendiz.get("NombreAprendiz"),
+                            aprendiz.get("Documento"),
+                    };
+                    aprendicesFicha.addRow(fila); // Añadir cada fila al modelo
+                }
+
+                // Asignar el modelo a la tabla
+                ListarAprendices.setModel(aprendicesFicha);
+            } else {
+                desactivarAsis();
+                // Asignar el modelo a la tabla asisTable
+                tablaAsis.setModel(new DefaultTableModel(new String[]{"Nombre", "Tipo de Documento", "Documento", "Programa Formación", "Nivel Formación", "Hora de Ingreso", "Estado de Asistencia"}, 0));
+                // Limpiar la tabla de aprendices
+                ListarAprendices.setModel(new DefaultTableModel(new String[]{"Nombre", "Documento"}, 0));
+
+                JOptionPane.showMessageDialog(this, "Ficha no válida. Por favor, seleccione una ficha válida.");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione una ficha válida.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al obtener los aprendices: " + e.getMessage());
+        }
     }//GEN-LAST:event_FichaCBActionPerformed
+
+    private void desactivarAsis(){
+        ListarAprendices.setEnabled(false);
+        DocumentoAprendiz.setEnabled(false);
+        tablaAsis.setEnabled(false);
+        RegistrarAsistencia.setEnabled(false);
+        FinalizarAsis.setEnabled(false);
+    }
+
+    private void activarAsis(){
+        ListarAprendices.setEnabled(true);
+        DocumentoAprendiz.setEnabled(true);
+        tablaAsis.setEnabled(true);
+        RegistrarAsistencia.setEnabled(true);
+        FinalizarAsis.setEnabled(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -793,13 +841,14 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> ActividadCB;
     private javax.swing.JComboBox<String> AmbienteCB;
-    private javax.swing.JTextField Competencia;
+    private javax.swing.JTextField DocumentoAprendiz;
     private javax.swing.JComboBox<String> FichaCB;
     private javax.swing.JButton FinalizarAsis;
     private javax.swing.JLabel HoraFin;
     private javax.swing.JLabel HoraInicio;
-    private javax.swing.JTextField IngresoCodAprendiz;
+    private javax.swing.JLabel InstructorClaseFormacion;
     private javax.swing.JLabel InstructorNombre;
     private javax.swing.JTable ListarAprendices;
     private javax.swing.JComboBox<String> ProgramaFormacionCB;
@@ -812,6 +861,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

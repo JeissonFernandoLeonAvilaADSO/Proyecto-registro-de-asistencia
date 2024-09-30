@@ -3,6 +3,7 @@ package com.proyectoasistencia.prasis.services.UsersServices;
 import com.proyectoasistencia.prasis.models.UsersModels.AprendizModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -56,9 +57,9 @@ public class AprendizService {
                     INNER JOIN usuario us ON pf.IDUsuario = us.ID
                     INNER JOIN tipodocumento td ON pf.IDTipoDocumento = td.ID
                     INNER JOIN genero ge ON pf.IDGenero = ge.ID
-                    INNER JOIN barrios ON pf.IDBarrio = barrios.id_barrio
-                    INNER JOIN municipios mun ON barrios.id_municipio = mun.id_municipio
-                    INNER JOIN departamentos dept ON mun.id_departamento = dept.id_departamento
+                    INNER JOIN barrios ON pf.IDBarrio = barrios.ID
+                    INNER JOIN municipios mun ON barrios.id_municipio = mun.ID
+                    INNER JOIN departamentos dept ON mun.id_departamento = dept.ID
                     INNER JOIN fichas fc ON ap.IDFicha = fc.ID
                     INNER JOIN programaformacion pform ON fc.IDProgramaFormacion = pform.ID
                     INNER JOIN jornadaformacion jf ON pform.IDJornadaFormacion = jf.ID
@@ -244,7 +245,7 @@ public class AprendizService {
             System.out.println("Nombre del barrio: " + nombreBarrio);
 
             Integer idBarrio = jdbcTemplate.queryForObject(
-                    "SELECT id_barrio FROM barrios WHERE nombre_barrio = ?",
+                    "SELECT ID FROM barrios WHERE nombre_barrio = ?",
                     new Object[]{nombreBarrio},
                     Integer.class
             );
@@ -486,7 +487,7 @@ public class AprendizService {
             System.out.println("Nombre del barrio: " + nombreBarrio);
 
             Integer idBarrio = jdbcTemplate.queryForObject(
-                    "SELECT id_barrio FROM barrios WHERE nombre_barrio = ?",
+                    "SELECT ID FROM barrios WHERE nombre_barrio = ?",
                     new Object[]{nombreBarrio},
                     Integer.class
             );
@@ -575,23 +576,71 @@ public class AprendizService {
     }
 
 
-    // Eliminar un aprendiz por documento
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteAprendiz(String documento) {
-        String sql = """
-                DELETE FROM aprendiz 
-                WHERE IDPerfilUsuario = (SELECT ID FROM perfilusuario WHERE Documento = ?)
-                """;
-        int deleted = jdbcTemplate.update(sql, documento);
+        Integer perfilUsuarioId = null;
+        Integer aprendizId = null;
+        Integer usuarioId = null;
 
-        if (deleted > 0) {
-            String deletePerfilUsuario = """
-                    DELETE FROM perfilusuario 
-                    WHERE Documento = ?
-                    """;
-            jdbcTemplate.update(deletePerfilUsuario, documento);
-            return true;
-        } else {
-            return false;
+        try {
+            // 1. Obtener todos los IDs necesarios antes de eliminar
+
+            // Obtener el ID del perfil de usuario
+            String sqlGetPerfilUsuarioId = "SELECT ID FROM perfilusuario WHERE Documento = ?";
+            System.out.println("Obteniendo ID del perfil de usuario para el documento: " + documento);
+            perfilUsuarioId = jdbcTemplate.queryForObject(sqlGetPerfilUsuarioId, new Object[]{documento}, Integer.class);
+            System.out.println("ID del perfil de usuario obtenido: " + perfilUsuarioId);
+
+            // Obtener el ID del aprendiz
+            String sqlGetAprendizId = "SELECT ID FROM aprendiz WHERE IDPerfilUsuario = ?";
+            System.out.println("Obteniendo ID del aprendiz para el perfil de usuario con ID: " + perfilUsuarioId);
+            aprendizId = jdbcTemplate.queryForObject(sqlGetAprendizId, new Object[]{perfilUsuarioId}, Integer.class);
+            System.out.println("ID del aprendiz obtenido: " + aprendizId);
+
+            // Obtener el IDUsuario desde perfilusuario
+            String sqlGetUsuarioId = "SELECT IDUsuario FROM perfilusuario WHERE ID = ?";
+            System.out.println("Obteniendo ID de usuario para el perfil de usuario con ID: " + perfilUsuarioId);
+            usuarioId = jdbcTemplate.queryForObject(sqlGetUsuarioId, new Object[]{perfilUsuarioId}, Integer.class);
+            System.out.println("ID de usuario obtenido: " + usuarioId);
+
+            // 2. Una vez obtenidos todos los IDs, proceder con las eliminaciones
+
+            // Eliminar de aprendiz
+            String sqlDeleteAprendiz = "DELETE FROM aprendiz WHERE ID = ?";
+            System.out.println("Eliminando el registro de aprendiz con ID: " + aprendizId);
+            int deletedAprendiz = jdbcTemplate.update(sqlDeleteAprendiz, aprendizId);
+
+            if (deletedAprendiz > 0) {
+                // Eliminar de perfilusuario
+                String sqlDeletePerfilUsuario = "DELETE FROM perfilusuario WHERE ID = ?";
+                System.out.println("Eliminando el registro de perfil de usuario con ID: " + perfilUsuarioId);
+                jdbcTemplate.update(sqlDeletePerfilUsuario, perfilUsuarioId);
+
+                // Eliminar de usuario
+                String sqlDeleteUsuario = "DELETE FROM usuario WHERE ID = ?";
+                System.out.println("Eliminando el registro de usuario con ID: " + usuarioId);
+                int rowsAffected = jdbcTemplate.update(sqlDeleteUsuario, usuarioId);
+
+                if (rowsAffected > 0) {
+                    System.out.println("Usuario eliminado exitosamente con ID: " + usuarioId);
+                } else {
+                    System.out.println("No se eliminó ningún registro de usuario con ID: " + usuarioId);
+                    throw new RuntimeException("Error: No se pudo eliminar el usuario con ID: " + usuarioId);
+                }
+
+                System.out.println("Eliminación del aprendiz y los registros asociados completada.");
+                return true;
+            } else {
+                System.out.println("No se pudo eliminar el aprendiz.");
+                throw new RuntimeException("Error al eliminar el aprendiz"); // Lanzar excepción para que se realice el rollback
+            }
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println("Error: No se encontró alguno de los registros necesarios para el documento: " + documento);
+            throw new RuntimeException("Error: No se encontró alguno de los registros necesarios para el documento: " + documento, e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error inesperado al eliminar el aprendiz: " + e.getMessage());
+            throw new RuntimeException("Error inesperado al eliminar el aprendiz: " + e.getMessage(), e);
         }
     }
 

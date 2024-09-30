@@ -10,10 +10,11 @@ package main.util.models;
  */
 public class UserSession {
     private static UserSession instance;
-    private Integer ID;
-    private Integer Documento;
+    private String TipoDoc;
+    private String Documento;
     private String Nombres;
-    private String Apellidos;
+    private String Rol;
+    private String ClaseFormacion;
 
 
     private UserSession() {
@@ -28,19 +29,19 @@ public class UserSession {
         return instance;
     }
 
-    public Integer getID() {
-        return ID;
+    public String getTipoDoc() {
+        return TipoDoc;
     }
 
-    public void setID(Integer ID) {
-        this.ID = ID;
+    public void setTipoDoc(String TipoDoc) {
+        this.TipoDoc = TipoDoc;
     }
 
-    public Integer getDocumento() {
+    public String getDocumento() {
         return Documento;
     }
 
-    public void setDocumento(Integer documento) {
+    public void setDocumento(String documento) {
         Documento = documento;
     }
 
@@ -52,19 +53,28 @@ public class UserSession {
         Nombres = nombres;
     }
 
-    public String getApellidos() {
-        return Apellidos;
+    public String getRole() {
+        return Rol;
     }
 
-    public void setApellidos(String apellidos) {
-        Apellidos = apellidos;
+    public void setRole(String role) {
+        Rol = role;
+    }
+
+    public String getClaseFormacion() {
+        return ClaseFormacion;
+    }
+
+    public void setClaseFormacion(String claseFormacion) {
+        ClaseFormacion = claseFormacion;
     }
 
     // Método para limpiar la sesión
     public void clearSession() {
-        ID = 0;
-        Documento = 0;
+        TipoDoc = null;
+        Documento = null;
         Nombres = null;
-        Apellidos = null;
+        Rol = null;
+        ClaseFormacion = null;
     }
 }

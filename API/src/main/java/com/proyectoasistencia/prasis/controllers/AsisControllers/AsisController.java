@@ -3,15 +3,12 @@ package com.proyectoasistencia.prasis.controllers.AsisControllers;
 
 import com.proyectoasistencia.prasis.services.AsisServices.AsisService;
 import com.proyectoasistencia.prasis.services.AsisServices.ExcelService;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +27,7 @@ public class AsisController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<String> subirAsistencia(@RequestBody Map<String, Object> datosAsistencia) {
         try {
+            System.out.println(datosAsistencia);
             // Procesar la asistencia (agregar aprendices ausentes, etc.)
             Map<String, Object> resultadoAsistencia = asisService.upAsis(datosAsistencia);
 
@@ -65,4 +63,41 @@ public class AsisController {
 
         return ResponseEntity.ok(asistencias);
     }
+
+    @GetMapping("/listar/InstructorAsis")
+    public ResponseEntity<List<Map<String, Object>>> listarAsistenciasPorFicha(@RequestParam String documentoInstructor) {
+        try {
+            List<Map<String, Object>> asistencias = asisService.listarAsistenciasPorInstructor(documentoInstructor);
+
+            // Convertir el archivo BLOB a base64 para incluirlo en la respuesta JSON
+            asistencias.forEach(asistencia -> {
+                byte[] archivoBlob = (byte[]) asistencia.get("ArchivoExcel");
+                if (archivoBlob != null) {
+                    String archivoBase64 = Base64.getEncoder().encodeToString(archivoBlob);
+                    asistencia.put("ArchivoExcel", archivoBase64);  // Reemplazar el BLOB con el string base64
+                }
+            });
+
+            return ResponseEntity.ok(asistencias);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/FiltroListarAsistencias")
+    public ResponseEntity<List<Map<String, Object>>> listarAsistencias(
+            @RequestParam(value = "DocumentoInstructor") String documentoInstructor,
+            @RequestParam(required = false, value = "ambiente") String ambiente,
+            @RequestParam(required = false, value = "ProgramaFormacion") String programaFormacion,
+            @RequestParam(required = false, value = "ficha") Integer ficha
+    ) {
+        try {
+            List<Map<String, Object>> asistencias = asisService.FiltroListarAsistencias(documentoInstructor, ambiente, programaFormacion, ficha);
+            return ResponseEntity.ok(asistencias);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }

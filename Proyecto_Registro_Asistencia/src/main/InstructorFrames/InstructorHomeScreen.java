@@ -5,24 +5,23 @@
 package main.InstructorFrames;
 
 
-import javax.swing.JCheckBox;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import main.InstructorFrames.InstructorGenFrames.ExcelGenFrame;
 import main.LoginFrame;
-import main.util.API_Actions.ListarAsitenciasInstructorAPI;
-import main.util.models.ButtonEditor;
-import main.util.models.ButtonRenderer;
+import main.util.API_Actions.API_AsistenciasApplications;
+import main.util.models.ButtonColumnHelper;
 import main.util.models.ButtonStyler;
 import main.util.models.UserSession;
 
 import java.awt.*;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
+import java.util.Map;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -56,7 +55,6 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         MenuInicio = new javax.swing.JButton();
         MenuBusqueda = new javax.swing.JButton();
-        MenuSubirAsis = new javax.swing.JButton();
         MenuUsuario = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
@@ -68,8 +66,9 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         HomePanel = new javax.swing.JPanel();
         GenerarNuevaAsistencia = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TablaAsitencias = new javax.swing.JTable();
+        TablaAsistencias = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        RefrescarTablaAsis = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,19 +102,6 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         MenuBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuBusquedaActionPerformed(evt);
-            }
-        });
-
-        MenuSubirAsis.setBackground(new java.awt.Color(0, 34, 64));
-        MenuSubirAsis.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        MenuSubirAsis.setForeground(new java.awt.Color(255, 255, 255));
-        MenuSubirAsis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/util/icons/SoporteIcon.png"))); // NOI18N
-        MenuSubirAsis.setText("Subir asistencia");
-        MenuSubirAsis.setBorderPainted(false);
-        MenuSubirAsis.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        MenuSubirAsis.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenuSubirAsisActionPerformed(evt);
             }
         });
 
@@ -185,7 +171,6 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                 .addContainerGap())
             .addComponent(MenuInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(MenuBusqueda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(MenuSubirAsis, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(MenuUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
@@ -205,10 +190,8 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(MenuBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(MenuSubirAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(MenuUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 266, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(CerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -231,9 +214,9 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
             }
         });
 
-        TablaAsitencias.setBackground(new java.awt.Color(255, 255, 255));
-        TablaAsitencias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        TablaAsitencias.setModel(new javax.swing.table.DefaultTableModel(
+        TablaAsistencias.setBackground(new java.awt.Color(255, 255, 255));
+        TablaAsistencias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        TablaAsistencias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -272,20 +255,34 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                 "Ambiente", "Competencia", "Instructor", "Fecha", "Hora inicio", "Hora fin", "Tabla"
             }
         ));
-        TablaAsitencias.setName(""); // NOI18N
-        TablaAsitencias.setRowHeight(44);
-        TablaAsitencias.setSelectionBackground(new java.awt.Color(215, 213, 177));
-        jScrollPane1.setViewportView(TablaAsitencias);
+        TablaAsistencias.setName(""); // NOI18N
+        TablaAsistencias.setRowHeight(44);
+        TablaAsistencias.setSelectionBackground(new java.awt.Color(215, 213, 177));
+        jScrollPane1.setViewportView(TablaAsistencias);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 34, 64));
         jLabel2.setText("Bienvenido al sistema de registro de asistencia");
 
+        RefrescarTablaAsis.setBackground(new java.awt.Color(57, 169, 0));
+        RefrescarTablaAsis.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RefrescarTablaAsis.setForeground(new java.awt.Color(255, 255, 255));
+        RefrescarTablaAsis.setText("Refrescar Tabla");
+        RefrescarTablaAsis.setBorderPainted(false);
+        RefrescarTablaAsis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefrescarTablaAsisActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout HomePanelLayout = new javax.swing.GroupLayout(HomePanel);
         HomePanel.setLayout(HomePanelLayout);
         HomePanelLayout.setHorizontalGroup(
             HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1129, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomePanelLayout.createSequentialGroup()
+                .addContainerGap(904, Short.MAX_VALUE)
+                .addComponent(RefrescarTablaAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(HomePanelLayout.createSequentialGroup()
                     .addContainerGap()
@@ -299,7 +296,10 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         );
         HomePanelLayout.setVerticalGroup(
             HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 487, Short.MAX_VALUE)
+            .addGroup(HomePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(RefrescarTablaAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(437, Short.MAX_VALUE))
             .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(HomePanelLayout.createSequentialGroup()
                     .addContainerGap()
@@ -325,7 +325,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(HomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(276, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -384,9 +384,6 @@ public void AditionalConfig() {
     int screenWidth = screenSize.width;
     int screenHeight = screenSize.height;
 
-    System.out.println(screenWidth);
-    System.out.println(screenHeight);
-    
     // Configurar el tamaño del JFrame
     if (screenWidth < 1700 && screenHeight < 900){
         this.setSize(frameWidth, frameHeight);
@@ -395,7 +392,7 @@ public void AditionalConfig() {
     this.setLocationRelativeTo(null); // Centrar el JFrame
     
     // Configurar el nombre del usuario
-    NombreUsuarioInstructor.setText(UserSession.getInstance().getNombres() + " " + UserSession.getInstance().getApellidos());
+    NombreUsuarioInstructor.setText(UserSession.getInstance().getNombres());
 
     // Configuración del CardLayout para el panel principal
     cardLayout = new CardLayout();
@@ -435,52 +432,110 @@ public void AditionalConfig() {
                 verticalScrollBar.setValue(newValue);
             }
         });
-        actualizarTablaAsistencias();
+
+
+    }
+    // Obtener asistencias del instructor
+    DefaultTableModel modeloTabla = new DefaultTableModel(
+            new Object[]{"Fecha", "Clase", "Ambiente", "Ficha", "Instructor", "Tipo Asistencia", "Archivo Excel"},
+            0
+    );
+
+    // Obtener el documento del usuario actual (Instructor) desde la sesión
+    String documentoInstructor = UserSession.getInstance().getDocumento();
+
+    // Llamar a la API para obtener las asistencias del instructor
+    API_AsistenciasApplications asistenciasInstructor = new API_AsistenciasApplications();
+    List<Map<String, Object>> asistencias = asistenciasInstructor.obtenerAsistenciasPorInstructor(documentoInstructor);
+
+
+    // Rellenar el modelo de la tabla con los datos obtenidos
+    for (Map<String, Object> asistencia : asistencias) {
+        // Parsear la fecha en formato ISO 8601 si está en ese formato
+        String Fecha = null;
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        try {
+            Date date = inputFormat.parse((String) asistencia.get("FechaRegistro"));
+
+            // Formatear la fecha a un formato más legible
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Fecha = outputFormat.format(date);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        modeloTabla.addRow(new Object[]{
+                Fecha,
+                asistencia.get("ClaseFormacion"),
+                asistencia.get("Ambiente"),
+                asistencia.get("Ficha"),
+                asistencia.get("Instructor"),
+                asistencia.get("TipoAsistencia"),
+                "Abrir Excel"  // Botón en la última columna para abrir el archivo
+        });
     }
 
-    // Configuración de la tabla de asistencias
-    ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
-    DefaultTableModel modeloTablaCompleto = listarAsis.llenarTablaAsistencias(UserSession.getInstance().getDocumento(), null, null, null);
-    DefaultTableModel modeloTabla = crearUltimasFilasModelo(modeloTablaCompleto, 6);
-    TablaAsitencias.setModel(modeloTabla);
+    // Configurar el modelo en la tabla
+    TablaAsistencias.setModel(modeloTabla);
 
-    // Configurar el renderizador y el editor de botones en la tabla
-    TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
-    TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
-    
-    // Finalmente, hacer visible el JFrame
+    // Configurar el botón en la última columna para abrir el archivo Excel
+    TableColumn archivoColumn = TablaAsistencias.getColumnModel().getColumn(6); // Columna de "Archivo Excel"
+    archivoColumn.setCellRenderer(new ButtonColumnHelper.ButtonRendererExcel());  // Renderizador del botón
+    archivoColumn.setCellEditor(new ButtonColumnHelper.ButtonEditorExcel(new JCheckBox(), TablaAsistencias, asistencias)); // Editor del botón con JTable y lista de asistencias
     this.setVisible(true);
 }
 
-private DefaultTableModel crearUltimasFilasModelo(DefaultTableModel modeloCompleto, int filas) {
-    DefaultTableModel modeloTabla = new DefaultTableModel();
-    int totalFilas = modeloCompleto.getRowCount();
-    int columnas = modeloCompleto.getColumnCount();
+    // Método para actualizar la tabla de asistencias
+    public void actualizarTabla(List<Map<String, Object>> datosAsistencia, JTable tabla) {
+        // Obtener el modelo de la tabla actual
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
 
-    // Copiar los nombres de las columnas
-    for (int i = 0; i < columnas; i++) {
-        modeloTabla.addColumn(modeloCompleto.getColumnName(i));
-    }
+        // Limpiar el modelo de la tabla antes de agregar los nuevos datos
+        modelo.setRowCount(0);  // Esto elimina todas las filas existentes
 
-    // Copiar las últimas filas indicadas
-    for (int i = Math.max(totalFilas - filas, 0); i < totalFilas; i++) {
-        Object[] fila = new Object[columnas];
-        for (int j = 0; j < columnas; j++) {
-            fila[j] = modeloCompleto.getValueAt(i, j);
+        // Recorrer los datos y agregar cada registro al modelo
+        for (Map<String, Object> asistencia : datosAsistencia) {
+            // Parsear la fecha en formato ISO 8601 si está en ese formato
+            String Fecha = null;
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            try {
+                Date date = inputFormat.parse((String) asistencia.get("FechaRegistro"));
+
+                // Formatear la fecha a un formato más legible
+                SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Fecha = outputFormat.format(date);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            // Obtener otros valores de la asistencia
+            String claseFormacion = asistencia.get("ClaseFormacion").toString();
+            String ambiente = asistencia.get("Ambiente").toString();
+            String ficha = asistencia.get("Ficha").toString();
+            String instructor = asistencia.get("Instructor").toString();
+            String tipoAsistencia = asistencia.get("TipoAsistencia").toString();
+
+            // Agregar los datos como fila al modelo de la tabla
+            modelo.addRow(new Object[]{
+                    Fecha,  // Fecha formateada
+                    claseFormacion,
+                    ambiente,
+                    ficha,
+                    instructor,
+                    tipoAsistencia
+            });
         }
-        modeloTabla.addRow(fila);
+
+        // Actualizar la vista de la tabla
+        modelo.fireTableDataChanged();  // Notifica a la tabla que los datos han cambiado
+        // Configurar el botón en la última columna para abrir el archivo Excel
+        TableColumn archivoColumn = TablaAsistencias.getColumnModel().getColumn(6); // Columna de "Archivo Excel"
+        archivoColumn.setCellRenderer(new ButtonColumnHelper.ButtonRendererExcel());  // Renderizador del botón
+        archivoColumn.setCellEditor(new ButtonColumnHelper.ButtonEditorExcel(new JCheckBox(), TablaAsistencias, datosAsistencia)); // Editor del botón con JTable y lista de asistencias
     }
-
-    return modeloTabla;
-}
-
-
     private void ModifComponent(){
-
-        ButtonStyler ButtonStyler = new ButtonStyler();
         ButtonStyler.applySecondaryStyle(MenuInicio);
         ButtonStyler.applySecondaryStyle(MenuBusqueda);
-        ButtonStyler.applySecondaryStyle(MenuSubirAsis);
         ButtonStyler.applySecondaryStyle(MenuUsuario);
 
         ButtonStyler.applyPrimaryStyle(CerrarSesion);
@@ -488,27 +543,7 @@ private DefaultTableModel crearUltimasFilasModelo(DefaultTableModel modeloComple
 
     }
 
-    
-private void actualizarTablaAsistencias() {
-    try {
-        ListarAsitenciasInstructorAPI listarAsis = new ListarAsitenciasInstructorAPI();
-        DefaultTableModel modeloTablaCompleto = listarAsis.llenarTablaAsistencias(
-            UserSession.getInstance().getDocumento(),
-            null,
-            null,
-            null
-        );
-        DefaultTableModel modeloTabla = crearUltimasFilasModelo(modeloTablaCompleto, 6);
-        TablaAsitencias.setModel(modeloTabla);
 
-        // Configurar el renderizador y el editor de botones en la tabla
-        TablaAsitencias.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
-        TablaAsitencias.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JCheckBox()));
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error al cargar las asistencias: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
     
     private void MenuBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuBusquedaActionPerformed
         cardLayout.show(MainPanel, "SearchPanel");
@@ -518,16 +553,22 @@ private void actualizarTablaAsistencias() {
         cardLayout.show(MainPanel, "HomePanel");
     }//GEN-LAST:event_MenuInicioActionPerformed
 
-    private void MenuSubirAsisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuSubirAsisActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_MenuSubirAsisActionPerformed
-
     private void GenerarNuevaAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerarNuevaAsistenciaActionPerformed
+        // Crear el frame de Excel como un JDialog modal
+        JDialog dialogoExcel = new JDialog(this, "Generar Nueva Asistencia", true); // 'true' indica que es modal
+
+        // Crear una instancia de ExcelGenFrame (puede ser un JPanel si es más fácil integrar)
         ExcelGenFrame abrirExcelFrame = new ExcelGenFrame();
-        this.setFocusableWindowState(false);
-        this.setEnabled(false);
-        abrirExcelFrame.setVisible(true);
-        
+
+        // Configurar el tamaño del frame
+        dialogoExcel.setSize(abrirExcelFrame.getSize());
+
+        // Añadir el contenido del ExcelGenFrame al JDialog
+        dialogoExcel.add(abrirExcelFrame.getContentPane());
+
+        // Configurar el JDialog y mostrarlo
+        dialogoExcel.setLocationRelativeTo(this);  // Centrar en la ventana principal
+        dialogoExcel.setVisible(true);  // Mostrar el diálogo de forma modal
     }//GEN-LAST:event_GenerarNuevaAsistenciaActionPerformed
 
     private void CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionActionPerformed
@@ -540,6 +581,16 @@ private void actualizarTablaAsistencias() {
     private void MenuUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuUsuarioActionPerformed
         cardLayout.show(MainPanel, "UserPanel");
     }//GEN-LAST:event_MenuUsuarioActionPerformed
+
+    private void RefrescarTablaAsisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarTablaAsisActionPerformed
+        // Crear una instancia del helper para actualizar la tabla
+        API_AsistenciasApplications asistenciasInstructor = new API_AsistenciasApplications();
+        List<Map<String, Object>> asistencias = asistenciasInstructor.obtenerAsistenciasPorInstructor(UserSession.getInstance().getDocumento());
+        System.out.println("Actualizando Tabla");
+        // Actualizar la tabla de asistencias
+        actualizarTabla(asistencias, TablaAsistencias);
+
+    }//GEN-LAST:event_RefrescarTablaAsisActionPerformed
 
     /**
      * @param args the command line arguments
@@ -583,10 +634,10 @@ private void actualizarTablaAsistencias() {
     private javax.swing.JPanel MainPanel;
     private javax.swing.JButton MenuBusqueda;
     private javax.swing.JButton MenuInicio;
-    private javax.swing.JButton MenuSubirAsis;
     private javax.swing.JButton MenuUsuario;
     private javax.swing.JLabel NombreUsuarioInstructor;
-    private javax.swing.JTable TablaAsitencias;
+    private javax.swing.JButton RefrescarTablaAsis;
+    private javax.swing.JTable TablaAsistencias;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
