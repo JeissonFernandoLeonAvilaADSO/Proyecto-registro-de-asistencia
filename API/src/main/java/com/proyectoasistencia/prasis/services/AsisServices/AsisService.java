@@ -10,7 +10,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -469,6 +471,219 @@ public class AsisService {
         });
     }
 
+    /**
+     * Método para listar asistencias agrupadas por clase de formación para un aprendiz específico.
+     * Incluye el instructor a cargo de cada clase.
+     *
+     * @param documento Documento del aprendiz como String.
+     * @return Lista de mapas con información de asistencias agrupadas por clase.
+     */
+    public List<Map<String, Object>> listarAsistenciasAgrupadasPorClase(String documento) {
+        String sql = """
+            SELECT
+                cf.NombreClase AS ClaseFormacion,
+                CONCAT(pu_instructor.Nombres, ' ', pu_instructor.Apellidos) AS Instructor,
+                COUNT(DISTINCT ra.ID) AS TotalAsistencias,
+                SUM(raa.HorasInasistencia) AS TotalHorasInasistencia,
+                SUM(CASE WHEN raa.HorasInasistencia > 0 THEN 1 ELSE 0 END) AS AsistenciasConInasistencias
+            FROM registroasistencias ra
+            INNER JOIN claseformacion cf ON ra.IDClaseFormacion = cf.ID
+            INNER JOIN registroactividad raa ON ra.ID = raa.IDRegistroAsistencia
+            INNER JOIN aprendiz ap ON raa.IDAprendiz = ap.ID
+            INNER JOIN perfilusuario pu_aprendiz ON ap.IDPerfilUsuario = pu_aprendiz.ID
+            INNER JOIN instructor it ON cf.IDInstructor = it.ID
+            INNER JOIN perfilusuario pu_instructor ON it.IDPerfilUsuario = pu_instructor.ID
+            WHERE pu_aprendiz.Documento = ?
+            GROUP BY cf.NombreClase, pu_instructor.Nombres, pu_instructor.Apellidos
+            ORDER BY TotalHorasInasistencia DESC
+        """;
+
+        System.out.println("Ejecutando consulta SQL para documento: " + documento);
+
+        List<Map<String, Object>> resultados = jdbcTemplate.query(sql, new Object[]{documento}, (rs, rowNum) -> {
+            Map<String, Object> asistenciaAgrupada = new HashMap<>();
+            asistenciaAgrupada.put("ClaseFormacion", rs.getString("ClaseFormacion"));
+            asistenciaAgrupada.put("Instructor", rs.getString("Instructor"));
+            asistenciaAgrupada.put("TotalAsistencias", rs.getInt("TotalAsistencias"));
+            asistenciaAgrupada.put("TotalHorasInasistencia", rs.getInt("TotalHorasInasistencia"));
+            asistenciaAgrupada.put("AsistenciasConInasistencias", rs.getInt("AsistenciasConInasistencias"));
+            return asistenciaAgrupada;
+        });
+
+        System.out.println("Número de registros obtenidos: " + resultados.size());
+
+        return resultados;
+    }
+
+    /**
+     * Método para listar todas las asistencias de un aprendiz específico dado su documento.
+     *
+     * @param documento Documento del aprendiz como String.
+     * @return Lista de mapas con información detallada de asistencias.
+     */
+    public List<Map<String, Object>> listarAsistenciasPorAprendiz(String documento) {
+        String sql = """
+            SELECT 
+                ra.Fecha AS FechaRegistro,
+                cf.NombreClase AS ClaseFormacion,
+                a.Ambiente AS Ambiente,
+                f.NumeroFicha AS Ficha,
+                CONCAT(pu_instructor.Nombres, ' ', pu_instructor.Apellidos) AS Instructor,
+                ta.TipoActividad AS TipoAsistencia,
+                raa.HorasInasistencia AS HorasInasistencia,
+                ass.AsistenciaExcel AS ArchivoExcel
+            FROM registroasistencias ra
+            INNER JOIN claseformacion cf ON ra.IDClaseFormacion = cf.ID
+            INNER JOIN ambientes a ON ra.IDAmbiente = a.ID
+            INNER JOIN fichas f ON ra.IDFicha = f.ID
+            INNER JOIN registroactividad raa ON ra.ID = raa.IDRegistroAsistencia
+            INNER JOIN aprendiz ap ON raa.IDAprendiz = ap.ID
+            INNER JOIN perfilusuario pu_aprendiz ON ap.IDPerfilUsuario = pu_aprendiz.ID
+            INNER JOIN instructor it ON cf.IDInstructor = it.ID
+            INNER JOIN perfilusuario pu_instructor ON it.IDPerfilUsuario = pu_instructor.ID
+            INNER JOIN actividad ta ON ra.IDTipoActividad = ta.ID
+            LEFT JOIN asistencia ass ON ra.IDArchivo = ass.ID
+            WHERE pu_aprendiz.Documento = ?
+            ORDER BY ra.Fecha DESC
+        """;
+
+        System.out.println("Ejecutando consulta SQL para listar asistencias por aprendiz: " + documento);
+
+        List<Map<String, Object>> resultados = jdbcTemplate.query(sql, new Object[]{documento}, (rs, rowNum) -> {
+            Map<String, Object> asistencia = new HashMap<>();
+            asistencia.put("FechaRegistro", rs.getTimestamp("FechaRegistro"));
+            asistencia.put("ClaseFormacion", rs.getString("ClaseFormacion"));
+            asistencia.put("Ambiente", rs.getString("Ambiente"));
+            asistencia.put("Ficha", rs.getInt("Ficha"));
+            asistencia.put("Instructor", rs.getString("Instructor"));
+            asistencia.put("TipoAsistencia", rs.getString("TipoAsistencia"));
+            asistencia.put("HorasInasistencia", rs.getInt("HorasInasistencia"));
+            asistencia.put("ArchivoExcel", rs.getBytes("ArchivoExcel"));  // Retorna el archivo en formato BLOB o null
+            return asistencia;
+        });
+
+        System.out.println("Número de registros obtenidos: " + resultados.size());
+
+        return resultados;
+    }
+
+    /**
+     * Método para listar detalles de inasistencias por clase de formación para un aprendiz específico.
+     * Incluye el soporte en formato Base64 si existe.
+     *
+     * @param documento Documento del aprendiz como String.
+     * @return Lista de mapas con detalles de inasistencias por clase de formación.
+     */
+    public List<Map<String, Object>> listarDetallesInasistenciasPorClase(String documento) {
+        String sql = """
+            SELECT
+                ra.ID,
+                ra.Fecha AS FechaRegistro,
+                cf.NombreClase AS ClaseFormacion,
+                CONCAT(pu_instructor.Nombres, ' ', pu_instructor.Apellidos) AS Instructor,
+                ta.TipoActividad AS TipoAsistencia,
+                SUM(raa.HorasInasistencia) AS TotalHorasInasistencia,
+                COUNT(raa.ID) AS NumeroDeInasistencias,
+                s.SoportePDF AS Soporte
+            FROM registroasistencias ra
+            INNER JOIN claseformacion cf ON ra.IDClaseFormacion = cf.ID
+            INNER JOIN registroactividad raa ON ra.ID = raa.IDRegistroAsistencia
+            INNER JOIN aprendiz ap ON raa.IDAprendiz = ap.ID
+            INNER JOIN perfilusuario pu_aprendiz ON ap.IDPerfilUsuario = pu_aprendiz.ID
+            INNER JOIN instructor it ON cf.IDInstructor = it.ID
+            INNER JOIN perfilusuario pu_instructor ON it.IDPerfilUsuario = pu_instructor.ID
+            INNER JOIN actividad ta ON ra.IDTipoActividad = ta.ID
+            LEFT JOIN soporte s ON raa.IDSoporte = s.ID
+            WHERE pu_aprendiz.Documento = ?
+            GROUP BY ra.ID, ra.Fecha, cf.NombreClase, pu_instructor.Nombres, pu_instructor.Apellidos, ta.TipoActividad, s.SoportePDF
+        """;
+
+        System.out.println("Ejecutando consulta SQL para listar detalles de inasistencias por clase: " + documento);
+
+        List<Map<String, Object>> resultados = jdbcTemplate.query(sql, new Object[]{documento}, (rs, rowNum) -> {
+            Map<String, Object> detalleInasistencia = new HashMap<>();
+            detalleInasistencia.put("ID", rs.getInt("ID"));
+            detalleInasistencia.put("FechaRegistro", rs.getTimestamp("FechaRegistro"));
+            detalleInasistencia.put("ClaseFormacion", rs.getString("ClaseFormacion"));
+            detalleInasistencia.put("Instructor", rs.getString("Instructor"));
+            detalleInasistencia.put("TipoAsistencia", rs.getString("TipoAsistencia"));
+            detalleInasistencia.put("TotalHorasInasistencia", rs.getInt("TotalHorasInasistencia"));
+            detalleInasistencia.put("NumeroDeInasistencias", rs.getInt("NumeroDeInasistencias"));
+            detalleInasistencia.put("Soporte", rs.getBytes("Soporte"));  // Retorna el soporte en bytes o null
+            return detalleInasistencia;
+        });
+
+        System.out.println("Número de registros obtenidos: " + resultados.size());
+
+        return resultados;
+    }
+
+
+    /**
+     * Método para obtener las inasistencias de un aprendiz en una semana (7 días) a partir de una fecha de inicio.
+     *
+     * @param documento   Documento del aprendiz.
+     * @param fechaInicio Fecha de inicio de la semana, en formato 'YYYY-MM-DD'.
+     * @return Lista de mapas con información de inasistencias.
+     */
+    public List<Map<String, Object>> obtenerInasistenciasPorSemana(String documento, String fechaInicio) {
+        // Calculamos la fecha de fin sumando 6 días a la fecha de inicio
+        String sqlFechaFin = "SELECT DATE_ADD(?, INTERVAL 6 DAY) AS FechaFin";
+        String fechaFin = jdbcTemplate.queryForObject(sqlFechaFin, new Object[]{fechaInicio}, String.class);
+
+        String sql = """
+            SELECT
+                ra.Fecha AS Fecha,
+                cf.NombreClase AS NombreClase,
+                CONCAT(pu_instructor.Nombres, ' ', pu_instructor.Apellidos) AS Instructor,
+                CONCAT(pu_aprendiz.Nombres, ' ', pu_aprendiz.Apellidos) AS Aprendiz,
+                raa.HorasInasistencia AS HorasInasistencia
+            FROM registroactividad raa
+            INNER JOIN registroasistencias ra ON raa.IDRegistroAsistencia = ra.ID
+            INNER JOIN claseformacion cf ON ra.IDClaseFormacion = cf.ID
+            INNER JOIN aprendiz ap ON raa.IDAprendiz = ap.ID
+            INNER JOIN perfilusuario pu_aprendiz ON ap.IDPerfilUsuario = pu_aprendiz.ID
+            INNER JOIN instructor i ON cf.IDInstructor = i.ID
+            INNER JOIN perfilusuario pu_instructor ON i.IDPerfilUsuario = pu_instructor.ID
+            WHERE pu_aprendiz.Documento = ? AND DATE(ra.Fecha) BETWEEN ? AND ?
+        """;
+
+        return jdbcTemplate.query(sql, new Object[]{documento, fechaInicio, fechaFin}, (rs, rowNum) -> {
+            Map<String, Object> inasistencia = new HashMap<>();
+            inasistencia.put("Fecha", rs.getTimestamp("Fecha"));
+            inasistencia.put("NombreClase", rs.getString("NombreClase"));
+            inasistencia.put("Instructor", rs.getString("Instructor"));
+            inasistencia.put("Aprendiz", rs.getString("Aprendiz"));
+            inasistencia.put("HorasInasistencia", rs.getInt("HorasInasistencia"));
+            return inasistencia;
+        });
+    }
+
+    public void guardarSoportePDF(int idRegistroActividad, MultipartFile file) throws IOException {
+        // Convertir el archivo a bytes
+        byte[] pdfBytes = file.getBytes();
+
+        // Insertar el PDF en la tabla 'soporte' y obtener el ID generado
+        String sqlInsertSoporte = "INSERT INTO soporte (SoportePDF) VALUES (?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sqlInsertSoporte, Statement.RETURN_GENERATED_KEYS);
+            ps.setBytes(1, pdfBytes);
+            return ps;
+        }, keyHolder);
+
+        int idSoporte = keyHolder.getKey().intValue();
+
+        // Actualizar el campo 'IDSoporte' en 'registroactividad' para el registro específico
+        String sqlUpdateRegistroActividad = """
+            UPDATE registroactividad
+            SET IDSoporte = ?
+            WHERE ID = ?
+        """;
+
+        jdbcTemplate.update(sqlUpdateRegistroActividad, idSoporte, idRegistroActividad);
+    }
 
 }
 
