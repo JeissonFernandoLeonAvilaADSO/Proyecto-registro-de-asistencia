@@ -5,6 +5,7 @@
 package main.AdminFrames.AdminActionScreens.DeleteUserSubPanel;
 
 
+import java.awt.event.KeyEvent;
 import main.AdminFrames.AdminActionScreens.ModUserSubPanel.*;
 import java.sql.Date;
 import java.text.ParseException;
@@ -163,6 +164,11 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
         ResultadoNombres.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoNombres.setForeground(new java.awt.Color(0, 0, 0));
         ResultadoNombres.setFocusable(false);
+        ResultadoNombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ResultadoNombresKeyTyped(evt);
+            }
+        });
 
         ResultadoPass.setEditable(false);
         ResultadoPass.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -211,6 +217,11 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
         ResultadoDocumento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoDocumento.setForeground(new java.awt.Color(0, 0, 0));
         ResultadoDocumento.setFocusable(false);
+        ResultadoDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ResultadoDocumentoKeyTyped(evt);
+            }
+        });
 
         ResultadoApellidos.setEditable(false);
         ResultadoApellidos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -314,6 +325,11 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
         IDInstructorField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IDInstructorFieldActionPerformed(evt);
+            }
+        });
+        IDInstructorField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                IDInstructorFieldKeyTyped(evt);
             }
         });
 
@@ -474,9 +490,9 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
                         .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(ResidenciaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel26)
-                    .addComponent(ClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel26))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -912,6 +928,36 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
     private void ClaseFormacionCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClaseFormacionCBActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ClaseFormacionCBActionPerformed
+
+    private void IDInstructorFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IDInstructorFieldKeyTyped
+                        char caracter = evt.getKeyChar();
+
+        // Permitir solo números y la tecla de retroceso
+        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten números.");
+        }
+    }//GEN-LAST:event_IDInstructorFieldKeyTyped
+
+    private void ResultadoDocumentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ResultadoDocumentoKeyTyped
+                char caracter = evt.getKeyChar();
+
+        // Permitir solo números y la tecla de retroceso
+        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten números.");
+        }
+    }//GEN-LAST:event_ResultadoDocumentoKeyTyped
+
+    private void ResultadoNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ResultadoNombresKeyTyped
+                                  char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_ResultadoNombresKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

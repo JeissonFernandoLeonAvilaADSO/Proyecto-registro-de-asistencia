@@ -10,8 +10,11 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.util.models.UsersModels.AprendizModel;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -217,6 +220,79 @@ public class API_Admin_AprendizApplications {
             e.printStackTrace();
             System.out.println("Error al intentar eliminar el aprendiz: " + e.getMessage());
             return false;
+        }
+    }
+
+    public List<AprendizModel> obtenerAprendicesCompletosPorFicha(int numeroFicha) {
+        HttpURLConnection conn = null;
+        try {
+            // Definir la URL del servicio
+            URL url = new URL("http://localhost:8080/Data/Aprendices/CompletosPorFicha/" + numeroFicha);
+            System.out.println(url);
+            conn = (HttpURLConnection) url.openConnection();
+
+            // Configurar la solicitud como GET
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            // Verificar la respuesta del servidor
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Leer la respuesta del servidor
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = in.readLine()) != null) {
+                    response.append(line);
+                }
+                in.close();
+
+                // Convertir la respuesta en un JSONArray
+                JSONArray jsonArray = new JSONArray(response.toString());
+                List<AprendizModel> aprendices = new ArrayList<>();
+
+                // Iterar a través del JSONArray y crear los objetos AprendizModel
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    // Crear AprendizModel a partir del JSONObject
+                    AprendizModel aprendiz = new AprendizModel(
+                            jsonObject.getString("User"),
+                            jsonObject.getString("Password"),
+                            jsonObject.getString("Documento"),
+                            jsonObject.getString("TipoDocumento"),
+                            jsonObject.getString("Nombres"),
+                            jsonObject.getString("Apellidos"),
+                            Date.valueOf(jsonObject.getString("FecNacimiento")),  // Convertir la fecha
+                            jsonObject.getString("Telefono"),
+                            jsonObject.getString("Correo"),
+                            jsonObject.getString("Genero"),
+                            jsonObject.getString("Residencia"),
+                            jsonObject.getInt("NumeroFicha"),
+                            jsonObject.getString("ProgramaFormacion"),
+                            jsonObject.getString("JornadaFormacion"),
+                            jsonObject.getString("NivelFormacion"),
+                            jsonObject.getString("Sede"),
+                            jsonObject.getString("Area")
+                    );
+
+                    // Agregar a la lista de aprendices
+                    aprendices.add(aprendiz);
+                }
+
+                // Devolver la lista de aprendices
+                return aprendices;
+            } else {
+                System.out.println("Error: Código de respuesta inesperado - " + responseCode);
+                return new ArrayList<>();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
     }
 }

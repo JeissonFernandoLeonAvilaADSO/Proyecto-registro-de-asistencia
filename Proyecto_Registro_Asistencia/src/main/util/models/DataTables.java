@@ -176,18 +176,6 @@ public class DataTables {
         return obtenerDatosDesdeAPI("Sede");
     }
 
-    public Map<Integer, String> obtenerBarrios() {
-        return obtenerDatosDesdeAPI("Barrios");
-    }
-
-    public Map<Integer, String> obtenerDepartamentos() {
-        return obtenerDatosDesdeAPI("Departamentos");
-    }
-
-    public Map<Integer, String> obtenerMunicipios() {
-        return obtenerDatosDesdeAPI("Municipios");
-    }
-
     public Map<Integer, String> obtenerActividades() {
         return obtenerDatosDesdeAPI("Actividades");
     }

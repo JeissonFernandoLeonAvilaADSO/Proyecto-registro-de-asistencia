@@ -42,14 +42,14 @@ public class ClaseFormacionDataController {
         return clasesConInstructor;
     }
 
-    // Obtener instructores para la ComboBox
-    @GetMapping("/Instructores/todos")
-    public List<Map<String, Object>> obtenerInstructoresParaComboBox() {
-        System.out.println("Obteniendo instructores para la ComboBox...");
-        List<Map<String, Object>> instructores = claseFormacionDataService.obtenerInstructoresParaComboBox();
-        System.out.println("Instructores obtenidos: " + instructores);
-        return instructores;
-    }
+//    // Obtener instructores para la ComboBox
+//    @GetMapping("/Instructores/todos")
+//    public List<Map<String, Object>> obtenerInstructoresParaComboBox() {
+//        System.out.println("Obteniendo instructores para la ComboBox...");
+//        List<Map<String, Object>> instructores = claseFormacionDataService.obtenerInstructoresParaComboBox();
+//        System.out.println("Instructores obtenidos: " + instructores);
+//        return instructores;
+//    }
 
     // Crear una nueva clase de formación
     @PostMapping("/crear")

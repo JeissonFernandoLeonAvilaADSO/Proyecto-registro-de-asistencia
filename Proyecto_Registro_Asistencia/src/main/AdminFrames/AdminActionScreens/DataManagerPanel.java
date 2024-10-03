@@ -4,8 +4,10 @@
  */
 package main.AdminFrames.AdminActionScreens;
 
+import main.util.API_Actions.API_BuscarUsuario;
 import main.util.API_Actions.API_Data.*;
 import main.util.models.*;
+import main.util.models.UsersModels.InstructorModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Map;
+
+import static main.util.API_Actions.API_Data.API_DataClaseFormacionApplications.actualizarClase;
 
 /**
  *
@@ -34,7 +38,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
     }
     public void aditionalConfig(){
         TabPanelStyler.applyPrimaryStyle(PrincipalTabPanel);
-        TabPanelStyler.applyPrimaryStyle(ResidenciasTabPanel);
         TabPanelStyler.applyPrimaryStyle(ProgramasFormacionTabPanel);
         ButtonStyler.applyPrimaryStyle(AgregarTipoDoc);
         try {
@@ -44,20 +47,18 @@ public class DataManagerPanel extends javax.swing.JPanel {
             actualizarTablaGeneros();
             actualizarTablaAmbientes();
             actualizarTablaActividades();
-            actualizarTablaDepartamentos();
-            agregarModeloAdicional(MunicipiosDataTable, dt.obtenerMunicipios(), dt.obtenerDepartamentos());
-            agregarModeloAdicional(BarriosDataTable, dt.obtenerBarrios(), dt.obtenerMunicipios());
             agregarModeloAdicional(FichasDataTable, dt.obtenerFichas(), dt.obtenerProgramaFormacion());
             actualizarTablaAreas();
             actualizarTablaJornadas();
             actualizarTablaNivelesFormacion();
             actualizarTablaSedesFormacion();
-            agregarModeloClaseFormacion(ClaseFormacionDataTable, dt.obtenerClasesConInstructor(), dt.obtenerInstructores());
-            NombreInstructorCB.setModel(cbm.generarComboBoxModelPorTipo("Instructores"));
-            DesActivarComponentes(ClaseFormacionForm);
-            DesActivarComponentes(InstructorAddInfoPanel);
             FichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ProgramaFormacion"));
-
+            agregarModeloClaseFormacion(ClaseFormacionDataTable, API_DataClaseFormacionApplications.obtenerClasesConInstructor() );
+            agregarModeloProgramaFormacion(ProgramaFormacionDataTable, API_DataProgramaFormacionApplications.obtenerProgramasFormacion());
+            JornadaProgramaCB.setModel(cbm.generarComboBoxModelPorTipo("JornadaFormacion"));
+            NivelFormacionProgramaCB.setModel(cbm.generarComboBoxModelPorTipo("NivelFormacion"));
+            SedeFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("Sede"));
+            AreaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("Areas"));
 
 
         } catch (Exception e) {
@@ -127,20 +128,20 @@ public class DataManagerPanel extends javax.swing.JPanel {
     }
 
     // Método para agregar modelo de clase de formación sin ComboBox, usando texto plano para mostrar el instructor
-    public void agregarModeloClaseFormacion(JTable tabla, List<Map<String, Object>> clases, Map<Integer, String> instructores) {
-        // Crear el DefaultTableModel con columnas: ID, Nombre de la Clase, Instructor (texto plano), Documento, Correo, Editar, Eliminar
+    // Asumiendo que tienes una instancia de JTable llamada 'tabla'
+    public void agregarModeloClaseFormacion(JTable tabla, List<Map<String, Object>> clases) {
+        // Crear el DefaultTableModel con columnas: ID, Nombre de la Clase, Instructor, Documento, Correo, Editar, Eliminar
         DefaultTableModel modeloTabla = new DefaultTableModel(new Object[]{"ID", "NombreClase", "Instructor", "Documento", "Correo", "Editar", "Eliminar"}, 0);
 
-        // Rellenar el modelo con los datos de las clases y los instructores
+        // Rellenar el modelo con los datos de las clases
         for (Map<String, Object> clase : clases) {
-            System.out.println(clase);
             Integer idClase = (Integer) clase.get("IDClase");
             String nombreClase = (String) clase.get("NombreClase");
             String nombreInstructor = (String) clase.get("NombreInstructor");
             String documentoInstructor = (String) clase.get("DocumentoInstructor");
             String correoInstructor = (String) clase.get("CorreoInstructor");
 
-            // Añadir una fila al modelo con los datos de la clase y el instructor en texto plano
+            // Añadir una fila al modelo con los datos de la clase y el instructor
             modeloTabla.addRow(new Object[]{idClase, nombreClase, nombreInstructor, documentoInstructor, correoInstructor, "Editar", "Eliminar"});
         }
 
@@ -148,60 +149,211 @@ public class DataManagerPanel extends javax.swing.JPanel {
         tabla.setModel(modeloTabla);
 
         // Asignar el ButtonRenderer y ButtonEditor para las columnas de "Editar" y "Eliminar"
-        TableColumn editarColumna = ClaseFormacionDataTable.getColumnModel().getColumn(5); // Columna de "Editar"
+        // Columna "Editar" (índice 5)
+        TableColumn editarColumna = tabla.getColumnModel().getColumn(5);
         editarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
-        editarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), ClaseFormacionDataTable) {
+        editarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
                 super.getTableCellEditorComponent(table, value, isSelected, row, column);
 
                 // Obtener los valores de la fila seleccionada
-                String idClase = String.valueOf(table.getValueAt(row, 0));
-                String nombreClase = (String) table.getValueAt(row, 1); // Columna de "NombreClase"
-                String nombreInstructor = (String) table.getValueAt(row, 2); // Columna de "Instructor"
-                String documentoInstructor = (String) table.getValueAt(row, 3); // Columna de "Documento"
-                String correoInstructor = (String) table.getValueAt(row, 4); // Columna de "Correo"
+                int idClase = Integer.parseInt(table.getValueAt(row, 0).toString());
+                String nombreClase = table.getValueAt(row, 1).toString();
+                String documentoInstructor = table.getValueAt(row, 3).toString();
 
+                // Solicitar nuevos valores al usuario
+                String nuevoNombreClase = JOptionPane.showInputDialog(null, "Actualizar Nombre de la Clase:", nombreClase);
+                if (nuevoNombreClase == null || nuevoNombreClase.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "El nombre de la clase no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return this.getComponent();
+                }
 
-                System.out.println(correoInstructor);
+                String nuevoDocumentoInstructor = JOptionPane.showInputDialog(null, "Actualizar Documento del Instructor:", documentoInstructor);
+                if (nuevoDocumentoInstructor == null || nuevoDocumentoInstructor.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "El documento del instructor no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return this.getComponent();
+                }
 
+                // Verificar si el nuevo documento del instructor existe
+                API_BuscarUsuario buscarInstructor = new API_BuscarUsuario();
+                InstructorModel instructor = buscarInstructor.buscarInstructorPorDocumento(nuevoDocumentoInstructor);
 
-                // Llenar los campos del formulario con los datos obtenidos
-                ResultadoClaseFormacion.setText(nombreClase);
-                ResultadoIDClase.setText(idClase);
-                NombreInstructorCB.setSelectedItem(nombreInstructor);
+                if (instructor == null) {
+                    JOptionPane.showMessageDialog(this.getComponent(), "No se encontró ningún instructor con el documento proporcionado.", "Instructor no encontrado", JOptionPane.ERROR_MESSAGE);
+                    return this.getComponent();
+                }
 
-                activarComponentes(ClaseFormacionForm);
-                activarComponentes(InstructorAddInfoPanel);
+                // Formatear la información del instructor
+                String infoInstructor = String.format(
+                        "Información del Instructor:\n" +
+                                "Nombres: %s %s\n" +
+                                "Documento: %s\n" +
+                                "Correo: %s\n" +
+                                "Teléfono: %s",
+                        instructor.getNombres(),
+                        instructor.getApellidos(),
+                        instructor.getDocumento(),
+                        instructor.getCorreo(),
+                        instructor.getTelefono()
+                );
+
+                // Mostrar el cuadro de diálogo de confirmación
+                int opcion = JOptionPane.showConfirmDialog(
+                        this.getComponent(),
+                        infoInstructor + "\n\n¿Desea actualizar la clase con estos datos?",
+                        "Confirmar actualización",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (opcion == JOptionPane.YES_OPTION) {
+                    // Proceder a actualizar la clase
+                    String respuesta = API_DataClaseFormacionApplications.actualizarClase(idClase, nuevoNombreClase, nuevoDocumentoInstructor);
+                    if (respuesta.contains("exitosamente")) {
+                        // Actualizar la tabla con los nuevos valores
+                        table.setValueAt(nuevoNombreClase, row, 1);
+                        table.setValueAt(instructor.getNombres(), row, 2);
+                        table.setValueAt(nuevoDocumentoInstructor, row, 3);
+                        table.setValueAt(instructor.getCorreo(), row, 4);
+                        JOptionPane.showMessageDialog(this.getComponent(), "Clase actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this.getComponent(), "No se pudo actualizar la clase.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    // El usuario canceló la operación
+                    JOptionPane.showMessageDialog(this.getComponent(), "Actualización de la clase cancelada.", "Cancelado", JOptionPane.INFORMATION_MESSAGE);
+                }
+
                 return this.getComponent();
             }
         });
 
-        TableColumn eliminarColumna = ClaseFormacionDataTable.getColumnModel().getColumn(6); // Columna de "Eliminar"
+        // Columna "Eliminar" (índice 6)
+        TableColumn eliminarColumna = tabla.getColumnModel().getColumn(6);
         eliminarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
-        eliminarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), ClaseFormacionDataTable) {
+        eliminarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
                 super.getTableCellEditorComponent(table, value, isSelected, row, column);
 
                 // Obtener el ID de la clase de la fila seleccionada
-                int idClase = (int) table.getValueAt(row, 0); // Asegúrate de que la primera columna contenga el ID de la clase
+                int idClase = Integer.parseInt(table.getValueAt(row, 0).toString());
 
                 // Confirmación de eliminación
-                int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar la clase con ID " + idClase + "?");
+                int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar la clase con ID " + idClase + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
-                    try {
+                    // Llamar al método para eliminar la clase
+                    API_DataClaseFormacionApplications.eliminarClase(idClase);
+                    // Eliminar la fila del modelo de la tabla
+                    ((DefaultTableModel) table.getModel()).removeRow(row);
+                }
 
-                        dt.eliminarClase(idClase);
-                        System.out.println("Clase eliminada con ID: " + idClase);
+                return this.getComponent();
+            }
+        });
+    }
 
-                        // Refrescar la tabla después de la eliminación
-                        refrescarTablaClaseFormacion();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        JOptionPane.showMessageDialog(null, "Error al eliminar la clase: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    public void agregarModeloProgramaFormacion(JTable tabla, List<Map<String, Object>> programas) {
+        // Crear el DefaultTableModel con columnas: ID, Programa, Centro, Jornadas, Nivel, Área, Editar, Eliminar
+        DefaultTableModel modeloTabla = new DefaultTableModel(new Object[]{
+                "ID", "Programa", "Centro", "Jornadas", "Nivel", "Área", "Editar", "Eliminar"
+        }, 0) {
+            // Hacer que las celdas de botones no sean editables directamente
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 6 || column == 7;
+            }
+        };
+
+        // Rellenar el modelo con los datos de los programas
+        for (Map<String, Object> programa : programas) {
+            Integer idPrograma = (Integer) programa.get("ID");
+            String nombrePrograma = (String) programa.get("ProgramaFormacion");
+            String centroFormacion = (String) programa.get("CentroFormacion");
+            String jornadasFormacion = (String) programa.get("JornadasFormacion");
+            String nivelFormacion = (String) programa.get("NivelFormacion");
+            String area = (String) programa.get("Area");
+
+            // Añadir una fila al modelo con los datos del programa y los botones
+            modeloTabla.addRow(new Object[]{
+                    idPrograma, nombrePrograma, centroFormacion, jornadasFormacion,
+                    nivelFormacion, area, "Editar", "Eliminar"
+            });
+        }
+
+        // Setear el modelo a la JTable
+        tabla.setModel(modeloTabla);
+
+        // Asignar el ButtonRenderer y ButtonEditor para las columnas de "Editar" y "Eliminar"
+
+        // Columna "Editar" (índice 6)
+        TableColumn editarColumna = tabla.getColumnModel().getColumn(6);
+        editarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
+        editarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                super.getTableCellEditorComponent(table, value, isSelected, row, column);
+
+                // Obtener los valores de la fila seleccionada
+                int idPrograma = Integer.parseInt(table.getValueAt(row, 0).toString());
+                String nombrePrograma = table.getValueAt(row, 1).toString();
+                String centroFormacion = table.getValueAt(row, 2).toString();
+                String jornadasFormacion = table.getValueAt(row, 3).toString();
+                String nivelFormacion = table.getValueAt(row, 4).toString();
+                String area = table.getValueAt(row, 5).toString();
+
+                // Obtener el Frame padre usando JOptionPane.getFrameForComponent
+                Frame parentFrame = JOptionPane.getFrameForComponent(table);
+
+                // Abrir el diálogo de edición
+                EditarProgramaFormacionDialog dialog = new EditarProgramaFormacionDialog(
+                        parentFrame,
+                        idPrograma,
+                        nombrePrograma,
+                        jornadasFormacion,
+                        nivelFormacion,
+                        centroFormacion,
+                        area,
+                        table
+                );
+                dialog.setVisible(true);
+
+                return this.getComponent();
+            }
+        });
+
+        // Columna "Eliminar" (índice 7)
+        TableColumn eliminarColumna = tabla.getColumnModel().getColumn(7);
+        eliminarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
+        eliminarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                super.getTableCellEditorComponent(table, value, isSelected, row, column);
+
+                // Obtener el ID del Programa de Formación de la fila seleccionada
+                int idProgramaFormacion = Integer.parseInt(table.getValueAt(row, 0).toString());
+
+                // Confirmación de eliminación
+                int confirm = JOptionPane.showConfirmDialog(
+                        this.getComponent(),
+                        "¿Está seguro de que desea eliminar el Programa de Formación con ID " + idProgramaFormacion + "?",
+                        "Confirmar eliminación",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    // Llamar al método para eliminar el programa de formación
+                    String respuesta = API_DataProgramaFormacionApplications.eliminarProgramaFormacion(idProgramaFormacion);
+                    if (respuesta.contains("exitosamente")) {
+                        // Eliminar la fila del modelo de la tabla
+                        ((DefaultTableModel) table.getModel()).removeRow(row);
+                        JOptionPane.showMessageDialog(this.getComponent(), "Programa de formación eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     }
+                    // El manejo de errores ya está gestionado en ClienteAPI
+                } else {
+                    // El usuario canceló la operación
+                    JOptionPane.showMessageDialog(this.getComponent(), "Eliminación del programa de formación cancelada.", "Cancelado", JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 return this.getComponent();
@@ -239,6 +391,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
         TipoDocTableData = new javax.swing.JTable();
         AgregarTipoDoc = new javax.swing.JButton();
         TipoDocumentoHolder = new javax.swing.JTextField();
+        RefrescarTablaTipoDoc = new javax.swing.JButton();
         RolesPanel = new javax.swing.JPanel();
         RolHolder = new javax.swing.JTextField();
         AgregarRol = new javax.swing.JButton();
@@ -258,19 +411,13 @@ public class DataManagerPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         FichaHolder = new javax.swing.JTextField();
         ClasesFormacionPanel = new javax.swing.JPanel();
-        ResultadoCorreo4 = new javax.swing.JTextField();
+        ClaseFormacionHolder = new javax.swing.JTextField();
         AgregarClaseFormacion = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         ClaseFormacionDataTable = new javax.swing.JTable();
-        ClaseFormacionForm = new javax.swing.JPanel();
-        jLabel27 = new javax.swing.JLabel();
-        InstructorAddInfoPanel = new javax.swing.JPanel();
-        ResultadoIDClase = new javax.swing.JTextField();
-        jLabel31 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
-        NombreInstructorCB = new javax.swing.JComboBox<>();
-        ConfirmarModClaseFormacion = new javax.swing.JButton();
-        ResultadoClaseFormacion = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        DocumentoInstructorClaseFormacionHolder = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         AmbientesPanel = new javax.swing.JPanel();
         AmbienteHolder = new javax.swing.JTextField();
         AgregarAmbiente = new javax.swing.JButton();
@@ -281,23 +428,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
         AgregarActividad = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         ActividadesDataTable = new javax.swing.JTable();
-        ResidenciasPanel = new javax.swing.JPanel();
-        ResidenciasTabPanel = new javax.swing.JTabbedPane();
-        DepartamentosPanel = new javax.swing.JPanel();
-        DepartamentoHolder = new javax.swing.JTextField();
-        AgregarDepartamento = new javax.swing.JButton();
-        jScrollPane8 = new javax.swing.JScrollPane();
-        DepartamentosDataTable = new javax.swing.JTable();
-        MunicipiosPanel = new javax.swing.JPanel();
-        ResultadoCorreo8 = new javax.swing.JTextField();
-        AgregarMunicipio = new javax.swing.JButton();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        MunicipiosDataTable = new javax.swing.JTable();
-        BarriosPanel = new javax.swing.JPanel();
-        ResultadoCorreo9 = new javax.swing.JTextField();
-        AgregarBarrio = new javax.swing.JButton();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        BarriosDataTable = new javax.swing.JTable();
         ProgramasFormacionPanel = new javax.swing.JPanel();
         ProgramasFormacionTabPanel = new javax.swing.JTabbedPane();
         AreasPanel = new javax.swing.JPanel();
@@ -316,10 +446,19 @@ public class DataManagerPanel extends javax.swing.JPanel {
         jScrollPane13 = new javax.swing.JScrollPane();
         NivelesDataTable = new javax.swing.JTable();
         ProgramasFormacionSubPanel = new javax.swing.JPanel();
-        ResultadoCorreo13 = new javax.swing.JTextField();
+        ProgramaFormacionHolder = new javax.swing.JTextField();
         AgregarProgramaFormacion = new javax.swing.JButton();
         jScrollPane14 = new javax.swing.JScrollPane();
-        jTable14 = new javax.swing.JTable();
+        ProgramaFormacionDataTable = new javax.swing.JTable();
+        NivelFormacionProgramaCB = new javax.swing.JComboBox<>();
+        JornadaProgramaCB = new javax.swing.JComboBox<>();
+        AreaFormacionCB = new javax.swing.JComboBox<>();
+        SedeFormacionCB = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         SedesPanel = new javax.swing.JPanel();
         SedeHolder = new javax.swing.JTextField();
         AgregarSede = new javax.swing.JButton();
@@ -362,6 +501,21 @@ public class DataManagerPanel extends javax.swing.JPanel {
 
         TipoDocumentoHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         TipoDocumentoHolder.setForeground(new java.awt.Color(0, 0, 0));
+        TipoDocumentoHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TipoDocumentoHolderKeyTyped(evt);
+            }
+        });
+
+        RefrescarTablaTipoDoc.setBackground(new java.awt.Color(57, 169, 0));
+        RefrescarTablaTipoDoc.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RefrescarTablaTipoDoc.setForeground(new java.awt.Color(255, 255, 255));
+        RefrescarTablaTipoDoc.setText("Refrescar tabla");
+        RefrescarTablaTipoDoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefrescarTablaTipoDocActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout TiposDocPanelLayout = new javax.swing.GroupLayout(TiposDocPanel);
         TiposDocPanel.setLayout(TiposDocPanelLayout);
@@ -375,7 +529,9 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(TipoDocumentoHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarTipoDoc)))
-                .addContainerGap(473, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 409, Short.MAX_VALUE)
+                .addComponent(RefrescarTablaTipoDoc)
+                .addGap(18, 18, 18))
         );
         TiposDocPanelLayout.setVerticalGroup(
             TiposDocPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,16 +539,22 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 .addGap(15, 15, 15)
                 .addGroup(TiposDocPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AgregarTipoDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TipoDocumentoHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TipoDocumentoHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RefrescarTablaTipoDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(406, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         PrincipalTabPanel.addTab("Tipos de Documentos", TiposDocPanel);
 
         RolHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         RolHolder.setForeground(new java.awt.Color(0, 0, 0));
+        RolHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                RolHolderKeyTyped(evt);
+            }
+        });
 
         AgregarRol.setBackground(new java.awt.Color(57, 169, 0));
         AgregarRol.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -436,7 +598,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(RolHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarRol)))
-                .addContainerGap(608, Short.MAX_VALUE))
+                .addContainerGap(695, Short.MAX_VALUE))
         );
         RolesPanelLayout.setVerticalGroup(
             RolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -447,13 +609,18 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(RolHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Roles", RolesPanel);
 
         GeneroHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         GeneroHolder.setForeground(new java.awt.Color(0, 0, 0));
+        GeneroHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                GeneroHolderKeyTyped(evt);
+            }
+        });
 
         AgregarGenero.setBackground(new java.awt.Color(57, 169, 0));
         AgregarGenero.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -497,7 +664,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(GeneroHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarGenero)))
-                .addContainerGap(580, Short.MAX_VALUE))
+                .addContainerGap(667, Short.MAX_VALUE))
         );
         GenerosPanelLayout.setVerticalGroup(
             GenerosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -508,7 +675,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(GeneroHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Generos", GenerosPanel);
@@ -562,7 +729,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
         FichasPanelLayout.setHorizontalGroup(
             FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FichasPanelLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addGap(22, 22, 22)
                 .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jScrollPane4)
                     .addGroup(FichasPanelLayout.createSequentialGroup()
@@ -576,12 +743,12 @@ public class DataManagerPanel extends javax.swing.JPanel {
                                 .addComponent(FichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(AgregarFicha)))))
-                .addContainerGap(511, Short.MAX_VALUE))
+                .addContainerGap(612, Short.MAX_VALUE))
         );
         FichasPanelLayout.setVerticalGroup(
             FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FichasPanelLayout.createSequentialGroup()
-                .addContainerGap(298, Short.MAX_VALUE)
+            .addGroup(FichasPanelLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -592,13 +759,18 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(FichaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
+                .addContainerGap(320, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Fichas", FichasPanel);
 
-        ResultadoCorreo4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoCorreo4.setForeground(new java.awt.Color(0, 0, 0));
+        ClaseFormacionHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        ClaseFormacionHolder.setForeground(new java.awt.Color(0, 0, 0));
+        ClaseFormacionHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ClaseFormacionHolderKeyTyped(evt);
+            }
+        });
 
         AgregarClaseFormacion.setBackground(new java.awt.Color(57, 169, 0));
         AgregarClaseFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -630,144 +802,65 @@ public class DataManagerPanel extends javax.swing.JPanel {
             ClaseFormacionDataTable.getColumnModel().getColumn(2).setMaxWidth(150);
         }
 
-        ClaseFormacionForm.setBorder(javax.swing.BorderFactory.createTitledBorder("Editar Clase de formacion"));
+        jLabel3.setText("Nombre de la nueva clase de formacion");
 
-        jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel27.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel27.setText("Instructor");
-
-        InstructorAddInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Info Adicional"));
-
-        ResultadoIDClase.setEditable(false);
-        ResultadoIDClase.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoIDClase.setForeground(new java.awt.Color(0, 0, 0));
-        ResultadoIDClase.setFocusable(false);
-
-        jLabel31.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel31.setText("ID Clase de Formacion");
-
-        javax.swing.GroupLayout InstructorAddInfoPanelLayout = new javax.swing.GroupLayout(InstructorAddInfoPanel);
-        InstructorAddInfoPanel.setLayout(InstructorAddInfoPanelLayout);
-        InstructorAddInfoPanelLayout.setHorizontalGroup(
-            InstructorAddInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(InstructorAddInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel31)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(ResultadoIDClase, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        InstructorAddInfoPanelLayout.setVerticalGroup(
-            InstructorAddInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, InstructorAddInfoPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(InstructorAddInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel31)
-                    .addComponent(ResultadoIDClase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(87, 87, 87))
-        );
-
-        jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel28.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel28.setText("Nombre de clase");
-
-        NombreInstructorCB.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        NombreInstructorCB.setForeground(new java.awt.Color(0, 0, 0));
-        NombreInstructorCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        NombreInstructorCB.setPreferredSize(new java.awt.Dimension(64, 28));
-        NombreInstructorCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NombreInstructorCBActionPerformed(evt);
+        DocumentoInstructorClaseFormacionHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        DocumentoInstructorClaseFormacionHolder.setForeground(new java.awt.Color(0, 0, 0));
+        DocumentoInstructorClaseFormacionHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                DocumentoInstructorClaseFormacionHolderKeyTyped(evt);
             }
         });
 
-        ConfirmarModClaseFormacion.setBackground(new java.awt.Color(0, 34, 64));
-        ConfirmarModClaseFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ConfirmarModClaseFormacion.setForeground(new java.awt.Color(255, 255, 255));
-        ConfirmarModClaseFormacion.setText("Modificar Clase de formacion");
-        ConfirmarModClaseFormacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConfirmarModClaseFormacionActionPerformed(evt);
-            }
-        });
-
-        ResultadoClaseFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoClaseFormacion.setForeground(new java.awt.Color(0, 0, 0));
-
-        javax.swing.GroupLayout ClaseFormacionFormLayout = new javax.swing.GroupLayout(ClaseFormacionForm);
-        ClaseFormacionForm.setLayout(ClaseFormacionFormLayout);
-        ClaseFormacionFormLayout.setHorizontalGroup(
-            ClaseFormacionFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ClaseFormacionFormLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(ClaseFormacionFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ClaseFormacionFormLayout.createSequentialGroup()
-                        .addComponent(InstructorAddInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(ClaseFormacionFormLayout.createSequentialGroup()
-                        .addGroup(ClaseFormacionFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel28))
-                        .addGap(37, 37, 37)
-                        .addGroup(ClaseFormacionFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(NombreInstructorCB, 0, 260, Short.MAX_VALUE)
-                            .addComponent(ResultadoClaseFormacion)))
-                    .addComponent(ConfirmarModClaseFormacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-        ClaseFormacionFormLayout.setVerticalGroup(
-            ClaseFormacionFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ClaseFormacionFormLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(ClaseFormacionFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel28)
-                    .addComponent(ResultadoClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(ClaseFormacionFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel27)
-                    .addComponent(NombreInstructorCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(InstructorAddInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(ConfirmarModClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(244, 244, 244))
-        );
+        jLabel4.setText("Documento del instructor por asociar");
 
         javax.swing.GroupLayout ClasesFormacionPanelLayout = new javax.swing.GroupLayout(ClasesFormacionPanel);
         ClasesFormacionPanel.setLayout(ClasesFormacionPanelLayout);
         ClasesFormacionPanelLayout.setHorizontalGroup(
             ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ClasesFormacionPanelLayout.createSequentialGroup()
-                        .addComponent(ResultadoCorreo4)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ClasesFormacionPanelLayout.createSequentialGroup()
+                .addContainerGap(180, Short.MAX_VALUE)
+                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane5)
+                    .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
+                        .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AgregarClaseFormacion)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ClaseFormacionForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                        .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
+                                .addComponent(DocumentoInstructorClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(AgregarClaseFormacion)))))
+                .addGap(115, 115, 115))
         );
         ClasesFormacionPanelLayout.setVerticalGroup(
             ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
-                        .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(AgregarClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ResultadoCorreo4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(ClaseFormacionForm, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addGap(61, 61, 61)
+                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AgregarClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DocumentoInstructorClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Clases de Formacion", ClasesFormacionPanel);
 
         AmbienteHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         AmbienteHolder.setForeground(new java.awt.Color(0, 0, 0));
+        AmbienteHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                AmbienteHolderKeyTyped(evt);
+            }
+        });
 
         AgregarAmbiente.setBackground(new java.awt.Color(57, 169, 0));
         AgregarAmbiente.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -811,7 +904,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(AmbienteHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarAmbiente)))
-                .addContainerGap(564, Short.MAX_VALUE))
+                .addContainerGap(651, Short.MAX_VALUE))
         );
         AmbientesPanelLayout.setVerticalGroup(
             AmbientesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -822,13 +915,18 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(AmbienteHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Ambientes", AmbientesPanel);
 
         ActividadHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ActividadHolder.setForeground(new java.awt.Color(0, 0, 0));
+        ActividadHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ActividadHolderKeyTyped(evt);
+            }
+        });
 
         AgregarActividad.setBackground(new java.awt.Color(57, 169, 0));
         AgregarActividad.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -872,7 +970,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(ActividadHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarActividad)))
-                .addContainerGap(567, Short.MAX_VALUE))
+                .addContainerGap(654, Short.MAX_VALUE))
         );
         ActividadesPanelLayout.setVerticalGroup(
             ActividadesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -883,221 +981,20 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(ActividadHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Actividades", ActividadesPanel);
-
-        ResidenciasTabPanel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-
-        DepartamentoHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        DepartamentoHolder.setForeground(new java.awt.Color(0, 0, 0));
-
-        AgregarDepartamento.setBackground(new java.awt.Color(57, 169, 0));
-        AgregarDepartamento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        AgregarDepartamento.setForeground(new java.awt.Color(255, 255, 255));
-        AgregarDepartamento.setText("Agregar Departamento");
-        AgregarDepartamento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AgregarDepartamentoActionPerformed(evt);
-            }
-        });
-
-        DepartamentosDataTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3"
-            }
-        ));
-        DepartamentosDataTable.setRowHeight(30);
-        jScrollPane8.setViewportView(DepartamentosDataTable);
-        if (DepartamentosDataTable.getColumnModel().getColumnCount() > 0) {
-            DepartamentosDataTable.getColumnModel().getColumn(1).setPreferredWidth(150);
-            DepartamentosDataTable.getColumnModel().getColumn(1).setMaxWidth(150);
-            DepartamentosDataTable.getColumnModel().getColumn(2).setPreferredWidth(150);
-            DepartamentosDataTable.getColumnModel().getColumn(2).setMaxWidth(150);
-        }
-
-        javax.swing.GroupLayout DepartamentosPanelLayout = new javax.swing.GroupLayout(DepartamentosPanel);
-        DepartamentosPanel.setLayout(DepartamentosPanelLayout);
-        DepartamentosPanelLayout.setHorizontalGroup(
-            DepartamentosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(DepartamentosPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(DepartamentosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 973, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DepartamentosPanelLayout.createSequentialGroup()
-                        .addComponent(DepartamentoHolder)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AgregarDepartamento)))
-                .addContainerGap(194, Short.MAX_VALUE))
-        );
-        DepartamentosPanelLayout.setVerticalGroup(
-            DepartamentosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(DepartamentosPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(DepartamentosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AgregarDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(DepartamentoHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(152, Short.MAX_VALUE))
-        );
-
-        ResidenciasTabPanel.addTab("Departamentos", DepartamentosPanel);
-
-        ResultadoCorreo8.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoCorreo8.setForeground(new java.awt.Color(0, 0, 0));
-
-        AgregarMunicipio.setBackground(new java.awt.Color(57, 169, 0));
-        AgregarMunicipio.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        AgregarMunicipio.setForeground(new java.awt.Color(255, 255, 255));
-        AgregarMunicipio.setText("Agregar Municipio");
-        AgregarMunicipio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AgregarMunicipioActionPerformed(evt);
-            }
-        });
-
-        MunicipiosDataTable.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        MunicipiosDataTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3"
-            }
-        ));
-        MunicipiosDataTable.setRowHeight(30);
-        jScrollPane9.setViewportView(MunicipiosDataTable);
-        if (MunicipiosDataTable.getColumnModel().getColumnCount() > 0) {
-            MunicipiosDataTable.getColumnModel().getColumn(1).setPreferredWidth(150);
-            MunicipiosDataTable.getColumnModel().getColumn(1).setMaxWidth(150);
-            MunicipiosDataTable.getColumnModel().getColumn(2).setPreferredWidth(150);
-            MunicipiosDataTable.getColumnModel().getColumn(2).setMaxWidth(150);
-        }
-
-        javax.swing.GroupLayout MunicipiosPanelLayout = new javax.swing.GroupLayout(MunicipiosPanel);
-        MunicipiosPanel.setLayout(MunicipiosPanelLayout);
-        MunicipiosPanelLayout.setHorizontalGroup(
-            MunicipiosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MunicipiosPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(MunicipiosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 922, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MunicipiosPanelLayout.createSequentialGroup()
-                        .addComponent(ResultadoCorreo8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AgregarMunicipio)))
-                .addContainerGap(245, Short.MAX_VALUE))
-        );
-        MunicipiosPanelLayout.setVerticalGroup(
-            MunicipiosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MunicipiosPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(MunicipiosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AgregarMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ResultadoCorreo8, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(152, Short.MAX_VALUE))
-        );
-
-        ResidenciasTabPanel.addTab("Municipios", MunicipiosPanel);
-
-        ResultadoCorreo9.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoCorreo9.setForeground(new java.awt.Color(0, 0, 0));
-
-        AgregarBarrio.setBackground(new java.awt.Color(57, 169, 0));
-        AgregarBarrio.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        AgregarBarrio.setForeground(new java.awt.Color(255, 255, 255));
-        AgregarBarrio.setText("Agregar Barrio");
-        AgregarBarrio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AgregarBarrioActionPerformed(evt);
-            }
-        });
-
-        BarriosDataTable.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        BarriosDataTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3"
-            }
-        ));
-        BarriosDataTable.setRowHeight(30);
-        jScrollPane10.setViewportView(BarriosDataTable);
-        if (BarriosDataTable.getColumnModel().getColumnCount() > 0) {
-            BarriosDataTable.getColumnModel().getColumn(1).setPreferredWidth(150);
-            BarriosDataTable.getColumnModel().getColumn(1).setMaxWidth(150);
-            BarriosDataTable.getColumnModel().getColumn(2).setPreferredWidth(150);
-            BarriosDataTable.getColumnModel().getColumn(2).setMaxWidth(150);
-        }
-
-        javax.swing.GroupLayout BarriosPanelLayout = new javax.swing.GroupLayout(BarriosPanel);
-        BarriosPanel.setLayout(BarriosPanelLayout);
-        BarriosPanelLayout.setHorizontalGroup(
-            BarriosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BarriosPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(BarriosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 906, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BarriosPanelLayout.createSequentialGroup()
-                        .addComponent(ResultadoCorreo9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AgregarBarrio)))
-                .addContainerGap(261, Short.MAX_VALUE))
-        );
-        BarriosPanelLayout.setVerticalGroup(
-            BarriosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BarriosPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(BarriosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AgregarBarrio, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ResultadoCorreo9, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(152, Short.MAX_VALUE))
-        );
-
-        ResidenciasTabPanel.addTab("Barrios", BarriosPanel);
-
-        javax.swing.GroupLayout ResidenciasPanelLayout = new javax.swing.GroupLayout(ResidenciasPanel);
-        ResidenciasPanel.setLayout(ResidenciasPanelLayout);
-        ResidenciasPanelLayout.setHorizontalGroup(
-            ResidenciasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ResidenciasPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ResidenciasTabPanel)
-                .addContainerGap())
-        );
-        ResidenciasPanelLayout.setVerticalGroup(
-            ResidenciasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ResidenciasPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ResidenciasTabPanel)
-                .addContainerGap())
-        );
-
-        PrincipalTabPanel.addTab("Residencias", ResidenciasPanel);
 
         ProgramasFormacionTabPanel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
 
         AreaHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         AreaHolder.setForeground(new java.awt.Color(0, 0, 0));
+        AreaHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                AreaHolderKeyTyped(evt);
+            }
+        });
 
         AgregarArea.setBackground(new java.awt.Color(57, 169, 0));
         AgregarArea.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -1141,7 +1038,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(AreaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarArea)))
-                .addContainerGap(587, Short.MAX_VALUE))
+                .addContainerGap(674, Short.MAX_VALUE))
         );
         AreasPanelLayout.setVerticalGroup(
             AreasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1152,13 +1049,18 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(AreaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addContainerGap(159, Short.MAX_VALUE))
         );
 
         ProgramasFormacionTabPanel.addTab("Areas", AreasPanel);
 
         JornadaHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         JornadaHolder.setForeground(new java.awt.Color(0, 0, 0));
+        JornadaHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                JornadaHolderKeyTyped(evt);
+            }
+        });
 
         AgregarJornadaFormacion.setBackground(new java.awt.Color(57, 169, 0));
         AgregarJornadaFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -1202,7 +1104,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(JornadaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarJornadaFormacion)))
-                .addContainerGap(465, Short.MAX_VALUE))
+                .addContainerGap(552, Short.MAX_VALUE))
         );
         JornadasPanelLayout.setVerticalGroup(
             JornadasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1213,13 +1115,18 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(JornadaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addContainerGap(159, Short.MAX_VALUE))
         );
 
         ProgramasFormacionTabPanel.addTab("Jornadas de Formacion", JornadasPanel);
 
         NivelFormacionHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         NivelFormacionHolder.setForeground(new java.awt.Color(0, 0, 0));
+        NivelFormacionHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                NivelFormacionHolderKeyTyped(evt);
+            }
+        });
 
         AgregarNivelFormacion.setBackground(new java.awt.Color(57, 169, 0));
         AgregarNivelFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -1263,7 +1170,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(NivelFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarNivelFormacion)))
-                .addContainerGap(484, Short.MAX_VALUE))
+                .addContainerGap(571, Short.MAX_VALUE))
         );
         NivelesPanelLayout.setVerticalGroup(
             NivelesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1274,13 +1181,18 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(NivelFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addContainerGap(159, Short.MAX_VALUE))
         );
 
         ProgramasFormacionTabPanel.addTab("Niveles de Formacion", NivelesPanel);
 
-        ResultadoCorreo13.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoCorreo13.setForeground(new java.awt.Color(0, 0, 0));
+        ProgramaFormacionHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        ProgramaFormacionHolder.setForeground(new java.awt.Color(0, 0, 0));
+        ProgramaFormacionHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ProgramaFormacionHolderKeyTyped(evt);
+            }
+        });
 
         AgregarProgramaFormacion.setBackground(new java.awt.Color(57, 169, 0));
         AgregarProgramaFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -1292,7 +1204,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
             }
         });
 
-        jTable14.setModel(new javax.swing.table.DefaultTableModel(
+        ProgramaFormacionDataTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -1303,14 +1215,32 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3"
             }
         ));
-        jTable14.setRowHeight(30);
-        jScrollPane14.setViewportView(jTable14);
-        if (jTable14.getColumnModel().getColumnCount() > 0) {
-            jTable14.getColumnModel().getColumn(1).setPreferredWidth(150);
-            jTable14.getColumnModel().getColumn(1).setMaxWidth(150);
-            jTable14.getColumnModel().getColumn(2).setPreferredWidth(150);
-            jTable14.getColumnModel().getColumn(2).setMaxWidth(150);
+        ProgramaFormacionDataTable.setRowHeight(30);
+        jScrollPane14.setViewportView(ProgramaFormacionDataTable);
+        if (ProgramaFormacionDataTable.getColumnModel().getColumnCount() > 0) {
+            ProgramaFormacionDataTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+            ProgramaFormacionDataTable.getColumnModel().getColumn(1).setMaxWidth(150);
+            ProgramaFormacionDataTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+            ProgramaFormacionDataTable.getColumnModel().getColumn(2).setMaxWidth(150);
         }
+
+        NivelFormacionProgramaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        JornadaProgramaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        AreaFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        SedeFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel5.setText("Nuevo programa de formacion");
+
+        jLabel6.setText("Jornada de formacion");
+
+        jLabel7.setText("Nivel de formacion");
+
+        jLabel8.setText("Centro de formacion");
+
+        jLabel9.setText("Area de formacion");
 
         javax.swing.GroupLayout ProgramasFormacionSubPanelLayout = new javax.swing.GroupLayout(ProgramasFormacionSubPanel);
         ProgramasFormacionSubPanel.setLayout(ProgramasFormacionSubPanelLayout);
@@ -1318,30 +1248,76 @@ public class DataManagerPanel extends javax.swing.JPanel {
             ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane14)
-                    .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
-                        .addComponent(ResultadoCorreo13, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProgramasFormacionSubPanelLayout.createSequentialGroup()
+                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ProgramaFormacionHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                            .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AgregarProgramaFormacion)))
-                .addContainerGap(451, Short.MAX_VALUE))
+                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(JornadaProgramaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(NivelFormacionProgramaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(SedeFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
+                                .addComponent(AreaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(AgregarProgramaFormacion))
+                            .addComponent(jLabel9))))
+                .addContainerGap())
         );
         ProgramasFormacionSubPanelLayout.setVerticalGroup(
             ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AgregarProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ResultadoCorreo13, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProgramasFormacionSubPanelLayout.createSequentialGroup()
+                .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
+                        .addGap(126, 126, 126)
+                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel7)
+                                .addComponent(jLabel5))
+                            .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel9)
+                                .addComponent(jLabel8))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProgramasFormacionSubPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel6)))
+                .addGap(18, 18, 18)
+                .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(AgregarProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ProgramaFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(NivelFormacionProgramaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(JornadaProgramaCB, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
+                    .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(SedeFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(AreaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
 
         ProgramasFormacionTabPanel.addTab("Programas de Formacion", ProgramasFormacionSubPanel);
 
         SedeHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         SedeHolder.setForeground(new java.awt.Color(0, 0, 0));
+        SedeHolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                SedeHolderKeyTyped(evt);
+            }
+        });
 
         AgregarSede.setBackground(new java.awt.Color(57, 169, 0));
         AgregarSede.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -1385,7 +1361,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(SedeHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarSede)))
-                .addContainerGap(585, Short.MAX_VALUE))
+                .addContainerGap(672, Short.MAX_VALUE))
         );
         SedesPanelLayout.setVerticalGroup(
             SedesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1396,7 +1372,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(SedeHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addContainerGap(159, Short.MAX_VALUE))
         );
 
         ProgramasFormacionTabPanel.addTab("Sedes", SedesPanel);
@@ -1426,8 +1402,8 @@ public class DataManagerPanel extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(PrincipalTabPanel)
-                .addContainerGap())
+                .addComponent(PrincipalTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(142, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1449,6 +1425,23 @@ public class DataManagerPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void refrescarTablaClaseFormacion() {
+        try {
+            DataTables modClaseFormacion = new DataTables();
+            // Llamada para obtener las clases actualizadas
+            List<Map<String, Object>> clasesActualizadas = modClaseFormacion.obtenerClasesConInstructor();
+
+            // Actualizar la tabla con los nuevos datos
+            agregarModeloClaseFormacion(ClaseFormacionDataTable, API_DataClaseFormacionApplications.obtenerClasesConInstructor());
+        } catch (Exception e) {
+            System.out.println("Error al refrescar la tabla: " + e.getMessage());
+        }
+    }
+
+    private void FichaNuevaHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FichaNuevaHolderKeyTyped
+
+    }//GEN-LAST:event_FichaNuevaHolderKeyTyped
+
     private void AgregarSedeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarSedeActionPerformed
         API_DataSedeApplications SedeApplications = new API_DataSedeApplications();
         String resultadoCrear = SedeApplications.crearSede(SedeHolder.getText());
@@ -1458,7 +1451,50 @@ public class DataManagerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_AgregarSedeActionPerformed
 
     private void AgregarProgramaFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarProgramaFormacionActionPerformed
-        // TODO add your handling code here:
+        // 1. Recopilar los datos de los campos de texto
+        String programaFormacion = ProgramaFormacionHolder.getText().trim();
+        String centroFormacion = SedeFormacionCB.getSelectedItem().toString().trim();
+        String jornadasFormacion = JornadaProgramaCB.getSelectedItem().toString().trim();
+        String nivelFormacion = NivelFormacionProgramaCB.getSelectedItem().toString().trim();
+        String area = AreaFormacionCB.getSelectedItem().toString().trim();
+
+        // 2. Validar que todos los campos estén llenos
+        if (programaFormacion.isEmpty() || centroFormacion.isEmpty() || jornadasFormacion.isEmpty()
+            || nivelFormacion.isEmpty() || area.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 3. Confirmar la creación del Programa de Formación
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "¿Desea crear el Programa de Formación con los siguientes datos?\n\n" +
+            "Programa: " + programaFormacion + "\n" +
+            "Centro de Formación: " + centroFormacion + "\n" +
+            "Jornadas: " + jornadasFormacion + "\n" +
+            "Nivel: " + nivelFormacion + "\n" +
+            "Área: " + area,
+            "Confirmar Creación",
+            JOptionPane.YES_NO_OPTION);
+
+        if (confirm != JOptionPane.YES_OPTION) {
+            // El usuario canceló la operación
+            return;
+        }
+
+        // 4. Llamar al método para crear el Programa de Formación
+        String respuesta = API_DataProgramaFormacionApplications.crearProgramaFormacion(programaFormacion, centroFormacion, jornadasFormacion, nivelFormacion, area);
+
+        // 5. Manejar la respuesta (esto ya se hace dentro del método ClienteAPI, pero puedes añadir lógica adicional si es necesario)
+        // Por ejemplo, si la creación fue exitosa, podrías refrescar una tabla o limpiar los campos de entrada
+
+        // 6. Opcional: Limpiar los campos después de una creación exitosa
+        if (respuesta.contains("exitosamente")) {
+            ProgramaFormacionHolder.setText("");
+            JornadaProgramaCB.setSelectedItem(0);
+            NivelFormacionProgramaCB.setSelectedItem(0);
+            SedeFormacionCB.setSelectedItem(0);
+            AreaFormacionCB.setSelectedItem(0);
+        }
     }//GEN-LAST:event_AgregarProgramaFormacionActionPerformed
 
     private void AgregarNivelFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarNivelFormacionActionPerformed
@@ -1485,22 +1521,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AgregarAreaActionPerformed
 
-    private void AgregarBarrioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarBarrioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AgregarBarrioActionPerformed
-
-    private void AgregarMunicipioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarMunicipioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AgregarMunicipioActionPerformed
-
-    private void AgregarDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarDepartamentoActionPerformed
-        API_DataDepartamentosApplications DepartamentosApplications = new API_DataDepartamentosApplications();
-        String resultadoCrear = DepartamentosApplications.crearDepartamento(DepartamentoHolder.getText());
-        actualizarTablaDepartamentos();
-        DepartamentoHolder.setText("");
-        JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_AgregarDepartamentoActionPerformed
-
     private void AgregarActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarActividadActionPerformed
         API_DataActividadApplications ActividadApplications = new API_DataActividadApplications();
         String resultadoCrear = ActividadApplications.crearActividad(ActividadHolder.getText());
@@ -1517,60 +1537,53 @@ public class DataManagerPanel extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AgregarAmbienteActionPerformed
 
-    private void ConfirmarModClaseFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarModClaseFormacionActionPerformed
-        try {
-            DataTables modClaseFormacion = new DataTables();
-
-            // Llamada para obtener el documento del instructor
-            String documentoInstructor = modClaseFormacion.obtenerDocumentoPorNombre(
-                    NombreInstructorCB.getSelectedItem().toString());
-
-            if (documentoInstructor != null) {
-                // Actualizar la clase de formación
-                modClaseFormacion.actualizarClaseFormacion(Integer.valueOf(ResultadoIDClase.getText()), ResultadoClaseFormacion.getText(), documentoInstructor);
-
-                // Refrescar la tabla para reflejar los cambios
-                refrescarTablaClaseFormacion();
-
-                // Limpiar los datos del formulario
-                limpiarFormularioClaseFormacion();
-
-                // Deshabilitar el formulario
-                DesActivarComponentes(ClaseFormacionForm);
-            } else {
-                System.out.println("No se encontró el documento del instructor.");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }//GEN-LAST:event_ConfirmarModClaseFormacionActionPerformed
-
-    public void refrescarTablaClaseFormacion() {
-        try {
-            DataTables modClaseFormacion = new DataTables();
-            // Llamada para obtener las clases actualizadas
-            List<Map<String, Object>> clasesActualizadas = modClaseFormacion.obtenerClasesConInstructor();
-
-            // Actualizar la tabla con los nuevos datos
-            agregarModeloClaseFormacion(ClaseFormacionDataTable, clasesActualizadas, modClaseFormacion.obtenerInstructores());
-        } catch (Exception e) {
-            System.out.println("Error al refrescar la tabla: " + e.getMessage());
-        }
-    }
-
-    public void limpiarFormularioClaseFormacion() {
-        ResultadoClaseFormacion.setText("");  // Limpiar ComboBox de Clase de Formación
-        NombreInstructorCB.setSelectedIndex(0); // Limpiar ComboBox de Instructor
-        ResultadoIDClase.setText("");  // Limpiar el campo de ID de Clase
-    }
-
-    private void NombreInstructorCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NombreInstructorCBActionPerformed
-
-    }//GEN-LAST:event_NombreInstructorCBActionPerformed
-
     private void AgregarClaseFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarClaseFormacionActionPerformed
-        // TODO add your handling code here:
+        API_BuscarUsuario buscarInstructor = new API_BuscarUsuario();
+        InstructorModel instructor = buscarInstructor.buscarInstructorPorDocumento(DocumentoInstructorClaseFormacionHolder.getText());
+
+        if (instructor == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró ningún instructor con el documento proporcionado.", "Instructor no encontrado", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Formatear la información del instructor
+        String infoInstructor = STR."""
+        Información del Instructor:
+        Nombres: \{instructor.getNombres()} \{instructor.getApellidos()}
+        Documento: \{instructor.getDocumento()}
+        Correo: \{instructor.getCorreo()}
+        Teléfono: \{instructor.getTelefono()}""";
+
+        // Mostrar el cuadro de diálogo de confirmación
+        int opcion = JOptionPane.showConfirmDialog(this, infoInstructor + "\n\n¿Desea agregar la clase a este instructor?", "Confirmar agregar clase", JOptionPane.YES_NO_OPTION);
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            // Proceder a agregar la clase al instructor
+            try {
+                // Asumiendo que tienes un campo para el nombre de la clase
+                String nombreClase = ClaseFormacionHolder.getText();
+                API_DataClaseFormacionApplications claseFormacionApplications = new API_DataClaseFormacionApplications();
+                claseFormacionApplications.crearClaseFormacion(nombreClase, instructor.getDocumento());
+
+                JOptionPane.showMessageDialog(this, "La clase se ha agregado exitosamente al instructor.", "Operación exitosa", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Ocurrió un error al agregar la clase: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            // El usuario canceló la operación
+            JOptionPane.showMessageDialog(this, "No se agregó la clase al instructor.", "Operación cancelada", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_AgregarClaseFormacionActionPerformed
+
+    private void FichaHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FichaHolderKeyTyped
+        char caracter = evt.getKeyChar();
+
+        // Permitir solo números y la tecla de retroceso
+        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten números.");
+        }
+    }//GEN-LAST:event_FichaHolderKeyTyped
 
     private void AgregarFichaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarFichaActionPerformed
         DefaultTableModel modelofichasData = (DefaultTableModel) FichasDataTable.getModel();
@@ -1632,6 +1645,10 @@ public class DataManagerPanel extends javax.swing.JPanel {
         RolHolder.setText("");
     }//GEN-LAST:event_AgregarRolActionPerformed
 
+    private void RefrescarTablaTipoDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarTablaTipoDocActionPerformed
+        actualizarTipoDocTable();
+    }//GEN-LAST:event_RefrescarTablaTipoDocActionPerformed
+
     private void AgregarTipoDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarTipoDocActionPerformed
         API_DataTipoDocApplications tipoDocApplications = new API_DataTipoDocApplications();
         String resultadoCrear = tipoDocApplications.crearTipoDocumento(TipoDocumentoHolder.getText());
@@ -1640,19 +1657,125 @@ public class DataManagerPanel extends javax.swing.JPanel {
         TipoDocumentoHolder.setText("");
     }//GEN-LAST:event_AgregarTipoDocActionPerformed
 
-    private void FichaNuevaHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FichaNuevaHolderKeyTyped
+    private void TipoDocumentoHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TipoDocumentoHolderKeyTyped
+                                  char caracter = evt.getKeyChar();
 
-    }//GEN-LAST:event_FichaNuevaHolderKeyTyped
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_TipoDocumentoHolderKeyTyped
 
-    private void FichaHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FichaHolderKeyTyped
-        char caracter = evt.getKeyChar();
+    private void RolHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RolHolderKeyTyped
+                                  char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_RolHolderKeyTyped
+
+    private void GeneroHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GeneroHolderKeyTyped
+                                   char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_GeneroHolderKeyTyped
+
+    private void ClaseFormacionHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClaseFormacionHolderKeyTyped
+                                   char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_ClaseFormacionHolderKeyTyped
+
+    private void DocumentoInstructorClaseFormacionHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DocumentoInstructorClaseFormacionHolderKeyTyped
+                char caracter = evt.getKeyChar();
 
         // Permitir solo números y la tecla de retroceso
         if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
             evt.consume();  // Evitar que se ingrese el carácter no válido
             JOptionPane.showMessageDialog(this, "Solo se permiten números.");
         }
-    }//GEN-LAST:event_FichaHolderKeyTyped
+    }//GEN-LAST:event_DocumentoInstructorClaseFormacionHolderKeyTyped
+
+    private void AmbienteHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AmbienteHolderKeyTyped
+                                           char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_AmbienteHolderKeyTyped
+
+    private void ActividadHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ActividadHolderKeyTyped
+                                         char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_ActividadHolderKeyTyped
+
+    private void AreaHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AreaHolderKeyTyped
+                                          char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_AreaHolderKeyTyped
+
+    private void JornadaHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JornadaHolderKeyTyped
+                                           char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_JornadaHolderKeyTyped
+
+    private void NivelFormacionHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NivelFormacionHolderKeyTyped
+                                          char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_NivelFormacionHolderKeyTyped
+
+    private void ProgramaFormacionHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ProgramaFormacionHolderKeyTyped
+                                          char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_ProgramaFormacionHolderKeyTyped
+
+    private void SedeHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SedeHolderKeyTyped
+                                           char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_SedeHolderKeyTyped
 
     public void comportamientoTabla(JTable table, String tipoTabla) {
         // Configurar el comportamiento de los botones de "Editar"
@@ -1701,13 +1824,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
                                 ActividadApplications.actualizarActividad(id, nuevoValor);  // Llamar a la API para actualizar el valor
                                 table.setValueAt(nuevoValor, row, 1);  // Actualizar la celda con el nuevo valor
                                 actualizarTablaActividades();  // Refrescar la tabla
-                                break;
-
-                            case "Departamento":
-                                API_DataDepartamentosApplications DepartamentosApplications = new API_DataDepartamentosApplications();
-                                DepartamentosApplications.actualizarDepartamento(id, nuevoValor);  // Llamar a la API para actualizar el valor
-                                table.setValueAt(nuevoValor, row, 1);  // Actualizar la celda con el nuevo valor
-                                actualizarTablaDepartamentos();  // Refrescar la tabla
                                 break;
 
                             case "Area":
@@ -1769,9 +1885,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                                 RolApplications.eliminarRol(id);  // Llamar a la API para actualizar el valor
                                 actualizarTablaRoles();  // Refrescar la tabla después de la edición
                                 ((DefaultTableModel) table.getModel()).removeRow(row);
-                                // Actualizar la tabla después de eliminar
-                                table.revalidate();
-                                table.repaint();
+                                actualizarTablaRoles();
                                 break;
 
                             case "Tipo de Documento":
@@ -1779,9 +1893,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                                 TipoDocApplications.eliminarTipoDocumento(id);  // Llamar a la API para actualizar el valor
                                 actualizarTipoDocTable();  // Refrescar la tabla
                                 ((DefaultTableModel) table.getModel()).removeRow(row);
-                                // Actualizar la tabla después de eliminar
-                                table.revalidate();
-                                table.repaint();
+                                actualizarTipoDocTable();
                                 break;
 
                             case "Genero":
@@ -1789,9 +1901,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                                 GenerosApplications.eliminarGenero(id);  // Llamar a la API para actualizar el valor
                                 actualizarTablaGeneros();  // Refrescar la tabla
                                 ((DefaultTableModel) table.getModel()).removeRow(row);
-                                // Actualizar la tabla después de eliminar
-                                table.revalidate();
-                                table.repaint();
+                                actualizarTablaGeneros();
                                 break;
 
                             case "Ambiente":
@@ -1799,9 +1909,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                                 AmbientesApplications.eliminarAmbiente(id);  // Llamar a la API para actualizar el valor
                                 actualizarTablaAmbientes();  // Refrescar la tabla
                                 ((DefaultTableModel) table.getModel()).removeRow(row);
-                                // Actualizar la tabla después de eliminar
-                                table.revalidate();
-                                table.repaint();
+                                actualizarTablaAmbientes();
                                 break;
 
                             case "Actividad":
@@ -1809,29 +1917,15 @@ public class DataManagerPanel extends javax.swing.JPanel {
                                 ActividadApplications.eliminarActividad(id);  // Llamar a la API para actualizar el valor
                                 actualizarTablaActividades();  // Refrescar la tabla
                                 ((DefaultTableModel) table.getModel()).removeRow(row);
-                                // Actualizar la tabla después de eliminar
-                                table.revalidate();
-                                table.repaint();
-                                break;
-
-                            case "Departamento":
-                                API_DataDepartamentosApplications DepartamentosApplications = new API_DataDepartamentosApplications();
-                                DepartamentosApplications.eliminarDepartamento(id);  // Llamar a la API para actualizar el valor
-                                actualizarTablaDepartamentos();  // Refrescar la tabla
-                                ((DefaultTableModel) table.getModel()).removeRow(row);
-                                // Actualizar la tabla después de eliminar
-                                table.revalidate();
-                                table.repaint();
+                                actualizarTablaActividades();
                                 break;
 
                             case "Area":
                                 API_DataAreasApplications DataApplications = new API_DataAreasApplications();
                                 DataApplications.eliminarArea(id);  // Llamar a la API para actualizar el valor
-                                actualizarTablaDepartamentos();  // Refrescar la tabla
+                                actualizarTablaAreas();  // Refrescar la tabla
                                 ((DefaultTableModel) table.getModel()).removeRow(row);
-                                // Actualizar la tabla después de eliminar
-                                table.revalidate();
-                                table.repaint();
+                                actualizarTablaAreas();
                                 break;
 
                             case "Jornada de Formacion":
@@ -1839,30 +1933,32 @@ public class DataManagerPanel extends javax.swing.JPanel {
                                 JornadaApplications.eliminarJornada(id);  // Llamar a la API para actualizar el valor
                                 actualizarTablaJornadas();  // Refrescar la tabla
                                 ((DefaultTableModel) table.getModel()).removeRow(row);
-                                // Actualizar la tabla después de eliminar
-                                table.revalidate();
-                                table.repaint();
+                                actualizarTablaJornadas();
                                 break;
 
                             case "Nivel de Formacion":
                                 API_DataNivelFormacionApplications NivelFormacion = new API_DataNivelFormacionApplications();
                                 NivelFormacion.eliminarNivelFormacion(id);
                                 ((DefaultTableModel) table.getModel()).removeRow(row);
-                                // Actualizar la tabla después de eliminar
-                                table.revalidate();
-                                table.repaint();
+                                actualizarTablaNivelesFormacion();
                                 break;
 
                             case "Sede":
                                 API_DataSedeApplications SedeApplications = new API_DataSedeApplications();
                                 SedeApplications.eliminarSede(id);
                                 ((DefaultTableModel) table.getModel()).removeRow(row);
-                                // Actualizar la tabla después de eliminar
-                                table.revalidate();
-                                table.repaint();
+
+                                actualizarTablaSedesFormacion();
+
+                                break;
+
+                            default:
                                 break;
 
                         }
+                    } else {
+                        System.out.println("Sin cambios");
+                        cancelCellEditing(); // Cancela la edición en lugar de detenerla
                     }
                 }
                 return super.getTableCellEditorComponent(table, value, isSelected, row, column);
@@ -1903,11 +1999,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
         comportamientoTabla(ActividadesDataTable, "Actividad");
     }
 
-    public void actualizarTablaDepartamentos(){
-        agregarModelo(DepartamentosDataTable, dt.obtenerDepartamentos());
-        comportamientoTabla(DepartamentosDataTable, "Departamento");
-    }
-    
     public void actualizarTablaAreas(){
         agregarModelo(AreasDataTable, dt.obtenerAreas());
         comportamientoTabla(AreasDataTable, "Area");
@@ -1935,13 +2026,10 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JButton AgregarActividad;
     private javax.swing.JButton AgregarAmbiente;
     private javax.swing.JButton AgregarArea;
-    private javax.swing.JButton AgregarBarrio;
     private javax.swing.JButton AgregarClaseFormacion;
-    private javax.swing.JButton AgregarDepartamento;
     private javax.swing.JButton AgregarFicha;
     private javax.swing.JButton AgregarGenero;
     private javax.swing.JButton AgregarJornadaFormacion;
-    private javax.swing.JButton AgregarMunicipio;
     private javax.swing.JButton AgregarNivelFormacion;
     private javax.swing.JButton AgregarProgramaFormacion;
     private javax.swing.JButton AgregarRol;
@@ -1950,18 +2038,14 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JTextField AmbienteHolder;
     private javax.swing.JTable AmbientesDataTable;
     private javax.swing.JPanel AmbientesPanel;
+    private javax.swing.JComboBox<String> AreaFormacionCB;
     private javax.swing.JTextField AreaHolder;
     private javax.swing.JTable AreasDataTable;
     private javax.swing.JPanel AreasPanel;
-    private javax.swing.JTable BarriosDataTable;
-    private javax.swing.JPanel BarriosPanel;
     private javax.swing.JTable ClaseFormacionDataTable;
-    private javax.swing.JPanel ClaseFormacionForm;
+    private javax.swing.JTextField ClaseFormacionHolder;
     private javax.swing.JPanel ClasesFormacionPanel;
-    private javax.swing.JButton ConfirmarModClaseFormacion;
-    private javax.swing.JTextField DepartamentoHolder;
-    private javax.swing.JTable DepartamentosDataTable;
-    private javax.swing.JPanel DepartamentosPanel;
+    private javax.swing.JTextField DocumentoInstructorClaseFormacionHolder;
     private javax.swing.JComboBox<String> FichaDataProgramaFormacionCB;
     private javax.swing.JTextField FichaHolder;
     private javax.swing.JTable FichasDataTable;
@@ -1969,31 +2053,25 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JTextField GeneroHolder;
     private javax.swing.JPanel GenerosPanel;
     private javax.swing.JTable GenerosTableData;
-    private javax.swing.JPanel InstructorAddInfoPanel;
     private javax.swing.JTextField JornadaHolder;
+    private javax.swing.JComboBox<String> JornadaProgramaCB;
     private javax.swing.JTable JornadasDataTable;
     private javax.swing.JPanel JornadasPanel;
-    private javax.swing.JTable MunicipiosDataTable;
-    private javax.swing.JPanel MunicipiosPanel;
     private javax.swing.JTextField NivelFormacionHolder;
+    private javax.swing.JComboBox<String> NivelFormacionProgramaCB;
     private javax.swing.JTable NivelesDataTable;
     private javax.swing.JPanel NivelesPanel;
-    private javax.swing.JComboBox<String> NombreInstructorCB;
     private javax.swing.JTabbedPane PrincipalTabPanel;
+    private javax.swing.JTable ProgramaFormacionDataTable;
+    private javax.swing.JTextField ProgramaFormacionHolder;
     private javax.swing.JPanel ProgramasFormacionPanel;
     private javax.swing.JPanel ProgramasFormacionSubPanel;
     private javax.swing.JTabbedPane ProgramasFormacionTabPanel;
-    private javax.swing.JPanel ResidenciasPanel;
-    private javax.swing.JTabbedPane ResidenciasTabPanel;
-    private javax.swing.JTextField ResultadoClaseFormacion;
-    private javax.swing.JTextField ResultadoCorreo13;
-    private javax.swing.JTextField ResultadoCorreo4;
-    private javax.swing.JTextField ResultadoCorreo8;
-    private javax.swing.JTextField ResultadoCorreo9;
-    private javax.swing.JTextField ResultadoIDClase;
+    private javax.swing.JButton RefrescarTablaTipoDoc;
     private javax.swing.JTextField RolHolder;
     private javax.swing.JPanel RolesPanel;
     private javax.swing.JTable RolesTableData;
+    private javax.swing.JComboBox<String> SedeFormacionCB;
     private javax.swing.JTextField SedeHolder;
     private javax.swing.JTable SedesDataTables;
     private javax.swing.JPanel SedesPanel;
@@ -2002,12 +2080,15 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JPanel TiposDocPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
@@ -2019,8 +2100,5 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JTable jTable14;
     // End of variables declaration//GEN-END:variables
 }

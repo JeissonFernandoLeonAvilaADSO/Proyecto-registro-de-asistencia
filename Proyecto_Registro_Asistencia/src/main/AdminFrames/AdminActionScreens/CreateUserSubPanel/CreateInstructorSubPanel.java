@@ -4,6 +4,7 @@
  */
 package main.AdminFrames.AdminActionScreens.CreateUserSubPanel;
 
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,8 +97,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         AsociarFicha = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         FichasAsociadasTB = new javax.swing.JTable();
-        ClaseFormacionCB = new javax.swing.JComboBox<>();
-        jLabel26 = new javax.swing.JLabel();
 
         CreateInstructorSubPanel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -185,6 +184,11 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
 
         RegistrarNombres.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         RegistrarNombres.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarNombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                RegistrarNombresKeyTyped(evt);
+            }
+        });
 
         RegistrarSede.setEditable(false);
         RegistrarSede.setFocusable(false);
@@ -229,6 +233,11 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
 
         RegistrarDocumento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         RegistrarDocumento.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                RegistrarDocumentoKeyTyped(evt);
+            }
+        });
 
         jLabel41.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel41.setForeground(new java.awt.Color(0, 0, 0));
@@ -236,6 +245,11 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
 
         RegistrarApellidos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         RegistrarApellidos.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarApellidos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                RegistrarApellidosKeyTyped(evt);
+            }
+        });
 
         jLabel38.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel38.setForeground(new java.awt.Color(0, 0, 0));
@@ -307,6 +321,11 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
 
         RegistrarTelefono.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         RegistrarTelefono.setForeground(new java.awt.Color(0, 0, 0));
+        RegistrarTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                RegistrarTelefonoKeyTyped(evt);
+            }
+        });
 
         jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(0, 0, 0));
@@ -351,20 +370,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         FichasAsociadasTB.setRequestFocusEnabled(false);
         FichasAsociadasTB.setRowSelectionAllowed(false);
         jScrollPane1.setViewportView(FichasAsociadasTB);
-
-        ClaseFormacionCB.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ClaseFormacionCB.setForeground(new java.awt.Color(0, 0, 0));
-        ClaseFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        ClaseFormacionCB.setPreferredSize(new java.awt.Dimension(64, 28));
-        ClaseFormacionCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClaseFormacionCBActionPerformed(evt);
-            }
-        });
-
-        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel26.setText("Clase de formacion");
 
         javax.swing.GroupLayout CreateInstructorSubPanelLayout = new javax.swing.GroupLayout(CreateInstructorSubPanel);
         CreateInstructorSubPanel.setLayout(CreateInstructorSubPanelLayout);
@@ -427,33 +432,27 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                         .addComponent(AsociarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel26)
-                                .addGap(68, 68, 68)
-                                .addComponent(ClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 999, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel24)
+                                    .addComponent(jLabel17))
+                                .addGap(95, 95, 95)
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(RegistrarArea)
+                                    .addComponent(RegistrarSede)))
                             .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel24)
-                                            .addComponent(jLabel17))
-                                        .addGap(95, 95, 95)
-                                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(RegistrarArea)
-                                            .addComponent(RegistrarSede)))
-                                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel40)
-                                            .addComponent(jLabel39)
-                                            .addComponent(jLabel41))
-                                        .addGap(33, 33, 33)
-                                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(RegistrarNivelFormacion, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(RegistrarProgramaFormacion, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(RegistrarJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel40)
+                                    .addComponent(jLabel39)
+                                    .addComponent(jLabel41))
+                                .addGap(33, 33, 33)
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(RegistrarNivelFormacion, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(RegistrarProgramaFormacion, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(RegistrarJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         CreateInstructorSubPanelLayout.setVerticalGroup(
@@ -514,10 +513,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                         .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(ResidenciaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel26)
-                    .addComponent(ClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel38)
@@ -583,7 +578,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                 YearCB.setModel(yearModel);
                 MesCB.setModel(mesModel);
                 DiaCB.setModel(diaModel);
-                ClaseFormacionCB.setModel(CBModels.generarComboBoxModelPorTipo("ClaseFormacion"));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -789,7 +783,7 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                             RegistrarCorreo.getText(),
                             GeneroCB.getSelectedItem().toString(),
                             ResidenciaHolder.getText(),
-                            ClaseFormacionCB.getSelectedItem().toString(),
+                            null,
                             fichas,
                             programasFormacion,
                             jornadasFormacion,
@@ -1063,9 +1057,45 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_RegistrarAreaActionPerformed
 
-    private void ClaseFormacionCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClaseFormacionCBActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ClaseFormacionCBActionPerformed
+    private void RegistrarNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RegistrarNombresKeyTyped
+                            char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_RegistrarNombresKeyTyped
+
+    private void RegistrarApellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RegistrarApellidosKeyTyped
+                           char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_RegistrarApellidosKeyTyped
+
+    private void RegistrarDocumentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RegistrarDocumentoKeyTyped
+                char caracter = evt.getKeyChar();
+
+        // Permitir solo números y la tecla de retroceso
+        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten números.");
+        }
+    }//GEN-LAST:event_RegistrarDocumentoKeyTyped
+
+    private void RegistrarTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RegistrarTelefonoKeyTyped
+                char caracter = evt.getKeyChar();
+
+        // Permitir solo números y la tecla de retroceso
+        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten números.");
+        }
+    }//GEN-LAST:event_RegistrarTelefonoKeyTyped
 
     private boolean fichaYaAsociada(int ficha) {
         DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
@@ -1111,7 +1141,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AsociarFicha;
     private javax.swing.JComboBox<String> BarrioCB;
-    private javax.swing.JComboBox<String> ClaseFormacionCB;
     private javax.swing.JButton ConfirmarRegistroUsuario;
     private javax.swing.JPanel CreateInstructorSubPanel;
     private javax.swing.JComboBox<String> DepartamentoCB;
@@ -1146,7 +1175,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;

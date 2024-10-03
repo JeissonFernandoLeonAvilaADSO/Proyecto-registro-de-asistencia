@@ -437,27 +437,6 @@ public class InstructorService {
             int instructorId = generatedInstructorId.intValue();
             System.out.println("ID de instructor generado: " + instructorId);
 
-            // Paso 5: Asociar el instructor con la clase de formación en la tabla `claseformacion`
-            System.out.println("Asociando instructor con clase de formación.");
-            Integer idClaseFormacion = jdbcTemplate.queryForObject(
-                    "SELECT ID FROM claseformacion WHERE NombreClase = ?",
-                    new Object[]{instructor.getClaseFormacion()},
-                    Integer.class
-            );
-
-            if (idClaseFormacion == null) {
-                throw new IllegalArgumentException("Clase de formación inválida: " + instructor.getClaseFormacion());
-            }
-
-            // Actualizar la tabla `claseformacion` con el ID del instructor
-            String sqlUpdateClaseFormacion = "UPDATE claseformacion SET IDInstructor = ? WHERE ID = ?";
-            int rowsAffectedClaseFormacion = jdbcTemplate.update(sqlUpdateClaseFormacion, instructorId, idClaseFormacion);
-
-            System.out.println("Asociando instructor a la clase " + instructor.getClaseFormacion() + ". Filas afectadas: " + rowsAffectedClaseFormacion);
-            if (rowsAffectedClaseFormacion == 0) {
-                throw new RuntimeException("La actualización en la tabla claseformacion no afectó a ninguna fila.");
-            }
-
             // Finalización exitosa
             System.out.println("Proceso completado exitosamente.");
             return instructor;

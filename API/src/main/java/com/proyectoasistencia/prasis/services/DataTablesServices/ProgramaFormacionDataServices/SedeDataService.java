@@ -20,6 +20,7 @@ public class SedeDataService {
     }
 
     public Map<String, Object> getSedeById(int id) {
+
         String sql = "SELECT * FROM sede WHERE ID = ?";
         try {
             return jdbcTemplate.queryForMap(sql, id);

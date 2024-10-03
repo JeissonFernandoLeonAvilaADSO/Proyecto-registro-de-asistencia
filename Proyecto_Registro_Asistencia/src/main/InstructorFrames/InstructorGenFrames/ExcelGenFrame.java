@@ -10,6 +10,7 @@ package main.InstructorFrames.InstructorGenFrames;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -104,6 +105,11 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         DocumentoAprendiz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DocumentoAprendizActionPerformed(evt);
+            }
+        });
+        DocumentoAprendiz.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                DocumentoAprendizKeyTyped(evt);
             }
         });
 
@@ -788,6 +794,16 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al obtener los aprendices: " + e.getMessage());
         }
     }//GEN-LAST:event_FichaCBActionPerformed
+
+    private void DocumentoAprendizKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DocumentoAprendizKeyTyped
+                char caracter = evt.getKeyChar();
+
+        // Permitir solo números y la tecla de retroceso
+        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten números.");
+        }
+    }//GEN-LAST:event_DocumentoAprendizKeyTyped
 
     private void desactivarAsis(){
         ListarAprendices.setEnabled(false);

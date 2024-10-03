@@ -61,6 +61,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
         NombreUsuarioInstructor = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
         CerrarSesion = new javax.swing.JButton();
+        MenuListarAprendices = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         MainPanel = new javax.swing.JPanel();
         HomePanel = new javax.swing.JPanel();
@@ -145,11 +146,26 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
             }
         });
 
+        MenuListarAprendices.setBackground(new java.awt.Color(0, 34, 64));
+        MenuListarAprendices.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        MenuListarAprendices.setForeground(new java.awt.Color(255, 255, 255));
+        MenuListarAprendices.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/util/icons/UsuarioIcon.png"))); // NOI18N
+        MenuListarAprendices.setText("Listar Aprendices");
+        MenuListarAprendices.setBorderPainted(false);
+        MenuListarAprendices.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MenuListarAprendices.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuListarAprendicesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1)
+            .addComponent(MenuInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(MenuBusqueda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -169,8 +185,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(CerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(MenuInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(MenuBusqueda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(MenuListarAprendices, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(MenuUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
@@ -189,6 +204,8 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                 .addComponent(MenuInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(MenuBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(MenuListarAprendices, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(MenuUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -283,13 +300,14 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
                 .addContainerGap(904, Short.MAX_VALUE)
                 .addComponent(RefrescarTablaAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(HomePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(HomePanelLayout.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(HomePanelLayout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(380, 380, 380))
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 1117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(GenerarNuevaAsistencia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -299,16 +317,15 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
             .addGroup(HomePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(RefrescarTablaAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(437, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(621, Short.MAX_VALUE))
             .addGroup(HomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(HomePanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(75, 75, 75)
+                    .addGap(123, 123, 123)
                     .addComponent(GenerarNuevaAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
@@ -325,7 +342,7 @@ public class InstructorHomeScreen extends javax.swing.JFrame {
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(HomePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(276, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -399,9 +416,11 @@ public void AditionalConfig() {
     MainPanel.setLayout(cardLayout);
     InstructorUserPanel UserPanel = new InstructorUserPanel();
     InstructorSearchPanel SearchPanel = new InstructorSearchPanel();
+    InstructorApList ApList = new InstructorApList();
     MainPanel.add(HomePanel, "HomePanel");
     MainPanel.add(UserPanel, "UserPanel");
     MainPanel.add(SearchPanel, "SearchPanel");
+    MainPanel.add(ApList, "ListarAprendices");
     
     if (screenWidth < 1920 || screenHeight < 1080) {
     
@@ -537,7 +556,7 @@ public void AditionalConfig() {
         ButtonStyler.applySecondaryStyle(MenuInicio);
         ButtonStyler.applySecondaryStyle(MenuBusqueda);
         ButtonStyler.applySecondaryStyle(MenuUsuario);
-
+        ButtonStyler.applySecondaryStyle(MenuListarAprendices);
         ButtonStyler.applyPrimaryStyle(CerrarSesion);
         ButtonStyler.applyPrimaryStyle(GenerarNuevaAsistencia);
 
@@ -592,6 +611,10 @@ public void AditionalConfig() {
 
     }//GEN-LAST:event_RefrescarTablaAsisActionPerformed
 
+    private void MenuListarAprendicesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuListarAprendicesActionPerformed
+                cardLayout.show(MainPanel, "ListarAprendices");
+    }//GEN-LAST:event_MenuListarAprendicesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -634,6 +657,7 @@ public void AditionalConfig() {
     private javax.swing.JPanel MainPanel;
     private javax.swing.JButton MenuBusqueda;
     private javax.swing.JButton MenuInicio;
+    private javax.swing.JButton MenuListarAprendices;
     private javax.swing.JButton MenuUsuario;
     private javax.swing.JLabel NombreUsuarioInstructor;
     private javax.swing.JButton RefrescarTablaAsis;

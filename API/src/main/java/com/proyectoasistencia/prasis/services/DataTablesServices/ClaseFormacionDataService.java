@@ -31,27 +31,27 @@ public class ClaseFormacionDataService {
     }
 
 
-    // Obtener instructores con sus clases para la ComboBox
-    public List<Map<String, Object>> obtenerInstructoresParaComboBox() {
-        String sql = "SELECT i.ID, pu.Documento AS DocumentoInstructor, " +
-                "cf.ID AS IDClase," +
-                "CONCAT(pu.Nombres, ' ', pu.Apellidos) AS NombreInstructor, " +
-                "pu.Correo AS CorreoInstructor, " +
-                "cf.NombreClase " +  // Añadir el NombreClase
-                "FROM instructor i " +
-                "INNER JOIN perfilusuario pu ON i.IDPerfilUsuario = pu.ID " +
-                "INNER JOIN ClaseFormacion cf ON cf.IDInstructor = i.ID";  // Asegura todos los instructores
-
-        System.out.println("Ejecutando consulta para obtener instructores para la ComboBox: " + sql);
-
-        // Ejecutar la consulta y obtener los resultados
-        List<Map<String, Object>> instructores = jdbcTemplate.queryForList(sql);
-
-        // Imprimir los resultados para depuración
-        System.out.println("Instructores obtenidos: " + instructores);
-
-        return instructores;  // Asegúrate de que nunca retorne null
-    }
+//    // Obtener instructores con sus clases para la ComboBox
+//    public List<Map<String, Object>> obtenerInstructoresParaComboBox() {
+//        String sql = "SELECT i.ID, pu.Documento AS DocumentoInstructor, " +
+//                "cf.ID AS IDClase," +
+//                "CONCAT(pu.Nombres, ' ', pu.Apellidos) AS NombreInstructor, " +
+//                "pu.Correo AS CorreoInstructor, " +
+//                "cf.NombreClase " +  // Añadir el NombreClase
+//                "FROM instructor i " +
+//                "INNER JOIN perfilusuario pu ON i.IDPerfilUsuario = pu.ID " +
+//                "INNER JOIN ClaseFormacion cf ON cf.IDInstructor = i.ID";  // Asegura todos los instructores
+//
+//        System.out.println("Ejecutando consulta para obtener instructores para la ComboBox: " + sql);
+//
+//        // Ejecutar la consulta y obtener los resultados
+//        List<Map<String, Object>> instructores = jdbcTemplate.queryForList(sql);
+//
+//        // Imprimir los resultados para depuración
+//        System.out.println("Instructores obtenidos: " + instructores);
+//
+//        return instructores;  // Asegúrate de que nunca retorne null
+//    }
 
     // Crear una nueva clase de formación
     public void crearClase(String nombreClase, String documentoInstructor) {

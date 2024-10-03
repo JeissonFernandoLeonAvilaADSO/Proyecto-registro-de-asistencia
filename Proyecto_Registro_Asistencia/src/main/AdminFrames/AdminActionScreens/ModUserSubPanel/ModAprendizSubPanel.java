@@ -4,6 +4,7 @@
  */
 package main.AdminFrames.AdminActionScreens.ModUserSubPanel;
 
+import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -116,6 +117,11 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
 
         ResultadoNombres.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoNombres.setForeground(new java.awt.Color(0, 0, 0));
+        ResultadoNombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ResultadoNombresKeyTyped(evt);
+            }
+        });
 
         jLabel29.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(0, 0, 0));
@@ -139,9 +145,19 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
 
         ResultadoApellidos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoApellidos.setForeground(new java.awt.Color(0, 0, 0));
+        ResultadoApellidos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ResultadoApellidosKeyTyped(evt);
+            }
+        });
 
         ResultadoDocumento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoDocumento.setForeground(new java.awt.Color(0, 0, 0));
+        ResultadoDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ResultadoDocumentoKeyTyped(evt);
+            }
+        });
 
         FichaCB.setForeground(new java.awt.Color(0, 0, 0));
         FichaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -154,6 +170,11 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
 
         ResultadoTelefono.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoTelefono.setForeground(new java.awt.Color(0, 0, 0));
+        ResultadoTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ResultadoTelefonoKeyTyped(evt);
+            }
+        });
 
         jLabel39.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel39.setForeground(new java.awt.Color(0, 0, 0));
@@ -317,6 +338,11 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
         IDInstructorField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IDInstructorFieldActionPerformed(evt);
+            }
+        });
+        IDInstructorField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                IDInstructorFieldKeyTyped(evt);
             }
         });
 
@@ -977,6 +1003,56 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No se encontró el usuario con el documento proporcionado.");
         }
     }//GEN-LAST:event_BuscarDatosUsuarioActionPerformed
+
+    private void ResultadoNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ResultadoNombresKeyTyped
+                                   char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_ResultadoNombresKeyTyped
+
+    private void ResultadoApellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ResultadoApellidosKeyTyped
+                                  char caracter = evt.getKeyChar();
+
+            // Permitir solo letras y las teclas de control (como backspace)
+            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+                evt.consume();  // Evitar que se ingrese el carácter no válido
+                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
+            }
+    }//GEN-LAST:event_ResultadoApellidosKeyTyped
+
+    private void IDInstructorFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IDInstructorFieldKeyTyped
+               char caracter = evt.getKeyChar();
+
+        // Permitir solo números y la tecla de retroceso
+        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten números.");
+        }
+    }//GEN-LAST:event_IDInstructorFieldKeyTyped
+
+    private void ResultadoDocumentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ResultadoDocumentoKeyTyped
+                char caracter = evt.getKeyChar();
+
+        // Permitir solo números y la tecla de retroceso
+        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten números.");
+        }
+    }//GEN-LAST:event_ResultadoDocumentoKeyTyped
+
+    private void ResultadoTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ResultadoTelefonoKeyTyped
+                char caracter = evt.getKeyChar();
+
+        // Permitir solo números y la tecla de retroceso
+        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten números.");
+        }
+    }//GEN-LAST:event_ResultadoTelefonoKeyTyped
 
 
 

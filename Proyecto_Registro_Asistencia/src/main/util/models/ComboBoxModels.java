@@ -78,7 +78,7 @@ public class ComboBoxModels {
                     case "TipoDocumento":
                         valores.add(jsonObject.getString("TipoDocumento"));
                         break;
-                    case "Area":
+                    case "Areas":
                         valores.add(jsonObject.getString("Area"));
                         break;
                     case "ClaseFormacion":
@@ -104,6 +104,15 @@ public class ComboBoxModels {
                         break;
                     case "Actividades":
                         valores.add(jsonObject.getString("TipoActividad"));
+                        break;
+                    case "JornadaFormacion":
+                        valores.add(jsonObject.getString("JornadasFormacion"));
+                        break;
+                    case "NivelFormacion":
+                        valores.add(jsonObject.getString("NivelFormacion"));
+                        break;
+                    case "Sede":
+                        valores.add(jsonObject.getString("CentroFormacion"));
                         break;
                     default:
                         System.out.println("Campo 'Nombre' no encontrado en el tipo: " + tipo);

@@ -48,9 +48,19 @@ public class ProgramaFormacionDataService {
         Integer nivelId = nivelFormacionDataService.getNivelIdByValue((String) programa.get("NivelFormacion"));
         Integer areaId = areaDataService.getAreaIdByValue((String) programa.get("Area"));
 
-        if (sedeId == null || jornadaId == null || nivelId == null || areaId == null) {
-            throw new IllegalArgumentException("Uno o más valores proporcionados no son válidos.");
+        if (sedeId == null) {
+            throw new IllegalArgumentException("el id de sede no es valido");
         }
+        if (jornadaId == null){
+            throw new IllegalArgumentException("el id de jornada no es valido");
+        }
+        if (nivelId == null){
+            throw new IllegalArgumentException("el id de nivel no es valido");
+        }
+        if (areaId == null){
+            throw new IllegalArgumentException("el area no es valido");
+        }
+
 
         String sql = """
                 INSERT INTO programaformacion 
@@ -70,15 +80,30 @@ public class ProgramaFormacionDataService {
 
     // Actualizar un programa de formación
     public boolean updateProgramaFormacion(int id, Map<String, Object> programa) {
+        System.out.println(programa);
         // Obtener los IDs correspondientes desde otros servicios
         Integer sedeId = sedeDataService.getSedeIdByCentroFormacion((String) programa.get("CentroFormacion"));
         Integer jornadaId = jornadaFormacionDataService.getJornadaIdByValue((String) programa.get("JornadasFormacion"));
         Integer nivelId = nivelFormacionDataService.getNivelIdByValue((String) programa.get("NivelFormacion"));
         Integer areaId = areaDataService.getAreaIdByValue((String) programa.get("Area"));
+        System.out.println(sedeId);
+        System.out.println(jornadaId);
+        System.out.println(nivelId);
+        System.out.println(areaId);
 
-        if (sedeId == null || jornadaId == null || nivelId == null || areaId == null) {
-            throw new IllegalArgumentException("Uno o más valores proporcionados no son válidos.");
+        if (sedeId == null) {
+            throw new IllegalArgumentException("el id de sede no es valido");
         }
+        if (jornadaId == null){
+            throw new IllegalArgumentException("el id de jornada no es valido");
+        }
+        if (nivelId == null){
+            throw new IllegalArgumentException("el id de nivel no es valido");
+        }
+        if (areaId == null){
+            throw new IllegalArgumentException("el area no es valido");
+        }
+
 
         String sql = """
                 UPDATE programaformacion 

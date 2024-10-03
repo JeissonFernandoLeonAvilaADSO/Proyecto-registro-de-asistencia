@@ -100,23 +100,6 @@ public class ButtonColumnHelper {
     }
 
 
-    // Método para imprimir el contenido de la tabla
-    private static void imprimirContenidoTablaEditar(JTable table) {
-        DefaultTableModel modeloTabla = (DefaultTableModel) table.getModel();
-        int filas = modeloTabla.getRowCount();
-        int columnas = modeloTabla.getColumnCount();
-
-        System.out.println("Contenido actual de la tabla:");
-
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                System.out.print(modeloTabla.getValueAt(i, j) + " ");
-            }
-            System.out.println(); // Salto de línea para cada fila
-        }
-    }
-
-
     // Clase para renderizar los botones de Excel
     public static class ButtonRendererExcel extends JButton implements TableCellRenderer {
         public ButtonRendererExcel() {
@@ -220,13 +203,6 @@ public class ButtonColumnHelper {
                 ex.printStackTrace();
             }
         }
-    }
-
-    // Método para agregar el botón "Abrir Excel" en una columna específica
-    public static void agregarBotonAbrirExcel(JTable tabla, int columna, List<Map<String, Object>> asistencias) {
-        TableColumn archivoColumn = tabla.getColumnModel().getColumn(columna);
-        archivoColumn.setCellRenderer(new ButtonRendererExcel());
-        archivoColumn.setCellEditor(new ButtonEditorExcel(new JCheckBox(), tabla, asistencias));
     }
 
 }

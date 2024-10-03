@@ -91,5 +91,22 @@ public class FichasDataController {
             return ResponseEntity.badRequest().body(null); // O puedes devolver un mensaje de error más descriptivo
         }
     }
+
+    // Obtener todas las fichas por documento del instructor
+    @GetMapping("/instructor/{documento}")
+    public ResponseEntity<List<Map<String, Object>>> obtenerFichasPorInstructor(@PathVariable String documento) {
+        try {
+            // Llamar al servicio para obtener las fichas por el documento del instructor
+            List<Map<String, Object>> fichas = fichasDataService.obtenerFichasPorDocumentoInstructor(documento);
+
+            if (fichas.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonList(Map.of("mensaje", "No se encontraron fichas para el instructor con documento: " + documento)));
+            }
+
+            return ResponseEntity.ok(fichas);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Collections.singletonList(Map.of("error", e.getMessage())));
+        }
+    }
 }
 

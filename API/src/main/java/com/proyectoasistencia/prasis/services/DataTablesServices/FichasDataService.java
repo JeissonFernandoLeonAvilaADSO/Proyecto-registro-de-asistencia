@@ -101,4 +101,17 @@ public class FichasDataService {
         String sql = "SELECT f.ID, f.NumeroFicha FROM fichas f WHERE f.IDProgramaFormacion = ?";
         return jdbcTemplate.queryForList(sql, idProgramaFormacion);
     }
+
+    // Obtener todas las fichas por el documento del instructor
+    public List<Map<String, Object>> obtenerFichasPorDocumentoInstructor(String documentoInstructor) {
+        String sql = """
+            SELECT f.NumeroFicha from instructor_ficha i_f
+                INNER JOIN instructor i ON i_f.IDInstructor = i.ID
+                INNER JOIN fichas f ON i_f.IDFicha = f.ID
+                INNER JOIN perfilusuario pu ON i.IDPerfilUsuario = pu.ID
+            WHERE pu.Documento = ?
+        """;
+
+        return jdbcTemplate.queryForList(sql, documentoInstructor);
+    }
 }

@@ -32,6 +32,7 @@ public class ProgramaFormacionDataController {
 
     @PostMapping
     public ResponseEntity<String> createProgramaFormacion(@RequestBody Map<String, Object> programaFormacion) {
+        System.out.println(programaFormacion);
         programaFormacionDataService.createProgramaFormacion(programaFormacion);
         return ResponseEntity.ok("Programa de formación creado exitosamente.");
     }
