@@ -717,96 +717,262 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
     }
 
     private void ConfirmarRegistroUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarRegistroUsuarioActionPerformed
+        // Mostrar el diálogo de confirmación
         int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea registrar los datos?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
 
         switch (respuesta) {
             case JOptionPane.YES_OPTION -> {
+                // Inicializar variables
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                formatoFecha.setLenient(false); // Validación estricta de la fecha
+                java.util.Date fechaNacimientoUtil = null;
+                java.sql.Date fechaNacimiento = null;
+
+                // Variable para acumular errores de validación
+                StringBuilder errores = new StringBuilder();
+
                 try {
+                    // 1. Validación de Campos Obligatorios
+                    if (RegistrarUsuario.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Usuario es obligatorio.\n");
+                    }
 
-                    SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-                    java.util.Date fechaNacimientoUtil = null;
-                    java.sql.Date fechaNacimiento = null;
+                    if (RegistrarPass.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Contraseña es obligatorio.\n");
+                    }
 
-                    try {
-                        // Intentar convertir la fecha del holder a un objeto java.util.Date en formato "yyyy-MM-dd"
-                        String fechaTexto = FechaHolder.getText();
-                        System.out.println("Fecha ingresada: " + fechaTexto);
+                    if (RegistrarDocumento.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Documento es obligatorio.\n");
+                    }
 
-                        fechaNacimientoUtil = formatoFecha.parse(fechaTexto);
+                    if (RegistrarNombres.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Nombres es obligatorio.\n");
+                    }
 
-                        // Convertir java.util.Date a java.sql.Date
-                        fechaNacimiento = new java.sql.Date(fechaNacimientoUtil.getTime());
-                        System.out.println("Fecha convertida a java.sql.Date: " + fechaNacimiento);
+                    if (RegistrarApellidos.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Apellidos es obligatorio.\n");
+                    }
 
-                    } catch (ParseException e) {
-                        e.printStackTrace();  // Manejar la excepción si la fecha no está en el formato correcto
+                    if (FechaHolder.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Fecha de Nacimiento es obligatorio.\n");
+                    }
 
+                    if (RegistrarTelefono.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Teléfono es obligatorio.\n");
+                    }
+
+                    if (RegistrarCorreo.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Correo Electrónico es obligatorio.\n");
+                    }
+
+                    if (ResidenciaHolder.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Residencia es obligatorio.\n");
+                    }
+
+                    if (FichaCB.getSelectedItem() == null) {
+                        errores.append("- Debes seleccionar al menos una Ficha.\n");
+                    }
+
+                    if (RegistrarProgramaFormacion.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Programa de Formación es obligatorio.\n");
+                    }
+
+                    if (RegistrarNivelFormacion.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Nivel de Formación es obligatorio.\n");
+                    }
+
+                    if (RegistrarJornadaFormacion.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Jornada de Formación es obligatorio.\n");
+                    }
+
+                    if (RegistrarArea.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Área es obligatorio.\n");
+                    }
+
+                    if (RegistrarSede.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Sede es obligatorio.\n");
+                    }
+
+                    // 2. Validación de Fecha de Nacimiento
+                    if (!FechaHolder.getText().trim().isEmpty()) {
                         try {
-                            // Asignar una fecha predeterminada en caso de error y convertirla a java.sql.Date
-                            System.out.println("Formato incorrecto. Usando fecha por defecto '1990-05-10'.");
-                            fechaNacimientoUtil = formatoFecha.parse("1990-05-10");
+                            String fechaTexto = FechaHolder.getText().trim();
+                            System.out.println("Fecha ingresada: " + fechaTexto);
+
+                            fechaNacimientoUtil = formatoFecha.parse(fechaTexto);
                             fechaNacimiento = new java.sql.Date(fechaNacimientoUtil.getTime());
-                        } catch (ParseException ex) {
-                            throw new RuntimeException(ex);
+                            System.out.println("Fecha convertida a java.sql.Date: " + fechaNacimiento);
+
+                            // Verificar que la fecha no sea futura ni demasiado antigua
+                            if (fechaNacimiento.before(java.sql.Date.valueOf("1900-01-01")) || fechaNacimiento.after(new java.sql.Date(System.currentTimeMillis()))) {
+                                errores.append("- La Fecha de Nacimiento es inválida.\n");
+                            }
+
+                            // Verificar que el usuario tenga al menos 18 años
+                            java.util.Calendar cal = java.util.Calendar.getInstance();
+                            cal.setTime(fechaNacimientoUtil);
+                            cal.add(java.util.Calendar.YEAR, 18);
+                            java.util.Date fechaMinima = cal.getTime();
+                            if (fechaMinima.after(new java.util.Date())) {
+                                errores.append("- Debes tener al menos 18 años para registrarte.\n");
+                            }
+
+                        } catch (ParseException e) {
+                            errores.append("- La Fecha de Nacimiento debe tener el formato 'yyyy-MM-dd'.\n");
                         }
                     }
-                    // Capturar los datos de la tabla FichasAsociadasTB
-                    DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
-                    int filas = modeloTabla.getRowCount();
 
+                    // 3. Validación de Correo Electrónico con Expresión Regular
+                    if (!RegistrarCorreo.getText().trim().isEmpty()) {
+                        String correo = RegistrarCorreo.getText().trim();
+                        String regexCorreo = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+                        if (!correo.matches(regexCorreo)) {
+                            errores.append("- El Correo Electrónico no es válido.\n");
+                        }
+                    }
+
+                    // 4. Validación de Teléfono (solo números y longitud mínima)
+                    if (!RegistrarTelefono.getText().trim().isEmpty()) {
+                        String telefono = RegistrarTelefono.getText().trim();
+                        String regexTelefono = "^[0-9]{7,15}$"; // Ajusta la longitud según sea necesario
+                        if (!telefono.matches(regexTelefono)) {
+                            errores.append("- El Teléfono debe contener solo números y tener entre 7 y 15 dígitos.\n");
+                        }
+                    }
+
+                    // 5. Validación de Documento (solo números y mínimo 4 caracteres)
+                    if (!RegistrarDocumento.getText().trim().isEmpty()) {
+                        String documento = RegistrarDocumento.getText().trim();
+                        if (!documento.matches("^[0-9]{4,}$")) { // Solo números y al menos 4 dígitos
+                            errores.append("- El Documento debe contener solo números y tener al menos 4 dígitos.\n");
+                        }
+                    }
+
+                    // 6. Validación de Contraseña (mínimo 8 caracteres)
+                    if (!RegistrarPass.getText().trim().isEmpty()) {
+                        String contraseña = RegistrarPass.getText().trim();
+                        if (contraseña.length() < 8) {
+                            errores.append("- La Contraseña debe tener al menos 8 caracteres.\n");
+                        }
+                        // Puedes agregar más validaciones si es necesario, como combinaciones de letras y números
+                    }
+
+                    // 7. Validación de Ficha (convertir a entero)
                     List<Integer> fichas = new ArrayList<>();
+                    if (FichaCB.getSelectedItem() != null) {
+                        try {
+                            // Suponiendo que FichaCB puede tener múltiples selecciones
+                            // Si solo permite una, ajusta el código en consecuencia
+                            fichas.add(Integer.parseInt(FichaCB.getSelectedItem().toString()));
+                        } catch (NumberFormatException e) {
+                            errores.append("- La Ficha seleccionada no es válida.\n");
+                        }
+                    }
+
+
+                    // 9. Validación de Programas, Niveles, Jornadas, etc. si es necesario
+                    // Puedes agregar más validaciones según tus requerimientos específicos
+
+                    // 10. Verificar si hay errores y mostrarlos
+                    if (errores.length() > 0) {
+                        JOptionPane.showMessageDialog(null, "Por favor, corrige los siguientes errores:\n" + errores.toString(), "Errores de Validación", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // 11. Capturar los datos de la tabla FichasAsociadasTB
+                    DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
+                    int filasTabla = modeloTabla.getRowCount();
+
+                    List<Integer> fichasList = new ArrayList<>();
                     List<String> programasFormacion = new ArrayList<>();
                     List<String> jornadasFormacion = new ArrayList<>();
                     List<String> nivelesFormacion = new ArrayList<>();
-                    List<String> sedes = new ArrayList<>();
-                    List<String> areas = new ArrayList<>();
+                    List<String> sedesList = new ArrayList<>();
+                    List<String> areasList = new ArrayList<>();
 
-                    for (int i = 0; i < filas; i++) {
-                        fichas.add((Integer) modeloTabla.getValueAt(i, 0));  // Ficha en la columna 0
-                        programasFormacion.add((String) modeloTabla.getValueAt(i, 1));  // Programa de formación en la columna 1
-                        nivelesFormacion.add((String) modeloTabla.getValueAt(i, 2));  // Nivel de formación en la columna 2
-                        jornadasFormacion.add((String) modeloTabla.getValueAt(i, 3));  // Jornada de formación en la columna 3
-                        sedes.add((String) modeloTabla.getValueAt(i, 4));  // Sede en la columna 4
-                        areas.add((String) modeloTabla.getValueAt(i, 5));  // Área en la columna 5
+                    for (int i = 0; i < filasTabla; i++) {
+                        // Validación de cada fila de la tabla
+                        try {
+                            fichasList.add((Integer) modeloTabla.getValueAt(i, 0)); // Ficha en la columna 0
+                        } catch (ClassCastException e) {
+                            errores.append("- El valor de Ficha en la fila " + (i + 1) + " no es válido.\n");
+                        }
+
+                        String programa = (String) modeloTabla.getValueAt(i, 1);
+                        String nivel = (String) modeloTabla.getValueAt(i, 2);
+                        String jornada = (String) modeloTabla.getValueAt(i, 3);
+                        String sedeFila = (String) modeloTabla.getValueAt(i, 4);
+                        String areaFila = (String) modeloTabla.getValueAt(i, 5);
+
+                        // Validar que los campos de la tabla no estén vacíos
+                        if (programa == null || programa.trim().isEmpty()) {
+                            errores.append("- El Programa de Formación en la fila " + (i + 1) + " es obligatorio.\n");
+                        }
+                        if (nivel == null || nivel.trim().isEmpty()) {
+                            errores.append("- El Nivel de Formación en la fila " + (i + 1) + " es obligatorio.\n");
+                        }
+                        if (jornada == null || jornada.trim().isEmpty()) {
+                            errores.append("- La Jornada de Formación en la fila " + (i + 1) + " es obligatoria.\n");
+                        }
+                        if (sedeFila == null || sedeFila.trim().isEmpty()) {
+                            errores.append("- La Sede en la fila " + (i + 1) + " es obligatoria.\n");
+                        }
+                        if (areaFila == null || areaFila.trim().isEmpty()) {
+                            errores.append("- El Área en la fila " + (i + 1) + " es obligatoria.\n");
+                        }
+
+                        programasFormacion.add(programa != null ? programa.trim() : "");
+                        nivelesFormacion.add(nivel != null ? nivel.trim() : "");
+                        jornadasFormacion.add(jornada != null ? jornada.trim() : "");
+                        sedesList.add(sedeFila != null ? sedeFila.trim() : "");
+                        areasList.add(areaFila != null ? areaFila.trim() : "");
                     }
 
-                    // Crear el objeto InstructorModel
+                    // Si hubo errores en la tabla, mostrarlos
+                    if (errores.length() > 0) {
+                        JOptionPane.showMessageDialog(null, "Por favor, corrige los siguientes errores en la tabla Fichas Asociadas:\n" + errores.toString(), "Errores de Validación", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // 12. Crear el objeto InstructorModel con los datos validados
                     InstructorModel instructor = new InstructorModel(
-                            RegistrarUsuario.getText(),
-                            RegistrarPass.getText(),
-                            RegistrarDocumento.getText(),
+                            RegistrarUsuario.getText().trim(),
+                            RegistrarPass.getText().trim(),
+                            RegistrarDocumento.getText().trim(),
                             TipoDocCB.getSelectedItem().toString(),
-                            RegistrarNombres.getText(),
-                            RegistrarApellidos.getText(),
-                            fechaNacimiento,  // Asegúrate de convertir la fecha correctamente
-                            RegistrarTelefono.getText(),
-                            RegistrarCorreo.getText(),
+                            RegistrarNombres.getText().trim(),
+                            RegistrarApellidos.getText().trim(),
+                            fechaNacimiento,  // Fecha ya convertida
+                            RegistrarTelefono.getText().trim(),
+                            RegistrarCorreo.getText().trim(),
                             GeneroCB.getSelectedItem().toString(),
-                            ResidenciaHolder.getText(),
-                            null,
-                            fichas,
+                            ResidenciaHolder.getText().trim(),
+                            null, // Si hay algún otro campo que manejar
+                            fichasList,
                             programasFormacion,
                             jornadasFormacion,
                             nivelesFormacion,
-                            sedes,
-                            areas
+                            sedesList,
+                            areasList
                     );
 
-                    // Enviar el modelo a la API
+                    // 13. Enviar el modelo a la API
                     API_Admin_InstructorApplications crearInstructor = new API_Admin_InstructorApplications();
-                    crearInstructor.CrearInstructor(instructor);
+                    crearInstructor.CrearInstructor(instructor); // Asumiendo que retorna un boolean
+                    JOptionPane.showMessageDialog(null, "Instructor registrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     limpiarFormularioInstructor();
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Error al enviar los datos del instructor: " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error al procesar los datos del instructor: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
             case JOptionPane.NO_OPTION, JOptionPane.CANCEL_OPTION -> {
+                // Opcional: Puedes agregar alguna acción si el usuario selecciona No o Cancelar
+                System.out.println("Registro de Instructor cancelado por el usuario.");
             }
         }
-
     }//GEN-LAST:event_ConfirmarRegistroUsuarioActionPerformed
 
 
@@ -1058,23 +1224,23 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_RegistrarAreaActionPerformed
 
     private void RegistrarNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RegistrarNombresKeyTyped
-                            char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_RegistrarNombresKeyTyped
 
     private void RegistrarApellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RegistrarApellidosKeyTyped
-                           char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_RegistrarApellidosKeyTyped
 
     private void RegistrarDocumentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RegistrarDocumentoKeyTyped

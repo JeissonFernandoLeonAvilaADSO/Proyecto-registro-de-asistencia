@@ -444,24 +444,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         return horaFormateada;
     }
 
-    public String HoraTardia() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, 1); // Añadir 1 hora
-
-        Date fechaEn1Hora = calendar.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
-        return sdf.format(fechaEn1Hora);
-    }
-
-    public String HoraInasistencia() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, 5); // Añadir 5 horas
-
-        Date fechaEn5Horas = calendar.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
-        return sdf.format(fechaEn5Horas);
-    }
-
     // Método para calcular la hora final sumando 5 horas a la hora de inicio
     public String calcularHoraFin(String horaInicio) {
         try {

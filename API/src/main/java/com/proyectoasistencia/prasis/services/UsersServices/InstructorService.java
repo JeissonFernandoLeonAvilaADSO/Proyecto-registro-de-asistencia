@@ -37,6 +37,7 @@ public class InstructorService {
 
     public InstructorModel getInstructor(String documento) {
         try {
+            System.out.println("documento:" +  documento);
             // Paso 1: Obtener el IDPerfilUsuario
             String sqlGetPerfilUsuarioId = """
             SELECT pu.ID
@@ -45,6 +46,7 @@ public class InstructorService {
             WHERE pu.Documento = ? AND r.TipoRol = 'Instructor'
         """;
             Integer perfilUsuarioId = jdbcTemplate.queryForObject(sqlGetPerfilUsuarioId, new Object[]{documento}, Integer.class);
+            System.out.println(perfilUsuarioId);
 
             if (perfilUsuarioId == null) {
                 throw new RuntimeException("No se encontró el perfil de usuario con documento: " + documento);
@@ -395,7 +397,7 @@ public class InstructorService {
                 ps.setString(7, instructor.getTelefono());
                 ps.setString(8, instructor.getCorreo());
                 ps.setInt(9, idGenero);
-                ps.setInt(10, 2); // Ajustar según el ID del rol 'instructor' en tu base de datos
+                ps.setInt(10, 1);
                 ps.setInt(11, idBarrio);
                 return ps;
             }, keyHolderPerfilUsuario);

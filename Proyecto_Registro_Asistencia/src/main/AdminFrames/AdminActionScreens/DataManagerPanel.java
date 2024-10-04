@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Map;
@@ -47,13 +48,13 @@ public class DataManagerPanel extends javax.swing.JPanel {
             actualizarTablaGeneros();
             actualizarTablaAmbientes();
             actualizarTablaActividades();
-            agregarModeloAdicional(FichasDataTable, dt.obtenerFichas(), dt.obtenerProgramaFormacion());
+            actualizarTablaFichas();
             actualizarTablaAreas();
             actualizarTablaJornadas();
             actualizarTablaNivelesFormacion();
             actualizarTablaSedesFormacion();
+            actualizarTablaClaseFormacion();
             FichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ProgramaFormacion"));
-            agregarModeloClaseFormacion(ClaseFormacionDataTable, API_DataClaseFormacionApplications.obtenerClasesConInstructor() );
             agregarModeloProgramaFormacion(ProgramaFormacionDataTable, API_DataProgramaFormacionApplications.obtenerProgramasFormacion());
             JornadaProgramaCB.setModel(cbm.generarComboBoxModelPorTipo("JornadaFormacion"));
             NivelFormacionProgramaCB.setModel(cbm.generarComboBoxModelPorTipo("NivelFormacion"));
@@ -102,7 +103,13 @@ public class DataManagerPanel extends javax.swing.JPanel {
     // Método para agregar modelo sin ComboBox, con valores adicionales mostrados como texto plano
     public void agregarModeloAdicional(JTable tabla, Map<Integer, String> datos, Map<Integer, String> valoresAdicionales) {
         // Crear el DefaultTableModel con columnas: ID, Valor, Selección (texto plano), Editar, Eliminar
-        DefaultTableModel modeloTabla = new DefaultTableModel(new Object[]{"ID", "Valor", "Selección", "Editar", "Eliminar"}, 0);
+        DefaultTableModel modeloTabla = new DefaultTableModel(new Object[]{"ID", "Valor", "Selección", "Editar", "Eliminar"}, 0) {
+            // Hacer que las celdas de botones no sean editables directamente
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 3 || column == 4; // Solo "Editar" y "Eliminar" son editables (para interactuar con los botones)
+            }
+        };
 
         // Rellenar el modelo con los datos y valores adicionales
         for (Map.Entry<Integer, String> entry : datos.entrySet()) {
@@ -117,15 +124,129 @@ public class DataManagerPanel extends javax.swing.JPanel {
         // Setear el modelo a la JTable
         tabla.setModel(modeloTabla);
 
-        // Asignar el ButtonRenderer y ButtonEditor para las columnas de "Editar" y "Eliminar"
+        // Configurar el tamaño de las columnas si es necesario
+         tabla.getColumnModel().getColumn(0).setPreferredWidth(50); // ID
+         tabla.getColumnModel().getColumn(1).setPreferredWidth(200); // Valor
+         tabla.getColumnModel().getColumn(2).setPreferredWidth(150); // Selección
+         tabla.getColumnModel().getColumn(3).setPreferredWidth(100); // Editar
+         tabla.getColumnModel().getColumn(4).setPreferredWidth(100); // Eliminar
+
+        // Asignar el ButtonRenderer para ambas columnas "Editar" y "Eliminar"
+        ButtonColumnHelper.ButtonRenderer buttonRenderer = new ButtonColumnHelper.ButtonRenderer();
         TableColumn editarColumna = tabla.getColumnModel().getColumn(3); // Columna de "Editar"
-        editarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
-        editarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla));
+        editarColumna.setCellRenderer(buttonRenderer);
 
         TableColumn eliminarColumna = tabla.getColumnModel().getColumn(4); // Columna de "Eliminar"
-        eliminarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
-        eliminarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla));
+        eliminarColumna.setCellRenderer(buttonRenderer);
+
+        // Asignar el ButtonEditor para la columna "Editar"
+        editarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                super.getTableCellEditorComponent(table, value, isSelected, row, column);
+                // Configurar el botón
+                button.setText((value == null) ? "Editar" : value.toString());
+
+                // Agregar el ActionListener específico para "Editar"
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Obtener los datos de la fila seleccionada
+                        Integer id = (Integer) table.getValueAt(row, 0);
+                        String valorPrincipal = (String) table.getValueAt(row, 1);
+                        String valorAdicional = (String) table.getValueAt(row, 2);
+
+                        // Mostrar un diálogo para editar los datos
+                        JTextField txtValorPrincipal = new JTextField(valorPrincipal);
+                        JTextField txtValorAdicional = new JTextField(valorAdicional);
+                        Object[] message = {
+                                "Valor Principal:", txtValorPrincipal,
+                                "Valor Adicional:", txtValorAdicional
+                        };
+
+                        int option = JOptionPane.showConfirmDialog(null, message, "Editar Ficha", JOptionPane.OK_CANCEL_OPTION);
+                        if (option == JOptionPane.OK_OPTION) {
+                            String nuevoValorPrincipal = txtValorPrincipal.getText().trim();
+                            String nuevoValorAdicional = txtValorAdicional.getText().trim();
+
+                            // Validaciones básicas
+                            if (nuevoValorPrincipal.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "El Valor Principal no puede estar vacío.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            // Suponiendo que 'numeroFicha' es el 'valorPrincipal'
+                            // Ajusta según tu lógica de negocio
+                            Integer numeroFicha;
+                            try {
+                                numeroFicha = Integer.parseInt(nuevoValorPrincipal);
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(null, "El Valor Principal debe ser un número.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            // Llamar al método de ClienteAPI para actualizar la ficha
+                            String respuesta = API_DataFichasApplications.actualizarFicha(id, numeroFicha, nuevoValorAdicional);
+
+                            if (respuesta != null && respuesta.contains("exitosamente")) {
+                                // Actualizar el modelo de la tabla con los nuevos valores
+                                table.setValueAt(nuevoValorPrincipal, row, 1);
+                                table.setValueAt(nuevoValorAdicional, row, 2);
+                                JOptionPane.showMessageDialog(null, "Ficha actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                // El mensaje de error ya fue mostrado en ClienteAPI
+                            }
+                        }
+
+                        // Detener la edición para que el botón vuelva a su estado normal
+                        fireEditingStopped();
+                    }
+                });
+
+                return button;
+            }
+        });
+
+        // Asignar el ButtonEditor para la columna "Eliminar"
+        eliminarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                super.getTableCellEditorComponent(table, value, isSelected, row, column);
+                // Configurar el botón
+                button.setText((value == null) ? "Eliminar" : value.toString());
+
+                // Agregar el ActionListener específico para "Eliminar"
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Obtener el ID de la ficha seleccionada
+                        Integer id = (Integer) table.getValueAt(row, 0);
+
+                        // Confirmar eliminación
+                        int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar la ficha con ID " + id + "?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+                        if (confirm == JOptionPane.YES_OPTION) {
+                            // Llamar al método de ClienteAPI para eliminar la ficha
+                            String respuesta = API_DataFichasApplications.eliminarFicha(id);
+
+                            if (respuesta != null && respuesta.contains("exitosamente")) {
+                                // Eliminar la fila del modelo de la tabla
+                                ((DefaultTableModel) table.getModel()).removeRow(row);
+                                JOptionPane.showMessageDialog(null, "Ficha eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                // El mensaje de error ya fue mostrado en ClienteAPI
+                            }
+                        }
+
+                        // Detener la edición para que el botón vuelva a su estado normal
+                        fireEditingStopped();
+                    }
+                });
+
+                return button;
+            }
+        });
     }
+
 
     // Método para agregar modelo de clase de formación sin ComboBox, usando texto plano para mostrar el instructor
     // Asumiendo que tienes una instancia de JTable llamada 'tabla'
@@ -216,6 +337,9 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         table.setValueAt(nuevoDocumentoInstructor, row, 3);
                         table.setValueAt(instructor.getCorreo(), row, 4);
                         JOptionPane.showMessageDialog(this.getComponent(), "Clase actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        actualizarTablaClaseFormacion();
+                        ClaseFormacionHolder.setText("");
+                        DocumentoInstructorClaseFormacionHolder.setText("");
                     } else {
                         JOptionPane.showMessageDialog(this.getComponent(), "No se pudo actualizar la clase.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -361,19 +485,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
         });
     }
 
-    public void activarComponentes(JPanel panel) {
-        Component[] components = panel.getComponents();
-        for (Component component : components) {
-            component.setEnabled(true);
-        }
-    }
-
-    public void DesActivarComponentes(JPanel panel) {
-        Component[] components = panel.getComponents();
-        for (Component component : components) {
-            component.setEnabled(false);
-        }
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -410,6 +521,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         FichaHolder = new javax.swing.JTextField();
+        RefrescarTablaFichas = new javax.swing.JButton();
         ClasesFormacionPanel = new javax.swing.JPanel();
         ClaseFormacionHolder = new javax.swing.JTextField();
         AgregarClaseFormacion = new javax.swing.JButton();
@@ -418,6 +530,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         DocumentoInstructorClaseFormacionHolder = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        RefrescarTablaClaseFormacion = new javax.swing.JButton();
         AmbientesPanel = new javax.swing.JPanel();
         AmbienteHolder = new javax.swing.JTextField();
         AgregarAmbiente = new javax.swing.JButton();
@@ -724,6 +837,16 @@ public class DataManagerPanel extends javax.swing.JPanel {
             }
         });
 
+        RefrescarTablaFichas.setBackground(new java.awt.Color(57, 169, 0));
+        RefrescarTablaFichas.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RefrescarTablaFichas.setForeground(new java.awt.Color(255, 255, 255));
+        RefrescarTablaFichas.setText("Refrescar tabla");
+        RefrescarTablaFichas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefrescarTablaFichasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout FichasPanelLayout = new javax.swing.GroupLayout(FichasPanel);
         FichasPanel.setLayout(FichasPanelLayout);
         FichasPanelLayout.setHorizontalGroup(
@@ -743,7 +866,9 @@ public class DataManagerPanel extends javax.swing.JPanel {
                                 .addComponent(FichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(AgregarFicha)))))
-                .addContainerGap(612, Short.MAX_VALUE))
+                .addGap(214, 214, 214)
+                .addComponent(RefrescarTablaFichas)
+                .addContainerGap(265, Short.MAX_VALUE))
         );
         FichasPanelLayout.setVerticalGroup(
             FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -752,14 +877,19 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(FichasPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(FichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AgregarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(FichaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(FichasPanelLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(RefrescarTablaFichas)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(FichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AgregarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(FichaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(320, Short.MAX_VALUE))
+                .addContainerGap(340, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Fichas", FichasPanel);
@@ -814,15 +944,27 @@ public class DataManagerPanel extends javax.swing.JPanel {
 
         jLabel4.setText("Documento del instructor por asociar");
 
+        RefrescarTablaClaseFormacion.setBackground(new java.awt.Color(57, 169, 0));
+        RefrescarTablaClaseFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RefrescarTablaClaseFormacion.setForeground(new java.awt.Color(255, 255, 255));
+        RefrescarTablaClaseFormacion.setText("Refrescar tabla");
+        RefrescarTablaClaseFormacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefrescarTablaClaseFormacionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ClasesFormacionPanelLayout = new javax.swing.GroupLayout(ClasesFormacionPanel);
         ClasesFormacionPanel.setLayout(ClasesFormacionPanelLayout);
         ClasesFormacionPanelLayout.setHorizontalGroup(
             ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ClasesFormacionPanelLayout.createSequentialGroup()
                 .addContainerGap(180, Short.MAX_VALUE)
-                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane5)
+                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ClasesFormacionPanelLayout.createSequentialGroup()
                         .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
@@ -832,13 +974,17 @@ public class DataManagerPanel extends javax.swing.JPanel {
                             .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
                                 .addComponent(DocumentoInstructorClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(AgregarClaseFormacion)))))
-                .addGap(115, 115, 115))
+                                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(RefrescarTablaClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(AgregarClaseFormacion))))
+                        .addGap(115, 115, 115))))
         );
         ClasesFormacionPanelLayout.setVerticalGroup(
             ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
-                .addGap(61, 61, 61)
+                .addGap(26, 26, 26)
+                .addComponent(RefrescarTablaClaseFormacion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
@@ -849,7 +995,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(DocumentoInstructorClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Clases de Formacion", ClasesFormacionPanel);
@@ -1049,7 +1195,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(AreaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addContainerGap(182, Short.MAX_VALUE))
         );
 
         ProgramasFormacionTabPanel.addTab("Areas", AreasPanel);
@@ -1459,8 +1605,16 @@ public class DataManagerPanel extends javax.swing.JPanel {
         String area = AreaFormacionCB.getSelectedItem().toString().trim();
 
         // 2. Validar que todos los campos estén llenos
-        if (programaFormacion.isEmpty() || centroFormacion.isEmpty() || jornadasFormacion.isEmpty()
-            || nivelFormacion.isEmpty() || area.isEmpty()) {
+        if (programaFormacion.isEmpty()
+                || centroFormacion.isEmpty()
+                || jornadasFormacion.isEmpty()
+                || nivelFormacion.isEmpty()
+                || area.isEmpty()
+                || ProgramaFormacionHolder.getText().trim().equals("Seleccionar...")
+                || SedeFormacionCB.getSelectedItem().toString().trim().equals("Seleccionar...")
+                || JornadaProgramaCB.getSelectedItem().toString().trim().equals("Seleccionar...")
+                || NivelFormacionProgramaCB.getSelectedItem().toString().trim().equals("Seleccionar...")
+                || AreaFormacionCB.getSelectedItem().toString().trim().equals("Seleccionar...")){
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -1494,6 +1648,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
             NivelFormacionProgramaCB.setSelectedItem(0);
             SedeFormacionCB.setSelectedItem(0);
             AreaFormacionCB.setSelectedItem(0);
+            actualizarTablaProgramaFormacion();
         }
     }//GEN-LAST:event_AgregarProgramaFormacionActionPerformed
 
@@ -1620,7 +1775,8 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "La ficha " + fichaNumero + " ya está registrada.");
             } else {
                 JOptionPane.showMessageDialog(this, "Ficha registrada correctamente.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                // Aquí puedes agregar la lógica para añadir la ficha a la tabla o sistema
+                API_DataFichasApplications.crearFicha(fichaNumero, FichaDataProgramaFormacionCB.getSelectedItem().toString());
+                actualizarTablaFichas();
             }
 
         } catch (NumberFormatException e) {
@@ -1658,43 +1814,43 @@ public class DataManagerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_AgregarTipoDocActionPerformed
 
     private void TipoDocumentoHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TipoDocumentoHolderKeyTyped
-                                  char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_TipoDocumentoHolderKeyTyped
 
     private void RolHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RolHolderKeyTyped
-                                  char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_RolHolderKeyTyped
 
     private void GeneroHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GeneroHolderKeyTyped
-                                   char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_GeneroHolderKeyTyped
 
     private void ClaseFormacionHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClaseFormacionHolderKeyTyped
-                                   char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_ClaseFormacionHolderKeyTyped
 
     private void DocumentoInstructorClaseFormacionHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DocumentoInstructorClaseFormacionHolderKeyTyped
@@ -1708,74 +1864,82 @@ public class DataManagerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_DocumentoInstructorClaseFormacionHolderKeyTyped
 
     private void AmbienteHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AmbienteHolderKeyTyped
-                                           char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_AmbienteHolderKeyTyped
 
     private void ActividadHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ActividadHolderKeyTyped
-                                         char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_ActividadHolderKeyTyped
 
     private void AreaHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AreaHolderKeyTyped
-                                          char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_AreaHolderKeyTyped
 
     private void JornadaHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JornadaHolderKeyTyped
-                                           char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_JornadaHolderKeyTyped
 
     private void NivelFormacionHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NivelFormacionHolderKeyTyped
-                                          char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_NivelFormacionHolderKeyTyped
 
     private void ProgramaFormacionHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ProgramaFormacionHolderKeyTyped
-                                          char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_ProgramaFormacionHolderKeyTyped
 
     private void SedeHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SedeHolderKeyTyped
-                                           char caracter = evt.getKeyChar();
+        char caracter = evt.getKeyChar();
 
-            // Permitir solo letras y las teclas de control (como backspace)
-            if (!Character.isLetter(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-                evt.consume();  // Evitar que se ingrese el carácter no válido
-                JOptionPane.showMessageDialog(this, "Solo se permiten letras.");
-            }
+        // Permitir solo letras, la barra espaciadora y las teclas de control (como backspace)
+        if (!Character.isLetter(caracter) && caracter != '\b' && caracter != ' ') {
+            evt.consume();  // Evitar que se ingrese el carácter no válido
+            JOptionPane.showMessageDialog(this, "Solo se permiten letras y espacios.");
+        }
     }//GEN-LAST:event_SedeHolderKeyTyped
+
+    private void RefrescarTablaFichasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarTablaFichasActionPerformed
+       actualizarTablaFichas();
+    }//GEN-LAST:event_RefrescarTablaFichasActionPerformed
+
+    private void RefrescarTablaClaseFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarTablaClaseFormacionActionPerformed
+       actualizarTablaClaseFormacion();
+    }//GEN-LAST:event_RefrescarTablaClaseFormacionActionPerformed
 
     public void comportamientoTabla(JTable table, String tipoTabla) {
         // Configurar el comportamiento de los botones de "Editar"
@@ -2019,6 +2183,20 @@ public class DataManagerPanel extends javax.swing.JPanel {
         comportamientoTabla(SedesDataTables, "Sede");
     }
 
+    public void actualizarTablaProgramaFormacion(){
+        agregarModeloProgramaFormacion(ProgramaFormacionDataTable, API_DataProgramaFormacionApplications.obtenerProgramasFormacion());
+    }
+
+    public void actualizarTablaFichas(){
+        agregarModeloAdicional(FichasDataTable, dt.obtenerFichas(), dt.obtenerProgramaFormacion());
+    }
+
+    public void actualizarTablaClaseFormacion(){
+        agregarModeloClaseFormacion(ClaseFormacionDataTable, API_DataClaseFormacionApplications.obtenerClasesConInstructor());
+    }
+
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ActividadHolder;
     private javax.swing.JTable ActividadesDataTable;
@@ -2067,6 +2245,8 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JPanel ProgramasFormacionPanel;
     private javax.swing.JPanel ProgramasFormacionSubPanel;
     private javax.swing.JTabbedPane ProgramasFormacionTabPanel;
+    private javax.swing.JButton RefrescarTablaClaseFormacion;
+    private javax.swing.JButton RefrescarTablaFichas;
     private javax.swing.JButton RefrescarTablaTipoDoc;
     private javax.swing.JTextField RolHolder;
     private javax.swing.JPanel RolesPanel;

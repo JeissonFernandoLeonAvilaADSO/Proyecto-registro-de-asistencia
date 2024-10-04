@@ -863,6 +863,8 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                     // Enviar el modelo a la API
                     API_Admin_InstructorApplications actualizarInstructor = new API_Admin_InstructorApplications();
                     actualizarInstructor.UpdateInstructor(ResultadoDocumento.getText(), instructor);
+                    JOptionPane.showMessageDialog(null, "Aprendiz modificado exitosamente");
+
 
                     // Limpiar formulario después de la actualización
                     limpiarFormularioInstructor();

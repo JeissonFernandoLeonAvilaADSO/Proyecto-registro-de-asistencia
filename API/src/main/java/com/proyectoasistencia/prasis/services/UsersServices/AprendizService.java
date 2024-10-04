@@ -284,7 +284,7 @@ public class AprendizService {
                 ps.setString(7, aprendiz.getTelefono());
                 ps.setString(8, aprendiz.getCorreo());
                 ps.setInt(9, idGenero);
-                ps.setInt(10, 4); // Ajustar según el ID del rol 'aprendiz' en tu base de datos
+                ps.setInt(10, 2);
                 ps.setInt(11, idBarrio);
                 return ps;
             }, keyHolderPerfilUsuario);

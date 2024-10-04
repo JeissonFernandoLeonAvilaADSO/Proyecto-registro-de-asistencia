@@ -845,6 +845,8 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
 
         API_Admin_AprendizApplications actualizarAprendiz = new API_Admin_AprendizApplications();
         actualizarAprendiz.UpdateAprendiz(ResultadoDocumento.getText() ,aprendiz);
+        JOptionPane.showMessageDialog(null, "Aprendiz modificado exitosamente");
+
         limpiarFormularioAprendiz();
 
     }//GEN-LAST:event_ConfirmarRegistroUsuarioActionPerformed

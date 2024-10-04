@@ -32,7 +32,9 @@ public class FichasDataController {
     @PostMapping("/crear")
     public ResponseEntity<String> crearFicha(@RequestParam Integer numeroFicha, @RequestParam String programaFormacion) {
         try {
-            fichasDataService.crearFicha(numeroFicha, programaFormacion);
+            Integer DecodeNumeroFicha = Integer.parseInt(URLDecoder.decode(String.valueOf(numeroFicha), StandardCharsets.UTF_8.name()));
+            String DecodeProgramaFormacion = URLDecoder.decode(programaFormacion, StandardCharsets.UTF_8.name());
+            fichasDataService.crearFicha(DecodeNumeroFicha, DecodeProgramaFormacion);
             return ResponseEntity.ok("Ficha creada exitosamente.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al crear la ficha: " + e.getMessage());
