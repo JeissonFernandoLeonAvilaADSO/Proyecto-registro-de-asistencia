@@ -5,6 +5,7 @@
 package main.AdminFrames.AdminActionScreens.ModUserSubPanel;
 
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.text.ParseException;
@@ -35,7 +36,7 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
     DefaultComboBoxModel<String> mesModel = new DefaultComboBoxModel<>();
     DefaultComboBoxModel<String> diaModel = new DefaultComboBoxModel<>();
     DefaultTableModel modeloTabla = new DefaultTableModel(
-            new Object[] {"Ficha", "Programa de Formación", "Nivel de Formación", "Jornada de Formación", "Sede", "Área", "Eliminar"},
+            new Object[] {"Ficha", "Jornada de Formación", "Eliminar"},
             0  // Número de filas iniciales
     );
 
@@ -70,7 +71,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         jLabel29 = new javax.swing.JLabel();
         ResultadoNombres = new javax.swing.JTextField();
         ResultadoSede = new javax.swing.JTextField();
-        ResultadoPass = new javax.swing.JTextField();
         ResultadoNivelFormacion = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
         GeneroCB = new javax.swing.JComboBox<>();
@@ -86,10 +86,8 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         ResultadoCorreo = new javax.swing.JTextField();
         DepartamentoCB = new javax.swing.JComboBox<>();
         jLabel30 = new javax.swing.JLabel();
-        ResultadoJornadaFormacion = new javax.swing.JTextField();
         jLabel24 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel39 = new javax.swing.JLabel();
         YearCB = new javax.swing.JComboBox<>();
         ResultadoTelefono = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
@@ -101,8 +99,10 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         IDInstructorField = new javax.swing.JTextField();
         BuscarDatosUsuario = new javax.swing.JButton();
-        jLabel26 = new javax.swing.JLabel();
-        ClaseFormacionCB = new javax.swing.JComboBox<>();
+        RefrescarCombos = new javax.swing.JButton();
+        jLabel31 = new javax.swing.JLabel();
+        ResultadoJornadaFormacion = new javax.swing.JTextField();
+        ResultadoPass = new javax.swing.JPasswordField();
 
         CreateInstructorSubPanel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -199,14 +199,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         ResultadoSede.setEditable(false);
         ResultadoSede.setFocusable(false);
 
-        ResultadoPass.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoPass.setForeground(new java.awt.Color(0, 0, 0));
-        ResultadoPass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ResultadoPassActionPerformed(evt);
-            }
-        });
-
         ResultadoNivelFormacion.setEditable(false);
         ResultadoNivelFormacion.setFocusable(false);
 
@@ -301,9 +293,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         jLabel30.setForeground(new java.awt.Color(0, 0, 0));
         jLabel30.setText("Residencia");
 
-        ResultadoJornadaFormacion.setEditable(false);
-        ResultadoJornadaFormacion.setFocusable(false);
-
         jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(0, 0, 0));
         jLabel24.setText("Area de trabajo");
@@ -311,10 +300,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(0, 0, 0));
         jLabel18.setText("Telefono");
-
-        jLabel39.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel39.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel39.setText("Jornada de formacion");
 
         YearCB.setForeground(new java.awt.Color(0, 0, 0));
         YearCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -403,19 +388,34 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel26.setText("Clase de formacion");
-
-        ClaseFormacionCB.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ClaseFormacionCB.setForeground(new java.awt.Color(0, 0, 0));
-        ClaseFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        ClaseFormacionCB.setPreferredSize(new java.awt.Dimension(64, 28));
-        ClaseFormacionCB.addActionListener(new java.awt.event.ActionListener() {
+        RefrescarCombos.setBackground(new java.awt.Color(57, 169, 0));
+        RefrescarCombos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RefrescarCombos.setForeground(new java.awt.Color(255, 255, 255));
+        RefrescarCombos.setText("Refrescar comboBox");
+        RefrescarCombos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClaseFormacionCBActionPerformed(evt);
+                RefrescarCombosActionPerformed(evt);
             }
         });
+
+        jLabel31.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel31.setText("Jornada de formacion");
+
+        ResultadoJornadaFormacion.setEditable(false);
+        ResultadoJornadaFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        ResultadoJornadaFormacion.setForeground(new java.awt.Color(0, 0, 0));
+        ResultadoJornadaFormacion.setFocusable(false);
+        ResultadoJornadaFormacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResultadoJornadaFormacionActionPerformed(evt);
+            }
+
+            private void ResultadoJornadaFormacionActionPerformed(ActionEvent evt) {
+            }
+        });
+
+        ResultadoPass.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
 
         javax.swing.GroupLayout CreateInstructorSubPanelLayout = new javax.swing.GroupLayout(CreateInstructorSubPanel);
         CreateInstructorSubPanel.setLayout(CreateInstructorSubPanelLayout);
@@ -423,101 +423,101 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
             CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(RefrescarCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addGap(120, 120, 120)
+                        .addComponent(ResultadoDocumento))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
+                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel40)
+                                    .addComponent(jLabel41))
+                                .addGap(33, 33, 33)
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                                    .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.Alignment.LEADING)))
+                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel24)
+                                    .addComponent(jLabel17)
+                                    .addComponent(jLabel31))
+                                .addGap(50, 50, 50)
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ResultadoJornadaFormacion)
+                                    .addComponent(ResultadoArea, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                                    .addComponent(ResultadoSede))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
+                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel30)
+                            .addComponent(jLabel29)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel23)
+                            .addComponent(jLabel25))
+                        .addGap(56, 56, 56)
+                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                                .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ResidenciaHolder))
+                            .addComponent(ResultadoCorreo)
+                            .addComponent(ResultadoTelefono)
+                            .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                                .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ResultadoFechaHolder))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
+                        .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 824, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
+                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel22)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel20)
+                            .addComponent(jLabel27)
+                            .addComponent(jLabel28))
+                        .addGap(67, 67, 67)
+                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(ResultadoNombres, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ResultadoUsuario, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TipoDocCB, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ResultadoApellidos, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ResultadoPass)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
                         .addComponent(jLabel38)
                         .addGap(85, 85, 85)
                         .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AsociarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel24)
-                                    .addComponent(jLabel17))
-                                .addGap(95, 95, 95)
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ResultadoArea)
-                                    .addComponent(ResultadoSede)))
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel40)
-                                    .addComponent(jLabel39)
-                                    .addComponent(jLabel41))
-                                .addGap(33, 33, 33)
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ResultadoJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1))
-                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel26)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(0, 1032, Short.MAX_VALUE))
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel22)
-                                    .addComponent(jLabel21)
-                                    .addComponent(jLabel20)
-                                    .addComponent(jLabel27)
-                                    .addComponent(jLabel28))
-                                .addGap(67, 67, 67)
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(TipoDocCB, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(ResultadoNombres, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(ResultadoApellidos, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(ResultadoPass)
-                                    .addComponent(ResultadoUsuario)))
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel19)
-                                .addGap(120, 120, 120)
-                                .addComponent(ResultadoDocumento))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addComponent(IDInstructorField)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel30)
-                                    .addComponent(jLabel29)
-                                    .addComponent(jLabel18)
-                                    .addComponent(jLabel23)
-                                    .addComponent(jLabel25))
-                                .addGap(56, 56, 56)
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                        .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(ResultadoFechaHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE))
-                                    .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(ResultadoTelefono)
-                                    .addComponent(ResultadoCorreo)
-                                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                        .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(ResidenciaHolder))
-                                    .addComponent(ClaseFormacionCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addContainerGap())))
+                    .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         CreateInstructorSubPanelLayout.setVerticalGroup(
             CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                .addComponent(jLabel6)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateInstructorSubPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel6))
+                    .addComponent(RefrescarCombos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -526,16 +526,17 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                 .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ResultadoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel27))
-                .addGap(9, 9, 9)
-                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel28)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel19))
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabel28))
                     .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addComponent(ResultadoPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ResultadoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(5, 5, 5)
+                        .addComponent(ResultadoPass, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel19)
+                    .addComponent(ResultadoDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TipoDocCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -577,16 +578,13 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                         .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(ResidenciaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel26))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel38)
-                    .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AsociarFicha))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(AsociarFicha)))
+                .addGap(7, 7, 7)
                 .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
                         .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -596,11 +594,11 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                         .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel40)
                             .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel39)
-                            .addComponent(ResultadoJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel31)
+                            .addComponent(ResultadoJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel24)
                             .addComponent(ResultadoArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -611,7 +609,7 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -622,21 +620,21 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(CreateInstructorSubPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(CreateInstructorSubPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    
+
         public void aditionalConfig(){
             try {
+                ComboBoxModels CBModels = new ComboBoxModels();
                 ButtonStyler buttonStyler = new ButtonStyler();
                 buttonStyler.applyPrimaryStyle(AsociarFicha);
+                FichasAsociadasTB.setModel(modeloTabla);
                 yearModel.addElement("Seleccionar Año");
                 llenarYear(yearModel);
                 mesModel.addElement("Seleccionar Mes");
                 diaModel.addElement("Seleccionar Día");
-                FichasAsociadasTB.setModel(modeloTabla);
-                ComboBoxModels CBModels = new ComboBoxModels();
                 TipoDocCB.setModel(CBModels.generarComboBoxModelPorTipo("TipoDocumento"));
                 GeneroCB.setModel(CBModels.generarComboBoxModelPorTipo("Genero"));
                 MunicipioCB.setModel(CBModels.generarComboBoxModelPorTipo("Municipios"));
@@ -646,12 +644,11 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                 YearCB.setModel(yearModel);
                 MesCB.setModel(mesModel);
                 DiaCB.setModel(diaModel);
-                ClaseFormacionCB.setModel(CBModels.generarComboBoxModelPorTipo("ClaseFormacion"));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
-        
+
          private void llenarYear(DefaultComboBoxModel<String> anhoModel) {
         int anhoActual = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = anhoActual; i > anhoActual - 100; i--) {
@@ -750,7 +747,7 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
             ResultadoFechaHolder.setText(fechaParcial); // Mostrar la selección parcial
         }
     }
-    
+
     private void actualizarResidencia() {
         String departamentoSeleccionado = (String) DepartamentoCB.getSelectedItem();
         String municipioSeleccionado = (String) MunicipioCB.getSelectedItem();
@@ -786,97 +783,191 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
     }
 
     private void ConfirmarRegistroUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarRegistroUsuarioActionPerformed
-        int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea registrar los datos?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea actualizar los datos?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
 
         switch (respuesta) {
             case JOptionPane.YES_OPTION -> {
                 try {
+                    // Formato de la fecha esperada
                     SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+                    formatoFecha.setLenient(false); // Validación estricta de la fecha
                     java.util.Date fechaNacimientoUtil = null;
                     java.sql.Date fechaNacimiento = null;
 
-                    try {
-                        // Intentar convertir la fecha del holder a un objeto java.util.Date en formato "yyyy-MM-dd"
-                        String fechaTexto = ResultadoFechaHolder.getText();
-                        System.out.println("Fecha ingresada: " + fechaTexto);
+                    // Variable para acumular errores de validación
+                    StringBuilder errores = new StringBuilder();
 
-                        fechaNacimientoUtil = formatoFecha.parse(fechaTexto);
+                    // 1. Validación de Campos Obligatorios
+                    if (ResultadoUsuario.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Usuario es obligatorio.\n");
+                    }
 
-                        // Convertir java.util.Date a java.sql.Date
-                        fechaNacimiento = new java.sql.Date(fechaNacimientoUtil.getTime());
-                        System.out.println("Fecha convertida a java.sql.Date: " + fechaNacimiento);
+                    if (ResultadoPass.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Contraseña es obligatorio.\n");
+                    }
 
-                    } catch (ParseException e) {
-                        e.printStackTrace();  // Manejar la excepción si la fecha no está en el formato correcto
+                    if (ResultadoDocumento.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Documento es obligatorio.\n");
+                    }
+
+                    if (ResultadoNombres.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Nombres es obligatorio.\n");
+                    }
+
+                    if (ResultadoApellidos.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Apellidos es obligatorio.\n");
+                    }
+
+                    if (ResultadoFechaHolder.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Fecha de Nacimiento es obligatorio.\n");
+                    }
+
+                    if (ResultadoTelefono.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Teléfono es obligatorio.\n");
+                    }
+
+                    if (ResultadoCorreo.getText().trim().isEmpty()) {
+                        errores.append("- El campo de Correo Electrónico es obligatorio.\n");
+                    }
+
+                    if (ResidenciaHolder.getText().trim().isEmpty()) { // Corregido aquí
+                        errores.append("- El campo de Residencia es obligatorio.\n");
+                    }
+
+                    // 2. Validación de Fecha de Nacimiento
+                    if (!ResultadoFechaHolder.getText().trim().isEmpty()) {
                         try {
-                            // Asignar una fecha predeterminada en caso de error y convertirla a java.sql.Date
-                            System.out.println("Formato incorrecto. Usando fecha por defecto '1990-05-10'.");
-                            fechaNacimientoUtil = formatoFecha.parse("1990-05-10");
+                            String fechaTexto = ResultadoFechaHolder.getText().trim();
+                            fechaNacimientoUtil = formatoFecha.parse(fechaTexto);
                             fechaNacimiento = new java.sql.Date(fechaNacimientoUtil.getTime());
-                        } catch (ParseException ex) {
-                            throw new RuntimeException(ex);
+
+                            // Verificar que la fecha no sea futura ni demasiado antigua
+                            if (fechaNacimiento.before(java.sql.Date.valueOf("1900-01-01")) || fechaNacimiento.after(new java.sql.Date(System.currentTimeMillis()))) {
+                                errores.append("- La Fecha de Nacimiento es inválida.\n");
+                            }
+
+                            // Verificar que el usuario tenga al menos 18 años
+                            java.util.Calendar cal = java.util.Calendar.getInstance();
+                            cal.setTime(fechaNacimientoUtil);
+                            cal.add(java.util.Calendar.YEAR, 18);
+                            java.util.Date fechaMinima = cal.getTime();
+                            if (fechaMinima.after(new java.util.Date())) {
+                                errores.append("- Debes tener al menos 18 años para registrarte.\n");
+                            }
+
+                        } catch (ParseException e) {
+                            errores.append("- La Fecha de Nacimiento debe tener el formato 'yyyy-MM-dd'.\n");
                         }
                     }
 
-                    // Capturar los datos de la tabla FichasAsociadasTB
+                    // 3. Validación de Correo Electrónico con Expresión Regular
+                    if (!ResultadoCorreo.getText().trim().isEmpty()) {
+                        String correo = ResultadoCorreo.getText().trim();
+                        String regexCorreo = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+                        if (!correo.matches(regexCorreo)) {
+                            errores.append("- El Correo Electrónico no es válido.\n");
+                        }
+                    }
+
+                    // 4. Validación de Teléfono (solo números y longitud mínima)
+                    if (!ResultadoTelefono.getText().trim().isEmpty()) {
+                        String telefono = ResultadoTelefono.getText().trim();
+                        String regexTelefono = "^[0-9]{7,15}$"; // Ajusta la longitud según sea necesario
+                        if (!telefono.matches(regexTelefono)) {
+                            errores.append("- El Teléfono debe contener solo números y tener entre 7 y 15 dígitos.\n");
+                        }
+                    }
+
+                    // 5. Validación de Documento (solo números y mínimo 4 caracteres)
+                    if (!ResultadoDocumento.getText().trim().isEmpty()) {
+                        String documento = ResultadoDocumento.getText().trim();
+                        if (!documento.matches("^[0-9]{4,}$")) { // Solo números y al menos 4 dígitos
+                            errores.append("- El Documento debe contener solo números y tener al menos 4 dígitos.\n");
+                        }
+                    }
+
+                    // 6. Validación de Contraseña (mínimo 8 caracteres)
+                    if (!ResultadoPass.getText().trim().isEmpty()) {
+                        String contraseña = ResultadoPass.getText().trim();
+                        if (contraseña.length() < 8) {
+                            errores.append("- La Contraseña debe tener al menos 8 caracteres.\n");
+                        }
+                        // Puedes agregar más validaciones si es necesario, como combinaciones de letras y números
+                    }
+
+
+                    // 8. Capturar los datos de la tabla FichasAsociadasTB (si aplica)
                     DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
                     int filas = modeloTabla.getRowCount();
 
                     List<Integer> fichas = new ArrayList<>();
-                    List<String> programasFormacion = new ArrayList<>();
                     List<String> jornadasFormacion = new ArrayList<>();
-                    List<String> nivelesFormacion = new ArrayList<>();
-                    List<String> sedes = new ArrayList<>();
-                    List<String> areas = new ArrayList<>();
+
 
                     for (int i = 0; i < filas; i++) {
-                        fichas.add((Integer) modeloTabla.getValueAt(i, 0));  // Ficha en la columna 0
-                        programasFormacion.add((String) modeloTabla.getValueAt(i, 1));  // Programa de formación en la columna 1
-                        nivelesFormacion.add((String) modeloTabla.getValueAt(i, 2));  // Nivel de formación en la columna 2
-                        jornadasFormacion.add((String) modeloTabla.getValueAt(i, 3));  // Jornada de formación en la columna 3
-                        sedes.add((String) modeloTabla.getValueAt(i, 4));  // Sede en la columna 4
-                        areas.add((String) modeloTabla.getValueAt(i, 5));  // Área en la columna 5
+                        // Asegúrate de que los tipos de datos coincidan con las columnas de la tabla
+                        Object fichaObj = modeloTabla.getValueAt(i, 0);
+                        Object jornadaObj = modeloTabla.getValueAt(i, 1);
+
+
+                        if (fichaObj instanceof Integer) {
+                            fichas.add((Integer) fichaObj);
+                        } else {
+                            errores.append("- La Ficha en la fila ").append(i + 1).append(" no es válida.\n");
+                        }
+
+                        if (jornadaObj instanceof String) {
+                            jornadasFormacion.add((String) jornadaObj);
+                        } else {
+                            errores.append("- La Jornada de Formación en la fila ").append(i + 1).append(" no es válida.\n");
+                        }
+
                     }
 
-                    // Crear el objeto InstructorModel
+                    // 9. Verificar si hay errores acumulados
+                    if (errores.length() > 0) {
+                        JOptionPane.showMessageDialog(this, errores.toString(), "Errores de Validación", JOptionPane.ERROR_MESSAGE);
+                        return; // Detener la ejecución para no enviar el formulario
+                    }
+
+                    // 10. Crear el objeto InstructorModel con la fecha convertida a Date
                     InstructorModel instructor = new InstructorModel(
-                            ResultadoUsuario.getText(),
-                            ResultadoPass.getText(),
-                            ResultadoDocumento.getText(),
+                            ResultadoUsuario.getText().trim(),
+                            ResultadoPass.getText().trim(),
+                            ResultadoDocumento.getText().trim(),
                             TipoDocCB.getSelectedItem().toString(),
-                            ResultadoNombres.getText(),
-                            ResultadoApellidos.getText(),
+                            ResultadoNombres.getText().trim(),
+                            ResultadoApellidos.getText().trim(),
                             fechaNacimiento,  // Asegúrate de convertir la fecha correctamente
-                            ResultadoTelefono.getText(),
-                            ResultadoCorreo.getText(),
+                            ResultadoTelefono.getText().trim(),
+                            ResultadoCorreo.getText().trim(),
                             GeneroCB.getSelectedItem().toString(),
-                            ResidenciaHolder.getText(),
-                            ClaseFormacionCB.getSelectedItem().toString(),
+                            ResidenciaHolder.getText().trim(),
+                            null,
                             fichas,
-                            programasFormacion,
+                            null,
                             jornadasFormacion,
-                            nivelesFormacion,
-                            sedes,
-                            areas
+                            null,
+                            null,
+                            null
                     );
 
-                    // Enviar el modelo a la API
+                    // 11. Enviar el modelo a la API
                     API_Admin_InstructorApplications actualizarInstructor = new API_Admin_InstructorApplications();
-                    actualizarInstructor.UpdateInstructor(ResultadoDocumento.getText(), instructor);
-                    JOptionPane.showMessageDialog(null, "Aprendiz modificado exitosamente");
+                    actualizarInstructor.UpdateInstructor(ResultadoDocumento.getText().trim(), instructor);
 
-
-                    // Limpiar formulario después de la actualización
+                    // 12. Limpiar formulario después de la actualización
                     limpiarFormularioInstructor();
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Error al enviar los datos del instructor: " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error al enviar los datos del instructor: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
             case JOptionPane.NO_OPTION, JOptionPane.CANCEL_OPTION -> {
-                // Acción para NO o CANCELAR
+                // Acción para NO o CANCELAR (puedes dejarlo vacío o realizar alguna acción específica)
+                // Por ejemplo, podrías limpiar el formulario o simplemente no hacer nada
             }
         }
     }//GEN-LAST:event_ConfirmarRegistroUsuarioActionPerformed
@@ -946,10 +1037,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
 
         actualizarFecha();  // Actualizar el TextField FechaHolder
     }//GEN-LAST:event_MesCBActionPerformed
-
-    private void ResultadoPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResultadoPassActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ResultadoPassActionPerformed
 
     private void GeneroCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GeneroCBActionPerformed
         // TODO add your handling code here:
@@ -1139,6 +1226,8 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
 
         // Intenta buscar el instructor en la base de datos usando el documento ingresado
         InstructorModel instructor = buscarInstructor.buscarInstructorPorDocumento(IDInstructorField.getText());
+        System.out.println(instructor);
+        System.out.println(instructor.getDocumento());
 
         if (instructor != null) {
             // Rellenar los campos con los datos del instructor
@@ -1195,54 +1284,39 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
             ResultadoSede.setText("");
             ResultadoArea.setText("");
 
-            // Fichas y programas de formación
+            // Obtener el modelo de la tabla y limpiar las filas existentes
             DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
             modeloTabla.setRowCount(0);  // Limpiar la tabla
 
-            // Recorrer las listas de fichas, programas, jornadas, niveles, sedes y áreas para agregarlos a la tabla
+            // Obtener las listas de fichas y jornadas
             List<Integer> fichas = instructor.getFichas();
-            List<String> programasFormacion = instructor.getProgramasFormacion();
             List<String> jornadasFormacion = instructor.getJornadasFormacion();
-            List<String> nivelesFormacion = instructor.getNivelesFormacion();
-            List<String> sedes = instructor.getSedes();
-            List<String> areas = instructor.getAreas();
 
-            // Verificar el tamaño máximo de las listas
-            int maxFilas = Math.max(fichas.size(), Math.max(programasFormacion.size(), Math.max(jornadasFormacion.size(), Math.max(nivelesFormacion.size(), Math.max(sedes.size(), areas.size())))));
+            // Verificar que las listas tengan el mismo tamaño
+            if (fichas.size() != jornadasFormacion.size()) {
+                JOptionPane.showMessageDialog(this, "La cantidad de fichas y jornadas no coincide. Por favor, verifica los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            // Agregar cada fila con los datos correspondientes
-            for (int i = 0; i < maxFilas; i++) {
-                // Evitar que las listas cortas generen errores
-                Integer ficha = (i < fichas.size()) ? fichas.get(i) : null;
-                String programa = (i < programasFormacion.size()) ? programasFormacion.get(i) : "";
-                String jornada = (i < jornadasFormacion.size()) ? jornadasFormacion.get(i) : "";
-                String nivel = (i < nivelesFormacion.size()) ? nivelesFormacion.get(i) : "";
-                String sede = (i < sedes.size()) ? sedes.get(i) : "";
-                String area = (i < areas.size()) ? areas.get(i) : "";
+            // Agregar cada ficha y su jornada correspondiente a la tabla
+            for (int i = 0; i < fichas.size(); i++) {
+                Integer ficha = fichas.get(i);
+                String jornada = jornadasFormacion.get(i);
 
                 modeloTabla.addRow(new Object[]{
                         ficha,
-                        programa,
-                        jornada,
-                        nivel,
-                        sede,
-                        area,
-                        "Eliminar"  // Texto para el botón de eliminar
+                        jornada
                 });
             }
 
             // Asocia el ButtonRenderer y ButtonEditor con la columna del botón de eliminar
-            FichasAsociadasTB.getColumnModel().getColumn(6).setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
-            FichasAsociadasTB.getColumnModel().getColumn(6).setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), FichasAsociadasTB));
+            FichasAsociadasTB.getColumnModel().getColumn(2).setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
+            FichasAsociadasTB.getColumnModel().getColumn(2).setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), FichasAsociadasTB));
 
         } else {
             JOptionPane.showMessageDialog(null, "No se encontró el instructor con el documento proporcionado.");
         }
     }//GEN-LAST:event_BuscarDatosUsuarioActionPerformed
-
-    private void ClaseFormacionCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClaseFormacionCBActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ClaseFormacionCBActionPerformed
 
     private void IDInstructorFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IDInstructorFieldKeyTyped
                         char caracter = evt.getKeyChar();
@@ -1294,6 +1368,10 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
             }
     }//GEN-LAST:event_ResultadoApellidosKeyTyped
 
+    private void RefrescarCombosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarCombosActionPerformed
+        refrescarComboBoxes();
+    }//GEN-LAST:event_RefrescarCombosActionPerformed
+
     private boolean fichaYaAsociada(int ficha) {
         DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
         int filas = modeloTabla.getRowCount();
@@ -1335,11 +1413,35 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         }
     }
 
+    public void refrescarComboBoxes() {
+        try {
+            ComboBoxModels CBModels = new ComboBoxModels();
+            yearModel.addElement("Seleccionar Año");
+            llenarYear(yearModel);
+            mesModel.addElement("Seleccionar Mes");
+            diaModel.addElement("Seleccionar Día");
+            TipoDocCB.setModel(CBModels.generarComboBoxModelPorTipo("TipoDocumento"));
+            GeneroCB.setModel(CBModels.generarComboBoxModelPorTipo("Genero"));
+            MunicipioCB.setModel(CBModels.generarComboBoxModelPorTipo("Municipios"));
+            DepartamentoCB.setModel(CBModels.generarComboBoxModelPorTipo("Departamentos"));
+            BarrioCB.setModel(CBModels.generarComboBoxModelPorTipo("Barrios"));
+            FichaCB.setModel(CBModels.generarComboBoxModelPorTipo("Fichas"));
+            YearCB.setModel(yearModel);
+            MesCB.setModel(mesModel);
+            DiaCB.setModel(diaModel);
+
+            JOptionPane.showMessageDialog(this, "Los ComboBox han sido actualizados correctamente.", "ComboBox Actualizados", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al refrescar los ComboBox: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AsociarFicha;
     private javax.swing.JComboBox<String> BarrioCB;
     private javax.swing.JButton BuscarDatosUsuario;
-    private javax.swing.JComboBox<String> ClaseFormacionCB;
     private javax.swing.JButton ConfirmarRegistroUsuario;
     private javax.swing.JPanel CreateInstructorSubPanel;
     private javax.swing.JComboBox<String> DepartamentoCB;
@@ -1350,6 +1452,7 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
     private javax.swing.JTextField IDInstructorField;
     private javax.swing.JComboBox<String> MesCB;
     private javax.swing.JComboBox<String> MunicipioCB;
+    private javax.swing.JButton RefrescarCombos;
     private javax.swing.JTextField ResidenciaHolder;
     private javax.swing.JTextField ResultadoApellidos;
     private javax.swing.JTextField ResultadoArea;
@@ -1359,7 +1462,7 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
     private javax.swing.JTextField ResultadoJornadaFormacion;
     private javax.swing.JTextField ResultadoNivelFormacion;
     private javax.swing.JTextField ResultadoNombres;
-    private javax.swing.JTextField ResultadoPass;
+    private javax.swing.JPasswordField ResultadoPass;
     private javax.swing.JTextField ResultadoProgramaFormacion;
     private javax.swing.JTextField ResultadoSede;
     private javax.swing.JTextField ResultadoTelefono;
@@ -1375,13 +1478,12 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel6;

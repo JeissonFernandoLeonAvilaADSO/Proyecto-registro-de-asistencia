@@ -108,5 +108,28 @@ public class ClaseFormacionDataController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+
+    @GetMapping("/PorNumeroFicha")
+    public ResponseEntity<?> obtenerClasesPorNumeroFicha(@RequestParam Integer numeroFicha) {
+        System.out.println("Obteniendo clases de formación para la ficha: " + numeroFicha);
+        try {
+            List<Map<String, Object>> clases = claseFormacionDataService.obtenerClasesPorNumeroFicha(numeroFicha);
+            if (clases.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("mensaje", "No se encontraron clases de formación para la ficha número: " + numeroFicha));
+            }
+            return ResponseEntity.ok(clases);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error interno del servidor: " + e.getMessage()));
+        }
+    }
+
+
+
 }
 

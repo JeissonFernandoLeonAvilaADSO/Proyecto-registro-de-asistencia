@@ -47,4 +47,7 @@ public class PerfilUsuarioModel {
 
     @JsonProperty("Residencia")
     private String residencia;
+
+    @JsonProperty("Estado")
+    private String estado;
 }

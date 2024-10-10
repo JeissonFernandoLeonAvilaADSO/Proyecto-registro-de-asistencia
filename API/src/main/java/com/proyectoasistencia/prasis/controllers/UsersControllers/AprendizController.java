@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/Aprendiz")
@@ -25,12 +27,21 @@ public class AprendizController {
 
     // Obtener un aprendiz por documento
     @GetMapping("/{documento}")
-    public ResponseEntity<AprendizModel> getAprendiz(@PathVariable String documento) {
+    public ResponseEntity<?> getAprendiz(@PathVariable String documento) {
         AprendizModel aprendiz = aprendizService.getAprendiz(documento);
         if (aprendiz != null) {
-            return ResponseEntity.ok(aprendiz);
+            if ("Deshabilitado".equalsIgnoreCase(aprendiz.getEstado())) {
+                // Retornar un Map con un mensaje
+                Map<String, String> response = new HashMap<>();
+                response.put("mensaje", "El aprendiz está deshabilitado");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+            } else {
+                return ResponseEntity.ok(aprendiz);
+            }
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            Map<String, String> response = new HashMap<>();
+            response.put("mensaje", "No se encontró el aprendiz");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
 
@@ -60,6 +71,34 @@ public class AprendizController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    // Endpoint para habilitar un Aprendiz
+    @PutMapping("/habilitar/{documento}")
+    public ResponseEntity<?> habilitarAprendiz(@PathVariable String documento) {
+        boolean resultado = aprendizService.habilitarAprendiz(documento);
+        Map<String, String> response = new HashMap<>();
+        if (resultado) {
+            response.put("mensaje", "Aprendiz habilitado exitosamente.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("mensaje", "No se pudo habilitar el Aprendiz. Verifique que el documento sea correcto y que el Aprendiz exista.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+    // Endpoint para inhabilitar un Aprendiz
+    @PutMapping("/inhabilitar/{documento}")
+    public ResponseEntity<?> inhabilitarAprendiz(@PathVariable String documento) {
+        boolean resultado = aprendizService.inhabilitarAprendiz(documento);
+        Map<String, String> response = new HashMap<>();
+        if (resultado) {
+            response.put("mensaje", "Aprendiz inhabilitado exitosamente.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("mensaje", "No se pudo inhabilitar el Aprendiz. Verifique que el documento sea correcto y que el Aprendiz exista.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
 }

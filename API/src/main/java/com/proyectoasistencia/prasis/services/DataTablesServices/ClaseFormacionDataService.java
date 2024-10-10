@@ -100,14 +100,11 @@ public class ClaseFormacionDataService {
 
     public Map<String, Object> obtenerClasePorDocumentoInstructor(String documentoInstructor) {
         String sql = """
-                    SELECT cf.ID, cf.NombreClase 
-                    FROM claseformacion cf
-                    INNER JOIN claseformacion_fichas cff ON cf.ID = cff.IDClaseFormacion
-                    INNER JOIN instructor_ficha inf ON cff.IDFicha = inf.IDFicha
-                    INNER JOIN instructor i ON inf.IDInstructor = i.ID
-                    INNER JOIN perfilusuario pu ON i.IDPerfilUsuario = pu.ID
+                    SELECT cf.ID, cf.NombreClase
+                    FROM perfilusuario pu
+                             INNER JOIN instructor i ON pu.ID = i.IDPerfilUsuario
+                             INNER JOIN claseformacion cf ON i.ID = cf.IDInstructor
                     WHERE pu.Documento = ?
-                    LIMIT 1
                 """;
 
         try {
@@ -121,6 +118,38 @@ public class ClaseFormacionDataService {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error al obtener la clase de formación para el instructor con documento: " + documentoInstructor, e);
+        }
+    }
+
+    /**
+     * Obtiene todas las clases de formación asociadas a un número de ficha.
+     *
+     * @param numeroFicha Número de la ficha (Integer).
+     * @return Lista de clases de formación asociadas.
+     * @throws IllegalArgumentException Si la ficha no existe.
+     */
+    public List<Map<String, Object>> obtenerClasesPorNumeroFicha(Integer numeroFicha) {
+        // Primero, verificar si la ficha existe
+        String sqlVerificarFicha = "SELECT COUNT(*) FROM fichas WHERE NumeroFicha = ?";
+        Integer countFicha = jdbcTemplate.queryForObject(sqlVerificarFicha, new Object[]{numeroFicha}, Integer.class);
+        if (countFicha == null || countFicha == 0) {
+            throw new IllegalArgumentException("La ficha con número " + numeroFicha + " no existe.");
+        }
+
+        // Consulta para obtener las clases de formación asociadas a la ficha
+        String sql = """
+                SELECT cf.ID, cf.NombreClase
+                FROM claseformacion cf
+                INNER JOIN claseformacion_fichas cff ON cf.ID = cff.IDClaseFormacion
+                INNER JOIN fichas f ON cff.IDFicha = f.ID
+                WHERE f.NumeroFicha = ?
+                """;
+
+        try {
+            return jdbcTemplate.queryForList(sql, numeroFicha);
+        } catch (EmptyResultDataAccessException e) {
+            // Retorna una lista vacía si no se encuentran resultados
+            return List.of();
         }
     }
 }

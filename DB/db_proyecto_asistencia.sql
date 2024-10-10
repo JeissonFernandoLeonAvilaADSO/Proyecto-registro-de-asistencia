@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 04-10-2024 a las 06:02:12
+-- Tiempo de generación: 10-10-2024 a las 20:52:59
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -99,7 +99,7 @@ CREATE TABLE `aprendiz` (
 INSERT INTO `aprendiz` (`ID`, `IDFicha`, `IDPerfilUsuario`) VALUES
 (1, 1, 8),
 (2, 1, 9),
-(3, 3, 11);
+(3, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -226,16 +226,17 @@ INSERT INTO `departamentos` (`ID`, `nombre_departamento`) VALUES
 CREATE TABLE `fichas` (
   `ID` int NOT NULL,
   `IDProgramaFormacion` int DEFAULT NULL,
-  `NumeroFicha` int DEFAULT NULL
+  `NumeroFicha` int DEFAULT NULL,
+  `IDJornadaFormacion` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `fichas`
 --
 
-INSERT INTO `fichas` (`ID`, `IDProgramaFormacion`, `NumeroFicha`) VALUES
-(1, 1, 2696521),
-(3, 3, 2673126);
+INSERT INTO `fichas` (`ID`, `IDProgramaFormacion`, `NumeroFicha`, `IDJornadaFormacion`) VALUES
+(1, 1, 2696521, 1),
+(3, 3, 2673126, 1);
 
 -- --------------------------------------------------------
 
@@ -256,10 +257,7 @@ INSERT INTO `genero` (`ID`, `TiposGeneros`) VALUES
 (1, 'Masculino'),
 (2, 'Femenino'),
 (3, 'No binario'),
-(4, 'Género Fluido'),
-(5, 'Agénero'),
-(6, 'Bigénero'),
-(7, 'Demigénero');
+(4, 'Género Fluido');
 
 -- --------------------------------------------------------
 
@@ -376,19 +374,20 @@ CREATE TABLE `perfilusuario` (
   `Correo` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `IDGenero` int NOT NULL,
   `IDRol` int NOT NULL,
-  `IDBarrio` int NOT NULL
+  `IDBarrio` int NOT NULL,
+  `Estado` enum('Habilitado','Deshabilitado') NOT NULL DEFAULT 'Habilitado'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `perfilusuario`
 --
 
-INSERT INTO `perfilusuario` (`ID`, `IDUsuario`, `Documento`, `IDTipoDocumento`, `Nombres`, `Apellidos`, `FecNacimiento`, `Telefono`, `Correo`, `IDGenero`, `IDRol`, `IDBarrio`) VALUES
-(1, 1, '1234567890', 1, 'Juan Alfonso', 'Torrez Perez', '1992-05-03', '3168723123', 'juanAlfonso@gmail.com', 1, 1, 2),
-(2, 2, '0987654321', 3, 'Juan', 'gomez', '1976-06-04', '3175423098', 'juangomez@gmail.com', 4, 1, 1),
-(8, 8, '1097096255', 1, 'jeisson fernando', 'leon avila', '2006-05-23', '3168215154', 'jeissonfernandoleonavila@gmail.com', 1, 2, 3),
-(9, 9, '4073477', 4, 'victor manuel', 'bonilla gutierrez', '2005-10-10', '3157623123', 'losgggg123@gmail.com', 3, 2, 2),
-(11, 11, '0980987651', 3, 'Miguel Alexander', 'Toloza', '2008-05-05', '3128765423', 'miguel@gmail.com', 1, 2, 3);
+INSERT INTO `perfilusuario` (`ID`, `IDUsuario`, `Documento`, `IDTipoDocumento`, `Nombres`, `Apellidos`, `FecNacimiento`, `Telefono`, `Correo`, `IDGenero`, `IDRol`, `IDBarrio`, `Estado`) VALUES
+(1, 1, '1234567890', 1, 'Juan Alfonso', 'Torrez Perez', '1992-05-03', '3168723123', 'juanAlfonso@gmail.com', 1, 1, 2, 'Habilitado'),
+(2, 2, '0987654321', 3, 'Juan', 'gomez', '1976-06-04', '3175423098', 'juangomez@gmail.com', 4, 1, 1, 'Habilitado'),
+(8, 8, '1097096255', 1, 'jeisson fernando', 'leon avila', '2006-05-20', '3168215154', 'jeissonfernandoleonavila@gmail.com', 1, 2, 3, 'Habilitado'),
+(9, 9, '4073477', 4, 'victor manuel', 'bonilla gutierrez', '2005-10-10', '3157623123', 'losgggg123@gmail.com', 3, 2, 2, 'Habilitado'),
+(11, 11, '0980987651', 3, 'Miguel Alexander', 'Toloza', '1992-10-04', '3128765423', 'miguel@gmail.com', 1, 2, 3, 'Habilitado');
 
 -- --------------------------------------------------------
 
@@ -399,7 +398,6 @@ INSERT INTO `perfilusuario` (`ID`, `IDUsuario`, `Documento`, `IDTipoDocumento`, 
 CREATE TABLE `programaformacion` (
   `ID` int NOT NULL,
   `ProgramaFormacion` varchar(255) DEFAULT NULL,
-  `IDJornadaFormacion` int NOT NULL,
   `IDNivelFormacion` int NOT NULL,
   `IDSede` int NOT NULL,
   `IDArea` int NOT NULL
@@ -409,9 +407,9 @@ CREATE TABLE `programaformacion` (
 -- Volcado de datos para la tabla `programaformacion`
 --
 
-INSERT INTO `programaformacion` (`ID`, `ProgramaFormacion`, `IDJornadaFormacion`, `IDNivelFormacion`, `IDSede`, `IDArea`) VALUES
-(1, 'Analisis y desarrollo de software', 1, 3, 1, 1),
-(3, 'Electricidad industrial', 1, 3, 1, 2);
+INSERT INTO `programaformacion` (`ID`, `ProgramaFormacion`, `IDNivelFormacion`, `IDSede`, `IDArea`) VALUES
+(1, 'Analisis y Desarrollo de Software', 3, 1, 1),
+(3, 'Electricidad industrial', 3, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -548,9 +546,9 @@ CREATE TABLE `usuario` (
 INSERT INTO `usuario` (`ID`, `Usuario`, `Contraseña`) VALUES
 (1, 'Instructor', '$2a$10$U3vZBfkmsgmaLWC5/S/LU.n7YvH/SiBqQTVKrxXvc3/D07uRxP6su'),
 (2, 'Instructor2', '$2a$10$UmzqIX5tDoOiPV7H/qHUs.gNJl2CLesQMpmcugG9HoeS5Ik/rsBNO'),
-(8, 'Aprendiz1', '$2a$10$SmH52N3uC65jjHMaDZ5Zf.4pbDDoLXASjvEeygePo8iHum8mZZYqm'),
+(8, 'Aprendiz1', '$2a$10$Wwwc7y/fx0LUYpXbOI5rme5qPbZCGygQs7gIKHgN3fvs5N/nKQf6q'),
 (9, 'Aprendiz2', '$2a$10$lm2krebl6vr4Bj593TyZWe7k9Tx8ol82wp/Kdg5X3S.WYnd2M9ajG'),
-(11, 'Aprendiz4', '$2a$10$21G1fFwXg1fTKPGlA42MW.BzfWrAdBMeWmYwuLUa88r0ZL0Qf3M2e');
+(11, 'Aprendiz4', '$2a$10$vjOcAmJ/bSSzBLr65Id1AOIxIDAyPfuWspScenYthMv5PCYpRLEm2');
 
 --
 -- Índices para tablas volcadas
@@ -629,7 +627,8 @@ ALTER TABLE `departamentos`
 --
 ALTER TABLE `fichas`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `IDProgramaFormacion` (`IDProgramaFormacion`);
+  ADD KEY `IDProgramaFormacion` (`IDProgramaFormacion`),
+  ADD KEY `FK_IDJornadaFormacion_Fichas` (`IDJornadaFormacion`);
 
 --
 -- Indices de la tabla `genero`
@@ -687,7 +686,6 @@ ALTER TABLE `perfilusuario`
 --
 ALTER TABLE `programaformacion`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `fk_IDJornadaFormacion_ProgramaFormacion` (`IDJornadaFormacion`),
   ADD KEY `fk_IDNivelFormacion_ProgramaFormacion` (`IDNivelFormacion`),
   ADD KEY `fk_IDSede_ProgramaFormacion` (`IDSede`),
   ADD KEY `fk_IDArea_ProgramaFormacion` (`IDArea`);
@@ -780,7 +778,7 @@ ALTER TABLE `areas`
 -- AUTO_INCREMENT de la tabla `asistencia`
 --
 ALTER TABLE `asistencia`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `barrios`
@@ -792,13 +790,13 @@ ALTER TABLE `barrios`
 -- AUTO_INCREMENT de la tabla `claseformacion`
 --
 ALTER TABLE `claseformacion`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `claseformacion_fichas`
 --
 ALTER TABLE `claseformacion_fichas`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `departamentos`
@@ -810,7 +808,7 @@ ALTER TABLE `departamentos`
 -- AUTO_INCREMENT de la tabla `fichas`
 --
 ALTER TABLE `fichas`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `genero`
@@ -822,13 +820,13 @@ ALTER TABLE `genero`
 -- AUTO_INCREMENT de la tabla `instructor`
 --
 ALTER TABLE `instructor`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `instructor_ficha`
 --
 ALTER TABLE `instructor_ficha`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `jornadaformacion`
@@ -852,25 +850,25 @@ ALTER TABLE `nivelformacion`
 -- AUTO_INCREMENT de la tabla `perfilusuario`
 --
 ALTER TABLE `perfilusuario`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `programaformacion`
 --
 ALTER TABLE `programaformacion`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `registroactividad`
 --
 ALTER TABLE `registroactividad`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `registroasistencias`
 --
 ALTER TABLE `registroasistencias`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -900,7 +898,7 @@ ALTER TABLE `tipodocumento`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Restricciones para tablas volcadas
@@ -936,7 +934,8 @@ ALTER TABLE `claseformacion_fichas`
 -- Filtros para la tabla `fichas`
 --
 ALTER TABLE `fichas`
-  ADD CONSTRAINT `fichas_ibfk_1` FOREIGN KEY (`IDProgramaFormacion`) REFERENCES `programaformacion` (`ID`);
+  ADD CONSTRAINT `fichas_ibfk_1` FOREIGN KEY (`IDProgramaFormacion`) REFERENCES `programaformacion` (`ID`),
+  ADD CONSTRAINT `FK_IDJornadaFormacion_Fichas` FOREIGN KEY (`IDJornadaFormacion`) REFERENCES `jornadaformacion` (`ID`);
 
 --
 -- Filtros para la tabla `instructor`
@@ -972,7 +971,6 @@ ALTER TABLE `perfilusuario`
 --
 ALTER TABLE `programaformacion`
   ADD CONSTRAINT `fk_IDArea_ProgramaFormacion` FOREIGN KEY (`IDArea`) REFERENCES `areas` (`ID`),
-  ADD CONSTRAINT `fk_IDJornadaFormacion_ProgramaFormacion` FOREIGN KEY (`IDJornadaFormacion`) REFERENCES `jornadaformacion` (`ID`),
   ADD CONSTRAINT `fk_IDNivelFormacion_ProgramaFormacion` FOREIGN KEY (`IDNivelFormacion`) REFERENCES `nivelformacion` (`ID`),
   ADD CONSTRAINT `fk_IDSede_ProgramaFormacion` FOREIGN KEY (`IDSede`) REFERENCES `sede` (`ID`);
 

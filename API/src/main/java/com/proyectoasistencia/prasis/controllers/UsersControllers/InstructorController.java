@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/Instructor")
@@ -25,14 +27,24 @@ public class InstructorController {
 
     // Obtener un instructor por documento
     @GetMapping("/{documento}")
-    public ResponseEntity<InstructorModel> getInstructor(@PathVariable String documento) {
+    public ResponseEntity<?> getInstructor(@PathVariable String documento) {
         InstructorModel instructor = instructorService.getInstructor(documento);
         if (instructor != null) {
-            return ResponseEntity.ok(instructor);
+            if ("Deshabilitado".equalsIgnoreCase(instructor.getEstado())) {
+                // Retornar un Map con un mensaje
+                Map<String, String> response = new HashMap<>();
+                response.put("mensaje", "El instructor está deshabilitado");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+            } else {
+                return ResponseEntity.ok(instructor);
+            }
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            Map<String, String> response = new HashMap<>();
+            response.put("mensaje", "No se encontró el instructor");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
+
 
     // Obtener todos los instructores
     @GetMapping
@@ -62,5 +74,35 @@ public class InstructorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    // Endpoint para habilitar un Instructor
+    @PutMapping("/habilitar/{documento}")
+    public ResponseEntity<?> habilitarInstructor(@PathVariable String documento) {
+        boolean resultado = instructorService.habilitarInstructor(documento);
+        Map<String, String> response = new HashMap<>();
+        if (resultado) {
+            response.put("mensaje", "Instructor habilitado exitosamente.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("mensaje", "No se pudo habilitar el Instructor. Verifique que el documento sea correcto y que el Instructor exista.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+    // Endpoint para inhabilitar un Instructor
+    @PutMapping("/inhabilitar/{documento}")
+    public ResponseEntity<?> inhabilitarInstructor(@PathVariable String documento) {
+        boolean resultado = instructorService.inhabilitarInstructor(documento);
+        Map<String, String> response = new HashMap<>();
+        if (resultado) {
+            response.put("mensaje", "Instructor inhabilitado exitosamente.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("mensaje", "No se pudo inhabilitar el Instructor. Verifique que el documento sea correcto y que el Instructor exista.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+
 }
 

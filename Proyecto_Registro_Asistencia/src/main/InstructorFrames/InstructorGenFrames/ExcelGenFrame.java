@@ -50,6 +50,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         initComponents();
         modif();
         AditionalConfig();
+        initializeComboBoxes();
     }
 
     /**
@@ -72,7 +73,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         RegistrarAsistencia = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaAsis = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
         FinalizarAsis = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -86,6 +86,9 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         InstructorClaseFormacion = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         ActividadCB = new javax.swing.JComboBox<>();
+        HoraCB = new javax.swing.JComboBox<>();
+        MinutosCB = new javax.swing.JComboBox<>();
+        ExtensionHoraCB = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -169,13 +172,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         tablaAsis.setSelectionBackground(new java.awt.Color(215, 213, 177));
         jScrollPane1.setViewportView(tablaAsis);
 
-        jButton1.setText("Regresar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         FinalizarAsis.setText("Finalizar asistencia");
         FinalizarAsis.setEnabled(false);
         FinalizarAsis.addActionListener(new java.awt.event.ActionListener() {
@@ -234,6 +230,27 @@ public class ExcelGenFrame extends javax.swing.JFrame {
 
         ActividadCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        HoraCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        HoraCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HoraCBActionPerformed(evt);
+            }
+        });
+
+        MinutosCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        MinutosCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MinutosCBActionPerformed(evt);
+            }
+        });
+
+        ExtensionHoraCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ExtensionHoraCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExtensionHoraCBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -258,31 +275,37 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                                             .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(InstructorClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(ActividadCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(HoraFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(HoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(95, 95, 95)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel7))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(ProgramaFormacionCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(355, 355, 355))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(HoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(HoraCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(MinutosCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(ExtensionHoraCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jLabel7))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(ProgramaFormacionCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(355, 355, 355))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(HoraFin, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(FinalizarAsis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(FinalizarAsis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -298,38 +321,43 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(ProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel8))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel4)
-                                .addComponent(HoraInicio)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(HoraFin)
                             .addComponent(jLabel7)
-                            .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(HoraInicio)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(29, 29, 29)
                         .addComponent(FinalizarAsis, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(InstructorNombre))
+                            .addComponent(InstructorNombre)
+                            .addComponent(jLabel4)
+                            .addComponent(HoraCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(MinutosCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ExtensionHoraCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(InstructorClaseFormacion))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(HoraFin))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
@@ -359,6 +387,9 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private DefaultComboBoxModel<String> horaModel;
+    private DefaultComboBoxModel<String> minutosModel;
+    private DefaultComboBoxModel<String> extensionModel;
     public void AditionalConfig(){
         // Definir las columnas del modelo
         // Asignar el modelo a la tabla asisTable
@@ -417,6 +448,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             AmbienteCB.setModel(cbm.generarComboBoxModelPorTipo("Ambientes"));
             ProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ProgramaFormacion"));
             ActividadCB.setModel(cbm.generarComboBoxModelPorTipo("Actividades"));
+            
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -432,6 +464,69 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         HoraFin.setText(calcularHoraFin(HoraInicio.getText()));
 
     }
+
+    private void initializeComboBoxes() {
+        // Inicializar los modelos
+        horaModel = new DefaultComboBoxModel<>();
+        minutosModel = new DefaultComboBoxModel<>();
+        extensionModel = new DefaultComboBoxModel<>();
+
+        // Asignar los modelos a las cajas combinadas
+        HoraCB.setModel(horaModel);
+        MinutosCB.setModel(minutosModel);
+        ExtensionHoraCB.setModel(extensionModel);
+
+        // Poblar horaModel con valores de 1 a 12
+        for (int i = 1; i <= 12; i++) {
+            horaModel.addElement(String.format("%02d", i));
+        }
+
+        // Poblar minutosModel con valores de 00 a 59
+        for (int i = 0; i < 60; i++) {
+            minutosModel.addElement(String.format("%02d", i));
+        }
+
+        // Poblar extensionModel con AM y PM
+        extensionModel.addElement("AM");
+        extensionModel.addElement("PM");
+
+        // Obtener la hora actual y establecer las selecciones predeterminadas
+        String currentTime = HoraActual(); // "hh:mm a"
+        String[] parts = currentTime.split("[: ]");
+        String currentHour = parts[0];       // hh
+        String currentMinute = parts[1];     // mm
+        String currentExtension = parts[2];  // AM o PM
+
+        HoraCB.setSelectedItem(currentHour);
+        MinutosCB.setSelectedItem(currentMinute);
+        ExtensionHoraCB.setSelectedItem(currentExtension);
+
+        // Actualizar las etiquetas de HoraInicio y HoraFin
+        updateHoraInicioYHoraFin();
+    }
+
+    private void updateHoraInicioYHoraFin() {
+        Object horaObj = HoraCB.getSelectedItem();
+        Object minutoObj = MinutosCB.getSelectedItem();
+        Object extensionObj = ExtensionHoraCB.getSelectedItem();
+
+        if (horaObj != null && minutoObj != null && extensionObj != null) {
+            String hora = horaObj.toString();
+            String minuto = minutoObj.toString();
+            String extension = extensionObj.toString();
+
+            String horaInicio = hora + ":" + minuto + " " + extension;
+            HoraInicio.setText(horaInicio);
+
+            String horaFin = calcularHoraFin(horaInicio);
+            HoraFin.setText(horaFin);
+        } else {
+            // Manejar el caso en que alguno de los elementos sea null
+            HoraInicio.setText("Hora no válida");
+            HoraFin.setText("");
+        }
+    }
+
 
     public String HoraActual() {
         Date fechaActual = new Date();
@@ -462,10 +557,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             return "";  // En caso de error, retornar una cadena vacía
         }
     }
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     private void RegistrarAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarAsistenciaActionPerformed
@@ -542,12 +633,31 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             switch (respuesta) {
                 case JOptionPane.YES_OPTION:
                     System.out.println("creando aprendiz");
+                    JDialog dialogoRegistroAprendiz = new JDialog(this, "Registrar nuevo aprendiz", true); // 'true' indica que es modal
                     InstructorRegAprendiz instructorRegAprendiz = new InstructorRegAprendiz();
-                    instructorRegAprendiz.setVisible(true);
+
+                    // Configurar el tamaño del frame
+                    dialogoRegistroAprendiz.setSize(instructorRegAprendiz.getSize());
+
+                    // Añadir el contenido del ExcelGenFrame al JDialog
+                    dialogoRegistroAprendiz.add(instructorRegAprendiz.getContentPane());
+
+                    // Configurar el JDialog y mostrarlo
+                    dialogoRegistroAprendiz.setLocationRelativeTo(this);  // Centrar en la ventana principal
+                    dialogoRegistroAprendiz.setVisible(true);  // Mostrar el diálogo de forma modal
+
                     break;
 
-                case JOptionPane.YES_NO_CANCEL_OPTION:
+                case JOptionPane.NO_OPTION:
                     System.out.println("no creando aprendiz");
+                    break;
+
+                case JOptionPane.CANCEL_OPTION:
+                    System.out.println("acción cancelada");
+                    break;
+
+                default:
+                    System.out.println("acción desconocida");
                     break;
             }
         }
@@ -625,7 +735,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             API_AsistenciasApplications asistenciasApplications = new API_AsistenciasApplications();
             String respuesta = asistenciasApplications.enviarAsistencia(asistenciaJSON);
             JOptionPane.showMessageDialog(null, respuesta);
-            this.dispose();
+            dispose();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -787,6 +897,18 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_DocumentoAprendizKeyTyped
 
+    private void HoraCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HoraCBActionPerformed
+        updateHoraInicioYHoraFin();
+    }//GEN-LAST:event_HoraCBActionPerformed
+
+    private void MinutosCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MinutosCBActionPerformed
+        updateHoraInicioYHoraFin();
+    }//GEN-LAST:event_MinutosCBActionPerformed
+
+    private void ExtensionHoraCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExtensionHoraCBActionPerformed
+        updateHoraInicioYHoraFin();
+    }//GEN-LAST:event_ExtensionHoraCBActionPerformed
+
     private void desactivarAsis(){
         ListarAprendices.setEnabled(false);
         DocumentoAprendiz.setEnabled(false);
@@ -842,16 +964,18 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> ActividadCB;
     private javax.swing.JComboBox<String> AmbienteCB;
     private javax.swing.JTextField DocumentoAprendiz;
+    private javax.swing.JComboBox<String> ExtensionHoraCB;
     private javax.swing.JComboBox<String> FichaCB;
     private javax.swing.JButton FinalizarAsis;
+    private javax.swing.JComboBox<String> HoraCB;
     private javax.swing.JLabel HoraFin;
     private javax.swing.JLabel HoraInicio;
     private javax.swing.JLabel InstructorClaseFormacion;
     private javax.swing.JLabel InstructorNombre;
     private javax.swing.JTable ListarAprendices;
+    private javax.swing.JComboBox<String> MinutosCB;
     private javax.swing.JComboBox<String> ProgramaFormacionCB;
     private javax.swing.JButton RegistrarAsistencia;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -1,0 +1,1173 @@
+2024-10-05 09:55:39 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 09:55:39 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 10944 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 09:55:39 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 09:55:39 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 09:55:39 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 09:55:39 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 09:55:39 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 09:55:39 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 0 JDBC repository interfaces.
+2024-10-05 09:55:40 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 09:55:40 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 09:55:40 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 09:55:40 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 09:55:40 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 09:55:40 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 986 ms
+2024-10-05 09:55:40 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 09:55:40 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1edfb454
+2024-10-05 09:55:40 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 09:55:40 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 09:55:41 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 09:55:41 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 09:55:41 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 09:55:41 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.253 seconds (process running for 3.039)
+2024-10-05 09:57:28 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 09:57:28 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 09:57:44 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 09:57:44 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 8648 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 09:57:44 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 09:57:44 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 09:57:44 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 09:57:44 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 09:57:44 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 09:57:44 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JDBC repository interfaces.
+2024-10-05 09:57:45 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 09:57:45 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 09:57:45 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 09:57:45 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 09:57:45 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 09:57:45 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 947 ms
+2024-10-05 09:57:45 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 09:57:45 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@72dc2681
+2024-10-05 09:57:45 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 09:57:45 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 09:57:46 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 09:57:46 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 09:57:46 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 09:57:46 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.239 seconds (process running for 3.032)
+2024-10-05 09:57:49 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 09:57:49 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 09:57:49 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 09:57:49 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 09:57:49 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 09:57:49 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 09:57:49 ERROR [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Se encontraron múltiples perfiles de usuario para el documento: 1111111111. Error: Incorrect result size: expected 1, actual 2
+org.springframework.dao.IncorrectResultSizeDataAccessException: Incorrect result size: expected 1, actual 2
+	at org.springframework.dao.support.DataAccessUtils.nullableSingleResult(DataAccessUtils.java:193)
+	at org.springframework.jdbc.core.JdbcTemplate.queryForObject(JdbcTemplate.java:890)
+	at com.proyectoasistencia.prasis.services.UsersServices.InstructorService.getInstructor(InstructorService.java:101)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:716)
+	at com.proyectoasistencia.prasis.services.UsersServices.InstructorService$$SpringCGLIB$$0.getInstructor(<generated>)
+	at com.proyectoasistencia.prasis.services.UsersServices.LoginService.login(LoginService.java:91)
+	at com.proyectoasistencia.prasis.controllers.UsersControllers.LoginController.login(LoginController.java:36)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-10-05 10:03:35 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 10:03:35 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 10:03:40 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 10:03:40 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 7572 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 10:03:40 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 10:03:40 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 10:03:40 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 10:03:40 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 10:03:41 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 10:03:41 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JDBC repository interfaces.
+2024-10-05 10:03:41 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 10:03:41 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:03:41 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 10:03:41 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 10:03:41 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 10:03:41 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 943 ms
+2024-10-05 10:03:41 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 10:03:42 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2960d4d7
+2024-10-05 10:03:42 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 10:03:42 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 10:03:42 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 10:03:42 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:03:42 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 10:03:42 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.234 seconds (process running for 3.012)
+2024-10-05 10:03:44 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 10:03:44 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 10:03:44 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 10:03:44 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:03:44 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:03:44 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Perfiles de usuario encontrados: 1
+2024-10-05 10:03:44 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:03:44 ERROR [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Se encontraron múltiples perfiles de usuario para el documento: 1111111111. Error: Incorrect result size: expected 1, actual 2
+org.springframework.dao.IncorrectResultSizeDataAccessException: Incorrect result size: expected 1, actual 2
+	at org.springframework.dao.support.DataAccessUtils.nullableSingleResult(DataAccessUtils.java:193)
+	at org.springframework.jdbc.core.JdbcTemplate.queryForObject(JdbcTemplate.java:890)
+	at com.proyectoasistencia.prasis.services.UsersServices.InstructorService.getInstructor(InstructorService.java:101)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:716)
+	at com.proyectoasistencia.prasis.services.UsersServices.InstructorService$$SpringCGLIB$$0.getInstructor(<generated>)
+	at com.proyectoasistencia.prasis.services.UsersServices.LoginService.login(LoginService.java:91)
+	at com.proyectoasistencia.prasis.controllers.UsersControllers.LoginController.login(LoginController.java:36)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-10-05 10:04:12 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 10:04:12 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 10:04:18 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 10:04:18 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 2960 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 10:04:18 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 10:04:18 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 10:04:18 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 10:04:18 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 10:04:18 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 10:04:18 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JDBC repository interfaces.
+2024-10-05 10:04:18 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 10:04:18 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:04:18 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 10:04:18 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 10:04:19 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 10:04:19 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 946 ms
+2024-10-05 10:04:19 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 10:04:19 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3f45f64d
+2024-10-05 10:04:19 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 10:04:19 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 10:04:20 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 10:04:20 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:04:20 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 10:04:20 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.271 seconds (process running for 3.011)
+2024-10-05 10:04:22 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 10:04:22 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 10:04:22 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 10:04:22 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:04:22 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:04:22 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Perfiles de usuario encontrados: 1
+2024-10-05 10:04:22 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:04:22 ERROR [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Se encontraron múltiples perfiles de usuario para el documento: 1111111111. Error: Incorrect result size: expected 1, actual 2
+org.springframework.dao.IncorrectResultSizeDataAccessException: Incorrect result size: expected 1, actual 2
+	at org.springframework.dao.support.DataAccessUtils.nullableSingleResult(DataAccessUtils.java:193)
+	at org.springframework.jdbc.core.JdbcTemplate.queryForObject(JdbcTemplate.java:890)
+	at com.proyectoasistencia.prasis.services.UsersServices.InstructorService.getInstructor(InstructorService.java:101)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:716)
+	at com.proyectoasistencia.prasis.services.UsersServices.InstructorService$$SpringCGLIB$$0.getInstructor(<generated>)
+	at com.proyectoasistencia.prasis.services.UsersServices.LoginService.login(LoginService.java:91)
+	at com.proyectoasistencia.prasis.controllers.UsersControllers.LoginController.login(LoginController.java:36)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-10-05 10:04:31 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 10:04:31 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 10:04:37 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 10:04:37 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 7992 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 10:04:37 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 10:04:37 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 10:04:37 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 10:04:37 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 10:04:38 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 10:04:38 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JDBC repository interfaces.
+2024-10-05 10:04:38 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 10:04:38 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:04:38 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 10:04:38 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 10:04:38 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 10:04:38 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 940 ms
+2024-10-05 10:04:38 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 10:04:38 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24cb71fc
+2024-10-05 10:04:38 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 10:04:39 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 10:04:39 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 10:04:39 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:04:39 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 10:04:39 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.229 seconds (process running for 2.968)
+2024-10-05 10:04:41 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 10:04:41 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 10:04:41 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 10:04:41 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:04:41 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:04:41 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Perfiles de usuario encontrados: [13]
+2024-10-05 10:04:41 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:04:41 ERROR [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Se encontraron múltiples perfiles de usuario para el documento: 1111111111. Error: Incorrect result size: expected 1, actual 2
+org.springframework.dao.IncorrectResultSizeDataAccessException: Incorrect result size: expected 1, actual 2
+	at org.springframework.dao.support.DataAccessUtils.nullableSingleResult(DataAccessUtils.java:193)
+	at org.springframework.jdbc.core.JdbcTemplate.queryForObject(JdbcTemplate.java:890)
+	at com.proyectoasistencia.prasis.services.UsersServices.InstructorService.getInstructor(InstructorService.java:101)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:716)
+	at com.proyectoasistencia.prasis.services.UsersServices.InstructorService$$SpringCGLIB$$0.getInstructor(<generated>)
+	at com.proyectoasistencia.prasis.services.UsersServices.LoginService.login(LoginService.java:91)
+	at com.proyectoasistencia.prasis.controllers.UsersControllers.LoginController.login(LoginController.java:36)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-10-05 10:09:51 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 10:09:51 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 10:09:57 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 10:09:57 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 3432 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 10:09:57 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 10:09:57 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 10:09:57 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 10:09:57 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 10:09:57 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 10:09:58 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JDBC repository interfaces.
+2024-10-05 10:09:58 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 10:09:58 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:09:58 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 10:09:58 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 10:09:58 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 10:09:58 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 948 ms
+2024-10-05 10:09:58 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 10:09:58 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24cb71fc
+2024-10-05 10:09:58 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 10:09:58 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 10:09:59 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 10:09:59 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:09:59 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 10:09:59 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.221 seconds (process running for 2.956)
+2024-10-05 10:10:02 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 10:10:02 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 10:10:02 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 10:10:02 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:10:02 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:10:02 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:10:02 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=null, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:10:02 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:10:02 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126]
+2024-10-05 10:10:02 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial]
+2024-10-05 10:10:02 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna]
+2024-10-05 10:10:02 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo]
+2024-10-05 10:10:02 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:10:02 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:10:02 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=null, fichas=[2696521, 2673126], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial], jornadasFormacion=[Diurna], nivelesFormacion=[Tecnologo], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:10:05 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:10:05 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:10:05 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:10:05 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=null, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:10:05 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:10:05 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126]
+2024-10-05 10:10:05 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial]
+2024-10-05 10:10:05 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna]
+2024-10-05 10:10:05 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo]
+2024-10-05 10:10:05 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:10:05 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:10:05 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=null, fichas=[2696521, 2673126], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial], jornadasFormacion=[Diurna], nivelesFormacion=[Tecnologo], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:13:01 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 10:13:01 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 10:13:06 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 10:13:06 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 3964 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 10:13:06 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 10:13:06 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 10:13:06 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 10:13:06 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 10:13:07 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 10:13:07 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JDBC repository interfaces.
+2024-10-05 10:13:07 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 10:13:07 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:13:07 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 10:13:07 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 10:13:07 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 10:13:07 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 998 ms
+2024-10-05 10:13:07 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 10:13:08 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@72dc2681
+2024-10-05 10:13:08 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 10:13:08 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 10:13:08 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 10:13:08 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:13:08 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 10:13:08 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.311 seconds (process running for 3.081)
+2024-10-05 10:13:11 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 10:13:11 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 10:13:11 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2024-10-05 10:13:11 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:13:11 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:13:11 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:13:11 ERROR [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Error al obtener el instructor con documento 1111111111: PreparedStatementCallback; bad SQL grammar [    SELECT
+        u.Usuario AS Usuario,
+        u.Contraseña AS Contraseña,
+        pu.Documento AS Documento,
+        td.TipoDocumento AS TipoDocumento,
+        pu.Nombres AS Nombres,
+        pu.Apellidos AS Apellidos,
+        pu.FecNacimiento AS FecNacimiento,
+        pu.Telefono AS Telefono,
+        pu.Correo AS Correo,
+        g.TiposGeneros AS Genero,
+        CONCAT(d.nombre_departamento, ' - ', m.nombre_municipio, ' - ', b.nombre_barrio) AS Residencia,
+        COALESCE(cf.NombreClase, 'Clase no asignada') AS ClaseFormacion
+    FROM
+        perfilusuario pu
+        INNER JOIN usuario u ON pu.IDUsuario = u.ID
+        INNER JOIN tipodocumento td ON pu.IDTipoDocumento = td.ID
+        INNER JOIN genero g ON pu.IDGenero = g.ID
+        INNER JOIN barrios b ON pu.IDBarrio = b.ID
+        INNER JOIN municipios m ON b.id_municipio = m.ID
+        INNER JOIN departamentos d ON m.id_departamento = d.ID
+        LEFT JOIN claseformacion_fichas cff ON pu.ID = cff.IDPerfilUsuario -- Ajustar según necesidad
+        LEFT JOIN claseformacion cf ON cff.IDClaseFormacion = cf.ID
+    WHERE
+        pu.ID = ?
+    LIMIT 1
+]
+org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [    SELECT
+        u.Usuario AS Usuario,
+        u.Contraseña AS Contraseña,
+        pu.Documento AS Documento,
+        td.TipoDocumento AS TipoDocumento,
+        pu.Nombres AS Nombres,
+        pu.Apellidos AS Apellidos,
+        pu.FecNacimiento AS FecNacimiento,
+        pu.Telefono AS Telefono,
+        pu.Correo AS Correo,
+        g.TiposGeneros AS Genero,
+        CONCAT(d.nombre_departamento, ' - ', m.nombre_municipio, ' - ', b.nombre_barrio) AS Residencia,
+        COALESCE(cf.NombreClase, 'Clase no asignada') AS ClaseFormacion
+    FROM
+        perfilusuario pu
+        INNER JOIN usuario u ON pu.IDUsuario = u.ID
+        INNER JOIN tipodocumento td ON pu.IDTipoDocumento = td.ID
+        INNER JOIN genero g ON pu.IDGenero = g.ID
+        INNER JOIN barrios b ON pu.IDBarrio = b.ID
+        INNER JOIN municipios m ON b.id_municipio = m.ID
+        INNER JOIN departamentos d ON m.id_departamento = d.ID
+        LEFT JOIN claseformacion_fichas cff ON pu.ID = cff.IDPerfilUsuario -- Ajustar según necesidad
+        LEFT JOIN claseformacion cf ON cff.IDClaseFormacion = cf.ID
+    WHERE
+        pu.ID = ?
+    LIMIT 1
+]
+	at org.springframework.jdbc.support.SQLExceptionSubclassTranslator.doTranslate(SQLExceptionSubclassTranslator.java:103)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
+	at org.springframework.jdbc.core.JdbcTemplate.translateException(JdbcTemplate.java:1548)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:677)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:723)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:754)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:767)
+	at org.springframework.jdbc.core.JdbcTemplate.queryForObject(JdbcTemplate.java:889)
+	at com.proyectoasistencia.prasis.services.UsersServices.InstructorService.getInstructor(InstructorService.java:101)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:392)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720)
+	at com.proyectoasistencia.prasis.services.UsersServices.InstructorService$$SpringCGLIB$$0.getInstructor(<generated>)
+	at com.proyectoasistencia.prasis.services.UsersServices.LoginService.login(LoginService.java:91)
+	at com.proyectoasistencia.prasis.controllers.UsersControllers.LoginController.login(LoginController.java:36)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'cff.IDPerfilUsuario' in 'on clause'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:912)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:968)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeQuery(HikariProxyPreparedStatement.java)
+	at org.springframework.jdbc.core.JdbcTemplate$1.doInPreparedStatement(JdbcTemplate.java:732)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:658)
+	... 68 common frames omitted
+2024-10-05 10:18:15 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 10:18:15 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 10:18:21 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 10:18:21 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 11968 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 10:18:21 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 10:18:21 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 10:18:21 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 10:18:21 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 10:18:22 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 10:18:22 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JDBC repository interfaces.
+2024-10-05 10:18:22 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 10:18:22 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:18:22 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 10:18:22 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 10:18:22 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 10:18:22 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1048 ms
+2024-10-05 10:18:23 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 10:18:23 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1edfb454
+2024-10-05 10:18:23 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 10:18:23 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 10:18:23 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 10:18:23 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:18:23 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 10:18:23 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.455 seconds (process running for 3.305)
+2024-10-05 10:18:30 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 10:18:30 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 10:18:30 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 10:18:31 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:18:31 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:18:31 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:18:31 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:18:31 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:18:31 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126]
+2024-10-05 10:18:31 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial]
+2024-10-05 10:18:31 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna]
+2024-10-05 10:18:31 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo]
+2024-10-05 10:18:31 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:18:31 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:18:31 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[2696521, 2673126], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial], jornadasFormacion=[Diurna], nivelesFormacion=[Tecnologo], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:18:32 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:18:32 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:18:32 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:18:32 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:18:32 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:18:32 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126]
+2024-10-05 10:18:32 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial]
+2024-10-05 10:18:32 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna]
+2024-10-05 10:18:32 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo]
+2024-10-05 10:18:32 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:18:32 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:18:32 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[2696521, 2673126], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial], jornadasFormacion=[Diurna], nivelesFormacion=[Tecnologo], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:23:56 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:23:56 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:23:56 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:23:56 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:23:56 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:23:56 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126]
+2024-10-05 10:23:56 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial]
+2024-10-05 10:23:56 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna]
+2024-10-05 10:23:56 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo]
+2024-10-05 10:23:56 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:23:56 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:23:56 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[2696521, 2673126], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial], jornadasFormacion=[Diurna], nivelesFormacion=[Tecnologo], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:25:24 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:25:24 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:25:24 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:25:24 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:25:24 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:25:24 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:25:24 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:25:24 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:25:24 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:25:24 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:25:24 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:25:24 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:26:13 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:26:13 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:26:13 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:26:13 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Algoritmia, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:26:13 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:26:13 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:26:13 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:26:13 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:26:13 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:26:13 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:26:13 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:26:13 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Algoritmia, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:26:42 INFO  [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:26:42 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:26:42 INFO  [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:26:42 INFO  [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Algoritmia, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:26:42 INFO  [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:26:42 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:26:42 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:26:42 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:26:42 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:26:42 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:26:42 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:26:42 INFO  [http-nio-8080-exec-4] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Algoritmia, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:26:43 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:26:43 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:26:43 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:26:43 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Algoritmia, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:26:43 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:26:43 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:26:43 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:26:43 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:26:43 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:26:43 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:26:43 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:26:43 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Algoritmia, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:27:22 INFO  [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:27:22 INFO  [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:27:22 INFO  [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:27:22 INFO  [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:27:22 INFO  [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:27:22 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:27:22 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:27:22 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:27:22 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:27:22 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:27:22 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:28:13 INFO  [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:28:13 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:28:13 INFO  [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:28:13 INFO  [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:28:13 INFO  [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:28:13 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:28:13 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:28:13 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:28:13 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:28:13 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:28:13 DEBUG [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:28:13 INFO  [http-nio-8080-exec-9] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Clase no asignada, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:28:24 INFO  [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:28:24 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:28:24 INFO  [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:28:24 INFO  [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Algoritmia, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:28:24 INFO  [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:28:24 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:28:24 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:28:24 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:28:24 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:28:24 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:28:24 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:28:24 INFO  [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Algoritmia, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:28:25 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:28:25 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:28:25 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:28:25 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Algoritmia, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:28:25 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:28:25 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:28:25 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:28:25 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:28:25 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:28:25 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:28:25 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:28:25 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Algoritmia, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:31:25 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:31:25 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:31:25 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Algoritmia, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:31:25 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:31:25 INFO  [http-nio-8080-exec-6] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Algoritmia, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:31:25 INFO  [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:31:25 INFO  [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:31:25 INFO  [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Algoritmia, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:31:25 INFO  [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:31:25 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:31:25 INFO  [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Algoritmia, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:31:38 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1234567890
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1234567890: [1]
+2024-10-05 10:31:38 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 1
+2024-10-05 10:31:38 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Desarrollo web, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:31:38 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - InstructorId encontrado: 1
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 1: [2696521]
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software]
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna]
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo]
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Áreas: [Sistemas]
+2024-10-05 10:31:38 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Desarrollo web, fichas=[2696521], programasFormacion=[Analisis y desarrollo de software], jornadasFormacion=[Diurna], nivelesFormacion=[Tecnologo], sedes=[Centro de mantenimiento integral], areas=[Sistemas])
+2024-10-05 10:31:38 INFO  [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1234567890
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1234567890: [1]
+2024-10-05 10:31:38 INFO  [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 1
+2024-10-05 10:31:38 INFO  [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Desarrollo web, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:31:38 INFO  [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - InstructorId encontrado: 1
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 1: [2696521]
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software]
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna]
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo]
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:31:38 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Áreas: [Sistemas]
+2024-10-05 10:31:38 INFO  [http-nio-8080-exec-3] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Desarrollo web, fichas=[2696521], programasFormacion=[Analisis y desarrollo de software], jornadasFormacion=[Diurna], nivelesFormacion=[Tecnologo], sedes=[Centro de mantenimiento integral], areas=[Sistemas])
+2024-10-05 10:32:06 INFO  [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:32:06 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:32:06 INFO  [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:32:06 INFO  [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Algoritmia, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:32:06 INFO  [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:32:06 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:32:06 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:32:06 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:32:06 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:32:06 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:32:06 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:32:06 INFO  [http-nio-8080-exec-7] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Algoritmia, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:32:07 INFO  [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:32:07 DEBUG [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:32:07 INFO  [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:32:07 INFO  [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Algoritmia, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:32:07 INFO  [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:32:07 DEBUG [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:32:07 DEBUG [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:32:07 DEBUG [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:32:07 DEBUG [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:32:07 DEBUG [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:32:07 DEBUG [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:32:07 INFO  [http-nio-8080-exec-8] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Algoritmia, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:33:26 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 10:33:26 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 10:33:32 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 10:33:32 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 11600 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 10:33:32 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 10:33:32 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 10:33:32 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 10:33:32 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 10:33:32 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 10:33:32 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 0 JDBC repository interfaces.
+2024-10-05 10:33:33 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 10:33:33 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:33:33 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 10:33:33 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 10:33:33 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 10:33:33 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1075 ms
+2024-10-05 10:33:33 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 10:33:33 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24cb71fc
+2024-10-05 10:33:33 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 10:33:34 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 10:33:34 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 10:33:34 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:33:34 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 10:33:34 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.505 seconds (process running for 3.283)
+2024-10-05 10:33:41 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 10:33:41 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 10:33:41 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 10:34:10 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 10:34:10 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 10:34:14 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 10:34:15 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 4860 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 10:34:15 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 10:34:15 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 10:34:15 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 10:34:15 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 10:34:15 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 10:34:15 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 JDBC repository interfaces.
+2024-10-05 10:34:16 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 10:34:16 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:34:16 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 10:34:16 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 10:34:16 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 10:34:16 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1129 ms
+2024-10-05 10:34:16 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 10:34:16 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@72dc2681
+2024-10-05 10:34:16 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 10:34:16 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 10:34:17 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 10:34:17 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:34:17 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 10:34:17 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.511 seconds (process running for 3.293)
+2024-10-05 10:34:19 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 10:34:19 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 10:34:19 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 10:34:55 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 10:34:55 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 10:34:59 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 10:34:59 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 11776 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 10:34:59 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 10:34:59 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 10:34:59 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 10:34:59 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 10:34:59 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 10:34:59 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 JDBC repository interfaces.
+2024-10-05 10:35:00 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 10:35:00 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:35:00 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 10:35:00 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 10:35:00 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 10:35:00 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1020 ms
+2024-10-05 10:35:00 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 10:35:00 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@72ff8f8d
+2024-10-05 10:35:00 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 10:35:00 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 10:35:01 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 10:35:01 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:35:01 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 10:35:01 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.438 seconds (process running for 3.214)
+2024-10-05 10:35:03 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 10:35:03 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 10:35:03 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2024-10-05 10:35:17 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 10:35:17 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 10:35:22 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 10:35:22 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 5024 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 10:35:22 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 10:35:22 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 10:35:22 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 10:35:22 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 10:35:22 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 10:35:22 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 18 ms. Found 0 JDBC repository interfaces.
+2024-10-05 10:35:23 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 10:35:23 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:35:23 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 10:35:23 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 10:35:23 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 10:35:23 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1036 ms
+2024-10-05 10:35:23 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 10:35:23 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@219cc0f6
+2024-10-05 10:35:23 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 10:35:23 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 10:35:24 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 10:35:24 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:35:24 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 10:35:24 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.553 seconds (process running for 3.373)
+2024-10-05 10:35:26 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 10:35:26 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 10:35:26 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2024-10-05 10:41:46 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 10:41:46 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 10:41:51 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 10:41:51 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 12140 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 10:41:51 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 10:41:51 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 10:41:51 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 10:41:51 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 10:41:51 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 10:41:51 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 JDBC repository interfaces.
+2024-10-05 10:41:52 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 10:41:52 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:41:52 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 10:41:52 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 10:41:52 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 10:41:52 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1013 ms
+2024-10-05 10:41:52 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 10:41:52 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2a46110f
+2024-10-05 10:41:52 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 10:41:52 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 10:41:53 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 10:41:53 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 10:41:53 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 10:41:53 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.37 seconds (process running for 3.133)
+2024-10-05 10:42:11 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 10:42:11 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 10:42:11 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 10:42:11 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:42:11 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:42:11 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:42:11 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Algoritmia, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:42:11 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:42:11 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:42:11 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:42:11 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:42:11 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:42:11 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:42:11 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:42:11 INFO  [http-nio-8080-exec-1] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Algoritmia, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:42:12 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Iniciando búsqueda de instructor con documento: 1111111111
+2024-10-05 10:42:12 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioIds encontrados para documento 1111111111: [13]
+2024-10-05 10:42:12 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - PerfilUsuarioId seleccionado: 13
+2024-10-05 10:42:12 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Información básica del instructor obtenida: InstructorModel(ClaseFormacion=Algoritmia, fichas=[], programasFormacion=[], jornadasFormacion=[], nivelesFormacion=[], sedes=[], areas=[])
+2024-10-05 10:42:12 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - InstructorId encontrado: 5
+2024-10-05 10:42:12 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Fichas asociadas al instructor 5: [2696521, 2673126, 2873003]
+2024-10-05 10:42:12 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Programas de formación: [Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware]
+2024-10-05 10:42:12 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Jornadas de formación: [Diurna, Noche]
+2024-10-05 10:42:12 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Niveles de formación: [Tecnologo, Tecnico]
+2024-10-05 10:42:12 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Sedes: [Centro de mantenimiento integral]
+2024-10-05 10:42:12 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Áreas: [Sistemas, Industrial]
+2024-10-05 10:42:12 INFO  [http-nio-8080-exec-2] c.p.p.s.U.InstructorService - Instructor obtenido exitosamente: InstructorModel(ClaseFormacion=Algoritmia, fichas=[2696521, 2673126, 2873003], programasFormacion=[Analisis y desarrollo de software, Electricidad industrial, Programacion de sofware], jornadasFormacion=[Diurna, Noche], nivelesFormacion=[Tecnologo, Tecnico], sedes=[Centro de mantenimiento integral], areas=[Sistemas, Industrial])
+2024-10-05 10:42:29 ERROR [http-nio-8080-exec-5] o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.transaction.UnexpectedRollbackException: Transaction rolled back because it has been marked as rollback-only] with root cause
+org.springframework.transaction.UnexpectedRollbackException: Transaction rolled back because it has been marked as rollback-only
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processRollback(AbstractPlatformTransactionManager.java:937)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:753)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:676)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:426)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720)
+	at com.proyectoasistencia.prasis.controllers.AsisControllers.AsisController$$SpringCGLIB$$0.subirAsistencia(<generated>)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-10-05 11:41:16 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 11:41:16 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 12:14:12 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 12:14:12 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 10736 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 12:14:12 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 12:14:12 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 12:14:12 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 12:14:12 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 12:14:13 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 12:14:13 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 JDBC repository interfaces.
+2024-10-05 12:14:13 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 12:14:13 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 12:14:13 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 12:14:13 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 12:14:13 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 12:14:13 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1052 ms
+2024-10-05 12:14:14 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 12:14:14 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@226bd85e
+2024-10-05 12:14:14 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 12:14:14 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 12:14:14 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 12:14:14 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 12:14:14 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 12:14:14 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.291 seconds (process running for 3.036)
+2024-10-05 12:14:25 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 12:14:25 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 12:14:25 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 13:05:43 WARN  [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m58s667ms614µs100ns).
+2024-10-05 13:42:42 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 13:42:42 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 13:42:47 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 13:42:47 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 5656 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 13:42:47 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 13:42:47 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 13:42:47 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 13:42:47 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 13:42:48 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 13:42:48 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 0 JDBC repository interfaces.
+2024-10-05 13:42:48 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 13:42:48 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 13:42:48 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 13:42:48 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 13:42:48 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 13:42:48 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1245 ms
+2024-10-05 13:42:49 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 13:42:49 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@37ede4db
+2024-10-05 13:42:49 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 13:42:49 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 13:42:49 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 13:42:50 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 13:42:50 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 13:42:50 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.738 seconds (process running for 3.646)
+2024-10-05 14:06:28 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 14:06:28 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 14:06:28 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 23:24:34 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 23:24:34 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 23:24:38 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 23:24:38 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 18328 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 23:24:38 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 23:24:38 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 23:24:39 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 23:24:39 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 23:24:39 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 23:24:39 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JDBC repository interfaces.
+2024-10-05 23:24:40 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 23:24:40 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 23:24:40 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 23:24:40 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 23:24:40 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 23:24:40 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1223 ms
+2024-10-05 23:24:40 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 23:24:40 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1b9e346f
+2024-10-05 23:24:40 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 23:24:41 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 23:24:42 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 23:24:42 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 23:24:42 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 23:24:42 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 4.136 seconds (process running for 5.155)
+2024-10-05 23:25:49 INFO  [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 23:25:49 INFO  [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 23:25:49 INFO  [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-05 23:26:08 WARN  [http-nio-8080-exec-2] o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'nombreClaseAnterior' for method parameter type String is not present]
+2024-10-05 23:30:07 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-05 23:30:07 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-05 23:30:11 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-05 23:30:11 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.4 with PID 11688 (C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by usuario in C:\Users\usuario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-05 23:30:11 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-05 23:30:11 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-05 23:30:11 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-05 23:30:11 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-05 23:30:12 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-05 23:30:12 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 JDBC repository interfaces.
+2024-10-05 23:30:12 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-05 23:30:12 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-05 23:30:12 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-05 23:30:12 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-05 23:30:12 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-05 23:30:12 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 989 ms
+2024-10-05 23:30:13 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-05 23:30:13 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4b6b26c7
+2024-10-05 23:30:13 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-05 23:30:13 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-05 23:30:13 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-05 23:30:13 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-05 23:30:13 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-05 23:30:13 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.302 seconds (process running for 3.079)
+2024-10-05 23:30:28 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-05 23:30:28 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-05 23:30:28 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms

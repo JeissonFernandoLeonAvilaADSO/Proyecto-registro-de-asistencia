@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+
 @Service
 public class ProgramaFormacionDataService {
 
@@ -17,8 +18,9 @@ public class ProgramaFormacionDataService {
     @Autowired
     private SedeDataService sedeDataService;
 
-    @Autowired
-    private JornadaFormacionDataService jornadaFormacionDataService;
+    // Se elimina la inyección de JornadaFormacionDataService ya que la columna se ha movido a fichas
+    // @Autowired
+    // private JornadaFormacionDataService jornadaFormacionDataService;
 
     @Autowired
     private NivelFormacionDataService nivelFormacionDataService;
@@ -29,10 +31,9 @@ public class ProgramaFormacionDataService {
     // Obtener todos los programas de formación
     public List<Map<String, Object>> getAllProgramasFormacion() {
         String sql = """
-                SELECT pf.ID, pf.ProgramaFormacion, jf.JornadasFormacion, nf.NivelFormacion, 
+                SELECT pf.ID, pf.ProgramaFormacion, nf.NivelFormacion, 
                        s.CentroFormacion, a.Area
                 FROM programaformacion pf
-                JOIN jornadaformacion jf ON pf.IDJornadaFormacion = jf.ID
                 JOIN nivelformacion nf ON pf.IDNivelFormacion = nf.ID
                 JOIN sede s ON pf.IDSede = s.ID
                 JOIN areas a ON pf.IDArea = a.ID
@@ -42,35 +43,47 @@ public class ProgramaFormacionDataService {
 
     // Agregar un programa de formación
     public boolean createProgramaFormacion(Map<String, Object> programa) {
+        // Verificar que los campos obligatorios no estén vacíos
+        if (isNullOrEmpty(programa.get("ProgramaFormacion"))) {
+            throw new IllegalArgumentException("El campo 'ProgramaFormacion' no puede estar vacío.");
+        }
+        if (isNullOrEmpty(programa.get("NivelFormacion"))) {
+            throw new IllegalArgumentException("El campo 'NivelFormacion' no puede estar vacío.");
+        }
+        if (isNullOrEmpty(programa.get("CentroFormacion"))) {
+            throw new IllegalArgumentException("El campo 'CentroFormacion' no puede estar vacío.");
+        }
+        if (isNullOrEmpty(programa.get("Area"))) {
+            throw new IllegalArgumentException("El campo 'Area' no puede estar vacío.");
+        }
+
         // Obtener los IDs correspondientes desde otros servicios
         Integer sedeId = sedeDataService.getSedeIdByCentroFormacion((String) programa.get("CentroFormacion"));
-        Integer jornadaId = jornadaFormacionDataService.getJornadaIdByValue((String) programa.get("JornadasFormacion"));
+        // Integer jornadaId = jornadaFormacionDataService.getJornadaIdByValue((String) programa.get("JornadasFormacion")); // Eliminado
         Integer nivelId = nivelFormacionDataService.getNivelIdByValue((String) programa.get("NivelFormacion"));
         Integer areaId = areaDataService.getAreaIdByValue((String) programa.get("Area"));
 
         if (sedeId == null) {
-            throw new IllegalArgumentException("el id de sede no es valido");
+            throw new IllegalArgumentException("El ID de sede no es válido.");
         }
-        if (jornadaId == null){
-            throw new IllegalArgumentException("el id de jornada no es valido");
-        }
+        // if (jornadaId == null){
+        //     throw new IllegalArgumentException("El ID de jornada no es válido.");
+        // }
         if (nivelId == null){
-            throw new IllegalArgumentException("el id de nivel no es valido");
+            throw new IllegalArgumentException("El ID de nivel no es válido.");
         }
         if (areaId == null){
-            throw new IllegalArgumentException("el area no es valido");
+            throw new IllegalArgumentException("El área no es válida.");
         }
-
 
         String sql = """
                 INSERT INTO programaformacion 
-                (ProgramaFormacion, IDJornadaFormacion, IDNivelFormacion, IDSede, IDArea) 
-                VALUES (?, ?, ?, ?, ?)
+                (ProgramaFormacion, IDNivelFormacion, IDSede, IDArea) 
+                VALUES (?, ?, ?, ?)
                 """;
 
         int rowsInserted = jdbcTemplate.update(sql,
                 programa.get("ProgramaFormacion"),
-                jornadaId,
                 nivelId,
                 sedeId,
                 areaId);
@@ -81,39 +94,52 @@ public class ProgramaFormacionDataService {
     // Actualizar un programa de formación
     public boolean updateProgramaFormacion(int id, Map<String, Object> programa) {
         System.out.println(programa);
+
+        // Verificar que los campos obligatorios no estén vacíos
+        if (isNullOrEmpty(programa.get("ProgramaFormacion"))) {
+            throw new IllegalArgumentException("El campo 'ProgramaFormacion' no puede estar vacío.");
+        }
+        if (isNullOrEmpty(programa.get("NivelFormacion"))) {
+            throw new IllegalArgumentException("El campo 'NivelFormacion' no puede estar vacío.");
+        }
+        if (isNullOrEmpty(programa.get("CentroFormacion"))) {
+            throw new IllegalArgumentException("El campo 'CentroFormacion' no puede estar vacío.");
+        }
+        if (isNullOrEmpty(programa.get("Area"))) {
+            throw new IllegalArgumentException("El campo 'Area' no puede estar vacío.");
+        }
+
         // Obtener los IDs correspondientes desde otros servicios
         Integer sedeId = sedeDataService.getSedeIdByCentroFormacion((String) programa.get("CentroFormacion"));
-        Integer jornadaId = jornadaFormacionDataService.getJornadaIdByValue((String) programa.get("JornadasFormacion"));
+        // Integer jornadaId = jornadaFormacionDataService.getJornadaIdByValue((String) programa.get("JornadasFormacion")); // Eliminado
         Integer nivelId = nivelFormacionDataService.getNivelIdByValue((String) programa.get("NivelFormacion"));
         Integer areaId = areaDataService.getAreaIdByValue((String) programa.get("Area"));
         System.out.println(sedeId);
-        System.out.println(jornadaId);
+        // System.out.println(jornadaId); // Eliminado
         System.out.println(nivelId);
         System.out.println(areaId);
 
         if (sedeId == null) {
-            throw new IllegalArgumentException("el id de sede no es valido");
+            throw new IllegalArgumentException("El ID de sede no es válido.");
         }
-        if (jornadaId == null){
-            throw new IllegalArgumentException("el id de jornada no es valido");
-        }
+        // if (jornadaId == null){
+        //     throw new IllegalArgumentException("El ID de jornada no es válido.");
+        // }
         if (nivelId == null){
-            throw new IllegalArgumentException("el id de nivel no es valido");
+            throw new IllegalArgumentException("El ID de nivel no es válido.");
         }
         if (areaId == null){
-            throw new IllegalArgumentException("el area no es valido");
+            throw new IllegalArgumentException("El área no es válida.");
         }
-
 
         String sql = """
                 UPDATE programaformacion 
-                SET ProgramaFormacion = ?, IDJornadaFormacion = ?, IDNivelFormacion = ?, IDSede = ?, IDArea = ?
+                SET ProgramaFormacion = ?, IDNivelFormacion = ?, IDSede = ?, IDArea = ?
                 WHERE ID = ?
                 """;
 
         int updatedRows = jdbcTemplate.update(sql,
                 programa.get("ProgramaFormacion"),
-                jornadaId,
                 nivelId,
                 sedeId,
                 areaId,
@@ -132,10 +158,9 @@ public class ProgramaFormacionDataService {
     // Método para obtener un programa de formación por su ID
     public Map<String, Object> getProgramaFormacionById(int id) {
         String sql = """
-                SELECT pf.ID, pf.ProgramaFormacion, jf.JornadasFormacion, nf.NivelFormacion, 
+                SELECT pf.ID, pf.ProgramaFormacion, nf.NivelFormacion, 
                        s.CentroFormacion, a.Area
                 FROM programaformacion pf
-                JOIN jornadaformacion jf ON pf.IDJornadaFormacion = jf.ID
                 JOIN nivelformacion nf ON pf.IDNivelFormacion = nf.ID
                 JOIN sede s ON pf.IDSede = s.ID
                 JOIN areas a ON pf.IDArea = a.ID
@@ -166,5 +191,17 @@ public class ProgramaFormacionDataService {
     public Integer obtenerIdProgramaFormacionPorNombre(String nombrePrograma) {
         String sql = "SELECT ID FROM programaformacion WHERE ProgramaFormacion = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{nombrePrograma}, Integer.class);
+    }
+
+    // Método auxiliar para verificar si un objeto está vacío o es nulo
+    private boolean isNullOrEmpty(Object obj) {
+        if (obj == null) {
+            return true;
+        }
+        if (obj instanceof String) {
+            return ((String) obj).trim().isEmpty();
+        }
+        // Puedes añadir más condiciones si necesitas verificar otros tipos de datos
+        return false;
     }
 }

@@ -155,7 +155,7 @@ public class AsisService {
                     INNER JOIN departamentos dept ON mun.id_departamento = dept.ID
                     INNER JOIN fichas fc ON ap.IDFicha = fc.ID
                     INNER JOIN programaformacion pform ON fc.IDProgramaFormacion = pform.ID
-                    INNER JOIN jornadaformacion jf ON pform.IDJornadaFormacion = jf.ID
+                    INNER JOIN jornadaformacion jf ON fc.IDJornadaFormacion = jf.ID
                     INNER JOIN nivelformacion nf ON pform.IDNivelFormacion = nf.ID
                     INNER JOIN sede sd ON pform.IDSede = sd.ID
                     INNER JOIN areas ON pform.IDArea = areas.ID

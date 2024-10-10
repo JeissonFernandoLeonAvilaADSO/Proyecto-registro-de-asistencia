@@ -49,7 +49,7 @@ public class ExcelService {
         String sede = datosAsistencia.get("Sede") != null ? datosAsistencia.get("Sede").toString() : "Sede no especificada";
         String instructor = datosAsistencia.get("Instructor") != null ? datosAsistencia.get("Instructor").toString() : "Instructor no especificado";
         String claseFormacion = datosAsistencia.get("ClaseFormacion") != null ? datosAsistencia.get("ClaseFormacion").toString() : "Clase no especificada";
-        String fecha = datosAsistencia.get("Fecha") != null ? datosAsistencia.get("Fecha").toString() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String fecha = datosAsistencia.get("Fecha") != null ? datosAsistencia.get("Fecha").toString() : new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
         // Agregar los datos del encabezado
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 7));  // Merge cells for title

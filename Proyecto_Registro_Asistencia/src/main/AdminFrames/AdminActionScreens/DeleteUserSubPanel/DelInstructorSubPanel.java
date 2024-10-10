@@ -36,7 +36,7 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
     DefaultComboBoxModel<String> mesModel = new DefaultComboBoxModel<>();
     DefaultComboBoxModel<String> diaModel = new DefaultComboBoxModel<>();
     DefaultTableModel modeloTabla = new DefaultTableModel(
-            new Object[] {"Ficha", "Programa de Formación", "Nivel de Formación", "Jornada de Formación", "Sede", "Área", "Eliminar"},
+            new Object[] {"Ficha", "Jornada de Formación"},
             0  // Número de filas iniciales
     );
 
@@ -91,13 +91,14 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
         BuscarDatosUsuario = new javax.swing.JButton();
         ClaseFormacionCB = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
+        HabilitarInstructor = new javax.swing.JButton();
 
         CreateInstructorSubPanel.setBackground(new java.awt.Color(255, 255, 255));
 
         ConfirmareliminarInstructor.setBackground(new java.awt.Color(0, 34, 64));
         ConfirmareliminarInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ConfirmareliminarInstructor.setForeground(new java.awt.Color(255, 255, 255));
-        ConfirmareliminarInstructor.setText("Eliminar Instructor");
+        ConfirmareliminarInstructor.setText("Deshabilitar Instructor");
         ConfirmareliminarInstructor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ConfirmareliminarInstructorActionPerformed(evt);
@@ -358,6 +359,16 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
         jLabel26.setForeground(new java.awt.Color(0, 0, 0));
         jLabel26.setText("Clase de formacion");
 
+        HabilitarInstructor.setBackground(new java.awt.Color(57, 169, 0));
+        HabilitarInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        HabilitarInstructor.setForeground(new java.awt.Color(255, 255, 255));
+        HabilitarInstructor.setText("Habilitar Instructor");
+        HabilitarInstructor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HabilitarInstructorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout CreateInstructorSubPanelLayout = new javax.swing.GroupLayout(CreateInstructorSubPanel);
         CreateInstructorSubPanel.setLayout(CreateInstructorSubPanelLayout);
         CreateInstructorSubPanelLayout.setHorizontalGroup(
@@ -366,71 +377,79 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel22)
-                            .addComponent(jLabel21)
-                            .addComponent(jLabel20)
-                            .addComponent(jLabel27)
-                            .addComponent(jLabel28))
-                        .addGap(67, 67, 67)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TipoDocCB, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ResultadoNombres, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ResultadoApellidos, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ResultadoPass)
-                            .addComponent(ResultadoUsuario)))
-                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel19)
-                        .addGap(120, 120, 120)
-                        .addComponent(ResultadoDocumento))
-                    .addComponent(ConfirmareliminarInstructor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addContainerGap(1038, Short.MAX_VALUE))
+                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(ConfirmareliminarInstructor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 851, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addComponent(IDInstructorField)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1)
-                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel30)
-                            .addComponent(jLabel29)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel25)
-                            .addComponent(jLabel26))
-                        .addGap(56, 56, 56)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addComponent(ClaseFormacionCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap())
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(HabilitarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ResultadoFechaHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE))
-                            .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ResultadoTelefono)
-                            .addComponent(ResultadoCorreo)
+                                .addComponent(jLabel19)
+                                .addGap(120, 120, 120)
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(TipoDocCB, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ResultadoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ResultadoNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ResultadoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ResidenciaHolder))))))
+                                .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel30)
+                                    .addComponent(jLabel29)
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel23)
+                                    .addComponent(jLabel25)
+                                    .addComponent(jLabel26))
+                                .addGap(56, 56, 56)
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(ResultadoCorreo, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ResultadoTelefono, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
+                                        .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ResultadoFechaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
+                                        .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ResidenciaHolder))
+                                    .addComponent(GeneroCB, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel22)
+                                    .addComponent(jLabel21)
+                                    .addComponent(jLabel20)
+                                    .addComponent(jLabel27)
+                                    .addComponent(jLabel28))
+                                .addGap(67, 67, 67)
+                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(ResultadoPass, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ResultadoUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap())))
         );
         CreateInstructorSubPanelLayout.setVerticalGroup(
             CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateInstructorSubPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(HabilitarInstructor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -461,14 +480,13 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
                     .addComponent(ResultadoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel25)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(ResultadoFechaHolder, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel25)
+                    .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ResultadoFechaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(GeneroCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -487,24 +505,24 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
                     .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(ResidenciaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ResidenciaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel26))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ConfirmareliminarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(CreateInstructorSubPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(CreateInstructorSubPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -670,13 +688,15 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
     }
 
     private void ConfirmareliminarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmareliminarInstructorActionPerformed
-        int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea registrar los datos?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea inhabilitar al instructor?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
 
         switch (respuesta) {
             case JOptionPane.YES_OPTION -> {
                 try {
-                    API_Admin_InstructorApplications eliminarInstructor = new API_Admin_InstructorApplications();
-                    eliminarInstructor.DeleteInstructor(ResultadoDocumento.getText());
+                    API_BuscarUsuario desHabilitarInstructor = new API_BuscarUsuario();
+                    desHabilitarInstructor.inhabilitarInstructor(ResultadoDocumento.getText());
+//                    API_Admin_InstructorApplications eliminarInstructor = new API_Admin_InstructorApplications();
+//                    eliminarInstructor.DeleteInstructor(ResultadoDocumento.getText());
 
                     // Limpiar formulario después de la actualización
                     limpiarFormularioInstructor();
@@ -880,45 +900,30 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
             }
 
 
-            // Fichas y programas de formación
+            // Obtener el modelo de la tabla y limpiar las filas existentes
             DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
             modeloTabla.setRowCount(0);  // Limpiar la tabla
 
-            // Recorrer las listas de fichas, programas, jornadas, niveles, sedes y áreas para agregarlos a la tabla
+            // Obtener las listas de fichas y jornadas
             List<Integer> fichas = instructor.getFichas();
-            List<String> programasFormacion = instructor.getProgramasFormacion();
             List<String> jornadasFormacion = instructor.getJornadasFormacion();
-            List<String> nivelesFormacion = instructor.getNivelesFormacion();
-            List<String> sedes = instructor.getSedes();
-            List<String> areas = instructor.getAreas();
 
-            // Verificar el tamaño máximo de las listas
-            int maxFilas = Math.max(fichas.size(), Math.max(programasFormacion.size(), Math.max(jornadasFormacion.size(), Math.max(nivelesFormacion.size(), Math.max(sedes.size(), areas.size())))));
+            // Verificar que las listas tengan el mismo tamaño
+            if (fichas.size() != jornadasFormacion.size()) {
+                JOptionPane.showMessageDialog(this, "La cantidad de fichas y jornadas no coincide. Por favor, verifica los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            // Agregar cada fila con los datos correspondientes
-            for (int i = 0; i < maxFilas; i++) {
-                // Evitar que las listas cortas generen errores
-                Integer ficha = (i < fichas.size()) ? fichas.get(i) : null;
-                String programa = (i < programasFormacion.size()) ? programasFormacion.get(i) : "";
-                String jornada = (i < jornadasFormacion.size()) ? jornadasFormacion.get(i) : "";
-                String nivel = (i < nivelesFormacion.size()) ? nivelesFormacion.get(i) : "";
-                String sede = (i < sedes.size()) ? sedes.get(i) : "";
-                String area = (i < areas.size()) ? areas.get(i) : "";
+            // Agregar cada ficha y su jornada correspondiente a la tabla
+            for (int i = 0; i < fichas.size(); i++) {
+                Integer ficha = fichas.get(i);
+                String jornada = jornadasFormacion.get(i);
 
                 modeloTabla.addRow(new Object[]{
                         ficha,
-                        programa,
-                        jornada,
-                        nivel,
-                        sede,
-                        area,
-                        "Eliminar"  // Texto para el botón de eliminar
+                        jornada
                 });
             }
-
-            // Asocia el ButtonRenderer y ButtonEditor con la columna del botón de eliminar
-            FichasAsociadasTB.getColumnModel().getColumn(6).setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
-            FichasAsociadasTB.getColumnModel().getColumn(6).setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), FichasAsociadasTB));
 
         } else {
             JOptionPane.showMessageDialog(null, "No se encontró el instructor con el documento proporcionado.");
@@ -959,6 +964,71 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
             }
     }//GEN-LAST:event_ResultadoNombresKeyTyped
 
+    private void HabilitarInstructorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HabilitarInstructorActionPerformed
+        API_BuscarUsuario api = new API_BuscarUsuario();
+        String documento = null;
+
+        while (true) {
+            // Paso 1: Solicitar el documento
+            documento = JOptionPane.showInputDialog(this, "Ingrese el documento del Instructor a habilitar:", "Habilitar Instructor", JOptionPane.QUESTION_MESSAGE);
+
+            // Verificar si el usuario canceló la operación
+            if (documento == null) {
+                // Usuario canceló
+                return;
+            }
+
+            documento = documento.trim();
+
+            // Paso 2: Validar el documento (solo números y no vacío)
+            if (documento.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El documento no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                continue;
+            }
+
+            if (!documento.matches("\\d+")) {
+                JOptionPane.showMessageDialog(this, "El documento solo debe contener números.", "Error", JOptionPane.ERROR_MESSAGE);
+                continue;
+            }
+
+            // Paso 3: Confirmar la habilitación
+            int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea habilitar al Instructor con documento " + documento + "?", "Confirmar Habilitación", JOptionPane.YES_NO_OPTION);
+
+            if (confirm != JOptionPane.YES_OPTION) {
+                // Usuario no confirmó
+                return;
+            }
+
+            // Paso 4: Solicitar nuevamente el documento para confirmar
+            String documentoConfirmacion = JOptionPane.showInputDialog(this, "Por favor, reingrese el documento para confirmar:", "Confirmar Documento", JOptionPane.QUESTION_MESSAGE);
+
+            if (documentoConfirmacion == null) {
+                // Usuario canceló
+                return;
+            }
+
+            documentoConfirmacion = documentoConfirmacion.trim();
+
+            // Validar el documento de confirmación
+            if (!documentoConfirmacion.equals(documento)) {
+                JOptionPane.showMessageDialog(this, "El documento no coincide. Operación cancelada.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Paso 5: Enviar la solicitud de habilitación
+            boolean resultado = api.habilitarInstructor(documento);
+
+            if (resultado) {
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo habilitar al Instructor. Verifique que el documento sea correcto y que el Instructor exista.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            // Salir del bucle después de intentar la operación
+            break;
+        }
+    }//GEN-LAST:event_HabilitarInstructorActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> BarrioCB;
@@ -970,6 +1040,7 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> DiaCB;
     private javax.swing.JTable FichasAsociadasTB;
     private javax.swing.JComboBox<String> GeneroCB;
+    private javax.swing.JButton HabilitarInstructor;
     private javax.swing.JTextField IDInstructorField;
     private javax.swing.JComboBox<String> MesCB;
     private javax.swing.JComboBox<String> MunicipioCB;

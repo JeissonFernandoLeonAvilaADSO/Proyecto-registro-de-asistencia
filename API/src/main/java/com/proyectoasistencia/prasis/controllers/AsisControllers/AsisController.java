@@ -68,6 +68,7 @@ public class AsisController {
     @GetMapping("/listar/InstructorAsis")
     public ResponseEntity<List<Map<String, Object>>> listarAsistenciasPorFicha(@RequestParam String documentoInstructor) {
         try {
+            System.out.println("Buscando asistencias para el instructor con documento: " + documentoInstructor);
             List<Map<String, Object>> asistencias = asisService.listarAsistenciasPorInstructor(documentoInstructor);
 
             // Convertir el archivo BLOB a base64 para incluirlo en la respuesta JSON
@@ -75,9 +76,13 @@ public class AsisController {
                 byte[] archivoBlob = (byte[]) asistencia.get("ArchivoExcel");
                 if (archivoBlob != null) {
                     String archivoBase64 = Base64.getEncoder().encodeToString(archivoBlob);
+                    System.out.println(archivoBase64);
                     asistencia.put("ArchivoExcel", archivoBase64);  // Reemplazar el BLOB con el string base64
+                } else {
+                    System.out.println("Archivo de asistencia no encontrado");
                 }
             });
+            System.out.println("asistencias encontradas: " + asistencias);
 
             return ResponseEntity.ok(asistencias);
         } catch (Exception e) {

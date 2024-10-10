@@ -49,7 +49,6 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
         jLabel27 = new javax.swing.JLabel();
         RegistrarUsuario = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
-        RegistrarPass = new javax.swing.JTextField();
         RegistrarNombres = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         RegistrarArea = new javax.swing.JTextField();
@@ -87,6 +86,8 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
         DiaCB = new javax.swing.JComboBox<>();
         FechaHolder = new javax.swing.JTextField();
         ResidenciaHolder = new javax.swing.JTextField();
+        RegistrarPass = new javax.swing.JPasswordField();
+        RefrescarCombos = new javax.swing.JButton();
 
         CreateAprendizSubPanel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -100,14 +101,6 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
         jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(0, 0, 0));
         jLabel28.setText("Contraseña");
-
-        RegistrarPass.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        RegistrarPass.setForeground(new java.awt.Color(0, 0, 0));
-        RegistrarPass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RegistrarPassActionPerformed(evt);
-            }
-        });
 
         RegistrarNombres.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         RegistrarNombres.setForeground(new java.awt.Color(0, 0, 0));
@@ -328,6 +321,18 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
         ResidenciaHolder.setForeground(new java.awt.Color(0, 0, 0));
         ResidenciaHolder.setFocusable(false);
 
+        RegistrarPass.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+
+        RefrescarCombos.setBackground(new java.awt.Color(57, 169, 0));
+        RefrescarCombos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RefrescarCombos.setForeground(new java.awt.Color(255, 255, 255));
+        RefrescarCombos.setText("Refrescar comboBox");
+        RefrescarCombos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefrescarCombosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout CreateAprendizSubPanelLayout = new javax.swing.GroupLayout(CreateAprendizSubPanel);
         CreateAprendizSubPanel.setLayout(CreateAprendizSubPanelLayout);
         CreateAprendizSubPanelLayout.setHorizontalGroup(
@@ -335,93 +340,97 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
             .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel22)
+                                    .addComponent(jLabel21)
+                                    .addComponent(jLabel20)
+                                    .addComponent(jLabel27)
+                                    .addComponent(jLabel28)
+                                    .addComponent(jLabel19))
+                                .addGap(67, 67, 67)
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(RegistrarNombres, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(RegistrarPass, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 874, Short.MAX_VALUE)
+                                    .addComponent(RegistrarUsuario, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(RegistrarApellidos)
+                                    .addComponent(TipoDocCB, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(RegistrarDocumento, javax.swing.GroupLayout.Alignment.LEADING)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel38)
+                                    .addComponent(jLabel30)
+                                    .addComponent(jLabel29)
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel23)
+                                    .addComponent(jLabel25))
+                                .addGap(56, 56, 56)
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                                        .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ResidenciaHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE))
+                                    .addComponent(RegistrarCorreo)
+                                    .addComponent(RegistrarTelefono)
+                                    .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                                        .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(FechaHolder))
+                                    .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(6, 6, 6))
                     .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel22)
-                            .addComponent(jLabel21)
-                            .addComponent(jLabel20)
-                            .addComponent(jLabel27)
-                            .addComponent(jLabel28))
-                        .addGap(67, 67, 67)
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TipoDocCB, javax.swing.GroupLayout.Alignment.TRAILING, 0, 771, Short.MAX_VALUE)
-                            .addComponent(RegistrarNombres, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(RegistrarApellidos, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(RegistrarPass)
-                            .addComponent(RegistrarUsuario)))
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel19)
-                        .addGap(120, 120, 120)
-                        .addComponent(RegistrarDocumento))
-                    .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel17))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel40)
-                            .addComponent(jLabel39)
-                            .addComponent(jLabel41))
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel40)
+                                    .addComponent(jLabel39)
+                                    .addComponent(jLabel41)
+                                    .addComponent(jLabel24)
+                                    .addComponent(jLabel17))
                                 .addGap(33, 33, 33)
-                                .addComponent(RegistrarProgramaFormacion))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(RegistrarSede, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
-                                    .addComponent(RegistrarArea)
-                                    .addComponent(RegistrarNivelFormacion)
-                                    .addComponent(RegistrarJornadaFormacion)))))
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel38)
-                            .addComponent(jLabel30)
-                            .addComponent(jLabel29)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel25))
-                        .addGap(56, 56, 56)
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                                .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(FechaHolder))
-                            .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(RegistrarTelefono)
-                            .addComponent(RegistrarCorreo)
-                            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                                .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ResidenciaHolder))
-                            .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(RegistrarArea, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 874, Short.MAX_VALUE)
+                                    .addComponent(RegistrarJornadaFormacion, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(RegistrarNivelFormacion, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(RegistrarSede)
+                                    .addComponent(RegistrarProgramaFormacion, javax.swing.GroupLayout.Alignment.LEADING))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(RefrescarCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         CreateAprendizSubPanelLayout.setVerticalGroup(
             CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(RefrescarCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RegistrarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel27))
-                .addGap(9, 9, 9)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addComponent(jLabel28)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel19))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel19)
+                        .addGap(6, 6, 6))
                     .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addComponent(RegistrarPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(RegistrarPass, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(RegistrarDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -470,9 +479,9 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
                     .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(RegistrarProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel41))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel41)
+                    .addComponent(RegistrarProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RegistrarNivelFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel40))
@@ -490,7 +499,7 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
                     .addComponent(RegistrarSede, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -512,10 +521,6 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
     private void GeneroCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GeneroCBActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_GeneroCBActionPerformed
-
-    private void RegistrarPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarPassActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_RegistrarPassActionPerformed
 
     private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
            String fichaSeleccionada = (String) FichaCB.getSelectedItem();
@@ -839,15 +844,6 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
                     errores.append("- La Fecha de Nacimiento es inválida.\n");
                 }
 
-                // Verificar que el usuario tenga al menos 18 años
-                java.util.Calendar cal = java.util.Calendar.getInstance();
-                cal.setTime(fechaNacimientoUtil);
-                cal.add(java.util.Calendar.YEAR, 18);
-                java.util.Date fechaMinima = cal.getTime();
-                if (fechaMinima.after(new java.util.Date())) {
-                    errores.append("- Debes tener al menos 18 años para registrarte.\n");
-                }
-
             } catch (ParseException e) {
                 errores.append("- La Fecha de Nacimiento debe tener el formato 'yyyy-MM-dd'.\n");
             }
@@ -1052,6 +1048,33 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_RegistrarApellidosKeyTyped
 
+    private void RefrescarCombosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarCombosActionPerformed
+        refrescarComboBoxes();
+    }//GEN-LAST:event_RefrescarCombosActionPerformed
+
+    public void refrescarComboBoxes() {
+        try {
+            ComboBoxModels cbm = new ComboBoxModels();
+            // Actualizar los ComboBox con los modelos más recientes
+            ComboBoxModels CBModels = new ComboBoxModels();
+            TipoDocCB.setModel(CBModels.generarComboBoxModelPorTipo("TipoDocumento"));
+            GeneroCB.setModel(CBModels.generarComboBoxModelPorTipo("Genero"));
+            MunicipioCB.setModel(CBModels.generarComboBoxModelPorTipo("Municipios"));
+            DepartamentoCB.setModel(CBModels.generarComboBoxModelPorTipo("Departamentos"));
+            BarrioCB.setModel(CBModels.generarComboBoxModelPorTipo("Barrios"));
+            FichaCB.setModel(CBModels.generarComboBoxModelPorTipo("Fichas"));
+            YearCB.setModel(yearModel);
+            MesCB.setModel(mesModel);
+            DiaCB.setModel(diaModel);
+
+            JOptionPane.showMessageDialog(this, "Los ComboBox han sido actualizados correctamente.", "ComboBox Actualizados", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al refrescar los ComboBox: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
 
 
 
@@ -1066,6 +1089,7 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> GeneroCB;
     private javax.swing.JComboBox<String> MesCB;
     private javax.swing.JComboBox<String> MunicipioCB;
+    private javax.swing.JButton RefrescarCombos;
     private javax.swing.JTextField RegistrarApellidos;
     private javax.swing.JTextField RegistrarArea;
     private javax.swing.JTextField RegistrarCorreo;
@@ -1073,7 +1097,7 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
     private javax.swing.JTextField RegistrarJornadaFormacion;
     private javax.swing.JTextField RegistrarNivelFormacion;
     private javax.swing.JTextField RegistrarNombres;
-    private javax.swing.JTextField RegistrarPass;
+    private javax.swing.JPasswordField RegistrarPass;
     private javax.swing.JTextField RegistrarProgramaFormacion;
     private javax.swing.JTextField RegistrarSede;
     private javax.swing.JTextField RegistrarTelefono;

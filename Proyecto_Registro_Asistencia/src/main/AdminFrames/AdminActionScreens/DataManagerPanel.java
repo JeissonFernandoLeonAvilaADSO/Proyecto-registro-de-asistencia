@@ -16,10 +16,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static main.util.API_Actions.API_Data.API_DataClaseFormacionApplications.actualizarClase;
 
 /**
  *
@@ -40,6 +40,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
     public void aditionalConfig(){
         TabPanelStyler.applyPrimaryStyle(PrincipalTabPanel);
         TabPanelStyler.applyPrimaryStyle(ProgramasFormacionTabPanel);
+        TabPanelStyler.applyPrimaryStyle(FichasTabPanel);
         ButtonStyler.applyPrimaryStyle(AgregarTipoDoc);
         try {
             ComboBoxModels cbm = new ComboBoxModels();
@@ -54,9 +55,11 @@ public class DataManagerPanel extends javax.swing.JPanel {
             actualizarTablaNivelesFormacion();
             actualizarTablaSedesFormacion();
             actualizarTablaClaseFormacion();
+            AsociarFichaDataFichasCB.setModel(cbm.generarComboBoxModelPorTipo("Fichas"));
+            AsociarFichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ClaseFormacion"));
             FichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ProgramaFormacion"));
             agregarModeloProgramaFormacion(ProgramaFormacionDataTable, API_DataProgramaFormacionApplications.obtenerProgramasFormacion());
-            JornadaProgramaCB.setModel(cbm.generarComboBoxModelPorTipo("JornadaFormacion"));
+            FichaDataJornadaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("JornadaFormacion"));
             NivelFormacionProgramaCB.setModel(cbm.generarComboBoxModelPorTipo("NivelFormacion"));
             SedeFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("Sede"));
             AreaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("Areas"));
@@ -100,43 +103,55 @@ public class DataManagerPanel extends javax.swing.JPanel {
     }
 
 
-    // Método para agregar modelo sin ComboBox, con valores adicionales mostrados como texto plano
-    public void agregarModeloAdicional(JTable tabla, Map<Integer, String> datos, Map<Integer, String> valoresAdicionales) {
-        // Crear el DefaultTableModel con columnas: ID, Valor, Selección (texto plano), Editar, Eliminar
-        DefaultTableModel modeloTabla = new DefaultTableModel(new Object[]{"ID", "Valor", "Selección", "Editar", "Eliminar"}, 0) {
+
+    /**
+     * Método para agregar modelos de Fichas a una JTable.
+     *
+     * @param tabla   La JTable donde se mostrarán las fichas.
+     * @param fichas  Lista de mapas que contienen los datos de las fichas.
+     */
+    public void agregarModeloAdicional(JTable tabla, List<Map<String, Object>> fichas) {
+        // Crear el DefaultTableModel con columnas: ID, Número de Ficha, Programa, Jornada, Editar, Eliminar
+        DefaultTableModel modeloTabla = new DefaultTableModel(new Object[]{
+                "ID", "Número de Ficha", "Programa de Formación", "Jornada de Formación", "Editar", "Eliminar"
+        }, 0) {
             // Hacer que las celdas de botones no sean editables directamente
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 3 || column == 4; // Solo "Editar" y "Eliminar" son editables (para interactuar con los botones)
+                return column == 4 || column == 5; // Solo "Editar" y "Eliminar" son editables
             }
         };
 
-        // Rellenar el modelo con los datos y valores adicionales
-        for (Map.Entry<Integer, String> entry : datos.entrySet()) {
-            Integer id = entry.getKey();
-            String valorPrincipal = entry.getValue();
-            String valorAdicional = valoresAdicionales.getOrDefault(id, ""); // Obtener el valor adicional (Departamento o Municipio)
+        // Rellenar el modelo con los datos de las fichas
+        for (Map<String, Object> ficha : fichas) {
+            Integer idFicha = (Integer) ficha.get("ID");
+            Integer numeroFicha = (Integer) ficha.get("NumeroFicha");
+            String programaFormacion = (String) ficha.get("ProgramaFormacion");
+            String jornadaFormacion = (String) ficha.get("JornadaFormacion");
 
-            // Añadir una fila al modelo con los datos y el valor adicional como texto plano
-            modeloTabla.addRow(new Object[]{id, valorPrincipal, valorAdicional, "Editar", "Eliminar"});
+            // Añadir una fila al modelo con los datos de la ficha y los botones
+            modeloTabla.addRow(new Object[]{
+                    idFicha, numeroFicha, programaFormacion, jornadaFormacion, "Editar", "Eliminar"
+            });
         }
 
         // Setear el modelo a la JTable
         tabla.setModel(modeloTabla);
 
         // Configurar el tamaño de las columnas si es necesario
-         tabla.getColumnModel().getColumn(0).setPreferredWidth(50); // ID
-         tabla.getColumnModel().getColumn(1).setPreferredWidth(200); // Valor
-         tabla.getColumnModel().getColumn(2).setPreferredWidth(150); // Selección
-         tabla.getColumnModel().getColumn(3).setPreferredWidth(100); // Editar
-         tabla.getColumnModel().getColumn(4).setPreferredWidth(100); // Eliminar
+        tabla.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
+        tabla.getColumnModel().getColumn(1).setPreferredWidth(100); // Número de Ficha
+        tabla.getColumnModel().getColumn(2).setPreferredWidth(200); // Programa de Formación
+        tabla.getColumnModel().getColumn(3).setPreferredWidth(150); // Jornada de Formación
+        tabla.getColumnModel().getColumn(4).setPreferredWidth(100); // Editar
+        tabla.getColumnModel().getColumn(5).setPreferredWidth(100); // Eliminar
 
         // Asignar el ButtonRenderer para ambas columnas "Editar" y "Eliminar"
         ButtonColumnHelper.ButtonRenderer buttonRenderer = new ButtonColumnHelper.ButtonRenderer();
-        TableColumn editarColumna = tabla.getColumnModel().getColumn(3); // Columna de "Editar"
+        TableColumn editarColumna = tabla.getColumnModel().getColumn(4); // Columna de "Editar"
         editarColumna.setCellRenderer(buttonRenderer);
 
-        TableColumn eliminarColumna = tabla.getColumnModel().getColumn(4); // Columna de "Eliminar"
+        TableColumn eliminarColumna = tabla.getColumnModel().getColumn(5); // Columna de "Eliminar"
         eliminarColumna.setCellRenderer(buttonRenderer);
 
         // Asignar el ButtonEditor para la columna "Editar"
@@ -147,56 +162,31 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 // Configurar el botón
                 button.setText((value == null) ? "Editar" : value.toString());
 
+                // Remover ActionListeners anteriores para evitar múltiples acciones
+                for (ActionListener al : button.getActionListeners()) {
+                    button.removeActionListener(al);
+                }
+
                 // Agregar el ActionListener específico para "Editar"
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         // Obtener los datos de la fila seleccionada
                         Integer id = (Integer) table.getValueAt(row, 0);
-                        String valorPrincipal = (String) table.getValueAt(row, 1);
-                        String valorAdicional = (String) table.getValueAt(row, 2);
+                        Integer numeroFicha = (Integer) table.getValueAt(row, 1);
+                        String programaFormacion = (String) table.getValueAt(row, 2);
+                        String jornadaFormacion = (String) table.getValueAt(row, 3);
 
-                        // Mostrar un diálogo para editar los datos
-                        JTextField txtValorPrincipal = new JTextField(valorPrincipal);
-                        JTextField txtValorAdicional = new JTextField(valorAdicional);
-                        Object[] message = {
-                                "Valor Principal:", txtValorPrincipal,
-                                "Valor Adicional:", txtValorAdicional
-                        };
-
-                        int option = JOptionPane.showConfirmDialog(null, message, "Editar Ficha", JOptionPane.OK_CANCEL_OPTION);
-                        if (option == JOptionPane.OK_OPTION) {
-                            String nuevoValorPrincipal = txtValorPrincipal.getText().trim();
-                            String nuevoValorAdicional = txtValorAdicional.getText().trim();
-
-                            // Validaciones básicas
-                            if (nuevoValorPrincipal.isEmpty()) {
-                                JOptionPane.showMessageDialog(null, "El Valor Principal no puede estar vacío.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
-                                return;
-                            }
-
-                            // Suponiendo que 'numeroFicha' es el 'valorPrincipal'
-                            // Ajusta según tu lógica de negocio
-                            Integer numeroFicha;
-                            try {
-                                numeroFicha = Integer.parseInt(nuevoValorPrincipal);
-                            } catch (NumberFormatException ex) {
-                                JOptionPane.showMessageDialog(null, "El Valor Principal debe ser un número.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
-                                return;
-                            }
-
-                            // Llamar al método de ClienteAPI para actualizar la ficha
-                            String respuesta = API_DataFichasApplications.actualizarFicha(id, numeroFicha, nuevoValorAdicional);
-
-                            if (respuesta != null && respuesta.contains("exitosamente")) {
-                                // Actualizar el modelo de la tabla con los nuevos valores
-                                table.setValueAt(nuevoValorPrincipal, row, 1);
-                                table.setValueAt(nuevoValorAdicional, row, 2);
-                                JOptionPane.showMessageDialog(null, "Ficha actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                            } else {
-                                // El mensaje de error ya fue mostrado en ClienteAPI
-                            }
-                        }
+                        // Mostrar el diálogo para editar la ficha
+                        EditarFichaDialog dialog = new EditarFichaDialog(
+                                JOptionPane.getFrameForComponent(table),
+                                id,
+                                numeroFicha,
+                                programaFormacion,
+                                jornadaFormacion,
+                                tabla
+                        );
+                        dialog.setVisible(true);
 
                         // Detener la edición para que el botón vuelva a su estado normal
                         fireEditingStopped();
@@ -215,26 +205,36 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 // Configurar el botón
                 button.setText((value == null) ? "Eliminar" : value.toString());
 
+                // Remover ActionListeners anteriores para evitar múltiples acciones
+                for (ActionListener al : button.getActionListeners()) {
+                    button.removeActionListener(al);
+                }
+
                 // Agregar el ActionListener específico para "Eliminar"
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         // Obtener el ID de la ficha seleccionada
-                        Integer id = (Integer) table.getValueAt(row, 0);
+                        Integer idFicha = (Integer) table.getValueAt(row, 0);
 
                         // Confirmar eliminación
-                        int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar la ficha con ID " + id + "?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+                        int confirm = JOptionPane.showConfirmDialog(
+                                table,
+                                "¿Está seguro de que desea eliminar la ficha con ID " + idFicha + "?",
+                                "Confirmar Eliminación",
+                                JOptionPane.YES_NO_OPTION
+                        );
+
                         if (confirm == JOptionPane.YES_OPTION) {
                             // Llamar al método de ClienteAPI para eliminar la ficha
-                            String respuesta = API_DataFichasApplications.eliminarFicha(id);
+                            String respuesta = API_DataFichasApplications.eliminarFicha(idFicha);
 
                             if (respuesta != null && respuesta.contains("exitosamente")) {
                                 // Eliminar la fila del modelo de la tabla
                                 ((DefaultTableModel) table.getModel()).removeRow(row);
-                                JOptionPane.showMessageDialog(null, "Ficha eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                            } else {
-                                // El mensaje de error ya fue mostrado en ClienteAPI
+                                JOptionPane.showMessageDialog(table, "Ficha eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                             }
+                            // El manejo de errores ya está gestionado en ClienteAPI
                         }
 
                         // Detener la edición para que el botón vuelva a su estado normal
@@ -246,6 +246,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
             }
         });
     }
+
 
 
     // Método para agregar modelo de clase de formación sin ComboBox, usando texto plano para mostrar el instructor
@@ -378,15 +379,21 @@ public class DataManagerPanel extends javax.swing.JPanel {
         });
     }
 
+    /**
+     * Método para agregar modelos de Programa de Formación a una JTable.
+     *
+     * @param tabla     La JTable donde se mostrarán los programas de formación.
+     * @param programas Lista de mapas que contienen los datos de los programas de formación.
+     */
     public void agregarModeloProgramaFormacion(JTable tabla, List<Map<String, Object>> programas) {
-        // Crear el DefaultTableModel con columnas: ID, Programa, Centro, Jornadas, Nivel, Área, Editar, Eliminar
+        // Crear el DefaultTableModel con columnas: ID, Programa, Centro, Nivel, Área, Editar, Eliminar
         DefaultTableModel modeloTabla = new DefaultTableModel(new Object[]{
-                "ID", "Programa", "Centro", "Jornadas", "Nivel", "Área", "Editar", "Eliminar"
+                "ID", "Programa", "Centro", "Nivel", "Área", "Editar", "Eliminar"
         }, 0) {
             // Hacer que las celdas de botones no sean editables directamente
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 6 || column == 7;
+                return column == 5 || column == 6; // Solo "Editar" y "Eliminar" son editables (para interactuar con los botones)
             }
         };
 
@@ -395,13 +402,12 @@ public class DataManagerPanel extends javax.swing.JPanel {
             Integer idPrograma = (Integer) programa.get("ID");
             String nombrePrograma = (String) programa.get("ProgramaFormacion");
             String centroFormacion = (String) programa.get("CentroFormacion");
-            String jornadasFormacion = (String) programa.get("JornadasFormacion");
             String nivelFormacion = (String) programa.get("NivelFormacion");
             String area = (String) programa.get("Area");
 
             // Añadir una fila al modelo con los datos del programa y los botones
             modeloTabla.addRow(new Object[]{
-                    idPrograma, nombrePrograma, centroFormacion, jornadasFormacion,
+                    idPrograma, nombrePrograma, centroFormacion,
                     nivelFormacion, area, "Editar", "Eliminar"
             });
         }
@@ -409,82 +415,214 @@ public class DataManagerPanel extends javax.swing.JPanel {
         // Setear el modelo a la JTable
         tabla.setModel(modeloTabla);
 
-        // Asignar el ButtonRenderer y ButtonEditor para las columnas de "Editar" y "Eliminar"
+        // Configurar el tamaño de las columnas si es necesario
+        tabla.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
+        tabla.getColumnModel().getColumn(1).setPreferredWidth(200); // Programa
+        tabla.getColumnModel().getColumn(2).setPreferredWidth(150); // Centro
+        tabla.getColumnModel().getColumn(3).setPreferredWidth(100); // Nivel
+        tabla.getColumnModel().getColumn(4).setPreferredWidth(100); // Área
+        tabla.getColumnModel().getColumn(5).setPreferredWidth(100); // Editar
+        tabla.getColumnModel().getColumn(6).setPreferredWidth(100); // Eliminar
 
-        // Columna "Editar" (índice 6)
-        TableColumn editarColumna = tabla.getColumnModel().getColumn(6);
-        editarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
+        // Asignar el ButtonRenderer para ambas columnas "Editar" y "Eliminar"
+        ButtonColumnHelper.ButtonRenderer buttonRenderer = new ButtonColumnHelper.ButtonRenderer();
+        TableColumn editarColumna = tabla.getColumnModel().getColumn(5); // Columna de "Editar"
+        editarColumna.setCellRenderer(buttonRenderer);
+
+        TableColumn eliminarColumna = tabla.getColumnModel().getColumn(6); // Columna de "Eliminar"
+        eliminarColumna.setCellRenderer(buttonRenderer);
+
+        // Asignar el ButtonEditor para la columna "Editar"
+        editarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                super.getTableCellEditorComponent(table, value, isSelected, row, column);
+                // Configurar el botón
+                button.setText((value == null) ? "Editar" : value.toString());
+
+                // Remover ActionListeners anteriores para evitar múltiples acciones
+                for (ActionListener al : button.getActionListeners()) {
+                    button.removeActionListener(al);
+                }
+
+                // Agregar el ActionListener específico para "Editar"
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Obtener los datos de la fila seleccionada
+                        Integer id = (Integer) table.getValueAt(row, 0);
+                        String nombrePrograma = (String) table.getValueAt(row, 1);
+                        String centroFormacion = (String) table.getValueAt(row, 2);
+                        String nivelFormacion = (String) table.getValueAt(row, 3);
+                        String area = (String) table.getValueAt(row, 4);
+
+                        // Mostrar un diálogo para editar los datos
+                        EditarProgramaFormacionDialog dialog = new EditarProgramaFormacionDialog(
+                                JOptionPane.getFrameForComponent(table),
+                                id,
+                                nombrePrograma,
+                                centroFormacion,
+                                nivelFormacion,
+                                area,
+                                tabla
+                        );
+                        dialog.setVisible(true);
+
+                        // Detener la edición para que el botón vuelva a su estado normal
+                        fireEditingStopped();
+                    }
+                });
+
+                return button;
+            }
+        });
+
+        // Asignar el ButtonEditor para la columna "Eliminar"
+        eliminarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                super.getTableCellEditorComponent(table, value, isSelected, row, column);
+                // Configurar el botón
+                button.setText((value == null) ? "Eliminar" : value.toString());
+
+                // Remover ActionListeners anteriores para evitar múltiples acciones
+                for (ActionListener al : button.getActionListeners()) {
+                    button.removeActionListener(al);
+                }
+
+                // Agregar el ActionListener específico para "Eliminar"
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Obtener el ID del programa de formación seleccionado
+                        Integer idProgramaFormacion = (Integer) table.getValueAt(row, 0);
+
+                        // Confirmar eliminación
+                        int confirm = JOptionPane.showConfirmDialog(
+                                table,
+                                "¿Está seguro de que desea eliminar el Programa de Formación con ID " + idProgramaFormacion + "?",
+                                "Confirmar Eliminación",
+                                JOptionPane.YES_NO_OPTION
+                        );
+
+                        if (confirm == JOptionPane.YES_OPTION) {
+                            // Llamar al método de ClienteAPI para eliminar el programa de formación
+                            String respuesta = API_DataProgramaFormacionApplications.eliminarProgramaFormacion(idProgramaFormacion);
+
+                            if (respuesta != null && respuesta.contains("exitosamente")) {
+                                // Eliminar la fila del modelo de la tabla
+                                ((DefaultTableModel) table.getModel()).removeRow(row);
+                                JOptionPane.showMessageDialog(table, "Programa de Formación eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            // El manejo de errores ya está gestionado en ClienteAPI
+                        }
+
+                        // Detener la edición para que el botón vuelva a su estado normal
+                        fireEditingStopped();
+                    }
+                });
+
+                return button;
+            }
+        });
+    }
+
+
+    public void agregarModeloAsociarFichasClaseFormacion(JTable tabla, List<Map<String, Object>> asociaciones, Integer numeroFichaSeleccionado) {
+        // Crear el DefaultTableModel con columnas: ID, NombreClase, Editar, Eliminar
+        DefaultTableModel modeloTabla = new DefaultTableModel(new Object[]{
+                "ID", "NombreClase", "Editar", "Eliminar"
+        }, 0) {
+            // Hacer que las celdas de botones no sean editables directamente
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 2 || column == 3;  // Hacer editables las columnas "Editar" y "Eliminar"
+            }
+        };
+
+        // Llenar el modelo con los datos de las asociaciones
+        for (Map<String, Object> asociacion : asociaciones) {
+            Integer idAsociacion = (Integer) asociacion.get("ID");
+            String nombreClase = (String) asociacion.get("NombreClase");
+
+            modeloTabla.addRow(new Object[]{idAsociacion, nombreClase, "Editar", "Eliminar"});
+        }
+
+        // Asignar el modelo a la tabla
+        tabla.setModel(modeloTabla);
+
+        // Columna "Editar" (índice 2)
+        TableColumn editarColumna = tabla.getColumnModel().getColumn(2);
+        editarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());  // Renderizador del botón
         editarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
                 super.getTableCellEditorComponent(table, value, isSelected, row, column);
 
                 // Obtener los valores de la fila seleccionada
-                int idPrograma = Integer.parseInt(table.getValueAt(row, 0).toString());
-                String nombrePrograma = table.getValueAt(row, 1).toString();
-                String centroFormacion = table.getValueAt(row, 2).toString();
-                String jornadasFormacion = table.getValueAt(row, 3).toString();
-                String nivelFormacion = table.getValueAt(row, 4).toString();
-                String area = table.getValueAt(row, 5).toString();
+                String claseActual = table.getValueAt(row, 1).toString();  // Nombre de la clase en la columna 1
+                Integer fichaActual = numeroFichaSeleccionado;  // Obtener el numeroFicha desde el parámetro del método
 
-                // Obtener el Frame padre usando JOptionPane.getFrameForComponent
-                Frame parentFrame = JOptionPane.getFrameForComponent(table);
-
-                // Abrir el diálogo de edición
-                EditarProgramaFormacionDialog dialog = new EditarProgramaFormacionDialog(
-                        parentFrame,
-                        idPrograma,
-                        nombrePrograma,
-                        jornadasFormacion,
-                        nivelFormacion,
-                        centroFormacion,
-                        area,
-                        table
-                );
+                // Abrir el diálogo de edición con los valores actuales preseleccionados
+                EditarAsociacionDialog dialog = new EditarAsociacionDialog(JOptionPane.getFrameForComponent(table), claseActual, fichaActual);
                 dialog.setVisible(true);
 
+                // Obtener los valores seleccionados por el usuario en el diálogo
+                String nuevaClase = dialog.getNuevaClaseFormacion();
+                Integer nuevaFicha = dialog.getNuevaFicha();
+
+                if (nuevaClase != null && nuevaFicha != null) {
+                    // Llamar al método para editar la asociación
+                    String respuesta = API_DataFichasApplications.editarAsociacionFichaConClase(claseActual, nuevaClase, fichaActual, nuevaFicha);
+                    if (respuesta != null && respuesta.contains("exitosamente")) {
+                        // Actualizar la tabla con los nuevos valores
+                        actualizarTablaAsociarFichas();
+                        JOptionPane.showMessageDialog(this.getComponent(), "Asociación editada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this.getComponent(), "Error al editar la asociación.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
                 return this.getComponent();
             }
         });
 
-        // Columna "Eliminar" (índice 7)
-        TableColumn eliminarColumna = tabla.getColumnModel().getColumn(7);
+        // Columna "Eliminar" (índice 3)
+        TableColumn eliminarColumna = tabla.getColumnModel().getColumn(3);
         eliminarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
         eliminarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
                 super.getTableCellEditorComponent(table, value, isSelected, row, column);
 
-                // Obtener el ID del Programa de Formación de la fila seleccionada
-                int idProgramaFormacion = Integer.parseInt(table.getValueAt(row, 0).toString());
+                // Obtener el ID y NombreClase de la fila seleccionada
+                int idAsociacion = Integer.parseInt(table.getValueAt(row, 0).toString());
+                String nombreClase = table.getValueAt(row, 1).toString();
+                Integer numeroFicha = numeroFichaSeleccionado;  // Obtener el numeroFicha desde el parámetro del método
 
-                // Confirmación de eliminación
+                // Confirmar eliminación
                 int confirm = JOptionPane.showConfirmDialog(
                         this.getComponent(),
-                        "¿Está seguro de que desea eliminar el Programa de Formación con ID " + idProgramaFormacion + "?",
+                        "¿Está seguro de que desea eliminar la asociación de la clase '" + nombreClase + "'?",
                         "Confirmar eliminación",
                         JOptionPane.YES_NO_OPTION
                 );
 
                 if (confirm == JOptionPane.YES_OPTION) {
-                    // Llamar al método para eliminar el programa de formación
-                    String respuesta = API_DataProgramaFormacionApplications.eliminarProgramaFormacion(idProgramaFormacion);
-                    if (respuesta.contains("exitosamente")) {
+                    // Llamar al método para eliminar la asociación
+                    String respuesta = API_DataFichasApplications.eliminarAsociacionFichaConClase(numeroFicha, nombreClase);
+                    if (respuesta != null && respuesta.contains("exitosamente")) {
                         // Eliminar la fila del modelo de la tabla
                         ((DefaultTableModel) table.getModel()).removeRow(row);
-                        JOptionPane.showMessageDialog(this.getComponent(), "Programa de formación eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this.getComponent(), "Asociación eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this.getComponent(), "Error al eliminar la asociación.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
-                    // El manejo de errores ya está gestionado en ClienteAPI
-                } else {
-                    // El usuario canceló la operación
-                    JOptionPane.showMessageDialog(this.getComponent(), "Eliminación del programa de formación cancelada.", "Cancelado", JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 return this.getComponent();
             }
         });
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -514,14 +652,27 @@ public class DataManagerPanel extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         GenerosTableData = new javax.swing.JTable();
         FichasPanel = new javax.swing.JPanel();
-        AgregarFicha = new javax.swing.JButton();
+        FichasTabPanel = new javax.swing.JTabbedPane();
+        CrearFichasSubPanel = new javax.swing.JPanel();
+        RefrescarTablaFichas = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         FichasDataTable = new javax.swing.JTable();
+        AgregarFicha = new javax.swing.JButton();
         FichaDataProgramaFormacionCB = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         FichaHolder = new javax.swing.JTextField();
-        RefrescarTablaFichas = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        FichaDataJornadaFormacionCB = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        AsignarFIchasSubPanel = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        FichasAsociadasDataTable = new javax.swing.JTable();
+        jLabel11 = new javax.swing.JLabel();
+        AsociarFichaDataProgramaFormacionCB = new javax.swing.JComboBox<>();
+        AsociarFicha = new javax.swing.JButton();
+        RefrescarTablaAsociarFichas = new javax.swing.JButton();
+        AsociarFichaDataFichasCB = new javax.swing.JComboBox<>();
         ClasesFormacionPanel = new javax.swing.JPanel();
         ClaseFormacionHolder = new javax.swing.JTextField();
         AgregarClaseFormacion = new javax.swing.JButton();
@@ -564,11 +715,9 @@ public class DataManagerPanel extends javax.swing.JPanel {
         jScrollPane14 = new javax.swing.JScrollPane();
         ProgramaFormacionDataTable = new javax.swing.JTable();
         NivelFormacionProgramaCB = new javax.swing.JComboBox<>();
-        JornadaProgramaCB = new javax.swing.JComboBox<>();
         AreaFormacionCB = new javax.swing.JComboBox<>();
         SedeFormacionCB = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -577,6 +726,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
         AgregarSede = new javax.swing.JButton();
         jScrollPane15 = new javax.swing.JScrollPane();
         SedesDataTables = new javax.swing.JTable();
+        RefrescarCombos = new javax.swing.JButton();
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -642,7 +792,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(TipoDocumentoHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarTipoDoc)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 409, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
                 .addComponent(RefrescarTablaTipoDoc)
                 .addGap(18, 18, 18))
         );
@@ -655,7 +805,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(TipoDocumentoHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(RefrescarTablaTipoDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -711,7 +861,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(RolHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarRol)))
-                .addContainerGap(695, Short.MAX_VALUE))
+                .addContainerGap(445, Short.MAX_VALUE))
         );
         RolesPanelLayout.setVerticalGroup(
             RolesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -722,7 +872,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(RolHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Roles", RolesPanel);
@@ -777,7 +927,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(GeneroHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarGenero)))
-                .addContainerGap(667, Short.MAX_VALUE))
+                .addContainerGap(417, Short.MAX_VALUE))
         );
         GenerosPanelLayout.setVerticalGroup(
             GenerosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -788,18 +938,20 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(GeneroHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Generos", GenerosPanel);
 
-        AgregarFicha.setBackground(new java.awt.Color(57, 169, 0));
-        AgregarFicha.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        AgregarFicha.setForeground(new java.awt.Color(255, 255, 255));
-        AgregarFicha.setText("Agregar Ficha");
-        AgregarFicha.addActionListener(new java.awt.event.ActionListener() {
+        FichasTabPanel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+
+        RefrescarTablaFichas.setBackground(new java.awt.Color(57, 169, 0));
+        RefrescarTablaFichas.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RefrescarTablaFichas.setForeground(new java.awt.Color(255, 255, 255));
+        RefrescarTablaFichas.setText("Refrescar tabla");
+        RefrescarTablaFichas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AgregarFichaActionPerformed(evt);
+                RefrescarTablaFichasActionPerformed(evt);
             }
         });
 
@@ -823,11 +975,17 @@ public class DataManagerPanel extends javax.swing.JPanel {
             FichasDataTable.getColumnModel().getColumn(2).setMaxWidth(150);
         }
 
+        AgregarFicha.setBackground(new java.awt.Color(57, 169, 0));
+        AgregarFicha.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        AgregarFicha.setForeground(new java.awt.Color(255, 255, 255));
+        AgregarFicha.setText("Agregar Ficha");
+        AgregarFicha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AgregarFichaActionPerformed(evt);
+            }
+        });
+
         FichaDataProgramaFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel1.setText("Programa de Formacion");
-
-        jLabel2.setText("Ficha Nueva");
 
         FichaHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         FichaHolder.setForeground(new java.awt.Color(0, 0, 0));
@@ -837,59 +995,178 @@ public class DataManagerPanel extends javax.swing.JPanel {
             }
         });
 
-        RefrescarTablaFichas.setBackground(new java.awt.Color(57, 169, 0));
-        RefrescarTablaFichas.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        RefrescarTablaFichas.setForeground(new java.awt.Color(255, 255, 255));
-        RefrescarTablaFichas.setText("Refrescar tabla");
-        RefrescarTablaFichas.addActionListener(new java.awt.event.ActionListener() {
+        jLabel2.setText("Ficha Nueva");
+
+        jLabel1.setText("Programa de Formacion");
+
+        FichaDataJornadaFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel6.setText("Jornada de formacion");
+
+        javax.swing.GroupLayout CrearFichasSubPanelLayout = new javax.swing.GroupLayout(CrearFichasSubPanel);
+        CrearFichasSubPanel.setLayout(CrearFichasSubPanelLayout);
+        CrearFichasSubPanelLayout.setHorizontalGroup(
+            CrearFichasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(CrearFichasSubPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(CrearFichasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane4)
+                    .addGroup(CrearFichasSubPanelLayout.createSequentialGroup()
+                        .addGroup(CrearFichasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(FichaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(CrearFichasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(FichaDataJornadaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(CrearFichasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(CrearFichasSubPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(RefrescarTablaFichas))
+                            .addGroup(CrearFichasSubPanelLayout.createSequentialGroup()
+                                .addComponent(FichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(AgregarFicha)))))
+                .addContainerGap(167, Short.MAX_VALUE))
+        );
+        CrearFichasSubPanelLayout.setVerticalGroup(
+            CrearFichasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(CrearFichasSubPanelLayout.createSequentialGroup()
+                .addGroup(CrearFichasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(CrearFichasSubPanelLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(CrearFichasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel1)))
+                    .addGroup(CrearFichasSubPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(RefrescarTablaFichas)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(CrearFichasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(FichaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(FichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(FichaDataJornadaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AgregarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(251, Short.MAX_VALUE))
+        );
+
+        FichasTabPanel.addTab("Crear FIcha", CrearFichasSubPanel);
+
+        jLabel10.setText("Ficha");
+
+        FichasAsociadasDataTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "NombreClase", "Editar", "Eliminar"
+            }
+        ));
+        FichasAsociadasDataTable.setRowHeight(30);
+        jScrollPane8.setViewportView(FichasAsociadasDataTable);
+        if (FichasAsociadasDataTable.getColumnModel().getColumnCount() > 0) {
+            FichasAsociadasDataTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+            FichasAsociadasDataTable.getColumnModel().getColumn(1).setMaxWidth(150);
+        }
+
+        jLabel11.setText("Clase de Formacion");
+
+        AsociarFichaDataProgramaFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        AsociarFichaDataProgramaFormacionCB.setEnabled(false);
+
+        AsociarFicha.setBackground(new java.awt.Color(57, 169, 0));
+        AsociarFicha.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        AsociarFicha.setForeground(new java.awt.Color(255, 255, 255));
+        AsociarFicha.setText("Asociar Ficha");
+        AsociarFicha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RefrescarTablaFichasActionPerformed(evt);
+                AsociarFichaActionPerformed(evt);
             }
         });
+
+        RefrescarTablaAsociarFichas.setBackground(new java.awt.Color(57, 169, 0));
+        RefrescarTablaAsociarFichas.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RefrescarTablaAsociarFichas.setForeground(new java.awt.Color(255, 255, 255));
+        RefrescarTablaAsociarFichas.setText("Refrescar tabla");
+        RefrescarTablaAsociarFichas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefrescarTablaAsociarFichasActionPerformed(evt);
+            }
+        });
+
+        AsociarFichaDataFichasCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        AsociarFichaDataFichasCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AsociarFichaDataFichasCBActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout AsignarFIchasSubPanelLayout = new javax.swing.GroupLayout(AsignarFIchasSubPanel);
+        AsignarFIchasSubPanel.setLayout(AsignarFIchasSubPanelLayout);
+        AsignarFIchasSubPanelLayout.setHorizontalGroup(
+            AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 923, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel10))
+                    .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
+                        .addComponent(AsociarFichaDataFichasCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
+                                .addComponent(AsociarFichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(AsociarFicha)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(RefrescarTablaAsociarFichas)))))
+                .addContainerGap(104, Short.MAX_VALUE))
+        );
+        AsignarFIchasSubPanelLayout.setVerticalGroup(
+            AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AsociarFichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AsociarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RefrescarTablaAsociarFichas)
+                    .addComponent(AsociarFichaDataFichasCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(185, Short.MAX_VALUE))
+        );
+
+        FichasTabPanel.addTab("Asociar Ficha", AsignarFIchasSubPanel);
 
         javax.swing.GroupLayout FichasPanelLayout = new javax.swing.GroupLayout(FichasPanel);
         FichasPanel.setLayout(FichasPanelLayout);
         FichasPanelLayout.setHorizontalGroup(
             FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FichasPanelLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane4)
-                    .addGroup(FichasPanelLayout.createSequentialGroup()
-                        .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(FichaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(FichasPanelLayout.createSequentialGroup()
-                                .addComponent(FichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(AgregarFicha)))))
-                .addGap(214, 214, 214)
-                .addComponent(RefrescarTablaFichas)
-                .addContainerGap(265, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addComponent(FichasTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1061, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         FichasPanelLayout.setVerticalGroup(
             FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FichasPanelLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(FichasPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(FichasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(FichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AgregarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(FichaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(FichasPanelLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(RefrescarTablaFichas)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(340, Short.MAX_VALUE))
+                .addGap(15, 15, 15)
+                .addComponent(FichasTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Fichas", FichasPanel);
@@ -958,44 +1235,45 @@ public class DataManagerPanel extends javax.swing.JPanel {
         ClasesFormacionPanel.setLayout(ClasesFormacionPanelLayout);
         ClasesFormacionPanelLayout.setHorizontalGroup(
             ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ClasesFormacionPanelLayout.createSequentialGroup()
-                .addContainerGap(180, Short.MAX_VALUE)
-                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+            .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ClasesFormacionPanelLayout.createSequentialGroup()
                         .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
+                            .addComponent(DocumentoInstructorClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
-                                .addComponent(DocumentoInstructorClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(RefrescarTablaClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(AgregarClaseFormacion))))
-                        .addGap(115, 115, 115))))
+                                .addComponent(jLabel4)
+                                .addGap(173, 173, 173)
+                                .addComponent(RefrescarTablaClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane5)
+                    .addComponent(AgregarClaseFormacion, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(126, 126, 126))
         );
         ClasesFormacionPanelLayout.setVerticalGroup(
             ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(RefrescarTablaClaseFormacion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ClasesFormacionPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(RefrescarTablaClaseFormacion)
+                        .addGap(14, 14, 14)))
                 .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AgregarClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(DocumentoInstructorClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Clases de Formacion", ClasesFormacionPanel);
@@ -1050,7 +1328,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(AmbienteHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarAmbiente)))
-                .addContainerGap(651, Short.MAX_VALUE))
+                .addContainerGap(401, Short.MAX_VALUE))
         );
         AmbientesPanelLayout.setVerticalGroup(
             AmbientesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1061,7 +1339,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(AmbienteHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Ambientes", AmbientesPanel);
@@ -1116,7 +1394,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(ActividadHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarActividad)))
-                .addContainerGap(654, Short.MAX_VALUE))
+                .addContainerGap(404, Short.MAX_VALUE))
         );
         ActividadesPanelLayout.setVerticalGroup(
             ActividadesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1127,7 +1405,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(ActividadHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Actividades", ActividadesPanel);
@@ -1184,7 +1462,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(AreaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarArea)))
-                .addContainerGap(674, Short.MAX_VALUE))
+                .addContainerGap(424, Short.MAX_VALUE))
         );
         AreasPanelLayout.setVerticalGroup(
             AreasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1250,7 +1528,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(JornadaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarJornadaFormacion)))
-                .addContainerGap(552, Short.MAX_VALUE))
+                .addContainerGap(302, Short.MAX_VALUE))
         );
         JornadasPanelLayout.setVerticalGroup(
             JornadasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1261,7 +1539,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(JornadaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addContainerGap(182, Short.MAX_VALUE))
         );
 
         ProgramasFormacionTabPanel.addTab("Jornadas de Formacion", JornadasPanel);
@@ -1316,7 +1594,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(NivelFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarNivelFormacion)))
-                .addContainerGap(571, Short.MAX_VALUE))
+                .addContainerGap(321, Short.MAX_VALUE))
         );
         NivelesPanelLayout.setVerticalGroup(
             NivelesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1327,7 +1605,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(NivelFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addContainerGap(182, Short.MAX_VALUE))
         );
 
         ProgramasFormacionTabPanel.addTab("Niveles de Formacion", NivelesPanel);
@@ -1372,15 +1650,11 @@ public class DataManagerPanel extends javax.swing.JPanel {
 
         NivelFormacionProgramaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        JornadaProgramaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         AreaFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         SedeFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setText("Nuevo programa de formacion");
-
-        jLabel6.setText("Jornada de formacion");
 
         jLabel7.setText("Nivel de formacion");
 
@@ -1396,60 +1670,53 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane14)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProgramasFormacionSubPanelLayout.createSequentialGroup()
+                    .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
                         .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ProgramaFormacionHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                            .addComponent(jLabel5)
+                            .addComponent(ProgramaFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(JornadaProgramaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(NivelFormacionProgramaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(NivelFormacionProgramaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
+                                .addGap(7, 7, 7)
+                                .addComponent(jLabel7)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(SedeFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
                             .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
                                 .addComponent(AreaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(AgregarProgramaFormacion))
-                            .addComponent(jLabel9))))
+                                .addComponent(AgregarProgramaFormacion)))
+                        .addGap(0, 1, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         ProgramasFormacionSubPanelLayout.setVerticalGroup(
             ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProgramasFormacionSubPanelLayout.createSequentialGroup()
-                .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(126, 126, 126)
+                .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
-                        .addGap(126, 126, 126)
-                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel7)
-                                .addComponent(jLabel5))
-                            .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel9)
-                                .addComponent(jLabel8))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProgramasFormacionSubPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel6)))
-                .addGap(18, 18, 18)
-                .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(AgregarProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18)
                         .addComponent(ProgramaFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(NivelFormacionProgramaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(JornadaProgramaCB, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
-                    .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(SedeFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(AreaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(ProgramasFormacionSubPanelLayout.createSequentialGroup()
+                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel9))
+                        .addGap(18, 18, 18)
+                        .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(NivelFormacionProgramaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(ProgramasFormacionSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(SedeFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(AreaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(AgregarProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
@@ -1507,7 +1774,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                         .addComponent(SedeHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(AgregarSede)))
-                .addContainerGap(672, Short.MAX_VALUE))
+                .addContainerGap(422, Short.MAX_VALUE))
         );
         SedesPanelLayout.setVerticalGroup(
             SedesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1518,7 +1785,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     .addComponent(SedeHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addContainerGap(182, Short.MAX_VALUE))
         );
 
         ProgramasFormacionTabPanel.addTab("Sedes", SedesPanel);
@@ -1542,21 +1809,35 @@ public class DataManagerPanel extends javax.swing.JPanel {
 
         PrincipalTabPanel.addTab("Programas de Formacion", ProgramasFormacionPanel);
 
+        RefrescarCombos.setBackground(new java.awt.Color(57, 169, 0));
+        RefrescarCombos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RefrescarCombos.setForeground(new java.awt.Color(255, 255, 255));
+        RefrescarCombos.setText("Refrescar comboBox");
+        RefrescarCombos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefrescarCombosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(PrincipalTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(PrincipalTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1022, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(RefrescarCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(PrincipalTabPanel)
-                .addContainerGap())
+                .addGap(7, 7, 7)
+                .addComponent(RefrescarCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(PrincipalTabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 611, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -1600,19 +1881,16 @@ public class DataManagerPanel extends javax.swing.JPanel {
         // 1. Recopilar los datos de los campos de texto
         String programaFormacion = ProgramaFormacionHolder.getText().trim();
         String centroFormacion = SedeFormacionCB.getSelectedItem().toString().trim();
-        String jornadasFormacion = JornadaProgramaCB.getSelectedItem().toString().trim();
         String nivelFormacion = NivelFormacionProgramaCB.getSelectedItem().toString().trim();
         String area = AreaFormacionCB.getSelectedItem().toString().trim();
 
         // 2. Validar que todos los campos estén llenos
         if (programaFormacion.isEmpty()
                 || centroFormacion.isEmpty()
-                || jornadasFormacion.isEmpty()
                 || nivelFormacion.isEmpty()
                 || area.isEmpty()
                 || ProgramaFormacionHolder.getText().trim().equals("Seleccionar...")
                 || SedeFormacionCB.getSelectedItem().toString().trim().equals("Seleccionar...")
-                || JornadaProgramaCB.getSelectedItem().toString().trim().equals("Seleccionar...")
                 || NivelFormacionProgramaCB.getSelectedItem().toString().trim().equals("Seleccionar...")
                 || AreaFormacionCB.getSelectedItem().toString().trim().equals("Seleccionar...")){
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
@@ -1620,15 +1898,19 @@ public class DataManagerPanel extends javax.swing.JPanel {
         }
 
         // 3. Confirmar la creación del Programa de Formación
+        String mensajeConfirmacion = String.format(
+                "¿Desea crear el Programa de Formación con los siguientes datos?\n\n" +
+                        "Programa: %s\n" +
+                        "Centro de Formación: %s\n" +
+                        "Nivel: %s\n" +
+                        "Área: %s",
+                programaFormacion, centroFormacion, nivelFormacion, area
+        );
+
         int confirm = JOptionPane.showConfirmDialog(this,
-            "¿Desea crear el Programa de Formación con los siguientes datos?\n\n" +
-            "Programa: " + programaFormacion + "\n" +
-            "Centro de Formación: " + centroFormacion + "\n" +
-            "Jornadas: " + jornadasFormacion + "\n" +
-            "Nivel: " + nivelFormacion + "\n" +
-            "Área: " + area,
-            "Confirmar Creación",
-            JOptionPane.YES_NO_OPTION);
+                mensajeConfirmacion,
+                "Confirmar Creación",
+                JOptionPane.YES_NO_OPTION);
 
         if (confirm != JOptionPane.YES_OPTION) {
             // El usuario canceló la operación
@@ -1636,18 +1918,17 @@ public class DataManagerPanel extends javax.swing.JPanel {
         }
 
         // 4. Llamar al método para crear el Programa de Formación
-        String respuesta = API_DataProgramaFormacionApplications.crearProgramaFormacion(programaFormacion, centroFormacion, jornadasFormacion, nivelFormacion, area);
+        String respuesta = API_DataProgramaFormacionApplications.crearProgramaFormacion(programaFormacion, centroFormacion, nivelFormacion, area);
 
         // 5. Manejar la respuesta (esto ya se hace dentro del método ClienteAPI, pero puedes añadir lógica adicional si es necesario)
         // Por ejemplo, si la creación fue exitosa, podrías refrescar una tabla o limpiar los campos de entrada
 
         // 6. Opcional: Limpiar los campos después de una creación exitosa
-        if (respuesta.contains("exitosamente")) {
+        if (respuesta != null && respuesta.contains("exitosamente")) {
             ProgramaFormacionHolder.setText("");
-            JornadaProgramaCB.setSelectedItem(0);
-            NivelFormacionProgramaCB.setSelectedItem(0);
-            SedeFormacionCB.setSelectedItem(0);
-            AreaFormacionCB.setSelectedItem(0);
+            SedeFormacionCB.setSelectedIndex(0);
+            NivelFormacionProgramaCB.setSelectedIndex(0);
+            AreaFormacionCB.setSelectedIndex(0);
             actualizarTablaProgramaFormacion();
         }
     }//GEN-LAST:event_AgregarProgramaFormacionActionPerformed
@@ -1721,6 +2002,9 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 claseFormacionApplications.crearClaseFormacion(nombreClase, instructor.getDocumento());
 
                 JOptionPane.showMessageDialog(this, "La clase se ha agregado exitosamente al instructor.", "Operación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                actualizarTablaClaseFormacion();
+                ClaseFormacionHolder.setText("");
+                DocumentoInstructorClaseFormacionHolder.setText("");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Ocurrió un error al agregar la clase: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -1744,14 +2028,23 @@ public class DataManagerPanel extends javax.swing.JPanel {
         DefaultTableModel modelofichasData = (DefaultTableModel) FichasDataTable.getModel();
         String fichaEntrante = FichaHolder.getText().trim();  // Eliminar espacios en blanco
 
-        // Verificar si la ficha y el programa de formación no están vacíos
+        // Verificar si la ficha está vacía
         if (fichaEntrante.isEmpty()) {
             JOptionPane.showMessageDialog(this, "La ficha no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (FichaDataProgramaFormacionCB.getSelectedItem().toString().equals("Seleccionar...")) {
+        // Verificar si se ha seleccionado un programa de formación
+        if (FichaDataProgramaFormacionCB.getSelectedItem() == null ||
+                FichaDataProgramaFormacionCB.getSelectedItem().toString().equals("Seleccionar...")) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un programa de formación.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Verificar si se ha seleccionado una jornada de formación
+        if (FichaDataJornadaFormacionCB.getSelectedItem() == null ||
+                FichaDataJornadaFormacionCB.getSelectedItem().toString().equals("Seleccionar...")) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una jornada de formación.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -1762,7 +2055,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
             boolean perteneceAFicha = false;
             // Recorrer las filas de la tabla para verificar si la ficha ya existe
             for (int i = 0; i < modelofichasData.getRowCount(); i++) {
-                String fichaTablaString = modelofichasData.getValueAt(i, 1).toString(); // Convertir el valor a String
+                String fichaTablaString = modelofichasData.getValueAt(i, 1).toString(); // Obtener el número de ficha de la tabla
                 Integer fichaTabla = Integer.parseInt(fichaTablaString); // Convertir el String a Integer
 
                 if (fichaTabla.equals(fichaNumero)) {
@@ -1772,16 +2065,48 @@ public class DataManagerPanel extends javax.swing.JPanel {
             }
 
             if (perteneceAFicha) {
-                JOptionPane.showMessageDialog(this, "La ficha " + fichaNumero + " ya está registrada.");
+                JOptionPane.showMessageDialog(this, "La ficha " + fichaNumero + " ya está registrada.", "Ficha Existente", JOptionPane.WARNING_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Ficha registrada correctamente.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                API_DataFichasApplications.crearFicha(fichaNumero, FichaDataProgramaFormacionCB.getSelectedItem().toString());
-                actualizarTablaFichas();
+                // Obtener el programa de formación seleccionado
+                String programaFormacion = FichaDataProgramaFormacionCB.getSelectedItem().toString();
+
+                // Obtener la jornada de formación seleccionada
+                String jornadaFormacion = FichaDataJornadaFormacionCB.getSelectedItem().toString();
+
+                // Confirmar la creación de la ficha
+                int confirm = JOptionPane.showConfirmDialog(this,
+                        "¿Desea crear la ficha con los siguientes datos?\n\n" +
+                                "Número de Ficha: " + fichaNumero + "\n" +
+                                "Programa de Formación: " + programaFormacion + "\n" +
+                                "Jornada de Formación: " + jornadaFormacion,
+                        "Confirmar Creación",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (confirm != JOptionPane.YES_OPTION) {
+                    // El usuario canceló la operación
+                    return;
+                }
+
+                // Llamar al método de ClienteAPI para crear la ficha
+                String respuesta = API_DataFichasApplications.crearFicha(fichaNumero, programaFormacion, jornadaFormacion);
+
+                // Limpiar campos y reiniciar ComboBox después de una creación exitosa
+                if (respuesta != null && respuesta.contains("exitosamente")) {
+                    FichaHolder.setText(""); // Limpiar el campo de entrada de ficha
+                    FichaDataProgramaFormacionCB.setSelectedIndex(0); // Reiniciar ComboBox
+                    FichaDataJornadaFormacionCB.setSelectedIndex(0); // Reiniciar ComboBox
+                    actualizarTablaFichas(); // Actualizar la tabla
+                }
+                // Si hay un error, ya se muestra en ClienteAPI
             }
 
         } catch (NumberFormatException e) {
-            // Manejo de error si el texto no es un número
-            JOptionPane.showMessageDialog(this, "Por favor ingrese un número de ficha válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Manejo de error si el texto no es un número válido
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un número de ficha válido.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            // Manejo de cualquier otro error inesperado
+            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }//GEN-LAST:event_AgregarFichaActionPerformed
 
@@ -1940,6 +2265,85 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private void RefrescarTablaClaseFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarTablaClaseFormacionActionPerformed
        actualizarTablaClaseFormacion();
     }//GEN-LAST:event_RefrescarTablaClaseFormacionActionPerformed
+
+    private void AsociarFichaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsociarFichaActionPerformed
+        String StrFicha = AsociarFichaDataFichasCB.getSelectedItem().toString();
+        String programaFormacion = AsociarFichaDataProgramaFormacionCB.getSelectedItem().toString();
+        if (StrFicha.equals("Seleccionar...") || programaFormacion.equals("Seleccionar...")){
+            JOptionPane.showMessageDialog(this, "Aun hay datos por seleccionar, por favor seleccione los datos correctamente", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Integer numeroFicha = Integer.parseInt(StrFicha);
+        API_DataFichasApplications.asociarFichaConClase(numeroFicha, programaFormacion);
+        actualizarTablaAsociarFichas();
+    }//GEN-LAST:event_AsociarFichaActionPerformed
+
+    private void RefrescarTablaAsociarFichasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarTablaAsociarFichasActionPerformed
+        actualizarTablaAsociarFichas();
+    }//GEN-LAST:event_RefrescarTablaAsociarFichasActionPerformed
+
+    private void AsociarFichaDataFichasCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsociarFichaDataFichasCBActionPerformed
+
+        String StrFicha = AsociarFichaDataFichasCB.getSelectedItem().toString();
+        if (StrFicha.equals("Seleccionar...")) {
+            // Si el mapa es null o está vacío, limpiar todas las filas de la tabla
+            DefaultTableModel model = (DefaultTableModel) FichasAsociadasDataTable.getModel();
+            model.setRowCount(0);  // Esto elimina todas las filas de la tabla
+
+            // Deshabilitar el ComboBox si no hay clases
+            AsociarFichaDataProgramaFormacionCB.setEnabled(false);
+            AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
+            return;
+        }
+        // Obtener el número de ficha seleccionado
+        Integer numeroFicha = Integer.parseInt(StrFicha);
+        if (numeroFicha == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una ficha.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Obtener las clases asociadas al número de ficha
+        Map<Integer, String> clasesMap = API_DataClaseFormacionApplications.obtenerClasesPorNumeroFicha(numeroFicha);
+
+        // Verificar si el mapa es null o vacío
+        if (clasesMap == null || clasesMap.isEmpty()) {
+            // Si el mapa es null o está vacío, limpiar todas las filas de la tabla
+            DefaultTableModel model = (DefaultTableModel) FichasAsociadasDataTable.getModel();
+            model.setRowCount(0);  // Esto elimina todas las filas de la tabla
+
+            // Deshabilitar el ComboBox si no hay clases
+            AsociarFichaDataProgramaFormacionCB.setEnabled(false);
+            AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
+            return;
+        }
+
+        // Convertir el Map<Integer, String> a List<Map<String, Object>>
+        List<Map<String, Object>> listaDeMapas = convertirMapaALista(clasesMap);
+
+        // Si se encontraron clases, llenar la tabla con los datos obtenidos
+        agregarModeloAsociarFichasClaseFormacion(FichasAsociadasDataTable, listaDeMapas, numeroFicha);
+
+        // Habilitar el ComboBox
+        AsociarFichaDataProgramaFormacionCB.setEnabled(true);
+        AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
+    }//GEN-LAST:event_AsociarFichaDataFichasCBActionPerformed
+
+    private void RefrescarCombosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarCombosActionPerformed
+        refrescarComboBoxes();
+    }//GEN-LAST:event_RefrescarCombosActionPerformed
+
+    private List<Map<String, Object>> convertirMapaALista(Map<Integer, String> clasesMap) {
+        List<Map<String, Object>> listaDeMapas = new ArrayList<>();
+
+        for (Map.Entry<Integer, String> entrada : clasesMap.entrySet()) {
+            Map<String, Object> mapa = new HashMap<>();
+            mapa.put("ID", entrada.getKey());
+            mapa.put("NombreClase", entrada.getValue());
+            listaDeMapas.add(mapa);
+        }
+
+        return listaDeMapas;
+    }
 
     public void comportamientoTabla(JTable table, String tipoTabla) {
         // Configurar el comportamiento de los botones de "Editar"
@@ -2188,13 +2592,86 @@ public class DataManagerPanel extends javax.swing.JPanel {
     }
 
     public void actualizarTablaFichas(){
-        agregarModeloAdicional(FichasDataTable, dt.obtenerFichas(), dt.obtenerProgramaFormacion());
+        agregarModeloAdicional(FichasDataTable, dt.obtenerFichas());
     }
-
     public void actualizarTablaClaseFormacion(){
         agregarModeloClaseFormacion(ClaseFormacionDataTable, API_DataClaseFormacionApplications.obtenerClasesConInstructor());
     }
 
+    public void actualizarTablaAsociarFichas() {
+        // Obtener el número de ficha seleccionado desde el ComboBox
+        String StrFicha = AsociarFichaDataFichasCB.getSelectedItem().toString();
+        if (StrFicha.equals("Seleccionar...")) {
+            // Si el mapa es null o está vacío, limpiar todas las filas de la tabla
+            DefaultTableModel model = (DefaultTableModel) FichasAsociadasDataTable.getModel();
+            model.setRowCount(0);  // Esto elimina todas las filas de la tabla
+
+            // Deshabilitar el ComboBox si no hay clases
+            AsociarFichaDataProgramaFormacionCB.setEnabled(false);
+            AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
+            return;
+        }
+        // Obtener el número de ficha seleccionado
+        Integer numeroFicha = Integer.parseInt(StrFicha);
+        if (numeroFicha == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una ficha.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Obtener las clases asociadas al número de ficha
+        Map<Integer, String> clasesMap = API_DataClaseFormacionApplications.obtenerClasesPorNumeroFicha(numeroFicha);
+
+        // Verificar si el mapa es null o vacío
+        if (clasesMap == null || clasesMap.isEmpty()) {
+            // Si el mapa es null o está vacío, limpiar todas las filas de la tabla
+            DefaultTableModel model = (DefaultTableModel) FichasAsociadasDataTable.getModel();
+            model.setRowCount(0);  // Esto elimina todas las filas de la tabla
+
+            // Deshabilitar el ComboBox si no hay clases
+            AsociarFichaDataProgramaFormacionCB.setEnabled(false);
+            AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
+            return;
+        }
+
+        // Convertir el Map<Integer, String> a List<Map<String, Object>>
+        List<Map<String, Object>> listaDeMapas = convertirMapaALista(clasesMap);
+
+        // Si se encontraron clases, llenar la tabla con los datos obtenidos
+        agregarModeloAsociarFichasClaseFormacion(FichasAsociadasDataTable, listaDeMapas, numeroFicha);
+
+        // Habilitar el ComboBox
+        AsociarFichaDataProgramaFormacionCB.setEnabled(true);
+        AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
+    }
+
+    public void refrescarComboBoxes() {
+        try {
+            ComboBoxModels cbm = new ComboBoxModels();
+            // Actualizar los ComboBox con los modelos más recientes
+            AsociarFichaDataFichasCB.setModel(cbm.generarComboBoxModelPorTipo("Fichas"));
+            AsociarFichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ClaseFormacion"));
+            FichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ProgramaFormacion"));
+            FichaDataJornadaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("JornadaFormacion"));
+            NivelFormacionProgramaCB.setModel(cbm.generarComboBoxModelPorTipo("NivelFormacion"));
+            SedeFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("Sede"));
+            AreaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("Areas"));
+
+            // Reiniciar los ComboBox al índice 0
+            AsociarFichaDataFichasCB.setSelectedIndex(0);
+            AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
+            FichaDataProgramaFormacionCB.setSelectedIndex(0);
+            FichaDataJornadaFormacionCB.setSelectedIndex(0);
+            NivelFormacionProgramaCB.setSelectedIndex(0);
+            SedeFormacionCB.setSelectedIndex(0);
+            AreaFormacionCB.setSelectedIndex(0);
+
+            JOptionPane.showMessageDialog(this, "Los ComboBox han sido actualizados correctamente.", "ComboBox Actualizados", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al refrescar los ComboBox: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -2220,19 +2697,26 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JTextField AreaHolder;
     private javax.swing.JTable AreasDataTable;
     private javax.swing.JPanel AreasPanel;
+    private javax.swing.JPanel AsignarFIchasSubPanel;
+    private javax.swing.JButton AsociarFicha;
+    private javax.swing.JComboBox<String> AsociarFichaDataFichasCB;
+    private javax.swing.JComboBox<String> AsociarFichaDataProgramaFormacionCB;
     private javax.swing.JTable ClaseFormacionDataTable;
     private javax.swing.JTextField ClaseFormacionHolder;
     private javax.swing.JPanel ClasesFormacionPanel;
+    private javax.swing.JPanel CrearFichasSubPanel;
     private javax.swing.JTextField DocumentoInstructorClaseFormacionHolder;
+    private javax.swing.JComboBox<String> FichaDataJornadaFormacionCB;
     private javax.swing.JComboBox<String> FichaDataProgramaFormacionCB;
     private javax.swing.JTextField FichaHolder;
+    private javax.swing.JTable FichasAsociadasDataTable;
     private javax.swing.JTable FichasDataTable;
     private javax.swing.JPanel FichasPanel;
+    private javax.swing.JTabbedPane FichasTabPanel;
     private javax.swing.JTextField GeneroHolder;
     private javax.swing.JPanel GenerosPanel;
     private javax.swing.JTable GenerosTableData;
     private javax.swing.JTextField JornadaHolder;
-    private javax.swing.JComboBox<String> JornadaProgramaCB;
     private javax.swing.JTable JornadasDataTable;
     private javax.swing.JPanel JornadasPanel;
     private javax.swing.JTextField NivelFormacionHolder;
@@ -2245,6 +2729,8 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JPanel ProgramasFormacionPanel;
     private javax.swing.JPanel ProgramasFormacionSubPanel;
     private javax.swing.JTabbedPane ProgramasFormacionTabPanel;
+    private javax.swing.JButton RefrescarCombos;
+    private javax.swing.JButton RefrescarTablaAsociarFichas;
     private javax.swing.JButton RefrescarTablaClaseFormacion;
     private javax.swing.JButton RefrescarTablaFichas;
     private javax.swing.JButton RefrescarTablaTipoDoc;
@@ -2259,6 +2745,8 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JTextField TipoDocumentoHolder;
     private javax.swing.JPanel TiposDocPanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -2280,5 +2768,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     // End of variables declaration//GEN-END:variables
 }

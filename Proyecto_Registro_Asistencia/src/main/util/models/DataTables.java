@@ -57,7 +57,6 @@ public class DataTables {
     }
 
     // Método genérico para obtener datos de cualquier tabla
-    // Método genérico para obtener datos de cualquier tabla
     private Map<Integer, String> obtenerDatosDesdeAPI(String endpoint) {
         Map<Integer, String> resultados = new LinkedHashMap<>();
         try {
@@ -143,11 +142,6 @@ public class DataTables {
         return resultados;
     }
 
-    // Métodos específicos para obtener datos de cada tabla
-    public Map<Integer, String> obtenerProgramaFormacion() {
-        return obtenerDatosDesdeAPI("ProgramaFormacion");
-    }
-
     public Map<Integer, String> obtenerGeneros() {
         return obtenerDatosDesdeAPI("Genero");
     }
@@ -185,8 +179,60 @@ public class DataTables {
     }
 
 
-    public Map<Integer, String> obtenerFichas() {
-        return obtenerDatosDesdeAPI("Fichas");
+
+    public List<Map<String, Object>> obtenerFichas() {
+        List<Map<String, Object>> fichas = new ArrayList<>();
+        try {
+            URL url = new URL("http://localhost:8080/Data/Fichas/todosConDetalles");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            // Verificar respuesta
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Error HTTP: " + conn.getResponseCode());
+            }
+
+            // Leer la respuesta
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                response.append(line);
+            }
+
+            // Parsear el JSON
+            JSONArray jsonArray = new JSONArray(response.toString());
+
+            // Convertir el JSONArray en una lista de mapas
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Map<String, Object> fichaMap = new HashMap<>();
+
+                // Obtener los campos necesarios
+                Integer idFicha = jsonObject.getInt("ID");
+                Integer numeroFicha = jsonObject.getInt("NumeroFicha");
+                String programaFormacion = jsonObject.getString("ProgramaFormacion");
+                String jornadaFormacion = jsonObject.getString("JornadaFormacion");
+
+                // Añadir al mapa
+                fichaMap.put("ID", idFicha);
+                fichaMap.put("NumeroFicha", numeroFicha);
+                fichaMap.put("ProgramaFormacion", programaFormacion);
+                fichaMap.put("JornadaFormacion", jornadaFormacion);
+
+                // Añadir el mapa a la lista
+                fichas.add(fichaMap);
+            }
+
+            conn.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error al obtener las fichas: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return fichas;
     }
 
     // Método para obtener las clases con sus respectivos instructores

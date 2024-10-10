@@ -35,42 +35,43 @@ public class AprendizService {
     // Obtener un aprendiz por documento
     public AprendizModel getAprendiz(String documento) {
         String consulta = """
-                SELECT us.Usuario AS Usuario,
-                       us.Contraseña AS Contraseña,
-                       pf.Documento AS Documento,
-                       td.TipoDocumento AS TipoDocumento,
-                       pf.Nombres AS Nombres,
-                       pf.Apellidos AS Apellidos,
-                       pf.FecNacimiento AS FecNacimiento,
-                       pf.Telefono AS Telefono,
-                       pf.Correo AS Correo,
-                       ge.TiposGeneros AS TiposGeneros,
-                       CONCAT(dept.nombre_departamento, ' - ', mun.nombre_municipio, ' - ', barrios.nombre_barrio) AS Residencia,
-                       fc.NumeroFicha AS NumeroFicha,
-                       pform.ProgramaFormacion AS ProgramaFormacion,
-                       jf.JornadasFormacion AS JornadasFormacion,
-                       nf.NivelFormacion AS NivelFormacion,
-                       sd.CentroFormacion AS CentroFormacion,
-                       areas.Area AS Area
-                FROM aprendiz ap
-                    INNER JOIN perfilusuario pf ON ap.IDPerfilUsuario = pf.ID
-                    INNER JOIN usuario us ON pf.IDUsuario = us.ID
-                    INNER JOIN tipodocumento td ON pf.IDTipoDocumento = td.ID
-                    INNER JOIN genero ge ON pf.IDGenero = ge.ID
-                    INNER JOIN barrios ON pf.IDBarrio = barrios.ID
-                    INNER JOIN municipios mun ON barrios.id_municipio = mun.ID
-                    INNER JOIN departamentos dept ON mun.id_departamento = dept.ID
-                    INNER JOIN fichas fc ON ap.IDFicha = fc.ID
-                    INNER JOIN programaformacion pform ON fc.IDProgramaFormacion = pform.ID
-                    INNER JOIN jornadaformacion jf ON pform.IDJornadaFormacion = jf.ID
-                    INNER JOIN nivelformacion nf ON pform.IDNivelFormacion = nf.ID
-                    INNER JOIN sede sd ON pform.IDSede = sd.ID
-                    INNER JOIN areas ON pform.IDArea = areas.ID
-                WHERE pf.Documento = ?
-                """;
+            SELECT us.Usuario AS Usuario,
+                   us.Contraseña AS Contraseña,
+                   pf.Documento AS Documento,
+                   td.TipoDocumento AS TipoDocumento,
+                   pf.Nombres AS Nombres,
+                   pf.Apellidos AS Apellidos,
+                   pf.FecNacimiento AS FecNacimiento,
+                   pf.Telefono AS Telefono,
+                   pf.Correo AS Correo,
+                   ge.TiposGeneros AS TiposGeneros,
+                   CONCAT(dept.nombre_departamento, ' - ', mun.nombre_municipio, ' - ', barrios.nombre_barrio) AS Residencia,
+                   fc.NumeroFicha AS NumeroFicha,
+                   pform.ProgramaFormacion AS ProgramaFormacion,
+                   jf.JornadasFormacion AS JornadasFormacion,
+                   nf.NivelFormacion AS NivelFormacion,
+                   sd.CentroFormacion AS CentroFormacion,
+                   areas.Area AS Area,
+                   pf.Estado AS Estado
+            FROM aprendiz ap
+                INNER JOIN perfilusuario pf ON ap.IDPerfilUsuario = pf.ID
+                INNER JOIN usuario us ON pf.IDUsuario = us.ID
+                INNER JOIN tipodocumento td ON pf.IDTipoDocumento = td.ID
+                INNER JOIN genero ge ON pf.IDGenero = ge.ID
+                INNER JOIN barrios ON pf.IDBarrio = barrios.ID
+                INNER JOIN municipios mun ON barrios.id_municipio = mun.ID
+                INNER JOIN departamentos dept ON mun.id_departamento = dept.ID
+                INNER JOIN fichas fc ON ap.IDFicha = fc.ID
+                INNER JOIN programaformacion pform ON fc.IDProgramaFormacion = pform.ID
+                INNER JOIN jornadaformacion jf ON fc.IDJornadaFormacion = jf.ID
+                INNER JOIN nivelformacion nf ON pform.IDNivelFormacion = nf.ID
+                INNER JOIN sede sd ON pform.IDSede = sd.ID
+                INNER JOIN areas ON pform.IDArea = areas.ID
+            WHERE pf.Documento = ?
+            """;
 
         try {
-            return jdbcTemplate.queryForObject(consulta, new Object[]{documento}, (rs, rowNum) ->
+            AprendizModel aprendiz = jdbcTemplate.queryForObject(consulta, new Object[]{documento}, (rs, rowNum) ->
                     AprendizModel.builder()
                             .user(rs.getString("Usuario"))
                             .password(rs.getString("Contraseña"))
@@ -83,6 +84,8 @@ public class AprendizService {
                             .correo(rs.getString("Correo"))
                             .genero(rs.getString("TiposGeneros"))
                             .residencia(rs.getString("Residencia"))
+                            .estado(rs.getString("Estado"))
+                            // No incluimos el estado en el modelo que se retornará al cliente
                             .ficha(rs.getInt("NumeroFicha"))
                             .programaFormacion(rs.getString("ProgramaFormacion"))
                             .jornadaFormacion(rs.getString("JornadasFormacion"))
@@ -91,12 +94,17 @@ public class AprendizService {
                             .area(rs.getString("Area"))
                             .build());
 
+
+            return aprendiz;
+
+        } catch (EmptyResultDataAccessException e) {
+            // Manejar el caso en que no se encuentra el aprendiz
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null; // Maneja la excepción adecuadamente
         }
     }
-
     // Crear un nuevo aprendiz
     @Transactional(rollbackFor = Exception.class)
     public AprendizModel createAprendiz(AprendizModel aprendiz) {
@@ -707,6 +715,50 @@ public class AprendizService {
         } catch (Exception e) {
             e.printStackTrace();
             return Collections.emptyList(); // Devuelve una lista vacía en lugar de null en caso de error
+        }
+    }
+
+    /**
+     * Habilita un Aprendiz dado su documento.
+     *
+     * @param documento Documento del Aprendiz a habilitar.
+     * @return true si la operación fue exitosa, false en caso contrario.
+     */
+    public boolean habilitarAprendiz(String documento) {
+        // Verificar si el PerfilUsuario está referenciado en la tabla Aprendiz
+        String verificarSql = "SELECT COUNT(*) FROM Aprendiz WHERE IDPerfilUsuario = (SELECT id FROM perfilusuario WHERE Documento = ?)";
+        Integer count = jdbcTemplate.queryForObject(verificarSql, new Object[]{documento}, Integer.class);
+
+        if (count != null && count > 0) {
+            // Actualizar el estado en perfilusuario
+            String actualizarSql = "UPDATE perfilusuario SET Estado = 'Habilitado' WHERE Documento = ?";
+            int rowsAffected = jdbcTemplate.update(actualizarSql, documento);
+            return rowsAffected > 0;
+        } else {
+            // No existe un Aprendiz asociado a este documento
+            return false;
+        }
+    }
+
+    /**
+     * Inhabilita un Aprendiz dado su documento.
+     *
+     * @param documento Documento del Aprendiz a inhabilitar.
+     * @return true si la operación fue exitosa, false en caso contrario.
+     */
+    public boolean inhabilitarAprendiz(String documento) {
+        // Verificar si el PerfilUsuario está referenciado en la tabla Aprendiz
+        String verificarSql = "SELECT COUNT(*) FROM Aprendiz WHERE IDPerfilUsuario = (SELECT id FROM perfilusuario WHERE Documento = ?)";
+        Integer count = jdbcTemplate.queryForObject(verificarSql, new Object[]{documento}, Integer.class);
+
+        if (count != null && count > 0) {
+            // Actualizar el estado en perfilusuario
+            String actualizarSql = "UPDATE perfilusuario SET Estado = 'Deshabilitado' WHERE Documento = ?";
+            int rowsAffected = jdbcTemplate.update(actualizarSql, documento);
+            return rowsAffected > 0;
+        } else {
+            // No existe un Aprendiz asociado a este documento
+            return false;
         }
     }
 }

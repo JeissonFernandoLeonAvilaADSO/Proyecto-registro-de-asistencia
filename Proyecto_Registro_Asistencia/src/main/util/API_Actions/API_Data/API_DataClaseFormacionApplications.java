@@ -7,11 +7,11 @@ import org.json.JSONObject;
 import javax.swing.*;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -187,11 +187,22 @@ public class API_DataClaseFormacionApplications {
 
             responseMessage = respuesta.toString();
 
-            // Mostrar mensaje al usuario
             if (responseCode >= 200 && responseCode < 300) {
-                JOptionPane.showMessageDialog(null, responseMessage, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Clase de formacion eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                return responseMessage;
             } else {
-                JOptionPane.showMessageDialog(null, responseMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                // Error en la solicitud
+                String errorMessage = responseMessage;
+
+                // Analizar el mensaje de error para detectar violación de integridad referencial
+                if (errorMessage.contains("constraint") || errorMessage.contains("foreign key")) {
+                    // Devolver el mensaje personalizado
+                    JOptionPane.showMessageDialog(null, "Error: No se pudo eliminar el dato porque cuenta con relaciones pendientes.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return "Error: No se pudo eliminar el dato porque cuenta con relaciones pendientes.";
+                } else {
+                    // Devolver el mensaje de error original
+                    return "Error HTTP " + responseCode + ": " + errorMessage;
+                }
             }
 
         } catch (IOException e) {
@@ -202,5 +213,90 @@ public class API_DataClaseFormacionApplications {
         return responseMessage;
     }
 
+    /**
+     * Método para obtener todas las clases de formación asociadas a un número de ficha.
+     *
+     * @param numeroFicha Número de la ficha (Integer).
+     * @return Mapa que asocia cada ID (Integer) con su NombreClase (String), o null en caso de error.
+     */
+    public static Map<Integer, String> obtenerClasesPorNumeroFicha(Integer numeroFicha) {
+        String endpoint = "/PorNumeroFicha";
+        Map<Integer, String> clasesMap = new HashMap<>();
+        try {
+            // Construir la URL con el parámetro
+            String urlParameters = "numeroFicha=" + URLEncoder.encode(numeroFicha.toString(), "UTF-8");
+            URL url = new URL("http://localhost:8080/Data/ClaseFormacion" + endpoint + "?" + urlParameters);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            // Configurar la conexión
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            // Obtener el código de respuesta
+            int responseCode = conn.getResponseCode();
+
+            // Leer la respuesta del servidor
+            InputStream is;
+            if (responseCode >= 200 && responseCode < 300) {
+                is = conn.getInputStream();
+            } else {
+                is = conn.getErrorStream();
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+            StringBuilder response = new StringBuilder();
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                response.append(linea.trim());
+            }
+            br.close();
+
+            // Manejar la respuesta según el código de estado
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Asumimos que la respuesta es un JSONArray
+                JSONArray clasesArray = new JSONArray(response.toString());
+
+                for (int i = 0; i < clasesArray.length(); i++) {
+                    JSONObject claseObj = clasesArray.getJSONObject(i);
+
+                    // Extraer el ID y el NombreClase
+                    if (claseObj.has("ID") && claseObj.has("NombreClase")) {
+                        int id = claseObj.getInt("ID");
+                        String nombreClase = claseObj.getString("NombreClase");
+
+                        // Añadir al mapa
+                        clasesMap.put(id, nombreClase);
+                    } else {
+                        // Manejar caso donde faltan campos esperados
+                        JOptionPane.showMessageDialog(null, "Respuesta del servidor incompleta. Faltan campos esperados.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return null;
+                    }
+                }
+
+                return clasesMap;
+            } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                // Manejar caso donde no se encontraron clases
+                JSONObject errorResponse = new JSONObject(response.toString());
+                String mensaje = errorResponse.optString("mensaje", "No se encontraron clases de formación para la ficha número: " + numeroFicha);
+                JOptionPane.showMessageDialog(null, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
+                return null;
+            } else {
+                // Manejar otros errores
+                JSONObject errorResponse = new JSONObject(response.toString());
+                String errorMessage = errorResponse.optString("error", "Error desconocido al obtener las clases de formación.");
+                JOptionPane.showMessageDialog(null, "Error al obtener las clases de formación: " + errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+
+        } catch (JSONException je) {
+            JOptionPane.showMessageDialog(null, "Error al parsear la respuesta del servidor.", "Error", JOptionPane.ERROR_MESSAGE);
+            je.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al obtener las clases de formación: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }

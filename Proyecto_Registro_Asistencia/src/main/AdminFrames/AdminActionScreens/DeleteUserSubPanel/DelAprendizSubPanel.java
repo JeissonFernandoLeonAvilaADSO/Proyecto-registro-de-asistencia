@@ -95,6 +95,7 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
         IDInstructorField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         BuscarDatosUsuario = new javax.swing.JButton();
+        HabilitarAprendiz = new javax.swing.JButton();
 
         CreateAprendizSubPanel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -308,7 +309,7 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
         ConfirmarEliminarAprendiz.setBackground(new java.awt.Color(0, 34, 64));
         ConfirmarEliminarAprendiz.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ConfirmarEliminarAprendiz.setForeground(new java.awt.Color(255, 255, 255));
-        ConfirmarEliminarAprendiz.setText("Eliminar Aprendiz");
+        ConfirmarEliminarAprendiz.setText("Deshabilitar Aprendiz");
         ConfirmarEliminarAprendiz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ConfirmarEliminarAprendizActionPerformed(evt);
@@ -398,33 +399,34 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
             }
         });
 
+        HabilitarAprendiz.setBackground(new java.awt.Color(57, 169, 0));
+        HabilitarAprendiz.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        HabilitarAprendiz.setForeground(new java.awt.Color(255, 255, 255));
+        HabilitarAprendiz.setText("Habilitar Aprendiz");
+        HabilitarAprendiz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HabilitarAprendizActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout CreateAprendizSubPanelLayout = new javax.swing.GroupLayout(CreateAprendizSubPanel);
         CreateAprendizSubPanel.setLayout(CreateAprendizSubPanelLayout);
         CreateAprendizSubPanelLayout.setHorizontalGroup(
             CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel22)
-                            .addComponent(jLabel21)
-                            .addComponent(jLabel20)
-                            .addComponent(jLabel27)
-                            .addComponent(jLabel28))
-                        .addGap(67, 67, 67)
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TipoDocCB, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ResultadoNombres, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ResultadoApellidos, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ResultadoPass)
-                            .addComponent(ResultadoUsuario)))
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(ConfirmarEliminarAprendiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addComponent(jLabel19)
                         .addGap(120, 120, 120)
-                        .addComponent(ResultadoDocumento))
-                    .addComponent(ConfirmarEliminarAprendiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                        .addComponent(ResultadoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel40, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel39, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel41, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel38)
                             .addComponent(jLabel30)
@@ -434,57 +436,66 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
                             .addComponent(jLabel25))
                         .addGap(56, 56, 56)
                         .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                                .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ResultadoHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+                            .addComponent(ResultadoCorreo)
+                            .addComponent(ResultadoTelefono)
+                            .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ResultadoJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ResultadoArea, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ResultadoSede, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ResultadoFechaHolder))
-                            .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ResultadoTelefono)
-                            .addComponent(ResultadoCorreo)
-                            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                                .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ResultadoHolder))
-                            .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addContainerGap(862, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addComponent(IDInstructorField)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel40)
-                            .addComponent(jLabel39)
-                            .addComponent(jLabel41)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel17))
-                        .addGap(33, 33, 33)
+                            .addComponent(jLabel22)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel20)
+                            .addComponent(jLabel27)
+                            .addComponent(jLabel28))
+                        .addGap(67, 67, 67)
+                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ResultadoPass, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+                            .addComponent(ResultadoUsuario)
+                            .addComponent(TipoDocCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ResultadoNombres)
+                            .addComponent(ResultadoApellidos)))
+                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ResultadoProgramaFormacion)
-                            .addComponent(ResultadoJornadaFormacion)
-                            .addComponent(ResultadoArea)
-                            .addComponent(ResultadoSede)))))
+                            .addComponent(jLabel6)
+                            .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(HabilitarAprendiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         CreateAprendizSubPanelLayout.setVerticalGroup(
             CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
-                .addComponent(jLabel6)
+            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(HabilitarAprendiz, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ResultadoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel27))
@@ -544,7 +555,7 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
                     .addComponent(jLabel38)
                     .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel41))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -565,7 +576,7 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
                     .addComponent(ResultadoSede, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ConfirmarEliminarAprendiz, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -831,13 +842,15 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_MunicipioCBActionPerformed
 
     private void ConfirmarEliminarAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarEliminarAprendizActionPerformed
-        int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea registrar los datos?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea inhabilitar al aprendiz?", "Confirmación", JOptionPane.YES_NO_CANCEL_OPTION);
 
         switch (respuesta) {
             case JOptionPane.YES_OPTION -> {
                 try {
-                    API_Admin_AprendizApplications eliminarInstructor = new API_Admin_AprendizApplications();
-                    eliminarInstructor.DeleteAprendiz(ResultadoDocumento.getText());
+                    API_BuscarUsuario desHabilitarAprendiz = new API_BuscarUsuario();
+                    desHabilitarAprendiz.inhabilitarAprendiz(ResultadoDocumento.getText());
+//                    API_Admin_AprendizApplications eliminarAprendiz = new API_Admin_AprendizApplications();
+//                    eliminarAprendiz.DeleteAprendiz(ResultadoDocumento.getText());
                     // Limpiar formulario después de la actualización
                     limpiarFormularioAprendiz();
 
@@ -1055,6 +1068,70 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_ResultadoTelefonoKeyTyped
 
+    private void HabilitarAprendizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HabilitarAprendizActionPerformed
+        API_BuscarUsuario api = new API_BuscarUsuario();
+        String documento = null;
+
+        while (true) {
+            // Paso 1: Solicitar el documento
+            documento = JOptionPane.showInputDialog(this, "Ingrese el documento del Aprendiz a habilitar:", "Habilitar Aprendiz", JOptionPane.QUESTION_MESSAGE);
+
+            // Verificar si el usuario canceló la operación
+            if (documento == null) {
+                // Usuario canceló
+                return;
+            }
+
+            documento = documento.trim();
+
+            // Paso 2: Validar el documento (solo números y no vacío)
+            if (documento.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El documento no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                continue;
+            }
+
+            if (!documento.matches("\\d+")) {
+                JOptionPane.showMessageDialog(this, "El documento solo debe contener números.", "Error", JOptionPane.ERROR_MESSAGE);
+                continue;
+            }
+
+            // Paso 3: Confirmar la habilitación
+            int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea habilitar al Aprendiz con documento " + documento + "?", "Confirmar Habilitación", JOptionPane.YES_NO_OPTION);
+
+            if (confirm != JOptionPane.YES_OPTION) {
+                // Usuario no confirmó
+                return;
+            }
+
+            // Paso 4: Solicitar nuevamente el documento para confirmar
+            String documentoConfirmacion = JOptionPane.showInputDialog(this, "Por favor, reingrese el documento para confirmar:", "Confirmar Documento", JOptionPane.QUESTION_MESSAGE);
+
+            if (documentoConfirmacion == null) {
+                // Usuario canceló
+                return;
+            }
+
+            documentoConfirmacion = documentoConfirmacion.trim();
+
+            // Validar el documento de confirmación
+            if (!documentoConfirmacion.equals(documento)) {
+                JOptionPane.showMessageDialog(this, "El documento no coincide. Operación cancelada.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Paso 5: Enviar la solicitud de habilitación
+            boolean resultado = api.habilitarAprendiz(documento);
+
+            if (resultado) {
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo habilitar al Aprendiz. Verifique que el documento sea correcto y que el Aprendiz exista.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            // Salir del bucle después de intentar la operación
+            break;
+        }
+    }//GEN-LAST:event_HabilitarAprendizActionPerformed
+
 
 
 
@@ -1067,6 +1144,7 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> DiaCB;
     private javax.swing.JComboBox<String> FichaCB;
     private javax.swing.JComboBox<String> GeneroCB;
+    private javax.swing.JButton HabilitarAprendiz;
     private javax.swing.JTextField IDInstructorField;
     private javax.swing.JComboBox<String> MesCB;
     private javax.swing.JComboBox<String> MunicipioCB;

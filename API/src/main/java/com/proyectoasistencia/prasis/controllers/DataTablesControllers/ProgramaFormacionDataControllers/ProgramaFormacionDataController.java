@@ -56,8 +56,5 @@ public class ProgramaFormacionDataController {
             return ResponseEntity.notFound().build();
         }
     }
-
-
-
 }
 

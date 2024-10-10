@@ -52,7 +52,6 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
         jLabel27 = new javax.swing.JLabel();
         ResultadoUsuario = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
-        ResultadoPass = new javax.swing.JTextField();
         ResultadoNombres = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         ResultadoArea = new javax.swing.JTextField();
@@ -93,6 +92,8 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
         IDInstructorField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         BuscarDatosUsuario = new javax.swing.JButton();
+        RefrescarCombos = new javax.swing.JButton();
+        ResultadoPass = new javax.swing.JPasswordField();
 
         CreateAprendizSubPanel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -106,14 +107,6 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
         jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(0, 0, 0));
         jLabel28.setText("Contraseña");
-
-        ResultadoPass.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoPass.setForeground(new java.awt.Color(0, 0, 0));
-        ResultadoPass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ResultadoPassActionPerformed(evt);
-            }
-        });
 
         ResultadoNombres.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoNombres.setForeground(new java.awt.Color(0, 0, 0));
@@ -360,6 +353,18 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
             }
         });
 
+        RefrescarCombos.setBackground(new java.awt.Color(57, 169, 0));
+        RefrescarCombos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        RefrescarCombos.setForeground(new java.awt.Color(255, 255, 255));
+        RefrescarCombos.setText("Refrescar comboBox");
+        RefrescarCombos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefrescarCombosActionPerformed(evt);
+            }
+        });
+
+        ResultadoPass.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+
         javax.swing.GroupLayout CreateAprendizSubPanelLayout = new javax.swing.GroupLayout(CreateAprendizSubPanel);
         CreateAprendizSubPanel.setLayout(CreateAprendizSubPanelLayout);
         CreateAprendizSubPanelLayout.setHorizontalGroup(
@@ -367,25 +372,21 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
             .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel22)
-                            .addComponent(jLabel21)
-                            .addComponent(jLabel20)
-                            .addComponent(jLabel27)
-                            .addComponent(jLabel28))
-                        .addGap(67, 67, 67)
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TipoDocCB, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ResultadoNombres, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ResultadoApellidos, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ResultadoPass)
-                            .addComponent(ResultadoUsuario)))
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel19)
-                        .addGap(120, 120, 120)
-                        .addComponent(ResultadoDocumento))
                     .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel40)
+                            .addComponent(jLabel39)
+                            .addComponent(jLabel41)
+                            .addComponent(jLabel24)
+                            .addComponent(jLabel17))
+                        .addGap(33, 33, 33)
+                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(ResultadoJornadaFormacion)
+                            .addComponent(ResultadoArea)
+                            .addComponent(ResultadoSede)
+                            .addComponent(ResultadoProgramaFormacion)))
                     .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel38)
@@ -397,51 +398,64 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                         .addGap(56, 56, 56)
                         .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                                .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ResultadoFechaHolder))
+                                .addComponent(ResultadoFechaHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE))
                             .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(ResultadoTelefono)
                             .addComponent(ResultadoCorreo)
                             .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                                .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ResultadoHolder))
                             .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addContainerGap(862, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel22)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel20)
+                            .addComponent(jLabel27)
+                            .addComponent(jLabel28)
+                            .addComponent(jLabel6))
+                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(RefrescarCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ResultadoPass, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(ResultadoApellidos, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(TipoDocCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ResultadoNombres)
+                                    .addComponent(ResultadoUsuario)))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addComponent(IDInstructorField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel40)
-                            .addComponent(jLabel39)
-                            .addComponent(jLabel41)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel17))
-                        .addGap(33, 33, 33)
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ResultadoProgramaFormacion)
-                            .addComponent(ResultadoJornadaFormacion)
-                            .addComponent(ResultadoArea)
-                            .addComponent(ResultadoSede)))))
+                        .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addGap(120, 120, 120)
+                        .addComponent(ResultadoDocumento)))
+                .addContainerGap())
         );
         CreateAprendizSubPanelLayout.setVerticalGroup(
             CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
-                .addComponent(jLabel6)
+                .addContainerGap()
+                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(RefrescarCombos, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel6)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -450,16 +464,18 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ResultadoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel27))
-                .addGap(9, 9, 9)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel28)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel19))
+                        .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                            .addGap(34, 34, 34)
+                            .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(ResultadoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel19))))
                     .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addComponent(ResultadoPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ResultadoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ResultadoPass, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TipoDocCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -527,7 +543,7 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                     .addComponent(ResultadoSede, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -549,10 +565,6 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
     private void GeneroCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GeneroCBActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_GeneroCBActionPerformed
-
-    private void ResultadoPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResultadoPassActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ResultadoPassActionPerformed
 
     private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
            String fichaSeleccionada = (String) FichaCB.getSelectedItem();
@@ -794,61 +806,179 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_MunicipioCBActionPerformed
 
     private void ConfirmarRegistroUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmarRegistroUsuarioActionPerformed
-// Formato de la fecha esperada
+        // Formato de la fecha esperada
         SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+        formatoFecha.setLenient(false); // Validación estricta de la fecha
         java.util.Date fechaNacimientoUtil = null;
         java.sql.Date fechaNacimiento = null;
 
-        try {
-            // Intentar convertir la fecha del holder a un objeto java.util.Date en formato "yyyy-MM-dd"
-            String fechaTexto = ResultadoFechaHolder.getText();
-            System.out.println("Fecha ingresada: " + fechaTexto);
+        // Variable para acumular errores de validación
+        StringBuilder errores = new StringBuilder();
 
-            fechaNacimientoUtil = formatoFecha.parse(fechaTexto);
+        // 1. Validación de Campos Obligatorios
+        if (ResultadoUsuario.getText().trim().isEmpty()) {
+            errores.append("- El campo de Usuario es obligatorio.\n");
+        }
 
-            // Convertir java.util.Date a java.sql.Date
-            fechaNacimiento = new java.sql.Date(fechaNacimientoUtil.getTime());
-            System.out.println("Fecha convertida a java.sql.Date: " + fechaNacimiento);
+        if (ResultadoPass.getText().trim().isEmpty()) {
+            errores.append("- El campo de Contraseña es obligatorio.\n");
+        }
 
-        } catch (ParseException e) {
-            e.printStackTrace();  // Manejar la excepción si la fecha no está en el formato correcto
+        if (ResultadoDocumento.getText().trim().isEmpty()) {
+            errores.append("- El campo de Documento es obligatorio.\n");
+        }
 
+        if (ResultadoNombres.getText().trim().isEmpty()) {
+            errores.append("- El campo de Nombres es obligatorio.\n");
+        }
+
+        if (ResultadoApellidos.getText().trim().isEmpty()) {
+            errores.append("- El campo de Apellidos es obligatorio.\n");
+        }
+
+        if (ResultadoFechaHolder.getText().trim().isEmpty()) {
+            errores.append("- El campo de Fecha de Nacimiento es obligatorio.\n");
+        }
+
+        if (ResultadoTelefono.getText().trim().isEmpty()) {
+            errores.append("- El campo de Teléfono es obligatorio.\n");
+        }
+
+        if (ResultadoCorreo.getText().trim().isEmpty()) {
+            errores.append("- El campo de Correo Electrónico es obligatorio.\n");
+        }
+
+        if (ResultadoHolder.getText().trim().isEmpty()) {
+            errores.append("- El campo de Residencia es obligatorio.\n");
+        }
+
+        if (FichaCB.getSelectedItem() == null) {
+            errores.append("- Debes seleccionar una Ficha.\n");
+        }
+
+        if (ResultadoProgramaFormacion.getText().trim().isEmpty()) {
+            errores.append("- El campo de Programa de Formación es obligatorio.\n");
+        }
+
+        if (ResultadoNivelFormacion.getText().trim().isEmpty()) {
+            errores.append("- El campo de Nivel de Formación es obligatorio.\n");
+        }
+
+        if (ResultadoJornadaFormacion.getText().trim().isEmpty()) {
+            errores.append("- El campo de Jornada de Formación es obligatorio.\n");
+        }
+
+        if (ResultadoArea.getText().trim().isEmpty()) {
+            errores.append("- El campo de Área es obligatorio.\n");
+        }
+
+        if (ResultadoSede.getText().trim().isEmpty()) {
+            errores.append("- El campo de Sede es obligatorio.\n");
+        }
+
+        // 2. Validación de Fecha de Nacimiento
+        if (!ResultadoFechaHolder.getText().trim().isEmpty()) {
             try {
-                // Asignar una fecha predeterminada en caso de error y convertirla a java.sql.Date
-                System.out.println("Formato incorrecto. Usando fecha por defecto '1990-05-10'.");
-                fechaNacimientoUtil = formatoFecha.parse("1990-05-10");
+                String fechaTexto = ResultadoFechaHolder.getText().trim();
+                fechaNacimientoUtil = formatoFecha.parse(fechaTexto);
                 fechaNacimiento = new java.sql.Date(fechaNacimientoUtil.getTime());
-            } catch (ParseException ex) {
-                throw new RuntimeException(ex);
+
+                // Verificar que la fecha no sea futura ni demasiado antigua
+                if (fechaNacimiento.before(java.sql.Date.valueOf("1900-01-01")) || fechaNacimiento.after(new java.sql.Date(System.currentTimeMillis()))) {
+                    errores.append("- La Fecha de Nacimiento es inválida.\n");
+                }
+
+                // Verificar que el usuario tenga al menos 18 años
+                java.util.Calendar cal = java.util.Calendar.getInstance();
+                cal.setTime(fechaNacimientoUtil);
+                cal.add(java.util.Calendar.YEAR, 18);
+                java.util.Date fechaMinima = cal.getTime();
+                if (fechaMinima.after(new java.util.Date())) {
+                    errores.append("- Debes tener al menos 18 años para registrarte.\n");
+                }
+
+            } catch (ParseException e) {
+                errores.append("- La Fecha de Nacimiento debe tener el formato 'yyyy-MM-dd'.\n");
             }
         }
-// Crear el objeto AprendizModel con la fecha convertida a Date
+
+        // 3. Validación de Correo Electrónico con Expresión Regular
+        if (!ResultadoCorreo.getText().trim().isEmpty()) {
+            String correo = ResultadoCorreo.getText().trim();
+            String regexCorreo = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+            if (!correo.matches(regexCorreo)) {
+                errores.append("- El Correo Electrónico no es válido.\n");
+            }
+        }
+
+        // 4. Validación de Teléfono (solo números y longitud mínima)
+        if (!ResultadoTelefono.getText().trim().isEmpty()) {
+            String telefono = ResultadoTelefono.getText().trim();
+            String regexTelefono = "^[0-9]{7,15}$"; // Ajusta la longitud según sea necesario
+            if (!telefono.matches(regexTelefono)) {
+                errores.append("- El Teléfono debe contener solo números y tener entre 7 y 15 dígitos.\n");
+            }
+        }
+
+        // 5. Validación de Documento (solo números y mínimo 4 caracteres)
+        if (!ResultadoDocumento.getText().trim().isEmpty()) {
+            String documento = ResultadoDocumento.getText().trim();
+            if (!documento.matches("^[0-9]{4,}$")) { // Solo números y al menos 4 dígitos
+                errores.append("- El Documento debe contener solo números y tener al menos 4 dígitos.\n");
+            }
+        }
+
+        // 6. Validación de Contraseña (mínimo 8 caracteres)
+        if (!ResultadoPass.getText().trim().isEmpty()) {
+            String contraseña = ResultadoPass.getText().trim();
+            if (contraseña.length() < 8) {
+                errores.append("- La Contraseña debe tener al menos 8 caracteres.\n");
+            }
+            // Puedes agregar más validaciones si es necesario, como combinaciones de letras y números
+        }
+
+        // 7. Validación de Ficha (convertir a entero)
+        Integer ficha = null;
+        if (FichaCB.getSelectedItem() != null) {
+            try {
+                ficha = Integer.parseInt(FichaCB.getSelectedItem().toString());
+            } catch (NumberFormatException e) {
+                errores.append("- La Ficha seleccionada no es válida.\n");
+            }
+        }
+
+        // Mostrar errores si existen
+        if (errores.length() > 0) {
+            JOptionPane.showMessageDialog(this, errores.toString(), "Errores de Validación", JOptionPane.ERROR_MESSAGE);
+            return; // Detener la ejecución para no enviar el formulario
+        }
+
+        // Crear el objeto AprendizModel con la fecha convertida a Date
         AprendizModel aprendiz = new AprendizModel(
-                ResultadoUsuario.getText(),
-                ResultadoPass.getText(),
-                ResultadoDocumento.getText(),
+                ResultadoUsuario.getText().trim(),
+                ResultadoPass.getText().trim(),
+                ResultadoDocumento.getText().trim(),
                 TipoDocCB.getSelectedItem().toString(),
-                ResultadoNombres.getText(),
-                ResultadoApellidos.getText(),
+                ResultadoNombres.getText().trim(),
+                ResultadoApellidos.getText().trim(),
                 fechaNacimiento,  // Pasa el objeto Date aquí
-                ResultadoTelefono.getText(),
-                ResultadoCorreo.getText(),
+                ResultadoTelefono.getText().trim(),
+                ResultadoCorreo.getText().trim(),
                 GeneroCB.getSelectedItem().toString(),
-                ResultadoHolder.getText(),
-                FichaCB.getSelectedItem() != null ? Integer.parseInt(FichaCB.getSelectedItem().toString()) : null,
-                ResultadoProgramaFormacion.getText(),
-                ResultadoNivelFormacion.getText(),
-                ResultadoJornadaFormacion.getText(),
-                ResultadoArea.getText(),
-                ResultadoSede.getText()
+                ResultadoHolder.getText().trim(),
+                ficha,
+                ResultadoProgramaFormacion.getText().trim(),
+                ResultadoNivelFormacion.getText().trim(),
+                ResultadoJornadaFormacion.getText().trim(),
+                ResultadoArea.getText().trim(),
+                ResultadoSede.getText().trim()
         );
 
-        API_Admin_AprendizApplications actualizarAprendiz = new API_Admin_AprendizApplications();
-        actualizarAprendiz.UpdateAprendiz(ResultadoDocumento.getText() ,aprendiz);
-        JOptionPane.showMessageDialog(null, "Aprendiz modificado exitosamente");
+        API_Admin_AprendizApplications updateAprendiz = new API_Admin_AprendizApplications();
+        updateAprendiz.UpdateAprendiz(ResultadoDocumento.getText(), aprendiz);
+
 
         limpiarFormularioAprendiz();
-
     }//GEN-LAST:event_ConfirmarRegistroUsuarioActionPerformed
 
     private void limpiarFormularioAprendiz() {
@@ -942,67 +1072,79 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_IDInstructorFieldActionPerformed
 
     private void BuscarDatosUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosUsuarioActionPerformed
-        // Crea una nueva instancia de API_BuscarUsuario.
-        API_BuscarUsuario buscarAprendiz = new API_BuscarUsuario();
+        try {
+            System.out.println("Evento BuscarDatosUsuarioActionPerformed disparado.");
 
-        // Intenta buscar el usuario (Instructor o Aprendiz) en la base de datos.
-        AprendizModel aprendiz = buscarAprendiz.buscarAprendizPorDocumento(IDInstructorField.getText());
+            // Crea una nueva instancia de API_BuscarUsuario.
+            API_BuscarUsuario buscarAprendiz = new API_BuscarUsuario();
 
-        if (aprendiz != null) {
-            // Rellenar los campos con los datos del aprendiz
-            ResultadoUsuario.setText(aprendiz.getUser());
-            ResultadoDocumento.setText(aprendiz.getDocumento());
-            TipoDocCB.setSelectedItem(aprendiz.getTipoDocumento());
-            ResultadoNombres.setText(aprendiz.getNombres());
-            ResultadoApellidos.setText(aprendiz.getApellidos());
-            ResultadoCorreo.setText(aprendiz.getCorreo());
-            ResultadoTelefono.setText(aprendiz.getTelefono());
-            ResultadoProgramaFormacion.setText(aprendiz.getProgramaFormacion());
-            ResultadoNivelFormacion.setText(aprendiz.getNivelFormacion());
-            ResultadoJornadaFormacion.setText(aprendiz.getJornadaFormacion());
-            ResultadoSede.setText(aprendiz.getSede());
-            ResultadoArea.setText(aprendiz.getArea());
+            // Intenta buscar el usuario (Instructor o Aprendiz) en la base de datos.
+            String documento = IDInstructorField.getText();
 
-            // Fecha de nacimiento: ajustar YearCB, MesCB, DiaCB
-            Date fechaNacimiento = aprendiz.getFechaNacimiento();
+            AprendizModel aprendiz = buscarAprendiz.buscarAprendizPorDocumento(documento);
 
-            if (fechaNacimiento != null) {
-                // Usar LocalDate para extraer el año, mes y día
-                LocalDate fecha = fechaNacimiento.toLocalDate();
-                int anho = fecha.getYear();
-                int mes = fecha.getMonthValue();  // De 1 a 12
-                int dia = fecha.getDayOfMonth();
+            if (aprendiz != null) {
+                System.out.println("Aprendiz obtenido: " + aprendiz.getDocumento());
+                System.out.println("Documento ingresado: " + documento);
+                // Rellenar los campos con los datos del aprendiz
+                ResultadoUsuario.setText(aprendiz.getUser());
+                ResultadoDocumento.setText(aprendiz.getDocumento());
+                TipoDocCB.setSelectedItem(aprendiz.getTipoDocumento());
+                ResultadoNombres.setText(aprendiz.getNombres());
+                ResultadoApellidos.setText(aprendiz.getApellidos());
+                ResultadoCorreo.setText(aprendiz.getCorreo());
+                ResultadoTelefono.setText(aprendiz.getTelefono());
+                ResultadoProgramaFormacion.setText(aprendiz.getProgramaFormacion());
+                ResultadoNivelFormacion.setText(aprendiz.getNivelFormacion());
+                ResultadoJornadaFormacion.setText(aprendiz.getJornadaFormacion());
+                ResultadoSede.setText(aprendiz.getSede());
+                ResultadoArea.setText(aprendiz.getArea());
 
-                // Setear YearCB
-                YearCB.setSelectedItem(String.valueOf(anho));
+                // Fecha de nacimiento: ajustar YearCB, MesCB, DiaCB
+                Date fechaNacimiento = aprendiz.getFechaNacimiento();
 
-                // Mapear el número del mes al nombre del mes
-                String[] mesesNombres = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
-                String nombreMes = mesesNombres[mes - 1];  // Restamos 1 para que coincida con el índice
+                if (fechaNacimiento != null) {
+                    // Usar LocalDate para extraer el año, mes y día
+                    LocalDate fecha = fechaNacimiento.toLocalDate();
+                    int anho = fecha.getYear();
+                    int mes = fecha.getMonthValue();  // De 1 a 12
+                    int dia = fecha.getDayOfMonth();
 
-                // Setear MesCB al nombre del mes
-                MesCB.setSelectedItem(nombreMes);
+                    // Setear YearCB
+                    YearCB.setSelectedItem(String.valueOf(anho));
 
-                // Setear DiaCB
-                DiaCB.setSelectedItem(String.valueOf(dia));  // Asegúrate de que los días en DiaCB estén como números sin ceros a la izquierda
+                    // Mapear el número del mes al nombre del mes
+                    String[] mesesNombres = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+                    String nombreMes = mesesNombres[mes - 1];  // Restamos 1 para que coincida con el índice
+
+                    // Setear MesCB al nombre del mes
+                    MesCB.setSelectedItem(nombreMes);
+
+                    // Setear DiaCB
+                    DiaCB.setSelectedItem(String.valueOf(dia));  // Asegúrate de que los días en DiaCB estén como números sin ceros a la izquierda
+                }
+
+                // Género
+                GeneroCB.setSelectedItem(aprendiz.getGenero());
+
+                // Residencia (descomponer en departamento, municipio y barrio si es necesario)
+                String[] residencia = aprendiz.getResidencia().split(" - ");
+                if (residencia.length == 3) {
+                    DepartamentoCB.setSelectedItem(residencia[0]);
+                    MunicipioCB.setSelectedItem(residencia[1]);
+                    BarrioCB.setSelectedItem(residencia[2]);
+                }
+
+                // Número de ficha
+                FichaCB.setSelectedItem(String.valueOf(aprendiz.getFicha()));
+
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró el usuario con el documento proporcionado.");
             }
-
-            // Género
-            GeneroCB.setSelectedItem(aprendiz.getGenero());
-
-            // Residencia (descomponer en departamento, municipio y barrio si es necesario)
-            String[] residencia = aprendiz.getResidencia().split(" - ");
-            if (residencia.length == 3) {
-                DepartamentoCB.setSelectedItem(residencia[0]);
-                MunicipioCB.setSelectedItem(residencia[1]);
-                BarrioCB.setSelectedItem(residencia[2]);
-            }
-
-            // Número de ficha
-            FichaCB.setSelectedItem(String.valueOf(aprendiz.getFicha()));
-
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontró el usuario con el documento proporcionado.");
+        } catch (Exception e) {
+            System.out.println("Ocurrió una excepción:");
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ocurrió un error al buscar el usuario: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BuscarDatosUsuarioActionPerformed
 
@@ -1056,7 +1198,32 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_ResultadoTelefonoKeyTyped
 
+    private void RefrescarCombosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarCombosActionPerformed
+        refrescarComboBoxes();
+    }//GEN-LAST:event_RefrescarCombosActionPerformed
 
+
+    public void refrescarComboBoxes() {
+        try {
+            ComboBoxModels cbm = new ComboBoxModels();
+            // Actualizar los ComboBox con los modelos más recientes
+            ComboBoxModels CBModels = new ComboBoxModels();
+            TipoDocCB.setModel(CBModels.generarComboBoxModelPorTipo("TipoDocumento"));
+            GeneroCB.setModel(CBModels.generarComboBoxModelPorTipo("Genero"));
+            MunicipioCB.setModel(CBModels.generarComboBoxModelPorTipo("Municipios"));
+            DepartamentoCB.setModel(CBModels.generarComboBoxModelPorTipo("Departamentos"));
+            BarrioCB.setModel(CBModels.generarComboBoxModelPorTipo("Barrios"));
+            FichaCB.setModel(CBModels.generarComboBoxModelPorTipo("Fichas"));
+            YearCB.setModel(yearModel);
+            MesCB.setModel(mesModel);
+            DiaCB.setModel(diaModel);
+
+            JOptionPane.showMessageDialog(this, "Los ComboBox han sido actualizados correctamente.", "ComboBox Actualizados", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al refrescar los ComboBox: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1071,6 +1238,7 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
     private javax.swing.JTextField IDInstructorField;
     private javax.swing.JComboBox<String> MesCB;
     private javax.swing.JComboBox<String> MunicipioCB;
+    private javax.swing.JButton RefrescarCombos;
     private javax.swing.JTextField ResultadoApellidos;
     private javax.swing.JTextField ResultadoArea;
     private javax.swing.JTextField ResultadoCorreo;
@@ -1080,7 +1248,7 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
     private javax.swing.JTextField ResultadoJornadaFormacion;
     private javax.swing.JTextField ResultadoNivelFormacion;
     private javax.swing.JTextField ResultadoNombres;
-    private javax.swing.JTextField ResultadoPass;
+    private javax.swing.JPasswordField ResultadoPass;
     private javax.swing.JTextField ResultadoProgramaFormacion;
     private javax.swing.JTextField ResultadoSede;
     private javax.swing.JTextField ResultadoTelefono;

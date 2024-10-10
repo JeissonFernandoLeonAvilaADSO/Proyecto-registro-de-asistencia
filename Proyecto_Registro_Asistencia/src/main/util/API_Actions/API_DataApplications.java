@@ -1,5 +1,6 @@
 package main.util.API_Actions;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -74,7 +75,24 @@ public class API_DataApplications {
             System.out.println("Respuesta del servidor: " + response.toString());
 
             conn.disconnect();
-            return response.toString();
+            if (responseCode >= 200 && responseCode < 300) {
+                JOptionPane.showMessageDialog(null, "Dato eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                return response.toString();
+            } else {
+                // Error en la solicitud
+                String errorMessage = response.toString();
+
+                // Analizar el mensaje de error para detectar violación de integridad referencial
+                System.out.println(errorMessage);
+                if (errorMessage.startsWith("Error HTTP")) {
+                    // Devolver el mensaje personalizado
+                    JOptionPane.showMessageDialog(null, "Error: No se pudo eliminar el dato porque cuenta con relaciones pendientes.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return "Error: No se pudo eliminar el dato porque cuenta con relaciones pendientes.";
+                } else {
+                    // Devolver el mensaje de error original
+                    return "Error HTTP " + responseCode + ": " + errorMessage;
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

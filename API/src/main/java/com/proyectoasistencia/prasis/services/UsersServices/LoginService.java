@@ -90,10 +90,19 @@ public class LoginService {
                 // Usar el documento para buscar al instructor
                 InstructorModel instructor = instructorService.getInstructor(documento);
                 if (instructor != null) {
+                    // Obtener la clase asociada al instructor
+                    Map<String, Object> claseFormacion = cfd.obtenerClasePorDocumentoInstructor(documento);
+                    if (claseFormacion == null || !claseFormacion.containsKey("NombreClase")) {
+                        // No se encontró ninguna clase para el instructor
+                        throw new RuntimeException("No se encontró ninguna clase para el instructor con documento: " + documento);
+                    }
+
+                    String nombreClase = (String) claseFormacion.get("NombreClase");
+
                     response.put("FullName", instructor.getNombres() + " " + instructor.getApellidos());
                     response.put("Documento", instructor.getDocumento());
                     response.put("TipoDocumento", instructor.getTipoDocumento());
-                    response.put("ClaseFormacion", cfd.obtenerClasePorDocumentoInstructor(documento).get("NombreClase"));
+                    response.put("ClaseFormacion", nombreClase);
                     response.put("Role", "Instructor");
 
                     // Depuración: Login exitoso para instructor
