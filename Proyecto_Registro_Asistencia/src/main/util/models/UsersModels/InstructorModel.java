@@ -5,7 +5,7 @@ import java.util.List;
 
 public class InstructorModel extends PerfilUsuarioModel{
 
-    private String claseFormacion;
+    private List<String> claseFormacion;
     private List<Integer> fichas;
     private List<String> programasFormacion;
     private List<String> jornadasFormacion;
@@ -24,7 +24,7 @@ public class InstructorModel extends PerfilUsuarioModel{
                            String correo,
                            String genero,
                            String residencia,
-                           String claseFormacion,
+                           List<String> claseFormacion, // Cambiado a List<String>
                            List<Integer> fichas,
                            List<String> programasFormacion,
                            List<String> jornadasFormacion,
@@ -41,11 +41,11 @@ public class InstructorModel extends PerfilUsuarioModel{
         this.areas = areas;
     }
 
-    public String getClaseFormacion() {
+    public List<String> getClaseFormacion() { // Cambiado a List<String>
         return claseFormacion;
     }
 
-    public void setClaseFormacion(String claseFormacion) {
+    public void setClaseFormacion(List<String> claseFormacion) { // Cambiado a List<String>
         this.claseFormacion = claseFormacion;
     }
 

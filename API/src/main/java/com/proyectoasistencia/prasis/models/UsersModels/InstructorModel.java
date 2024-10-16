@@ -16,7 +16,7 @@ import java.util.List;
 public class InstructorModel extends PerfilUsuarioModel {
 
     @JsonProperty("ClaseFormacion")
-    private String ClaseFormacion;
+    private List<String> clasesFormacion;
 
     @JsonProperty("Fichas")
     private List<Integer> fichas;

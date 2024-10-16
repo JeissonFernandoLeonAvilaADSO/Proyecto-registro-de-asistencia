@@ -83,12 +83,12 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         ListarAprendices = new javax.swing.JTable();
         AmbienteCB = new javax.swing.JComboBox<>();
-        InstructorClaseFormacion = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         ActividadCB = new javax.swing.JComboBox<>();
         HoraCB = new javax.swing.JComboBox<>();
         MinutosCB = new javax.swing.JComboBox<>();
         ExtensionHoraCB = new javax.swing.JComboBox<>();
+        ClaseFormacionCB = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -224,8 +224,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
 
         AmbienteCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        InstructorClaseFormacion.setText("XXXXXXXXXXXXXXXXXX");
-
         jLabel9.setText("Actividad");
 
         ActividadCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -251,6 +249,8 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             }
         });
 
+        ClaseFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -273,8 +273,8 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(AmbienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(InstructorClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(ActividadCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(ActividadCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(ClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -346,7 +346,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(InstructorClaseFormacion))
+                            .addComponent(ClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -393,7 +393,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     public void AditionalConfig(){
         // Definir las columnas del modelo
         // Asignar el modelo a la tabla asisTable
-        tablaAsis.setModel(new DefaultTableModel(new String[]{"Nombre", "Tipo de Documento", "Documento", "Programa Formación", "Nivel Formación", "Hora de Ingreso", "Estado de Asistencia"}, 0));
+        tablaAsis.setModel(new DefaultTableModel(new String[]{"Nombre", "Tipo de Documento", "Documento", "Hora de Ingreso", "Estado de Asistencia"}, 0));
             // Configuración de la pantalla y del frame
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int frameWidth = (int) (screenSize.width * 0.95);
@@ -444,10 +444,19 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         try {
             ComboBoxModels cbm = new ComboBoxModels();
             InstructorNombre.setText(UserSession.getInstance().getNombres());
-            InstructorClaseFormacion.setText(UserSession.getInstance().getClaseFormacion());
             AmbienteCB.setModel(cbm.generarComboBoxModelPorTipo("Ambientes"));
             ProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ProgramaFormacion"));
             ActividadCB.setModel(cbm.generarComboBoxModelPorTipo("Actividades"));
+            List<Map<String, Object>> clasesList = UserSession.getInstance().getClasesFormacion();
+            // Limpiar el ComboBox antes de añadir nuevos elementos
+            ClaseFormacionCB.removeAllItems();
+
+            // Iterar sobre la lista de clases y añadir cada una al ComboBox
+            for (Map<String, Object> clase : clasesList) {
+                // Suponiendo que "NombreClase" es el campo que quieres mostrar en el ComboBox
+                String nombreClase = (String) clase.get("NombreClase");
+                ClaseFormacionCB.addItem(nombreClase);
+            }
             
 
         } catch (Exception e) {
@@ -560,7 +569,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
 
 
     private void RegistrarAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarAsistenciaActionPerformed
-
         String documentoAprendiz = DocumentoAprendiz.getText();
         DocumentoAprendiz.setText("");
         API_BuscarUsuario buscarAprendiz = new API_BuscarUsuario();
@@ -569,22 +577,26 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         AprendizModel aprendiz = buscarAprendiz.buscarAprendizPorDocumento(documentoAprendiz);
 
         if (aprendiz != null) {
+            // Obtener la clase seleccionada
+            String claseSeleccionada = (String) ClaseFormacionCB.getSelectedItem();
+
             // Crear el modelo de la tabla si aún no existe
             DefaultTableModel modelo = (DefaultTableModel) tablaAsis.getModel();
             DefaultTableModel modeloListarAprendices = (DefaultTableModel) ListarAprendices.getModel();
-            boolean perteneceAFicha = false;
+            boolean perteneceAClase = false;
 
-            for (int i = 0; i < modeloListarAprendices.getRowCount(); i++) {
-                String documentoFicha = modeloListarAprendices.getValueAt(i, 1).toString();
-                System.out.println(documentoFicha);
-                if (documentoFicha.equals(documentoAprendiz)) {
-                    perteneceAFicha = true;
+            // Validar si el aprendiz pertenece a la clase seleccionada
+            for (Map<String, Object> vinculacion : aprendiz.getVinculaciones()) {
+                String claseAprendiz = vinculacion.get("ClaseFormacion").toString();
+                if (claseAprendiz != null && claseAprendiz.equals(claseSeleccionada)) {
+                    perteneceAClase = true;
                     break;
                 }
             }
-            // Si el aprendiz no pertenece a la ficha, mostrar un mensaje y no registrar
-            if (!perteneceAFicha) {
-                JOptionPane.showMessageDialog(this, "El aprendiz con el documento " + documentoAprendiz + " no pertenece a la ficha actual.");
+
+            // Si el aprendiz no pertenece a la clase, mostrar un mensaje y no registrar
+            if (!perteneceAClase) {
+                JOptionPane.showMessageDialog(this, "El aprendiz con el documento " + documentoAprendiz + " no pertenece a la clase seleccionada.");
                 return;
             }
 
@@ -608,19 +620,14 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             String horaLlegada = HoraActual();
             int horasRetardo = calcularHorasRetardo(HoraInicio.getText(), horaLlegada);
 
-            System.out.println(horaLlegada);
-            System.out.println(horasRetardo);
             // Llenar la tabla de asistencia
             String estadoAsistencia = horasRetardo == 0 ? "A tiempo" : horasRetardo + " horas de retardo";
-            System.out.println(estadoAsistencia);
 
             // Añadir la fila con los datos del aprendiz
-            modelo.addRow(new Object[] {
+            modelo.addRow(new Object[]{
                     aprendiz.getNombres(), // Columna: Nombre
                     aprendiz.getTipoDocumento(), // Columna: Tipo de Documento
                     aprendiz.getDocumento(), // Columna: Documento
-                    aprendiz.getProgramaFormacion(), // Columna: Programa de Formación
-                    aprendiz.getNivelFormacion(), // Columna: Nivel de Formación
                     horaLlegada, // Columna: Hora de Ingreso
                     estadoAsistencia // Columna: Estado de asistencia
             });
@@ -645,7 +652,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                     // Configurar el JDialog y mostrarlo
                     dialogoRegistroAprendiz.setLocationRelativeTo(this);  // Centrar en la ventana principal
                     dialogoRegistroAprendiz.setVisible(true);  // Mostrar el diálogo de forma modal
-
                     break;
 
                 case JOptionPane.NO_OPTION:
@@ -685,15 +691,20 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             return;
         }
 
+        if (ClaseFormacionCB.getSelectedItem().equals("Seleccionar...")) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona una Clase de formacion.");
+            return;
+        }
+
         try {
             // Crear el objeto JSON principal
             JSONObject asistenciaJSON = new JSONObject();
 
             // Valores estáticos para el ejemplo
             asistenciaJSON.put("TipoAsistencia", ActividadCB.getSelectedItem().toString());
-
+            asistenciaJSON.put("InstructorDocumento", UserSession.getInstance().getDocumento());
             asistenciaJSON.put("Ficha", Integer.parseInt((String) FichaCB.getSelectedItem()));
-            asistenciaJSON.put("ClaseFormacion", InstructorClaseFormacion.getText());
+            asistenciaJSON.put("ClaseFormacion", ClaseFormacionCB.getSelectedItem());
             asistenciaJSON.put("Ambiente", AmbienteCB.getSelectedItem().toString());  // Ambiente (por ejemplo: "Aula 101")
 
             // Crear el arreglo de aprendices
@@ -702,7 +713,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
             // Recorrer la tabla `tablaAsis` para obtener los datos de los aprendices
             for (int i = 0; i < tablaAsis.getRowCount(); i++) {
                 String documento = tablaAsis.getValueAt(i, 2).toString();
-                String estadoInasistencia = tablaAsis.getValueAt(i, 6).toString();
+                String estadoInasistencia = tablaAsis.getValueAt(i, 4).toString();
 
                 // Determinar las horas de inasistencia
                 int horasInasistencia;
@@ -797,7 +808,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
         String seleccionPrograma = ProgramaFormacionCB.getSelectedItem().toString();
         // Definir las columnas del modelo
         // Asignar el modelo a la tabla asisTable
-        tablaAsis.setModel(new DefaultTableModel(new String[]{"Nombre", "Tipo de Documento", "Documento", "Programa Formación", "Nivel Formación", "Hora de Ingreso", "Estado de Asistencia"}, 0));
+        tablaAsis.setModel(new DefaultTableModel(new String[]{"Nombre", "Tipo de Documento", "Documento", "Hora de Ingreso", "Estado de Asistencia"}, 0));
         // Si la ficha no es válida, deshabilitar elementos y limpiar la tabla
             desactivarAsis();
 
@@ -841,47 +852,53 @@ public class ExcelGenFrame extends javax.swing.JFrame {
 
     private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
         try {
+            // Instancia del servicio de datos
             DataTables dt = new DataTables();
-            desactivarAsis();
-            tablaAsis.setModel(new DefaultTableModel(new String[]{"Nombre", "Tipo de Documento", "Documento", "Programa Formación", "Nivel Formación", "Hora de Ingreso", "Estado de Asistencia"}, 0));
 
-            if (!FichaCB.getSelectedItem().toString().equals("Seleccionar...")) {
-                // Si la ficha es válida, habilitar los elementos y cargar aprendices
+            // Desactivar la asistencia inicialmente y limpiar tablas
+            desactivarAsis();
+            tablaAsis.setModel(new DefaultTableModel(new String[]{"Nombre", "Tipo de Documento", "Documento", "Hora de Ingreso", "Estado de Asistencia"}, 0));
+
+            // Validar si se selecciona una ficha válida
+            String fichaSeleccionada = FichaCB.getSelectedItem().toString();
+            if (!fichaSeleccionada.equals("Seleccionar...")) {
+                // Activar los campos de asistencia si la ficha es válida
                 activarAsis();
 
                 // Obtener el número de ficha seleccionado
-                Integer numeroFicha = Integer.parseInt(FichaCB.getSelectedItem().toString());
-                // Obtener los aprendices para la ficha seleccionada
-                List<Map<String, Object>> aprendices = dt.obtenerAprendicesPorFicha(numeroFicha);
+                Integer numeroFicha = Integer.parseInt(fichaSeleccionada);
 
-                // Definir las columnas del modelo
+                // Obtener los aprendices asociados a la ficha seleccionada
+                List<AprendizModel> aprendices = dt.obtenerAprendicesPorFicha(numeroFicha);
+
+                // Definir las columnas del modelo para listar aprendices
                 String[] columnas = {"Nombre", "Documento"};
                 DefaultTableModel aprendicesFicha = new DefaultTableModel(columnas, 0);
 
-                // Rellenar el modelo con los datos de los aprendices
-                for (Map<String, Object> aprendiz : aprendices) {
-                    Object[] fila = new Object[] {
-                            aprendiz.get("NombreAprendiz"),
-                            aprendiz.get("Documento"),
+                // Rellenar el modelo con los datos de los aprendices obtenidos
+                for (AprendizModel aprendiz : aprendices) {
+                    Object[] fila = new Object[]{
+                            aprendiz.getNombres() + " " + aprendiz.getApellidos(), // Nombre completo del aprendiz
+                            aprendiz.getDocumento() // Documento del aprendiz
                     };
                     aprendicesFicha.addRow(fila); // Añadir cada fila al modelo
                 }
 
-                // Asignar el modelo a la tabla
+                // Asignar el modelo actualizado a la tabla de aprendices
                 ListarAprendices.setModel(aprendicesFicha);
-            } else {
-                desactivarAsis();
-                // Asignar el modelo a la tabla asisTable
-                tablaAsis.setModel(new DefaultTableModel(new String[]{"Nombre", "Tipo de Documento", "Documento", "Programa Formación", "Nivel Formación", "Hora de Ingreso", "Estado de Asistencia"}, 0));
-                // Limpiar la tabla de aprendices
-                ListarAprendices.setModel(new DefaultTableModel(new String[]{"Nombre", "Documento"}, 0));
 
+            } else {
+                // Si la ficha seleccionada es inválida, desactivar la asistencia y mostrar mensaje
+                desactivarAsis();
+                ListarAprendices.setModel(new DefaultTableModel(new String[]{"Nombre", "Documento"}, 0));
                 JOptionPane.showMessageDialog(this, "Ficha no válida. Por favor, seleccione una ficha válida.");
             }
 
         } catch (NumberFormatException e) {
+            // Capturar errores en la conversión de la ficha
             JOptionPane.showMessageDialog(this, "Por favor seleccione una ficha válida.");
         } catch (Exception e) {
+            // Capturar errores generales y mostrar el mensaje
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al obtener los aprendices: " + e.getMessage());
         }
@@ -891,7 +908,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
                 char caracter = evt.getKeyChar();
 
         // Permitir solo números y la tecla de retroceso
-        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE && caracter != KeyEvent.VK_ENTER) {
             evt.consume();  // Evitar que se ingrese el carácter no válido
             JOptionPane.showMessageDialog(this, "Solo se permiten números.");
         }
@@ -963,6 +980,7 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ActividadCB;
     private javax.swing.JComboBox<String> AmbienteCB;
+    private javax.swing.JComboBox<String> ClaseFormacionCB;
     private javax.swing.JTextField DocumentoAprendiz;
     private javax.swing.JComboBox<String> ExtensionHoraCB;
     private javax.swing.JComboBox<String> FichaCB;
@@ -970,7 +988,6 @@ public class ExcelGenFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> HoraCB;
     private javax.swing.JLabel HoraFin;
     private javax.swing.JLabel HoraInicio;
-    private javax.swing.JLabel InstructorClaseFormacion;
     private javax.swing.JLabel InstructorNombre;
     private javax.swing.JTable ListarAprendices;
     private javax.swing.JComboBox<String> MinutosCB;

@@ -7,7 +7,9 @@ package main.AdminFrames.AdminActionScreens.CreateUserSubPanel;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 import main.util.API_AdminActions.API_Admin_UsersApplications.API_Admin_AprendizApplications;
@@ -893,33 +895,64 @@ public class CreateAprendizSubPanel extends javax.swing.JPanel {
                 errores.append("- La Ficha seleccionada no es válida.\n");
             }
         }
-// Crear el objeto AprendizModel con la fecha convertida a Date
+// Variable para acumular errores de validación
+
+        // 1. Validación de Campos Obligatorios
+        if (RegistrarUsuario.getText().trim().isEmpty()) {
+            errores.append("- El campo de Usuario es obligatorio.\n");
+        }
+        // Aquí incluir las demás validaciones como ya las tienes
+
+        // Mostrar errores si existen
+        if (errores.length() > 0) {
+            JOptionPane.showMessageDialog(this, errores.toString(), "Errores de Validación", JOptionPane.ERROR_MESSAGE);
+            return; // Detener la ejecución para no enviar el formulario
+        }
+
+        // Convertir la fecha de nacimiento
+        try {
+            fechaNacimientoUtil = formatoFecha.parse(FechaHolder.getText().trim());
+            fechaNacimiento = new java.sql.Date(fechaNacimientoUtil.getTime());
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this, "La Fecha de Nacimiento debe tener el formato 'yyyy-MM-dd'.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crear el objeto AprendizModel con la fecha convertida a Date
         AprendizModel aprendiz = new AprendizModel(
-                RegistrarUsuario.getText(),
-                RegistrarPass.getText(),
-                RegistrarDocumento.getText(),
+                RegistrarUsuario.getText().trim(),
+                RegistrarPass.getText().trim(),
+                RegistrarDocumento.getText().trim(),
                 TipoDocCB.getSelectedItem().toString(),
-                RegistrarNombres.getText(),
-                RegistrarApellidos.getText(),
+                RegistrarNombres.getText().trim(),
+                RegistrarApellidos.getText().trim(),
                 fechaNacimiento,  // Pasa el objeto Date aquí
-                RegistrarTelefono.getText(),
-                RegistrarCorreo.getText(),
+                RegistrarTelefono.getText().trim(),
+                RegistrarCorreo.getText().trim(),
                 GeneroCB.getSelectedItem().toString(),
-                ResidenciaHolder.getText(),
-                FichaCB.getSelectedItem() != null ? Integer.parseInt(FichaCB.getSelectedItem().toString()) : null,
-                RegistrarProgramaFormacion.getText(),
-                RegistrarNivelFormacion.getText(),
-                RegistrarJornadaFormacion.getText(),
-                RegistrarArea.getText(),
-                RegistrarSede.getText()
+                ResidenciaHolder.getText().trim(),
+                new ArrayList<>()
         );
 
+        // Obtener las fichas desde el ComboBox
+        List<Integer> fichas = new ArrayList<>();
+        if (FichaCB.getSelectedItem() != null) {
+            try {
+                fichas.add(Integer.parseInt(FichaCB.getSelectedItem().toString()));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "La ficha seleccionada no es válida.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+
+        // Llamar al método para enviar los datos a la API
         API_Admin_AprendizApplications createAprendiz = new API_Admin_AprendizApplications();
-        createAprendiz.CrearAprendiz(aprendiz);
+        createAprendiz.CrearAprendiz(aprendiz, fichas);
+
         JOptionPane.showMessageDialog(null, "Aprendiz registrado exitosamente");
 
+        // Limpiar el formulario
         limpiarFormularioAprendiz();
-
     }//GEN-LAST:event_ConfirmarRegistroUsuarioActionPerformed
 
     private void limpiarFormularioAprendiz() {

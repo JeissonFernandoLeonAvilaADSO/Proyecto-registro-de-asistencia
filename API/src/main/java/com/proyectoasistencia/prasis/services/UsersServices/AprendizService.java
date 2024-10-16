@@ -1,9 +1,12 @@
 package com.proyectoasistencia.prasis.services.UsersServices;
 
 import com.proyectoasistencia.prasis.models.UsersModels.AprendizModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -13,191 +16,192 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
+import java.sql.Date;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AprendizService {
 
     private final JdbcTemplate jdbcTemplate;
     private final BCryptPasswordEncoder passwordEncoder;
-
+    private static final Logger logger = LoggerFactory.getLogger(AprendizService.class);
 
     @Autowired
     public AprendizService(JdbcTemplate jdbcTemplate, BCryptPasswordEncoder passwordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
         this.passwordEncoder = passwordEncoder;
-
     }
 
-    // Obtener un aprendiz por documento
+    /**
+     * Obtener un aprendiz por su documento.
+     *
+     * @param documento Documento del aprendiz a obtener.
+     * @return Objeto AprendizModel correspondiente.
+     */
+    @Transactional(readOnly = true)
     public AprendizModel getAprendiz(String documento) {
-        String consulta = """
-            SELECT us.Usuario AS Usuario,
-                   us.Contraseña AS Contraseña,
-                   pf.Documento AS Documento,
-                   td.TipoDocumento AS TipoDocumento,
-                   pf.Nombres AS Nombres,
-                   pf.Apellidos AS Apellidos,
-                   pf.FecNacimiento AS FecNacimiento,
-                   pf.Telefono AS Telefono,
-                   pf.Correo AS Correo,
-                   ge.TiposGeneros AS TiposGeneros,
-                   CONCAT(dept.nombre_departamento, ' - ', mun.nombre_municipio, ' - ', barrios.nombre_barrio) AS Residencia,
-                   fc.NumeroFicha AS NumeroFicha,
-                   pform.ProgramaFormacion AS ProgramaFormacion,
-                   jf.JornadasFormacion AS JornadasFormacion,
-                   nf.NivelFormacion AS NivelFormacion,
-                   sd.CentroFormacion AS CentroFormacion,
-                   areas.Area AS Area,
-                   pf.Estado AS Estado
-            FROM aprendiz ap
-                INNER JOIN perfilusuario pf ON ap.IDPerfilUsuario = pf.ID
-                INNER JOIN usuario us ON pf.IDUsuario = us.ID
-                INNER JOIN tipodocumento td ON pf.IDTipoDocumento = td.ID
-                INNER JOIN genero ge ON pf.IDGenero = ge.ID
-                INNER JOIN barrios ON pf.IDBarrio = barrios.ID
-                INNER JOIN municipios mun ON barrios.id_municipio = mun.ID
-                INNER JOIN departamentos dept ON mun.id_departamento = dept.ID
-                INNER JOIN fichas fc ON ap.IDFicha = fc.ID
-                INNER JOIN programaformacion pform ON fc.IDProgramaFormacion = pform.ID
-                INNER JOIN jornadaformacion jf ON fc.IDJornadaFormacion = jf.ID
-                INNER JOIN nivelformacion nf ON pform.IDNivelFormacion = nf.ID
-                INNER JOIN sede sd ON pform.IDSede = sd.ID
-                INNER JOIN areas ON pform.IDArea = areas.ID
-            WHERE pf.Documento = ?
-            """;
+        logger.info("Iniciando búsqueda de aprendiz con documento: {}", documento);
 
         try {
-            AprendizModel aprendiz = jdbcTemplate.queryForObject(consulta, new Object[]{documento}, (rs, rowNum) ->
-                    AprendizModel.builder()
-                            .user(rs.getString("Usuario"))
-                            .password(rs.getString("Contraseña"))
-                            .documento(rs.getString("Documento"))
-                            .tipoDocumento(rs.getString("TipoDocumento"))
-                            .nombres(rs.getString("Nombres"))
-                            .apellidos(rs.getString("Apellidos"))
-                            .fechaNacimiento(rs.getDate("FecNacimiento"))
-                            .telefono(rs.getString("Telefono"))
-                            .correo(rs.getString("Correo"))
-                            .genero(rs.getString("TiposGeneros"))
-                            .residencia(rs.getString("Residencia"))
-                            .estado(rs.getString("Estado"))
-                            // No incluimos el estado en el modelo que se retornará al cliente
-                            .ficha(rs.getInt("NumeroFicha"))
-                            .programaFormacion(rs.getString("ProgramaFormacion"))
-                            .jornadaFormacion(rs.getString("JornadasFormacion"))
-                            .nivelFormacion(rs.getString("NivelFormacion"))
-                            .sede(rs.getString("CentroFormacion"))
-                            .area(rs.getString("Area"))
-                            .build());
+            // Paso 1: Obtener el IDPerfilUsuario que coincida con el documento y tenga el rol de aprendiz
+            String sqlGetPerfilUsuarioIds = """
+            SELECT pu.ID
+            FROM perfilusuario pu
+            INNER JOIN rol r ON pu.IDRol = r.ID
+            WHERE pu.Documento = ? AND r.TipoRol = 'Aprendiz'
+        """;
 
+            List<Integer> perfilUsuarioIds = jdbcTemplate.queryForList(sqlGetPerfilUsuarioIds, new Object[]{documento}, Integer.class);
+            logger.debug("PerfilUsuarioIds encontrados para documento {}: {}", documento, perfilUsuarioIds);
 
+            if (perfilUsuarioIds.isEmpty()) {
+                logger.warn("No se encontró ningún perfil de usuario con documento: {}", documento);
+                throw new RuntimeException("No se encontró el perfil de usuario con documento: " + documento);
+            }
+
+            if (perfilUsuarioIds.size() > 1) {
+                logger.error("Se encontraron múltiples perfiles de usuario para el documento: {}. IDs: {}", documento, perfilUsuarioIds);
+                throw new RuntimeException("Se encontraron múltiples perfiles de usuario para el documento: " + documento);
+            }
+
+            Integer aprendizId = perfilUsuarioIds.get(0);
+            logger.info("PerfilUsuarioId seleccionado: {}", aprendizId);
+
+            // Paso 2: Obtener la información básica del aprendiz
+            String sqlGetAprendizBasicInfo = """
+            SELECT
+                u.Usuario AS Usuario,
+                u.Contraseña AS Contraseña,
+                pu.Documento AS Documento,
+                td.TipoDocumento AS TipoDocumento,
+                pu.Nombres AS Nombres,
+                pu.Apellidos AS Apellidos,
+                pu.FecNacimiento AS FecNacimiento,
+                pu.Telefono AS Telefono,
+                pu.Correo AS Correo,
+                g.TiposGeneros AS Genero,
+                CONCAT(d.nombre_departamento, ' - ', m.nombre_municipio, ' - ', b.nombre_barrio) AS Residencia,
+                pu.Estado AS Estado
+            FROM
+                perfilusuario pu
+                    INNER JOIN usuario u ON pu.IDUsuario = u.ID
+                    INNER JOIN tipodocumento td ON pu.IDTipoDocumento = td.ID
+                    INNER JOIN genero g ON pu.IDGenero = g.ID
+                    INNER JOIN barrios b ON pu.IDBarrio = b.ID
+                    INNER JOIN municipios m ON b.id_municipio = m.ID
+                    INNER JOIN departamentos d ON m.id_departamento = d.ID
+            WHERE
+                pu.ID = ?
+            LIMIT 1
+        """;
+
+            AprendizModel aprendiz = jdbcTemplate.queryForObject(sqlGetAprendizBasicInfo, new Object[]{aprendizId}, (rs, rowNum) -> {
+                return AprendizModel.builder()
+                        .user(rs.getString("Usuario"))
+                        .password(rs.getString("Contraseña"))
+                        .documento(rs.getString("Documento"))
+                        .tipoDocumento(rs.getString("TipoDocumento"))
+                        .nombres(rs.getString("Nombres"))
+                        .apellidos(rs.getString("Apellidos"))
+                        .fechaNacimiento(rs.getDate("FecNacimiento"))
+                        .telefono(rs.getString("Telefono"))
+                        .correo(rs.getString("Correo"))
+                        .genero(rs.getString("Genero"))
+                        .residencia(rs.getString("Residencia"))
+                        .estado(rs.getString("Estado"))
+                        .vinculaciones(new ArrayList<>()) // Inicializar la lista de vinculaciones
+                        .build();
+            });
+
+            if (aprendiz == null) {
+                logger.warn("No se pudo obtener la información básica del aprendiz con IDPerfilUsuario: {}", aprendizId);
+                throw new RuntimeException("No se pudo obtener la información del aprendiz.");
+            }
+
+            logger.info("Información básica del aprendiz obtenida: {}", aprendiz);
+
+            // Paso 3: Obtener las vinculaciones asociadas al aprendiz usando la consulta proporcionada
+            String sqlGetVinculaciones = """
+            SELECT
+                cf.NombreClase AS ClaseFormacion,
+                f.NumeroFicha AS Ficha,
+                pf.ProgramaFormacion AS ProgramaFormacion,
+                jf.JornadasFormacion AS JornadaFormacion,
+                nf.NivelFormacion AS NivelFormacion,
+                s.CentroFormacion AS Sede,
+                a.Area AS Area,
+                CONCAT(u_instructor.Nombres, ' ', u_instructor.Apellidos) AS NombreInstructor
+            FROM
+                aprendiz_claseinstructorficha acf
+                    INNER JOIN claseformacion_instructor_ficha cif ON acf.IDClaseInstructorFIcha = cif.ID
+                    INNER JOIN claseformacion cf ON cif.IDClaseFormacion = cf.ID
+                    INNER JOIN fichas f ON cif.IDFicha = f.ID
+                    INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
+                    INNER JOIN jornadaformacion jf ON cf.IDJornadaFormacion = jf.ID
+                    INNER JOIN nivelformacion nf ON pf.IDNivelFormacion = nf.ID
+                    INNER JOIN sede s ON pf.IDSede = s.ID
+                    INNER JOIN areas a ON pf.IDArea = a.ID
+                    INNER JOIN perfilusuario u_instructor ON cif.IDPerfilUsuario = u_instructor.ID
+            WHERE
+                acf.IDPerfilUsuario = ?
+        """;
+
+            jdbcTemplate.query(sqlGetVinculaciones, new Object[]{aprendizId}, (rs) -> {
+                Map<String, Object> vinculacion = new HashMap<>();
+                vinculacion.put("ClaseFormacion", rs.getString("ClaseFormacion"));
+                vinculacion.put("Ficha", rs.getInt("Ficha"));
+                vinculacion.put("ProgramaFormacion", rs.getString("ProgramaFormacion"));
+                vinculacion.put("JornadaFormacion", rs.getString("JornadaFormacion"));
+                vinculacion.put("NivelFormacion", rs.getString("NivelFormacion"));
+                vinculacion.put("Sede", rs.getString("Sede"));
+                vinculacion.put("Area", rs.getString("Area"));
+                vinculacion.put("NombreInstructor", rs.getString("NombreInstructor"));
+                aprendiz.getVinculaciones().add(vinculacion);
+            });
+
+            logger.info("Información completa del aprendiz obtenida exitosamente: {}", aprendiz);
             return aprendiz;
 
-        } catch (EmptyResultDataAccessException e) {
-            // Manejar el caso en que no se encuentra el aprendiz
-            return null;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            logger.error("Error de tamaño incorrecto en los resultados: ", e);
+            throw new RuntimeException("Error en la búsqueda del aprendiz.");
         } catch (Exception e) {
-            e.printStackTrace();
-            return null; // Maneja la excepción adecuadamente
+            logger.error("Error al obtener el aprendiz: ", e);
+            throw new RuntimeException("Error al obtener el aprendiz.");
         }
     }
-    // Crear un nuevo aprendiz
+
+    /**
+     * Crear un nuevo aprendiz.
+     *
+     * @param aprendiz Objeto AprendizModel a crear.
+     * @param fichas Lista de números de fichas a las que se asociará el aprendiz.
+     * @return El objeto AprendizModel creado con sus vinculaciones.
+     */
     @Transactional(rollbackFor = Exception.class)
-    public AprendizModel createAprendiz(AprendizModel aprendiz) {
-        // Validación de datos de entrada
-        System.out.println("Iniciando método createAprendiz");
-
-        if (aprendiz == null) {
-            throw new IllegalArgumentException("El objeto aprendiz no debe ser nulo.");
-        }
-
-        // Imprimir todos los campos del objeto aprendiz para verificar que no sean nulos
-        System.out.println("Datos del aprendiz recibidos:");
-        System.out.println("Usuario: " + aprendiz.getUser());
-        System.out.println("Contraseña: " + aprendiz.getPassword());
-        System.out.println("Documento: " + aprendiz.getDocumento());
-        System.out.println("TipoDocumento: " + aprendiz.getTipoDocumento());
-        System.out.println("Nombres: " + aprendiz.getNombres());
-        System.out.println("Apellidos: " + aprendiz.getApellidos());
-        System.out.println("FechaNacimiento: " + aprendiz.getFechaNacimiento());
-        System.out.println("Teléfono: " + aprendiz.getTelefono());
-        System.out.println("Correo: " + aprendiz.getCorreo());
-        System.out.println("Género: " + aprendiz.getGenero());
-        System.out.println("Residencia: " + aprendiz.getResidencia());
-        System.out.println("Ficha: " + aprendiz.getFicha());
-        // Añadir más campos si es necesario
-
-        // Validar que los datos requeridos no sean nulos o vacíos
-        if (aprendiz == null) {
-            throw new IllegalArgumentException("El objeto aprendiz no debe ser nulo.");
-        }
-        if (aprendiz.getUser() == null || aprendiz.getUser().isEmpty()) {
-            throw new IllegalArgumentException("El nombre de usuario es requerido.");
-        }
-        if (aprendiz.getPassword() == null || aprendiz.getPassword().isEmpty()) {
-            throw new IllegalArgumentException("La contraseña es requerida.");
-        }
-        if (aprendiz.getDocumento() == null || aprendiz.getDocumento().isEmpty()) {
-            throw new IllegalArgumentException("El documento es requerido.");
-        }
-        if (aprendiz.getTipoDocumento() == null || aprendiz.getTipoDocumento().isEmpty()) {
-            throw new IllegalArgumentException("El tipo de documento es requerido.");
-        }
-        if (aprendiz.getNombres() == null || aprendiz.getNombres().isEmpty()) {
-            throw new IllegalArgumentException("El nombre es requerido.");
-        }
-        if (aprendiz.getApellidos() == null || aprendiz.getApellidos().isEmpty()) {
-            throw new IllegalArgumentException("El apellido es requerido.");
-        }
-        if (aprendiz.getFechaNacimiento() == null) {
-            throw new IllegalArgumentException("La fecha de nacimiento es requerida.");
-        }
-        if (aprendiz.getTelefono() == null || aprendiz.getTelefono().isEmpty()) {
-            throw new IllegalArgumentException("El teléfono es requerido.");
-        }
-        if (aprendiz.getCorreo() == null || aprendiz.getCorreo().isEmpty()) {
-            throw new IllegalArgumentException("El correo es requerido.");
-        }
-        if (aprendiz.getGenero() == null || aprendiz.getGenero().isEmpty()) {
-            throw new IllegalArgumentException("El género es requerido.");
-        }
-        if (aprendiz.getResidencia() == null || aprendiz.getResidencia().isEmpty()) {
-            throw new IllegalArgumentException("La residencia es requerida.");
-        }
-        if (aprendiz.getFicha() == null) {
-            throw new IllegalArgumentException("La ficha es requerida.");
-        }
+    public AprendizModel createAprendiz(AprendizModel aprendiz, List<Integer> fichas) {
+        logger.info("Iniciando creación de aprendiz con documento: {}", aprendiz.getDocumento());
 
         try {
-            // Verificar si el usuario o documento ya existen
-            System.out.println("Verificando si el usuario o documento ya existen en la base de datos.");
-
-            Integer countUsuario = jdbcTemplate.queryForObject(
-                    "SELECT COUNT(*) FROM usuario WHERE Usuario = ?",
-                    new Object[]{aprendiz.getUser()},
-                    Integer.class
-            );
-            System.out.println("Cantidad de usuarios con el mismo nombre: " + countUsuario);
+            // Paso 1: Verificar si el usuario ya existe
+            String sqlCheckUsuario = "SELECT COUNT(*) FROM usuario WHERE Usuario = ?";
+            Integer countUsuario = jdbcTemplate.queryForObject(sqlCheckUsuario, new Object[]{aprendiz.getUser()}, Integer.class);
             if (countUsuario != null && countUsuario > 0) {
-                throw new IllegalArgumentException("El nombre de usuario ya existe: " + aprendiz.getUser());
+                logger.warn("El nombre de usuario ya existe: {}", aprendiz.getUser());
+                throw new RuntimeException("El nombre de usuario ya existe: " + aprendiz.getUser());
             }
 
-            Integer countDocumento = jdbcTemplate.queryForObject(
-                    "SELECT COUNT(*) FROM perfilusuario WHERE Documento = ?",
-                    new Object[]{aprendiz.getDocumento()},
-                    Integer.class
-            );
-            System.out.println("Cantidad de documentos iguales: " + countDocumento);
+            // Paso 2: Verificar si el documento ya está registrado
+            String sqlCheckDocumento = "SELECT COUNT(*) FROM perfilusuario WHERE Documento = ?";
+            Integer countDocumento = jdbcTemplate.queryForObject(sqlCheckDocumento, new Object[]{aprendiz.getDocumento()}, Integer.class);
             if (countDocumento != null && countDocumento > 0) {
-                throw new IllegalArgumentException("El documento ya está registrado: " + aprendiz.getDocumento());
+                logger.warn("El documento ya está registrado: {}", aprendiz.getDocumento());
+                throw new RuntimeException("El documento ya está registrado: " + aprendiz.getDocumento());
             }
 
-            // Paso 1: Insertar en la tabla `usuario` y obtener el ID
-            System.out.println("Insertando en la tabla usuario.");
+            // Paso 3: Insertar en la tabla `usuario` y obtener el ID
             String sqlInsertUsuario = "INSERT INTO usuario (Usuario, Contraseña) VALUES (?, ?)";
             KeyHolder keyHolderUsuario = new GeneratedKeyHolder();
 
@@ -208,77 +212,71 @@ public class AprendizService {
                 return ps;
             }, keyHolderUsuario);
 
-            System.out.println("Filas afectadas en la inserción de usuario: " + rowsAffectedUsuario);
-
             if (rowsAffectedUsuario == 0) {
+                logger.error("La inserción en la tabla usuario no afectó a ninguna fila.");
                 throw new RuntimeException("La inserción en la tabla usuario no afectó a ninguna fila.");
             }
 
             Number generatedUserId = keyHolderUsuario.getKey();
             if (generatedUserId == null) {
+                logger.error("No se generó una clave primaria para el usuario.");
                 throw new RuntimeException("No se generó una clave primaria para el usuario.");
             }
 
             int usuarioId = generatedUserId.intValue();
-            System.out.println("ID de usuario generado: " + usuarioId);
+            logger.debug("Usuario insertado con ID: {}", usuarioId);
 
-            // Paso 2: Obtener IDs relacionados
-            System.out.println("Obteniendo IDs relacionados.");
-            Integer idTipoDocumento = jdbcTemplate.queryForObject(
-                    "SELECT ID FROM tipodocumento WHERE TipoDocumento = ?",
-                    new Object[]{aprendiz.getTipoDocumento()},
-                    Integer.class
-            );
-            System.out.println("ID TipoDocumento: " + idTipoDocumento);
+            // Paso 4: Obtener el ID de tipo de documento
+            String sqlGetTipoDocumento = "SELECT ID FROM tipodocumento WHERE TipoDocumento = ?";
+            Integer idTipoDocumento = jdbcTemplate.queryForObject(sqlGetTipoDocumento, new Object[]{aprendiz.getTipoDocumento()}, Integer.class);
             if (idTipoDocumento == null) {
-                throw new IllegalArgumentException("Tipo de documento inválido: " + aprendiz.getTipoDocumento());
+                logger.error("Tipo de documento inválido: {}", aprendiz.getTipoDocumento());
+                throw new RuntimeException("Tipo de documento inválido: " + aprendiz.getTipoDocumento());
             }
 
-            Integer idGenero = jdbcTemplate.queryForObject(
-                    "SELECT ID FROM genero WHERE TiposGeneros = ?",
-                    new Object[]{aprendiz.getGenero()},
-                    Integer.class
-            );
-            System.out.println("ID Género: " + idGenero);
+            // Paso 5: Obtener el ID de género
+            String sqlGetGenero = "SELECT ID FROM genero WHERE TiposGeneros = ?";
+            Integer idGenero = jdbcTemplate.queryForObject(sqlGetGenero, new Object[]{aprendiz.getGenero()}, Integer.class);
             if (idGenero == null) {
-                throw new IllegalArgumentException("Género inválido: " + aprendiz.getGenero());
+                logger.error("Género inválido: {}", aprendiz.getGenero());
+                throw new RuntimeException("Género inválido: " + aprendiz.getGenero());
             }
 
+            // Paso 6: Extraer el nombre del barrio de la residencia
             String residencia = aprendiz.getResidencia();
             String[] residenciaParts = residencia.split(" - ");
-            if (residenciaParts.length < 3) {
-                throw new IllegalArgumentException("La residencia debe tener el formato 'Departamento - Municipio - Barrio'");
+            if (residenciaParts.length != 3) {
+                logger.error("La residencia debe tener el formato 'Departamento - Municipio - Barrio'.");
+                throw new RuntimeException("La residencia debe tener el formato 'Departamento - Municipio - Barrio'.");
             }
             String nombreBarrio = residenciaParts[2].trim();
-            System.out.println("Nombre del barrio: " + nombreBarrio);
 
-            Integer idBarrio = jdbcTemplate.queryForObject(
-                    "SELECT ID FROM barrios WHERE nombre_barrio = ?",
-                    new Object[]{nombreBarrio},
-                    Integer.class
-            );
-            System.out.println("ID Barrio: " + idBarrio);
+            // Paso 7: Obtener el ID del barrio
+            String sqlGetBarrio = "SELECT ID FROM barrios WHERE nombre_barrio = ?";
+            Integer idBarrio = jdbcTemplate.queryForObject(sqlGetBarrio, new Object[]{nombreBarrio}, Integer.class);
             if (idBarrio == null) {
-                throw new IllegalArgumentException("Barrio inválido: " + nombreBarrio);
+                logger.error("Barrio inválido: {}", nombreBarrio);
+                throw new RuntimeException("Barrio inválido: " + nombreBarrio);
             }
 
-            // Paso 3: Insertar en la tabla `perfilusuario` y obtener el ID
-            System.out.println("Insertando en la tabla perfilusuario.");
+            // Paso 8: Insertar en la tabla `perfilusuario` y asignar el rol de aprendiz
             String sqlInsertPerfilUsuario = """
-                INSERT INTO perfilusuario (
-                    IDUsuario,
-                    Documento,
-                    IDTipoDocumento,
-                    Nombres,
-                    Apellidos,
-                    FecNacimiento,
-                    Telefono,
-                    Correo,
-                    IDGenero,
-                    IDRol,
-                    IDBarrio)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """;
+            INSERT INTO perfilusuario (
+                IDUsuario,
+                Documento,
+                IDTipoDocumento,
+                Nombres,
+                Apellidos,
+                FecNacimiento,
+                Telefono,
+                Correo,
+                IDGenero,
+                IDRol,
+                IDBarrio,
+                Estado
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT ID FROM rol WHERE TipoRol = 'Aprendiz'), ?, 'Habilitado')
+        """;
+
             KeyHolder keyHolderPerfilUsuario = new GeneratedKeyHolder();
 
             int rowsAffectedPerfilUsuario = jdbcTemplate.update(connection -> {
@@ -292,259 +290,186 @@ public class AprendizService {
                 ps.setString(7, aprendiz.getTelefono());
                 ps.setString(8, aprendiz.getCorreo());
                 ps.setInt(9, idGenero);
-                ps.setInt(10, 2);
-                ps.setInt(11, idBarrio);
+                ps.setInt(10, idBarrio);
                 return ps;
             }, keyHolderPerfilUsuario);
 
-            System.out.println("Filas afectadas en la inserción de perfilusuario: " + rowsAffectedPerfilUsuario);
-
             if (rowsAffectedPerfilUsuario == 0) {
+                logger.error("La inserción en la tabla perfilusuario no afectó a ninguna fila.");
                 throw new RuntimeException("La inserción en la tabla perfilusuario no afectó a ninguna fila.");
             }
 
             Number generatedPerfilUsuarioId = keyHolderPerfilUsuario.getKey();
             if (generatedPerfilUsuarioId == null) {
+                logger.error("No se generó una clave primaria para perfilusuario.");
                 throw new RuntimeException("No se generó una clave primaria para perfilusuario.");
             }
 
             int perfilUsuarioId = generatedPerfilUsuarioId.intValue();
-            System.out.println("ID de perfilUsuario generado: " + perfilUsuarioId);
+            logger.debug("PerfilUsuario insertado con ID: {}", perfilUsuarioId);
 
-            // Paso 4: Obtener ID de la ficha
-            System.out.println("Obteniendo ID de la ficha.");
-            Integer idFicha = jdbcTemplate.queryForObject(
-                    "SELECT ID FROM fichas WHERE NumeroFicha = ?",
-                    new Object[]{aprendiz.getFicha()},
-                    Integer.class
-            );
-            System.out.println("ID Ficha: " + idFicha);
-            if (idFicha == null) {
-                throw new IllegalArgumentException("Ficha inválida: " + aprendiz.getFicha());
+            // Paso 9: Asociar el aprendiz con las vinculaciones de las fichas proporcionadas
+            if (fichas == null || fichas.isEmpty()) {
+                logger.error("Debe proporcionar al menos una ficha para asociar al aprendiz.");
+                throw new RuntimeException("Debe proporcionar al menos una ficha para asociar al aprendiz.");
             }
 
-            // Paso 5: Insertar en la tabla `aprendiz`
-            System.out.println("Insertando en la tabla aprendiz.");
-            String sqlInsertAprendiz = "INSERT INTO aprendiz (IDPerfilUsuario, IDFicha) VALUES (?, ?)";
-            int rowsAffectedAprendiz = jdbcTemplate.update(sqlInsertAprendiz, perfilUsuarioId, idFicha);
-            System.out.println("Filas afectadas en la inserción de aprendiz: " + rowsAffectedAprendiz);
+            for (Integer fichaNumero : fichas) {
+                logger.debug("Procesando ficha: {}", fichaNumero);
 
-            if (rowsAffectedAprendiz == 0) {
-                throw new RuntimeException("La inserción en la tabla aprendiz no afectó a ninguna fila.");
+                // Obtener el ID de la ficha
+                String sqlGetFicha = "SELECT ID FROM fichas WHERE NumeroFicha = ?";
+                Integer idFicha = jdbcTemplate.queryForObject(sqlGetFicha, new Object[]{fichaNumero}, Integer.class);
+                if (idFicha == null) {
+                    logger.error("Ficha inválida: {}", fichaNumero);
+                    throw new RuntimeException("Ficha inválida: " + fichaNumero);
+                }
+
+                // Obtener todos los IDs de claseformacion_instructor_ficha para la ficha
+                String sqlGetClaseInstructorFichaIds = "SELECT ID FROM claseformacion_instructor_ficha WHERE IDFicha = ?";
+                List<Integer> claseInstructorFichaIds = jdbcTemplate.queryForList(sqlGetClaseInstructorFichaIds, new Object[]{idFicha}, Integer.class);
+                logger.debug("claseInstructorFichaIds obtenidos para ficha {}: {}", fichaNumero, claseInstructorFichaIds);
+
+                if (claseInstructorFichaIds.isEmpty()) {
+                    logger.warn("No se encontraron asociaciones en 'claseformacion_instructor_ficha' para la ficha: {}", fichaNumero);
+                    throw new RuntimeException("No se encontraron asociaciones en 'claseformacion_instructor_ficha' para la ficha: " + fichaNumero);
+                }
+
+                // Insertar en la tabla `aprendiz_claseinstructorficha` todas las asociaciones
+                String sqlInsertAprendizClaseInstructorFicha = "INSERT INTO aprendiz_claseinstructorficha (IDPerfilUsuario, IDClaseInstructorFIcha) VALUES (?, ?)";
+
+                for (Integer claseInstructorFichaId : claseInstructorFichaIds) {
+                    jdbcTemplate.update(sqlInsertAprendizClaseInstructorFicha, perfilUsuarioId, claseInstructorFichaId);
+                    logger.debug("Relación aprendiz-claseinstructorficha insertada: PerfilUsuarioID={}, ClaseInstructorFichaID={}", perfilUsuarioId, claseInstructorFichaId);
+                }
             }
 
+            // Paso 10: Obtener las vinculaciones asociadas al aprendiz para retornarlas en el modelo
+            String sqlGetVinculaciones = """
+                                    SELECT
+                                        cf.NombreClase AS ClaseFormacion,
+                                        f.NumeroFicha AS Ficha,
+                                        pf.ProgramaFormacion AS ProgramaFormacion,
+                                        jf.JornadasFormacion AS JornadaFormacion,
+                                        nf.NivelFormacion AS NivelFormacion,
+                                        s.CentroFormacion AS Sede,
+                                        a.Area AS Area,
+                                        CONCAT(u_instructor.Nombres, ' ', u_instructor.Apellidos) AS NombreInstructor
+                                    FROM
+                                        aprendiz_claseinstructorficha acf
+                                            INNER JOIN claseformacion_instructor_ficha cif ON acf.IDClaseInstructorFIcha = cif.ID
+                                            INNER JOIN claseformacion cf ON cif.IDClaseFormacion = cf.ID
+                                            INNER JOIN fichas f ON cif.IDFicha = f.ID
+                                            INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
+                                            INNER JOIN jornadaformacion jf ON cf.IDJornadaFormacion = jf.ID
+                                            INNER JOIN nivelformacion nf ON pf.IDNivelFormacion = nf.ID
+                                            INNER JOIN sede s ON pf.IDSede = s.ID
+                                            INNER JOIN areas a ON pf.IDArea = a.ID
+                                            INNER JOIN perfilusuario u_instructor ON cif.IDPerfilUsuario = u_instructor.ID
+                                    WHERE
+                                        acf.IDPerfilUsuario = ?""";
 
-            System.out.println("Proceso completado exitosamente.");
+            jdbcTemplate.query(sqlGetVinculaciones, new Object[]{perfilUsuarioId}, (rs) -> {
+                Map<String, Object> vinculacion = new HashMap<>();
+                vinculacion.put("ClaseFormacion", rs.getString("ClaseFormacion"));
+                vinculacion.put("Ficha", rs.getInt("Ficha"));
+                vinculacion.put("ProgramaFormacion", rs.getString("ProgramaFormacion"));
+                vinculacion.put("JornadaFormacion", rs.getString("JornadaFormacion"));
+                vinculacion.put("NivelFormacion", rs.getString("NivelFormacion"));
+                vinculacion.put("Sede", rs.getString("Sede"));
+                vinculacion.put("Area", rs.getString("Area"));
+                vinculacion.put("NombreInstructor", rs.getString("NombreInstructor"));
+                logger.info("Vinculacion: {}", vinculacion);
+                aprendiz.getVinculaciones().add(vinculacion);
+            });
+
+            logger.info("Aprendiz creado exitosamente con documento: {}", aprendiz.getDocumento());
             return aprendiz;
 
         } catch (DataAccessException e) {
-            e.printStackTrace();
+            logger.error("Error al acceder a la base de datos: {}", e.getMessage());
             throw new RuntimeException("Error al acceder a la base de datos: " + e.getMessage(), e);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error al crear el aprendiz: {}", e.getMessage());
             throw new RuntimeException("Error al crear el aprendiz: " + e.getMessage(), e);
         }
     }
 
-
-
-    // Actualizar un aprendiz existente
+    /**
+     * Actualizar un aprendiz existente.
+     *
+     * @param documento Documento actual del aprendiz a actualizar.
+     * @param aprendiz  Objeto AprendizModel con los datos actualizados.
+     * @return El objeto AprendizModel actualizado con sus vinculaciones.
+     */
     @Transactional(rollbackFor = Exception.class)
-    public AprendizModel updateAprendiz(String documentoActual, AprendizModel aprendiz) {
-        // Validación de datos de entrada
-        System.out.println("Iniciando método updateAprendiz");
-
-        if (aprendiz == null) {
-            throw new IllegalArgumentException("El objeto aprendiz no debe ser nulo.");
-        }
-
-        // Imprimir todos los campos del objeto aprendiz para verificar que no sean nulos
-        System.out.println("Datos del aprendiz recibidos:");
-        System.out.println("Usuario: " + aprendiz.getUser());
-        System.out.println("Contraseña: " + aprendiz.getPassword());
-        System.out.println("Documento: " + aprendiz.getDocumento());
-        System.out.println("TipoDocumento: " + aprendiz.getTipoDocumento());
-        System.out.println("Nombres: " + aprendiz.getNombres());
-        System.out.println("Apellidos: " + aprendiz.getApellidos());
-        System.out.println("FechaNacimiento: " + aprendiz.getFechaNacimiento());
-        System.out.println("Teléfono: " + aprendiz.getTelefono());
-        System.out.println("Correo: " + aprendiz.getCorreo());
-        System.out.println("Género: " + aprendiz.getGenero());
-        System.out.println("Residencia: " + aprendiz.getResidencia());
-        System.out.println("Ficha: " + aprendiz.getFicha());
-
-        // Validar que los datos requeridos no sean nulos o vacíos
-        if (aprendiz.getUser() == null || aprendiz.getUser().isEmpty()) {
-            throw new IllegalArgumentException("El nombre de usuario es requerido.");
-        }
-        if (aprendiz.getPassword() == null || aprendiz.getPassword().isEmpty()) {
-            throw new IllegalArgumentException("La contraseña es requerida.");
-        }
-        if (aprendiz.getDocumento() == null || aprendiz.getDocumento().isEmpty()) {
-            throw new IllegalArgumentException("El documento es requerido.");
-        }
-        if (aprendiz.getTipoDocumento() == null || aprendiz.getTipoDocumento().isEmpty()) {
-            throw new IllegalArgumentException("El tipo de documento es requerido.");
-        }
-        if (aprendiz.getNombres() == null || aprendiz.getNombres().isEmpty()) {
-            throw new IllegalArgumentException("El nombre es requerido.");
-        }
-        if (aprendiz.getApellidos() == null || aprendiz.getApellidos().isEmpty()) {
-            throw new IllegalArgumentException("El apellido es requerido.");
-        }
-        if (aprendiz.getFechaNacimiento() == null) {
-            throw new IllegalArgumentException("La fecha de nacimiento es requerida.");
-        }
-        if (aprendiz.getTelefono() == null || aprendiz.getTelefono().isEmpty()) {
-            throw new IllegalArgumentException("El teléfono es requerido.");
-        }
-        if (aprendiz.getCorreo() == null || aprendiz.getCorreo().isEmpty()) {
-            throw new IllegalArgumentException("El correo es requerido.");
-        }
-        if (aprendiz.getGenero() == null || aprendiz.getGenero().isEmpty()) {
-            throw new IllegalArgumentException("El género es requerido.");
-        }
-        if (aprendiz.getResidencia() == null || aprendiz.getResidencia().isEmpty()) {
-            throw new IllegalArgumentException("La residencia es requerida.");
-        }
-        if (aprendiz.getFicha() == null) {
-            throw new IllegalArgumentException("La ficha es requerida.");
-        }
+    public AprendizModel updateAprendiz(String documento, AprendizModel aprendiz) {
+        logger.info("Iniciando actualización de aprendiz con documento: {}", documento);
 
         try {
-            // Verificar si el aprendiz existe
-            System.out.println("Verificando si el aprendiz existe en la base de datos.");
+            // Paso 1: Obtener el ID del perfil de usuario basado en el documento y rol 'Aprendiz'
+            String sqlGetPerfilUsuarioId = "SELECT ID FROM perfilusuario WHERE Documento = ? AND IDRol = (SELECT ID FROM rol WHERE TipoRol = 'Aprendiz')";
+            Integer perfilUsuarioId = jdbcTemplate.queryForObject(sqlGetPerfilUsuarioId, new Object[]{documento}, Integer.class);
 
-            Integer countAprendiz = jdbcTemplate.queryForObject(
-                    "SELECT COUNT(*) FROM perfilusuario pu INNER JOIN rol r ON pu.IDRol = r.ID WHERE pu.Documento = ? AND r.TipoRol = 'aprendiz'",
-                    new Object[]{documentoActual},
-                    Integer.class
-            );
-            System.out.println("Cantidad de aprendices con el documento actual: " + countAprendiz);
-            if (countAprendiz == null || countAprendiz == 0) {
-                throw new IllegalArgumentException("No se encontró un aprendiz con el documento: " + documentoActual);
+            if (perfilUsuarioId == null) {
+                logger.warn("No se encontró el perfil de usuario con documento: {}", documento);
+                throw new RuntimeException("No se encontró el perfil de usuario con documento: " + documento);
             }
 
-            // Verificar si el nuevo nombre de usuario o documento ya existen en otro usuario
-            System.out.println("Verificando si el nuevo nombre de usuario o documento ya existen en otro usuario.");
+            // Paso 2: Obtener el IDUsuario asociado al perfil
+            String sqlGetUsuarioId = "SELECT IDUsuario FROM perfilusuario WHERE ID = ?";
+            Integer usuarioId = jdbcTemplate.queryForObject(sqlGetUsuarioId, new Object[]{perfilUsuarioId}, Integer.class);
 
-            Integer countUsuario = jdbcTemplate.queryForObject(
-                    "SELECT COUNT(*) FROM usuario u INNER JOIN perfilusuario pu ON u.ID = pu.IDUsuario WHERE u.Usuario = ? AND pu.Documento <> ?",
-                    new Object[]{aprendiz.getUser(), documentoActual},
-                    Integer.class
-            );
-            System.out.println("Cantidad de usuarios con el mismo nombre de usuario: " + countUsuario);
-            if (countUsuario != null && countUsuario > 0) {
-                throw new IllegalArgumentException("El nombre de usuario ya existe: " + aprendiz.getUser());
+            if (usuarioId == null) {
+                logger.warn("No se encontró el usuario asociado al perfil de usuario con ID: {}", perfilUsuarioId);
+                throw new RuntimeException("No se encontró el usuario asociado al perfil de usuario con ID: " + perfilUsuarioId);
             }
 
-            Integer countDocumento = jdbcTemplate.queryForObject(
-                    "SELECT COUNT(*) FROM perfilusuario WHERE Documento = ? AND Documento <> ?",
-                    new Object[]{aprendiz.getDocumento(), documentoActual},
-                    Integer.class
-            );
-            System.out.println("Cantidad de documentos iguales: " + countDocumento);
-            if (countDocumento != null && countDocumento > 0) {
-                throw new IllegalArgumentException("El documento ya está registrado: " + aprendiz.getDocumento());
-            }
+            // Paso 3: Obtener los IDs necesarios para actualizar el perfil de usuario
+            // Obtener el ID del tipo de documento
+            String sqlGetTipoDocumento = "SELECT ID FROM tipodocumento WHERE TipoDocumento = ?";
+            Integer idTipoDocumento = jdbcTemplate.queryForObject(sqlGetTipoDocumento, new Object[]{aprendiz.getTipoDocumento()}, Integer.class);
 
-            // Obtener IDs relacionados
-            System.out.println("Obteniendo IDs relacionados.");
-
-            // Obtener IDPerfilUsuario y IDUsuario
-            String sqlGetIDs = """
-            SELECT pu.ID AS IDPerfilUsuario, u.ID AS IDUsuario
-            FROM perfilusuario pu
-            INNER JOIN usuario u ON pu.IDUsuario = u.ID
-            WHERE pu.Documento = ?
-        """;
-            Map<String, Object> idsMap = jdbcTemplate.queryForMap(sqlGetIDs, documentoActual);
-
-            int perfilUsuarioId = (int) idsMap.get("IDPerfilUsuario");
-            int usuarioId = (int) idsMap.get("IDUsuario");
-
-            System.out.println("IDPerfilUsuario: " + perfilUsuarioId);
-            System.out.println("IDUsuario: " + usuarioId);
-
-            Integer idTipoDocumento = jdbcTemplate.queryForObject(
-                    "SELECT ID FROM tipodocumento WHERE TipoDocumento = ?",
-                    new Object[]{aprendiz.getTipoDocumento()},
-                    Integer.class
-            );
-            System.out.println("ID TipoDocumento: " + idTipoDocumento);
             if (idTipoDocumento == null) {
-                throw new IllegalArgumentException("Tipo de documento inválido: " + aprendiz.getTipoDocumento());
+                logger.warn("Tipo de documento inválido: {}", aprendiz.getTipoDocumento());
+                throw new RuntimeException("Tipo de documento inválido: " + aprendiz.getTipoDocumento());
             }
 
-            Integer idGenero = jdbcTemplate.queryForObject(
-                    "SELECT ID FROM genero WHERE TiposGeneros = ?",
-                    new Object[]{aprendiz.getGenero()},
-                    Integer.class
-            );
-            System.out.println("ID Género: " + idGenero);
+            // Obtener el ID del género
+            String sqlGetGenero = "SELECT ID FROM genero WHERE TiposGeneros = ?";
+            Integer idGenero = jdbcTemplate.queryForObject(sqlGetGenero, new Object[]{aprendiz.getGenero()}, Integer.class);
+
             if (idGenero == null) {
-                throw new IllegalArgumentException("Género inválido: " + aprendiz.getGenero());
+                logger.warn("Género inválido: {}", aprendiz.getGenero());
+                throw new RuntimeException("Género inválido: " + aprendiz.getGenero());
             }
 
-            String residencia = aprendiz.getResidencia();
-            String[] residenciaParts = residencia.split(" - ");
-            if (residenciaParts.length < 3) {
-                throw new IllegalArgumentException("La residencia debe tener el formato 'Departamento - Municipio - Barrio'");
+            // Extraer el nombre del barrio de la residencia y obtener su ID
+            String[] residenciaParts = aprendiz.getResidencia().split(" - ");
+            if (residenciaParts.length != 3) {
+                logger.error("La residencia debe tener el formato 'Departamento - Municipio - Barrio'.");
+                throw new RuntimeException("La residencia debe tener el formato 'Departamento - Municipio - Barrio'.");
             }
             String nombreBarrio = residenciaParts[2].trim();
-            System.out.println("Nombre del barrio: " + nombreBarrio);
 
-            Integer idBarrio = jdbcTemplate.queryForObject(
-                    "SELECT ID FROM barrios WHERE nombre_barrio = ?",
-                    new Object[]{nombreBarrio},
-                    Integer.class
-            );
-            System.out.println("ID Barrio: " + idBarrio);
+            String sqlGetBarrio = "SELECT ID FROM barrios WHERE nombre_barrio = ?";
+            Integer idBarrio = jdbcTemplate.queryForObject(sqlGetBarrio, new Object[]{nombreBarrio}, Integer.class);
+
             if (idBarrio == null) {
-                throw new IllegalArgumentException("Barrio inválido: " + nombreBarrio);
+                logger.warn("Barrio inválido: {}", nombreBarrio);
+                throw new RuntimeException("Barrio inválido: " + nombreBarrio);
             }
 
-            // Obtener ID de la ficha
-            System.out.println("Obteniendo ID de la ficha.");
-            Integer idFicha = jdbcTemplate.queryForObject(
-                    "SELECT ID FROM fichas WHERE NumeroFicha = ?",
-                    new Object[]{aprendiz.getFicha()},
-                    Integer.class
-            );
-            System.out.println("ID Ficha: " + idFicha);
-            if (idFicha == null) {
-                throw new IllegalArgumentException("Ficha inválida: " + aprendiz.getFicha());
-            }
-
-            // Paso 1: Actualizar en la tabla `usuario`
-            System.out.println("Actualizando en la tabla usuario.");
+            // Paso 4: Actualizar la información básica del aprendiz
             String sqlUpdateUsuario = "UPDATE usuario SET Usuario = ?, Contraseña = ? WHERE ID = ?";
-            int rowsAffectedUsuario = jdbcTemplate.update(sqlUpdateUsuario,
-                    aprendiz.getUser(),
-                    passwordEncoder.encode(aprendiz.getPassword()),
-                    usuarioId);
-            System.out.println("Filas afectadas en la actualización de usuario: " + rowsAffectedUsuario);
+            jdbcTemplate.update(sqlUpdateUsuario, aprendiz.getUser(), passwordEncoder.encode(aprendiz.getPassword()), usuarioId);
 
-            if (rowsAffectedUsuario == 0) {
-                throw new RuntimeException("La actualización en la tabla usuario no afectó a ninguna fila.");
-            }
-
-            // Paso 2: Actualizar en la tabla `perfilusuario`
-            System.out.println("Actualizando en la tabla perfilusuario.");
             String sqlUpdatePerfilUsuario = """
-            UPDATE perfilusuario 
-            SET Documento = ?, 
-                IDTipoDocumento = ?, 
-                Nombres = ?, 
-                Apellidos = ?, 
-                FecNacimiento = ?, 
-                Telefono = ?, 
-                Correo = ?, 
-                IDGenero = ?, 
-                IDBarrio = ?
-            WHERE ID = ?
+        UPDATE perfilusuario
+        SET Documento = ?, IDTipoDocumento = ?, Nombres = ?, Apellidos = ?, FecNacimiento = ?, Telefono = ?, Correo = ?, IDGenero = ?, IDBarrio = ?, Estado = ?
+        WHERE ID = ?
         """;
-            int rowsAffectedPerfilUsuario = jdbcTemplate.update(sqlUpdatePerfilUsuario,
+            jdbcTemplate.update(sqlUpdatePerfilUsuario,
                     aprendiz.getDocumento(),
                     idTipoDocumento,
                     aprendiz.getNombres(),
@@ -554,211 +479,396 @@ public class AprendizService {
                     aprendiz.getCorreo(),
                     idGenero,
                     idBarrio,
+                    "Habilitado",
                     perfilUsuarioId);
-            System.out.println("Filas afectadas en la actualización de perfilusuario: " + rowsAffectedPerfilUsuario);
 
-            if (rowsAffectedPerfilUsuario == 0) {
-                throw new RuntimeException("La actualización en la tabla perfilusuario no afectó a ninguna fila.");
+            // Paso 5: Gestionar las asociaciones en 'aprendiz_claseinstructorficha'
+            List<Map<String, Object>> nuevasVinculaciones = aprendiz.getVinculaciones();
+
+            // Obtener todas las vinculaciones actuales en la base de datos
+            String sqlGetCurrentVinculaciones = """
+        SELECT acf.IDClaseInstructorFicha, cf.NombreClase, f.NumeroFicha, jf.JornadasFormacion
+        FROM aprendiz_claseinstructorficha acf
+        INNER JOIN claseformacion_instructor_ficha cif ON acf.IDClaseInstructorFIcha = cif.ID
+        INNER JOIN claseformacion cf ON cif.IDClaseFormacion = cf.ID
+        INNER JOIN fichas f ON cif.IDFicha = f.ID
+        INNER JOIN jornadaformacion jf ON cf.IDJornadaFormacion = jf.ID
+        WHERE acf.IDPerfilUsuario = ?
+        """;
+            List<Map<String, Object>> vinculacionesActuales = jdbcTemplate.query(sqlGetCurrentVinculaciones, new Object[]{perfilUsuarioId}, (rs, rowNum) -> {
+                Map<String, Object> vinculacionActual = new HashMap<>();
+                vinculacionActual.put("IDClaseInstructorFicha", rs.getInt("IDClaseInstructorFicha"));
+                vinculacionActual.put("ClaseFormacion", rs.getString("NombreClase"));
+                vinculacionActual.put("Ficha", rs.getInt("NumeroFicha"));
+                vinculacionActual.put("JornadaFormacion", rs.getString("JornadasFormacion"));
+                return vinculacionActual;
+            });
+
+            // Paso 6: Comparar y realizar los cambios necesarios en las asociaciones
+            Set<Integer> asociacionesParaMantener = new HashSet<>();
+
+            for (Map<String, Object> nuevaVinculacion : nuevasVinculaciones) {
+                String claseFormacion = (String) nuevaVinculacion.get("ClaseFormacion");
+                Integer fichaNumero = (Integer) nuevaVinculacion.get("Ficha");
+                String jornadaFormacion = (String) nuevaVinculacion.get("JornadaFormacion");
+
+                // Buscar en la base de datos los IDs necesarios
+                String sqlGetFichaId = "SELECT ID FROM fichas WHERE NumeroFicha = ?";
+                Integer fichaId = jdbcTemplate.queryForObject(sqlGetFichaId, new Object[]{fichaNumero}, Integer.class);
+
+                String sqlGetClaseFormacionId = """
+            SELECT cf.ID
+            FROM claseformacion cf
+            INNER JOIN jornadaformacion jf ON cf.IDJornadaFormacion = jf.ID
+            WHERE cf.NombreClase = ? AND jf.JornadasFormacion = ?
+            """;
+                Integer claseFormacionId = jdbcTemplate.queryForObject(sqlGetClaseFormacionId, new Object[]{claseFormacion, jornadaFormacion}, Integer.class);
+
+                // Obtener el ID de claseformacion_instructor_ficha
+                String sqlGetClaseInstructorFichaId = """
+            SELECT ID FROM claseformacion_instructor_ficha WHERE IDFicha = ? AND IDClaseFormacion = ?
+            """;
+                Integer claseInstructorFichaId = jdbcTemplate.queryForObject(sqlGetClaseInstructorFichaId, new Object[]{fichaId, claseFormacionId}, Integer.class);
+
+                boolean encontrada = false;
+
+                // Verificar si la nueva vinculación ya existe en las vinculaciones actuales
+                for (Map<String, Object> vinculacionActual : vinculacionesActuales) {
+                    Integer idActual = (Integer) vinculacionActual.get("IDClaseInstructorFicha");
+                    if (idActual.equals(claseInstructorFichaId)) {
+                        // Si la vinculación ya existe, la mantenemos
+                        asociacionesParaMantener.add(idActual);
+                        encontrada = true;
+                        break;
+                    }
+                }
+
+                // Si no se encontró en las relaciones actuales, insertamos una nueva
+                if (!encontrada) {
+                    String sqlInsertAprendizClaseInstructorFicha = "INSERT INTO aprendiz_claseinstructorficha (IDPerfilUsuario, IDClaseInstructorFIcha) VALUES (?, ?)";
+                    jdbcTemplate.update(sqlInsertAprendizClaseInstructorFicha, perfilUsuarioId, claseInstructorFichaId);
+                    logger.debug("Relación aprendiz-claseinstructorficha insertada: PerfilUsuarioID={}, ClaseInstructorFichaID={}", perfilUsuarioId, claseInstructorFichaId);
+                }
             }
 
-            // Paso 3: Actualizar en la tabla `aprendiz`
-            System.out.println("Actualizando en la tabla aprendiz.");
-            String sqlUpdateAprendiz = "UPDATE aprendiz SET IDFicha = ? WHERE IDPerfilUsuario = ?";
-            int rowsAffectedAprendiz = jdbcTemplate.update(sqlUpdateAprendiz, idFicha, perfilUsuarioId);
-            System.out.println("Filas afectadas en la actualización de aprendiz: " + rowsAffectedAprendiz);
-
-            if (rowsAffectedAprendiz == 0) {
-                throw new RuntimeException("La actualización en la tabla aprendiz no afectó a ninguna fila.");
+            // Paso 7: Eliminar relaciones que no se encuentran en las nuevas vinculaciones
+            for (Map<String, Object> vinculacionActual : vinculacionesActuales) {
+                Integer idActual = (Integer) vinculacionActual.get("IDClaseInstructorFicha");
+                if (!asociacionesParaMantener.contains(idActual)) {
+                    String sqlDeleteAprendizClaseInstructorFicha = "DELETE FROM aprendiz_claseinstructorficha WHERE IDPerfilUsuario = ? AND IDClaseInstructorFIcha = ?";
+                    jdbcTemplate.update(sqlDeleteAprendizClaseInstructorFicha, perfilUsuarioId, idActual);
+                    logger.debug("Relación aprendiz-claseinstructorficha eliminada: PerfilUsuarioID={}, ClaseInstructorFichaID={}", perfilUsuarioId, idActual);
+                }
             }
 
-            System.out.println("Proceso de actualización completado exitosamente.");
-            return aprendiz;
+            // Paso 8: Obtener las vinculaciones actualizadas
+            String sqlGetVinculaciones = """
+        SELECT
+            cf.NombreClase AS ClaseFormacion,
+            f.NumeroFicha AS Ficha,
+            pf.ProgramaFormacion AS ProgramaFormacion,
+            jf.JornadasFormacion AS JornadaFormacion,
+            nf.NivelFormacion AS NivelFormacion,
+            s.CentroFormacion AS Sede,
+            a.Area AS Area,
+            CONCAT(u_instructor.Nombres, ' ', u_instructor.Apellidos) AS NombreInstructor
+        FROM
+            aprendiz_claseinstructorficha acf
+            INNER JOIN claseformacion_instructor_ficha cif ON acf.IDClaseInstructorFIcha = cif.ID
+            INNER JOIN claseformacion cf ON cif.IDClaseFormacion = cf.ID
+            INNER JOIN fichas f ON cif.IDFicha = f.ID
+            INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
+            INNER JOIN jornadaformacion jf ON cf.IDJornadaFormacion = jf.ID
+            INNER JOIN nivelformacion nf ON pf.IDNivelFormacion = nf.ID
+            INNER JOIN sede s ON pf.IDSede = s.ID
+            INNER JOIN areas a ON pf.IDArea = a.ID
+            INNER JOIN perfilusuario u_instructor ON cif.IDPerfilUsuario = u_instructor.ID
+        WHERE
+            acf.IDPerfilUsuario = ?
+        """;
+
+            List<Map<String, Object>> updatedVinculaciones = new ArrayList<>();
+
+            jdbcTemplate.query(sqlGetVinculaciones, new Object[]{perfilUsuarioId}, (rs) -> {
+                Map<String, Object> vinculacion = new HashMap<>();
+                vinculacion.put("ClaseFormacion", rs.getString("ClaseFormacion"));
+                vinculacion.put("Ficha", rs.getInt("Ficha"));
+                vinculacion.put("ProgramaFormacion", rs.getString("ProgramaFormacion"));
+                vinculacion.put("JornadaFormacion", rs.getString("JornadaFormacion"));
+                vinculacion.put("NivelFormacion", rs.getString("NivelFormacion"));
+                vinculacion.put("Sede", rs.getString("Sede"));
+                vinculacion.put("Area", rs.getString("Area"));
+                vinculacion.put("NombreInstructor", rs.getString("NombreInstructor"));
+                updatedVinculaciones.add(vinculacion);
+            });
+
+            // Paso 9: Construir y retornar el objeto AprendizModel actualizado
+            AprendizModel updatedAprendiz = AprendizModel.builder()
+                    .user(aprendiz.getUser())
+                    .password(aprendiz.getPassword())
+                    .documento(aprendiz.getDocumento())
+                    .tipoDocumento(aprendiz.getTipoDocumento())
+                    .nombres(aprendiz.getNombres())
+                    .apellidos(aprendiz.getApellidos())
+                    .fechaNacimiento(aprendiz.getFechaNacimiento())
+                    .telefono(aprendiz.getTelefono())
+                    .correo(aprendiz.getCorreo())
+                    .genero(aprendiz.getGenero())
+                    .residencia(aprendiz.getResidencia())
+                    .estado(aprendiz.getEstado())
+                    .vinculaciones(updatedVinculaciones)
+                    .build();
+
+            logger.info("Aprendiz actualizado exitosamente con documento: {}", aprendiz.getDocumento());
+            return updatedAprendiz;
 
         } catch (DataAccessException e) {
-            e.printStackTrace();
+            logger.error("Error al acceder a la base de datos: {}", e.getMessage());
             throw new RuntimeException("Error al acceder a la base de datos: " + e.getMessage(), e);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error al actualizar el aprendiz: {}", e.getMessage());
             throw new RuntimeException("Error al actualizar el aprendiz: " + e.getMessage(), e);
         }
     }
 
-
+    /**
+     * Eliminar un aprendiz por documento.
+     *
+     * @param documento Documento del aprendiz a eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteAprendiz(String documento) {
-        Integer perfilUsuarioId = null;
-        Integer aprendizId = null;
-        Integer usuarioId = null;
+        logger.info("Iniciando eliminación de aprendiz con documento: {}", documento);
 
         try {
-            // 1. Obtener todos los IDs necesarios antes de eliminar
-
-            // Obtener el ID del perfil de usuario
-            String sqlGetPerfilUsuarioId = "SELECT ID FROM perfilusuario WHERE Documento = ?";
-            System.out.println("Obteniendo ID del perfil de usuario para el documento: " + documento);
-            perfilUsuarioId = jdbcTemplate.queryForObject(sqlGetPerfilUsuarioId, new Object[]{documento}, Integer.class);
-            System.out.println("ID del perfil de usuario obtenido: " + perfilUsuarioId);
-
-            // Obtener el ID del aprendiz
-            String sqlGetAprendizId = "SELECT ID FROM aprendiz WHERE IDPerfilUsuario = ?";
-            System.out.println("Obteniendo ID del aprendiz para el perfil de usuario con ID: " + perfilUsuarioId);
-            aprendizId = jdbcTemplate.queryForObject(sqlGetAprendizId, new Object[]{perfilUsuarioId}, Integer.class);
-            System.out.println("ID del aprendiz obtenido: " + aprendizId);
-
-            // Obtener el IDUsuario desde perfilusuario
-            String sqlGetUsuarioId = "SELECT IDUsuario FROM perfilusuario WHERE ID = ?";
-            System.out.println("Obteniendo ID de usuario para el perfil de usuario con ID: " + perfilUsuarioId);
-            usuarioId = jdbcTemplate.queryForObject(sqlGetUsuarioId, new Object[]{perfilUsuarioId}, Integer.class);
-            System.out.println("ID de usuario obtenido: " + usuarioId);
-
-            // 2. Una vez obtenidos todos los IDs, proceder con las eliminaciones
-
-            // Eliminar de aprendiz
-            String sqlDeleteAprendiz = "DELETE FROM aprendiz WHERE ID = ?";
-            System.out.println("Eliminando el registro de aprendiz con ID: " + aprendizId);
-            int deletedAprendiz = jdbcTemplate.update(sqlDeleteAprendiz, aprendizId);
-
-            if (deletedAprendiz > 0) {
-                // Eliminar de perfilusuario
-                String sqlDeletePerfilUsuario = "DELETE FROM perfilusuario WHERE ID = ?";
-                System.out.println("Eliminando el registro de perfil de usuario con ID: " + perfilUsuarioId);
-                jdbcTemplate.update(sqlDeletePerfilUsuario, perfilUsuarioId);
-
-                // Eliminar de usuario
-                String sqlDeleteUsuario = "DELETE FROM usuario WHERE ID = ?";
-                System.out.println("Eliminando el registro de usuario con ID: " + usuarioId);
-                int rowsAffected = jdbcTemplate.update(sqlDeleteUsuario, usuarioId);
-
-                if (rowsAffected > 0) {
-                    System.out.println("Usuario eliminado exitosamente con ID: " + usuarioId);
-                } else {
-                    System.out.println("No se eliminó ningún registro de usuario con ID: " + usuarioId);
-                    throw new RuntimeException("Error: No se pudo eliminar el usuario con ID: " + usuarioId);
-                }
-
-                System.out.println("Eliminación del aprendiz y los registros asociados completada.");
-                return true;
-            } else {
-                System.out.println("No se pudo eliminar el aprendiz.");
-                throw new RuntimeException("Error al eliminar el aprendiz"); // Lanzar excepción para que se realice el rollback
-            }
-        } catch (EmptyResultDataAccessException e) {
-            System.out.println("Error: No se encontró alguno de los registros necesarios para el documento: " + documento);
-            throw new RuntimeException("Error: No se encontró alguno de los registros necesarios para el documento: " + documento, e);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error inesperado al eliminar el aprendiz: " + e.getMessage());
-            throw new RuntimeException("Error inesperado al eliminar el aprendiz: " + e.getMessage(), e);
-        }
-    }
-
-
-    public List<AprendizModel> getAllAprendicesFicha(Integer ficha) {
-        String consulta = """
-            
-                SELECT us.Usuario AS Usuario,
-                   us.Contraseña AS Contraseña,
-                   pf.Documento AS Documento,
-                   td.TipoDocumento AS TipoDocumento,
-                   pf.Nombres AS Nombres,
-                   pf.Apellidos AS Apellidos,
-                   pf.FecNacimiento AS FecNacimiento,
-                   pf.Telefono AS Telefono,
-                   pf.Correo AS Correo,
-                   ge.TiposGeneros AS TiposGeneros,
-                   CONCAT(dept.nombre_departamento, ' - ', mun.nombre_municipio, ' - ', barrios.nombre_barrio) AS Residencia,
-                   fc.NumeroFicha AS NumeroFicha,
-                   pform.ProgramaFormacion AS ProgramaFormacion,
-                   jf.JornadasFormacion AS JornadasFormacion,
-                   nf.NivelFormacion AS NivelFormacion,
-                   sd.CentroFormacion AS CentroFormacion,
-                   areas.Area AS Area
-            FROM aprendiz ap
-                INNER JOIN perfilusuario pf ON ap.IDPerfilUsuario = pf.ID
-                INNER JOIN usuario us ON pf.IDUsuario = us.ID
-                INNER JOIN tipodocumento td ON pf.IDTipoDocumento = td.ID
-                INNER JOIN genero ge ON pf.IDGenero = ge.ID
-                INNER JOIN barrios ON pf.IDBarrio = barrios.id_barrio
-                INNER JOIN municipios mun ON barrios.id_municipio = mun.id_municipio
-                INNER JOIN departamentos dept ON mun.id_departamento = dept.id_departamento
-                INNER JOIN fichas fc ON ap.IDFicha = fc.ID
-                INNER JOIN programaformacion pform ON fc.IDProgramaFormacion = pform.ID
-                INNER JOIN jornadaformacion jf ON pform.IDJornadaFormacion = jf.ID
-                INNER JOIN nivelformacion nf ON pform.IDNivelFormacion = nf.ID
-                INNER JOIN sede sd ON pform.IDSede = sd.ID
-                INNER JOIN areas ON pform.IDArea = areas.ID
-            WHERE fc.NumeroFicha = ?
+            // Paso 1: Obtener el IDPerfilUsuario y IDUsuario
+            String sqlGetIds = """
+                SELECT pu.ID AS IDPerfilUsuario, u.ID AS IDUsuario
+                FROM perfilusuario pu
+                INNER JOIN usuario u ON pu.IDUsuario = u.ID
+                INNER JOIN rol r ON pu.IDRol = r.ID
+                WHERE pu.Documento = ? AND r.TipoRol = 'Aprendiz'
             """;
 
-        try {
-            return jdbcTemplate.query(consulta, new Object[]{ficha}, (rs, rowNum) ->
-                    AprendizModel.builder()
-                            .user(rs.getString("Usuario"))
-                            .password(rs.getString("Contraseña"))
-                            .documento(rs.getString("Documento"))
-                            .tipoDocumento(rs.getString("TipoDocumento"))
-                            .nombres(rs.getString("Nombres"))
-                            .apellidos(rs.getString("Apellidos"))
-                            .fechaNacimiento(rs.getDate("FecNacimiento"))
-                            .telefono(rs.getString("Telefono"))
-                            .correo(rs.getString("Correo"))
-                            .genero(rs.getString("TiposGeneros"))
-                            .residencia(rs.getString("Residencia"))
-                            .ficha(rs.getInt("NumeroFicha"))
-                            .programaFormacion(rs.getString("ProgramaFormacion"))
-                            .jornadaFormacion(rs.getString("JornadasFormacion"))
-                            .nivelFormacion(rs.getString("NivelFormacion"))
-                            .sede(rs.getString("CentroFormacion"))
-                            .area(rs.getString("Area"))
-                            .build());
+            Map<String, Object> idsMap = jdbcTemplate.queryForMap(sqlGetIds, new Object[]{documento});
 
+            Integer perfilUsuarioId = (Integer) idsMap.get("IDPerfilUsuario");
+            Integer usuarioId = (Integer) idsMap.get("IDUsuario");
+
+            logger.debug("IDPerfilUsuario: {}, IDUsuario: {}", perfilUsuarioId, usuarioId);
+
+            // Paso 2: Eliminar de la tabla `aprendiz_claseinstructorficha`
+            String sqlDeleteRelations = "DELETE FROM aprendiz_claseinstructorficha WHERE IDPerfilUsuario = ?";
+            int rowsDeletedRelations = jdbcTemplate.update(sqlDeleteRelations, perfilUsuarioId);
+            logger.debug("Relaciones eliminadas en aprendiz_claseinstructorficha: {}", rowsDeletedRelations);
+
+            // Paso 3: Eliminar de la tabla `perfilusuario`
+            String sqlDeletePerfilUsuario = "DELETE FROM perfilusuario WHERE ID = ?";
+            int rowsDeletedPerfilUsuario = jdbcTemplate.update(sqlDeletePerfilUsuario, perfilUsuarioId);
+            if (rowsDeletedPerfilUsuario == 0) {
+                logger.error("No se pudo eliminar el perfil de usuario con ID: {}", perfilUsuarioId);
+                throw new RuntimeException("No se pudo eliminar el perfil de usuario con ID: " + perfilUsuarioId);
+            }
+            logger.debug("Perfil de usuario eliminado con ID: {}", perfilUsuarioId);
+
+            // Paso 4: Eliminar de la tabla `usuario`
+            String sqlDeleteUsuario = "DELETE FROM usuario WHERE ID = ?";
+            int rowsDeletedUsuario = jdbcTemplate.update(sqlDeleteUsuario, usuarioId);
+            if (rowsDeletedUsuario == 0) {
+                logger.error("No se pudo eliminar el usuario con ID: {}", usuarioId);
+                throw new RuntimeException("No se pudo eliminar el usuario con ID: " + usuarioId);
+            }
+            logger.debug("Usuario eliminado con ID: {}", usuarioId);
+
+            logger.info("Aprendiz eliminado exitosamente con documento: {}", documento);
+            return true;
+
+        } catch (EmptyResultDataAccessException e) {
+            logger.warn("No se encontró ningún aprendiz con el documento: {}", documento);
+            throw new RuntimeException("No se encontró ningún aprendiz con el documento: " + documento, e);
+        } catch (DataAccessException e) {
+            logger.error("Error al acceder a la base de datos: {}", e.getMessage());
+            throw new RuntimeException("Error al acceder a la base de datos: " + e.getMessage(), e);
         } catch (Exception e) {
-            e.printStackTrace();
-            return Collections.emptyList(); // Devuelve una lista vacía en lugar de null en caso de error
+            logger.error("Error al eliminar el aprendiz: {}", e.getMessage());
+            throw new RuntimeException("Error al eliminar el aprendiz: " + e.getMessage(), e);
         }
     }
 
     /**
-     * Habilita un Aprendiz dado su documento.
+     * Obtener el ID del Aprendiz por su documento.
      *
-     * @param documento Documento del Aprendiz a habilitar.
+     * @param documento Documento del aprendiz.
+     * @return ID del Aprendiz, o null si no se encuentra.
+     */
+    public Integer getAprendizIdByDocumento(String documento) {
+        try {
+            String sqlGetAprendizId = """
+                SELECT pu.ID 
+                FROM perfilusuario pu
+                INNER JOIN rol r ON pu.IDRol = r.ID
+                WHERE pu.Documento = ? AND r.TipoRol = 'Aprendiz'
+            """;
+
+            return jdbcTemplate.queryForObject(sqlGetAprendizId, new Object[]{documento}, Integer.class);
+        } catch (EmptyResultDataAccessException e) {
+            logger.warn("No se encontró el Aprendiz con documento: {}", documento);
+            return null;
+        } catch (Exception e) {
+            logger.error("Error al obtener el ID del Aprendiz: {}", e.getMessage());
+            throw new RuntimeException("Error al obtener el ID del Aprendiz: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Obtener todos los aprendices asociados a una ficha específica.
+     *
+     * @param ficha Número de ficha.
+     * @return Lista de AprendizModel asociados a la ficha.
+     */
+    @Transactional(readOnly = true)
+    public List<AprendizModel> getAllAprendicesFicha(Integer ficha) {
+        logger.info("Iniciando búsqueda de aprendices para la ficha: {}", ficha);
+
+        try {
+            // Paso 1: Obtener los documentos de los aprendices asociados a la ficha
+            String sqlGetDocumentos = """
+            SELECT DISTINCT pu.Documento
+            FROM perfilusuario pu
+            INNER JOIN rol r ON pu.IDRol = r.ID
+            INNER JOIN aprendiz_claseinstructorficha acf ON pu.ID = acf.IDPerfilUsuario
+            INNER JOIN claseformacion_instructor_ficha cif ON acf.IDClaseInstructorFIcha = cif.ID
+            INNER JOIN fichas f ON cif.IDFicha = f.ID
+            WHERE f.NumeroFicha = ? AND r.TipoRol = 'Aprendiz'
+        """;
+
+            // Obtener lista de documentos de los aprendices asociados a la ficha
+            List<String> documentosAprendices = jdbcTemplate.queryForList(sqlGetDocumentos, new Object[]{ficha}, String.class);
+            logger.debug("Documentos de aprendices encontrados para la ficha {}: {}", ficha, documentosAprendices);
+
+            if (documentosAprendices.isEmpty()) {
+                logger.warn("No se encontraron aprendices asociados a la ficha: {}", ficha);
+                return new ArrayList<>();
+            }
+
+            // Paso 2: Usar el método getAprendiz para obtener la información completa de cada aprendiz
+            List<AprendizModel> aprendices = new ArrayList<>();
+            for (String documento : documentosAprendices) {
+                try {
+                    AprendizModel aprendiz = getAprendiz(documento); // Reutilizar el método getAprendiz
+                    aprendices.add(aprendiz);
+                } catch (Exception e) {
+                    logger.error("Error al obtener la información del aprendiz con documento: {}", documento, e);
+                }
+            }
+
+            logger.info("Información de todos los aprendices obtenida exitosamente para la ficha: {}", ficha);
+            return aprendices;
+
+        } catch (DataAccessException e) {
+            logger.error("Error al acceder a la base de datos: {}", e.getMessage());
+            throw new RuntimeException("Error al acceder a la base de datos: " + e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error("Error al obtener los aprendices: {}", e.getMessage());
+            throw new RuntimeException("Error al obtener los aprendices: " + e.getMessage(), e);
+        }
+    }
+
+
+    /**
+     * Habilitar un aprendiz dado su documento.
+     *
+     * @param documento Documento del aprendiz a habilitar.
      * @return true si la operación fue exitosa, false en caso contrario.
      */
+    @Transactional(rollbackFor = Exception.class)
     public boolean habilitarAprendiz(String documento) {
-        // Verificar si el PerfilUsuario está referenciado en la tabla Aprendiz
-        String verificarSql = "SELECT COUNT(*) FROM Aprendiz WHERE IDPerfilUsuario = (SELECT id FROM perfilusuario WHERE Documento = ?)";
-        Integer count = jdbcTemplate.queryForObject(verificarSql, new Object[]{documento}, Integer.class);
+        logger.info("Iniciando habilitación de aprendiz con documento: {}", documento);
 
-        if (count != null && count > 0) {
-            // Actualizar el estado en perfilusuario
-            String actualizarSql = "UPDATE perfilusuario SET Estado = 'Habilitado' WHERE Documento = ?";
-            int rowsAffected = jdbcTemplate.update(actualizarSql, documento);
-            return rowsAffected > 0;
-        } else {
-            // No existe un Aprendiz asociado a este documento
+        try {
+            // Verificar si el PerfilUsuario está referenciado en la tabla Aprendiz
+            String verificarSql = "SELECT COUNT(*) FROM perfilusuario pu INNER JOIN rol r ON pu.IDRol = r.ID WHERE pu.Documento = ? AND r.TipoRol = 'Aprendiz'";
+            Integer count = jdbcTemplate.queryForObject(verificarSql, new Object[]{documento}, Integer.class);
+
+            if (count != null && count > 0) {
+                // Actualizar el estado en perfilusuario
+                String actualizarSql = "UPDATE perfilusuario SET Estado = 'Habilitado' WHERE Documento = ?";
+                int rowsAffected = jdbcTemplate.update(actualizarSql, documento);
+                if (rowsAffected > 0) {
+                    logger.info("Aprendiz habilitado exitosamente con documento: {}", documento);
+                    return true;
+                }
+            }
+
+            logger.warn("No existe un Aprendiz asociado a este documento: {}", documento);
             return false;
+
+        } catch (DataAccessException e) {
+            logger.error("Error al acceder a la base de datos: {}", e.getMessage());
+            throw new RuntimeException("Error al acceder a la base de datos: " + e.getMessage(), e);
         }
     }
 
     /**
-     * Inhabilita un Aprendiz dado su documento.
+     * Inhabilitar un aprendiz dado su documento.
      *
-     * @param documento Documento del Aprendiz a inhabilitar.
+     * @param documento Documento del aprendiz a inhabilitar.
      * @return true si la operación fue exitosa, false en caso contrario.
      */
+    @Transactional(rollbackFor = Exception.class)
     public boolean inhabilitarAprendiz(String documento) {
-        // Verificar si el PerfilUsuario está referenciado en la tabla Aprendiz
-        String verificarSql = "SELECT COUNT(*) FROM Aprendiz WHERE IDPerfilUsuario = (SELECT id FROM perfilusuario WHERE Documento = ?)";
-        Integer count = jdbcTemplate.queryForObject(verificarSql, new Object[]{documento}, Integer.class);
+        logger.info("Iniciando inhabilitación de aprendiz con documento: {}", documento);
 
-        if (count != null && count > 0) {
-            // Actualizar el estado en perfilusuario
-            String actualizarSql = "UPDATE perfilusuario SET Estado = 'Deshabilitado' WHERE Documento = ?";
-            int rowsAffected = jdbcTemplate.update(actualizarSql, documento);
-            return rowsAffected > 0;
-        } else {
-            // No existe un Aprendiz asociado a este documento
+        try {
+            // Verificar si el PerfilUsuario está referenciado en la tabla Aprendiz
+            String verificarSql = "SELECT COUNT(*) FROM perfilusuario pu INNER JOIN rol r ON pu.IDRol = r.ID WHERE pu.Documento = ? AND r.TipoRol = 'Aprendiz'";
+            Integer count = jdbcTemplate.queryForObject(verificarSql, new Object[]{documento}, Integer.class);
+
+            if (count != null && count > 0) {
+                // Actualizar el estado en perfilusuario
+                String actualizarSql = "UPDATE perfilusuario SET Estado = 'Deshabilitado' WHERE Documento = ?";
+                int rowsAffected = jdbcTemplate.update(actualizarSql, documento);
+                if (rowsAffected > 0) {
+                    logger.info("Aprendiz inhabilitado exitosamente con documento: {}", documento);
+                    return true;
+                }
+            }
+
+            logger.warn("No existe un Aprendiz asociado a este documento: {}", documento);
             return false;
+
+        } catch (DataAccessException e) {
+            logger.error("Error al acceder a la base de datos: {}", e.getMessage());
+            throw new RuntimeException("Error al acceder a la base de datos: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Obtener las vinculaciones de aprendices por ficha.
+     *
+     * @param ficha Número de ficha.
+     * @return Lista de vinculaciones de aprendiz.
+     */
+    public List<Map<String, Object>> obtenerVinculacionesPorFicha(Integer ficha) {
+        String sql = """
+            SELECT f.NumeroFicha, a.Area, s.CentroFormacion AS Sede,
+                   cf.NombreClase AS ClaseFormacion, jf.JornadasFormacion AS JornadaFormacion,
+                   CONCAT(i.Nombres, ' ', i.Apellidos) AS NombreInstructor,
+                   nf.NivelFormacion, pf.ProgramaFormacion, cif.ID, i.Documento AS DocumentoInstructor
+            FROM claseformacion_instructor_ficha cif
+                     INNER JOIN claseformacion cf ON cif.IDClaseFormacion = cf.ID
+                     INNER JOIN fichas f ON cif.IDFicha = f.ID
+                     INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
+                     INNER JOIN jornadaformacion jf ON cf.IDJornadaFormacion = jf.ID
+                     INNER JOIN nivelformacion nf ON pf.IDNivelFormacion = nf.ID
+                     INNER JOIN sede s ON pf.IDSede = s.ID
+                     INNER JOIN areas a ON pf.IDArea = a.ID
+                     INNER JOIN perfilusuario i ON cif.IDPerfilUsuario = i.ID
+            WHERE f.NumeroFicha = ?
+        """;
+
+        return jdbcTemplate.queryForList(sql, ficha);
     }
 }
+

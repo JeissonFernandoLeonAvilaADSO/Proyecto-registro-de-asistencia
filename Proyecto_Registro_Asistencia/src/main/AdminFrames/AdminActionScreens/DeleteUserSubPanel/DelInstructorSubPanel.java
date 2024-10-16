@@ -84,13 +84,9 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
         YearCB = new javax.swing.JComboBox<>();
         ResultadoTelefono = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        FichasAsociadasTB = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         IDInstructorField = new javax.swing.JTextField();
         BuscarDatosUsuario = new javax.swing.JButton();
-        ClaseFormacionCB = new javax.swing.JComboBox<>();
-        jLabel26 = new javax.swing.JLabel();
         HabilitarInstructor = new javax.swing.JButton();
 
         CreateInstructorSubPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -299,25 +295,6 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
         jLabel25.setForeground(new java.awt.Color(0, 0, 0));
         jLabel25.setText("Fecha de Nacimiento");
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fichas Asociadas", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
-
-        FichasAsociadasTB.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
-            }
-        ));
-        FichasAsociadasTB.setEnabled(false);
-        FichasAsociadasTB.setFocusable(false);
-        FichasAsociadasTB.setRequestFocusEnabled(false);
-        FichasAsociadasTB.setRowSelectionAllowed(false);
-        jScrollPane1.setViewportView(FichasAsociadasTB);
-
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Documento del usuario");
@@ -344,21 +321,6 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
             }
         });
 
-        ClaseFormacionCB.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ClaseFormacionCB.setForeground(new java.awt.Color(0, 0, 0));
-        ClaseFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        ClaseFormacionCB.setEnabled(false);
-        ClaseFormacionCB.setPreferredSize(new java.awt.Dimension(64, 28));
-        ClaseFormacionCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClaseFormacionCBActionPerformed(evt);
-            }
-        });
-
-        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel26.setText("Clase de formacion");
-
         HabilitarInstructor.setBackground(new java.awt.Color(57, 169, 0));
         HabilitarInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         HabilitarInstructor.setForeground(new java.awt.Color(255, 255, 255));
@@ -374,74 +336,66 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
         CreateInstructorSubPanelLayout.setHorizontalGroup(
             CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(ConfirmareliminarInstructor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 851, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(HabilitarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel19)
-                                .addGap(120, 120, 120)
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(TipoDocCB, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ResultadoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ResultadoNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ResultadoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel30)
-                                    .addComponent(jLabel29)
-                                    .addComponent(jLabel18)
-                                    .addComponent(jLabel23)
-                                    .addComponent(jLabel25)
-                                    .addComponent(jLabel26))
-                                .addGap(56, 56, 56)
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(ResultadoCorreo, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ResultadoTelefono, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
-                                        .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(ResultadoFechaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
-                                        .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(ResidenciaHolder))
-                                    .addComponent(GeneroCB, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(ClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel22)
-                                    .addComponent(jLabel21)
-                                    .addComponent(jLabel20)
-                                    .addComponent(jLabel27)
-                                    .addComponent(jLabel28))
-                                .addGap(67, 67, 67)
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(ResultadoPass, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ResultadoUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap())))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                            .addComponent(jLabel6)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(HabilitarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                            .addComponent(jLabel19)
+                            .addGap(120, 120, 120)
+                            .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(TipoDocCB, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ResultadoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ResultadoNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ResultadoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                            .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                            .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel30)
+                                .addComponent(jLabel29)
+                                .addComponent(jLabel18)
+                                .addComponent(jLabel23)
+                                .addComponent(jLabel25))
+                            .addGap(56, 56, 56)
+                            .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(ResultadoCorreo, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(ResultadoTelefono, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
+                                    .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(ResultadoFechaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
+                                    .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(ResidenciaHolder))
+                                .addComponent(GeneroCB, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                            .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel22)
+                                .addComponent(jLabel21)
+                                .addComponent(jLabel20)
+                                .addComponent(jLabel27)
+                                .addComponent(jLabel28))
+                            .addGap(67, 67, 67)
+                            .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(ResultadoPass, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(ResultadoUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(ConfirmareliminarInstructor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 851, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         CreateInstructorSubPanelLayout.setVerticalGroup(
             CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -507,15 +461,9 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
                         .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(ResidenciaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel26))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(ConfirmareliminarInstructor, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -526,7 +474,7 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(CreateInstructorSubPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(CreateInstructorSubPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -538,7 +486,6 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
                 llenarYear(yearModel);
                 mesModel.addElement("Seleccionar Mes");
                 diaModel.addElement("Seleccionar Día");
-                FichasAsociadasTB.setModel(modeloTabla);
                 ComboBoxModels CBModels = new ComboBoxModels();
                 TipoDocCB.setModel(CBModels.generarComboBoxModelPorTipo("TipoDocumento"));
                 GeneroCB.setModel(CBModels.generarComboBoxModelPorTipo("Genero"));
@@ -548,7 +495,6 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
                 YearCB.setModel(yearModel);
                 MesCB.setModel(mesModel);
                 DiaCB.setModel(diaModel);
-                ClaseFormacionCB.setModel(CBModels.generarComboBoxModelPorTipo("ClaseFormacion"));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -900,39 +846,10 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
             }
 
 
-            // Obtener el modelo de la tabla y limpiar las filas existentes
-            DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
-            modeloTabla.setRowCount(0);  // Limpiar la tabla
-
-            // Obtener las listas de fichas y jornadas
-            List<Integer> fichas = instructor.getFichas();
-            List<String> jornadasFormacion = instructor.getJornadasFormacion();
-
-            // Verificar que las listas tengan el mismo tamaño
-            if (fichas.size() != jornadasFormacion.size()) {
-                JOptionPane.showMessageDialog(this, "La cantidad de fichas y jornadas no coincide. Por favor, verifica los datos.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Agregar cada ficha y su jornada correspondiente a la tabla
-            for (int i = 0; i < fichas.size(); i++) {
-                Integer ficha = fichas.get(i);
-                String jornada = jornadasFormacion.get(i);
-
-                modeloTabla.addRow(new Object[]{
-                        ficha,
-                        jornada
-                });
-            }
-
         } else {
             JOptionPane.showMessageDialog(null, "No se encontró el instructor con el documento proporcionado.");
         }
     }//GEN-LAST:event_BuscarDatosUsuarioActionPerformed
-
-    private void ClaseFormacionCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClaseFormacionCBActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ClaseFormacionCBActionPerformed
 
     private void IDInstructorFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IDInstructorFieldKeyTyped
                         char caracter = evt.getKeyChar();
@@ -1033,12 +950,10 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> BarrioCB;
     private javax.swing.JButton BuscarDatosUsuario;
-    private javax.swing.JComboBox<String> ClaseFormacionCB;
     private javax.swing.JButton ConfirmareliminarInstructor;
     private javax.swing.JPanel CreateInstructorSubPanel;
     private javax.swing.JComboBox<String> DepartamentoCB;
     private javax.swing.JComboBox<String> DiaCB;
-    private javax.swing.JTable FichasAsociadasTB;
     private javax.swing.JComboBox<String> GeneroCB;
     private javax.swing.JButton HabilitarInstructor;
     private javax.swing.JTextField IDInstructorField;
@@ -1062,12 +977,10 @@ public class DelInstructorSubPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

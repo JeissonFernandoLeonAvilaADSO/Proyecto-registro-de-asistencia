@@ -147,21 +147,21 @@ public class FichasDataService {
         validarNumeroFicha(numeroFicha);
 
         String sql = """
-            SELECT 
-                f.NumeroFicha,
-                pf.ProgramaFormacion,
-                jf.JornadasFormacion,
-                nf.NivelFormacion,
-                s.CentroFormacion AS Sede,
-                a.Area
-            FROM fichas f
-            INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
-            INNER JOIN jornadaformacion jf ON f.IDJornadaFormacion = jf.ID
-            INNER JOIN nivelformacion nf ON pf.IDNivelFormacion = nf.ID
-            INNER JOIN sede s ON pf.IDSede = s.ID
-            INNER JOIN areas a ON pf.IDArea = a.ID
-            WHERE f.NumeroFicha = ?
-        """;
+        SELECT 
+            f.NumeroFicha,
+            pf.ProgramaFormacion,
+            jf.JornadasFormacion,
+            nf.NivelFormacion,
+            s.CentroFormacion AS Sede,
+            a.Area
+        FROM fichas f
+        INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
+        INNER JOIN jornadaformacion jf ON f.IDJornadaFormacion = jf.ID
+        INNER JOIN nivelformacion nf ON pf.IDNivelFormacion = nf.ID
+        INNER JOIN sede s ON pf.IDSede = s.ID
+        INNER JOIN areas a ON pf.IDArea = a.ID
+        WHERE f.NumeroFicha = ?
+    """;
 
         try {
             return jdbcTemplate.queryForMap(sql, numeroFicha);
@@ -172,14 +172,14 @@ public class FichasDataService {
         }
     }
 
-    // Método para obtener todas las clases de formación con los detalles del instructor
+    // Obtener todas las clases de formación con los detalles del instructor
     public List<Map<String, Object>> obtenerClasesConInstructor() {
         String sql = """
-            SELECT cf.ID AS ClaseID, cf.NombreClase, pu.Nombres, pu.Apellidos, pu.Documento, pu.Correo
-            FROM claseformacion cf
-            INNER JOIN instructor i ON cf.IDInstructor = i.ID
-            INNER JOIN perfilusuario pu ON i.IDPerfilUsuario = pu.ID
-        """;
+        SELECT cf.ID AS ClaseID, cf.NombreClase, pu.Nombres, pu.Apellidos, pu.Documento, pu.Correo
+        FROM claseformacion cf
+        INNER JOIN claseformacion_instructor_ficha cif ON cf.ID = cif.IDClaseFormacion
+        INNER JOIN perfilusuario pu ON cif.IDPerfilUsuario = pu.ID
+    """;
 
         try {
             return jdbcTemplate.queryForList(sql);
@@ -188,17 +188,17 @@ public class FichasDataService {
         }
     }
 
-    // Método para obtener las fichas asociadas al nombre del programa de formación
+    // Obtener fichas asociadas al nombre del programa de formación
     public List<Map<String, Object>> obtenerFichasPorPrograma(String nombrePrograma) {
         validarCampo(nombrePrograma, "NombrePrograma");
 
-        // Primero, obtenemos el ID del programa de formación usando el nombre
+        // Obtener el ID del programa de formación usando el nombre
         Integer idProgramaFormacion = programaFormacionDataService.obtenerIdProgramaFormacionPorNombre(nombrePrograma);
         if (idProgramaFormacion == null) {
             throw new IllegalArgumentException("No se encontró el programa de formación: " + nombrePrograma);
         }
 
-        // Luego, usamos el ID para obtener las fichas asociadas
+        // Usar el ID para obtener las fichas asociadas
         String sql = "SELECT f.ID, f.NumeroFicha FROM fichas f WHERE f.IDProgramaFormacion = ?";
         try {
             return jdbcTemplate.queryForList(sql, idProgramaFormacion);
@@ -207,18 +207,17 @@ public class FichasDataService {
         }
     }
 
-    // Obtener todas las fichas por el documento del instructor
+    // Obtener fichas por documento del instructor
     public List<Map<String, Object>> obtenerFichasPorDocumentoInstructor(String documentoInstructor) {
         validarCampo(documentoInstructor, "DocumentoInstructor");
 
         String sql = """
-            SELECT f.NumeroFicha 
-            FROM instructor_ficha i_f
-            INNER JOIN instructor i ON i_f.IDInstructor = i.ID
-            INNER JOIN fichas f ON i_f.IDFicha = f.ID
-            INNER JOIN perfilusuario pu ON i.IDPerfilUsuario = pu.ID
-            WHERE pu.Documento = ?
-        """;
+        SELECT f.NumeroFicha 
+        FROM claseformacion_instructor_ficha cif
+        INNER JOIN perfilusuario pu ON cif.IDPerfilUsuario = pu.ID
+        INNER JOIN fichas f ON cif.IDFicha = f.ID
+        WHERE pu.Documento = ?
+    """;
 
         try {
             List<Map<String, Object>> fichas = jdbcTemplate.queryForList(sql, documentoInstructor);
@@ -233,7 +232,7 @@ public class FichasDataService {
         }
     }
 
-    // Métodos auxiliares para verificar la existencia de fichas
+    // Métodos auxiliares de verificación de fichas
     private boolean fichaExiste(Integer numeroFicha) {
         String sql = "SELECT COUNT(*) FROM fichas WHERE NumeroFicha = ?";
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{numeroFicha}, Integer.class);
@@ -253,91 +252,75 @@ public class FichasDataService {
         }
     }
 
-    private void validarIdFicha(Integer id) {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("El ID de la ficha debe ser un valor positivo y no nulo.");
-        }
-    }
-
     private void validarCampo(String campo, String nombreCampo) {
         if (campo == null || campo.trim().isEmpty()) {
             throw new IllegalArgumentException("El campo '" + nombreCampo + "' no puede estar vacío.");
         }
     }
-    /**
-     * Asocia una ficha con una clase de formación.
-     *
-     * @param idClaseFormacion El ID de la clase de formación.
-     * @param idFicha          El ID de la ficha.
-     * @throws IllegalArgumentException Si la clase de formación o la ficha no existen, o si la asociación ya existe.
-     */
-    public void asociarFichaConClase(Integer idClaseFormacion, Integer idFicha) {
-        // Verificar si la clase de formación existe
-        verificarExistenciaClase(idClaseFormacion);
-        verificarExistenciaFicha(idFicha);
 
-        // Verificar si la asociación ya existe
-        String sqlVerificarAsociacion = "SELECT COUNT(*) FROM claseformacion_fichas WHERE IDClaseFormacion = ? AND IDFicha = ?";
-        Integer countAsociacion = jdbcTemplate.queryForObject(sqlVerificarAsociacion, new Object[]{idClaseFormacion, idFicha}, Integer.class);
-        if (countAsociacion != null && countAsociacion > 0) {
-            throw new IllegalArgumentException("La ficha con ID " + idFicha + " ya está asociada a la clase de formación con ID " + idClaseFormacion + ".");
+    // Asociar una ficha con un instructor y una clase de formación
+    public void asociarFichaInstructorClase(Integer idFicha, Integer idInstructor, Integer idClaseFormacion) {
+        // Verificar si ya existe la asociación
+        String verificarSql = "SELECT COUNT(*) FROM claseformacion_instructor_ficha WHERE IDClaseFormacion = ? AND IDFicha = ? AND IDPerfilUsuario = ?";
+        Integer count = jdbcTemplate.queryForObject(verificarSql, new Object[]{idClaseFormacion, idFicha, idInstructor}, Integer.class);
+        if (count != null && count > 0) {
+            throw new IllegalArgumentException("La asociación ya existe.");
         }
 
-        // Insertar la asociación
-        String sqlInsertarAsociacion = "INSERT INTO claseformacion_fichas (IDClaseFormacion, IDFicha) VALUES (?, ?)";
-        jdbcTemplate.update(sqlInsertarAsociacion, idClaseFormacion, idFicha);
+        // Insertar la nueva asociación
+        String insertarSql = "INSERT INTO claseformacion_instructor_ficha (IDClaseFormacion, IDFicha, IDPerfilUsuario) VALUES (?, ?, ?)";
+        jdbcTemplate.update(insertarSql, idClaseFormacion, idFicha, idInstructor);
     }
 
-    // Método para editar la asociación entre una ficha y una clase de formación
-    public void editarAsociacionFichaAClase(Integer idClaseAnterior, Integer idClaseNueva, Integer idFichaAnterior, Integer idFichaNueva) {
-        // Verificar si las clases y fichas anteriores y nuevas existen
-        verificarExistenciaClase(idClaseAnterior);
-        verificarExistenciaClase(idClaseNueva);
-        verificarExistenciaFicha(idFichaAnterior);
-        verificarExistenciaFicha(idFichaNueva);
-
+    // Editar asociación entre ficha, instructor y clase de formación
+    public void editarAsociacionFichaInstructorClase(Integer idClaseAnterior, Integer idClaseNueva,
+                                                     Integer idFichaAnterior, Integer idFichaNuevo,
+                                                     Integer idInstructorAnterior, Integer idInstructorNuevo) {
         // Verificar si la nueva asociación ya existe
-        String sqlVerificarAsociacion = "SELECT COUNT(*) FROM claseformacion_fichas WHERE IDClaseFormacion = ? AND IDFicha = ?";
-        Integer countAsociacion = jdbcTemplate.queryForObject(sqlVerificarAsociacion, new Object[]{idClaseNueva, idFichaNueva}, Integer.class);
-        if (countAsociacion != null && countAsociacion > 0) {
-            throw new IllegalArgumentException("La ficha con ID " + idFichaNueva + " ya está asociada a la clase de formación con ID " + idClaseNueva + ".");
+        String verificarSql = "SELECT COUNT(*) FROM claseformacion_instructor_ficha WHERE IDClaseFormacion = ? AND IDFicha = ? AND IDPerfilUsuario = ?";
+        Integer count = jdbcTemplate.queryForObject(verificarSql, new Object[]{idClaseNueva, idFichaNuevo, idInstructorNuevo}, Integer.class);
+        if (count != null && count > 0) {
+            throw new IllegalArgumentException("La nueva asociación ya existe.");
         }
 
-        // Realizar la actualización
-        String sql = "UPDATE claseformacion_fichas SET IDClaseFormacion = ?, IDFicha = ? WHERE IDClaseFormacion = ? AND IDFicha = ?";
-        jdbcTemplate.update(sql, idClaseNueva, idFichaNueva, idClaseAnterior, idFichaAnterior);
+        // Actualizar la asociación
+        String actualizarSql = """
+        UPDATE claseformacion_instructor_ficha 
+        SET IDClaseFormacion = ?, IDFicha = ?, IDPerfilUsuario = ? 
+        WHERE IDClaseFormacion = ? AND IDFicha = ? AND IDPerfilUsuario = ?
+    """;
+        int rows = jdbcTemplate.update(actualizarSql, idClaseNueva, idFichaNuevo, idInstructorNuevo, idClaseAnterior, idFichaAnterior, idInstructorAnterior);
+        if (rows == 0) {
+            throw new IllegalArgumentException("Asociación original no encontrada.");
+        }
     }
 
-    // Método para eliminar la relación entre una ficha y una clase de formación
-    public void eliminarAsociacionFichaAClase(Integer idClase, Integer idFicha) {
-        // Verificar si la clase y la ficha existen
-        verificarExistenciaClase(idClase);
-        verificarExistenciaFicha(idFicha);
-
-        // Verificar si la asociación existe antes de eliminar
-        String sqlVerificarAsociacion = "SELECT COUNT(*) FROM claseformacion_fichas WHERE IDClaseFormacion = ? AND IDFicha = ?";
-        Integer countAsociacion = jdbcTemplate.queryForObject(sqlVerificarAsociacion, new Object[]{idClase, idFicha}, Integer.class);
-        if (countAsociacion == null || countAsociacion == 0) {
-            throw new IllegalArgumentException("La ficha con ID " + idFicha + " no está asociada a la clase de formación con ID " + idClase + ".");
+    // Eliminar una asociación existente
+    public void eliminarAsociacionFichaInstructorClase(Integer idClaseFormacion, Integer idFicha, Integer idInstructor) {
+        // Verificar si la asociación existe
+        String verificarSql = "SELECT COUNT(*) FROM claseformacion_instructor_ficha WHERE IDClaseFormacion = ? AND IDFicha = ? AND IDPerfilUsuario = ?";
+        Integer count = jdbcTemplate.queryForObject(verificarSql, new Object[]{idClaseFormacion, idFicha, idInstructor}, Integer.class);
+        if (count == null || count == 0) {
+            throw new IllegalArgumentException("Asociación no encontrada.");
         }
 
-        // Realizar la eliminación
-        String sql = "DELETE FROM claseformacion_fichas WHERE IDClaseFormacion = ? AND IDFicha = ?";
-        jdbcTemplate.update(sql, idClase, idFicha);
+        // Eliminar la asociación
+        String eliminarSql = "DELETE FROM claseformacion_instructor_ficha WHERE IDClaseFormacion = ? AND IDFicha = ? AND IDPerfilUsuario = ?";
+        jdbcTemplate.update(eliminarSql, idClaseFormacion, idFicha, idInstructor);
     }
 
-    // Nuevo método para obtener todas las fichas con detalles
+    // Obtener todas las fichas con detalles
     public List<Map<String, Object>> obtenerTodasLasFichasConDetalles() {
         String sql = """
-            SELECT 
-                f.ID,
-                f.NumeroFicha,
-                pf.ProgramaFormacion,
-                jf.JornadasFormacion AS JornadaFormacion
-            FROM fichas f
-            INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
-            INNER JOIN jornadaformacion jf ON f.IDJornadaFormacion = jf.ID
-        """;
+        SELECT 
+            f.ID,
+            f.NumeroFicha,
+            pf.ProgramaFormacion,
+            jf.JornadasFormacion AS JornadaFormacion
+        FROM fichas f
+        INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
+        INNER JOIN jornadaformacion jf ON f.IDJornadaFormacion = jf.ID
+    """;
 
         try {
             return jdbcTemplate.queryForList(sql);
@@ -346,22 +329,47 @@ public class FichasDataService {
         }
     }
 
+    // Obtener todas las asociaciones
+    public List<Map<String, Object>> obtenerAsociaciones() {
+        String sql = """
+        SELECT cf.NombreClase,
+               CONCAT(pu.Nombres, ' ', pu.Apellidos) AS Instructor,
+               f.NumeroFicha,
+               jf.JornadasFormacion
+        FROM claseformacion_instructor_ficha cif
+        INNER JOIN claseformacion cf ON cif.IDClaseFormacion = cf.ID
+        INNER JOIN jornadaformacion jf ON cf.IDJornadaFormacion = jf.ID
+        INNER JOIN perfilusuario pu ON cif.IDPerfilUsuario = pu.ID
+        INNER JOIN fichas f ON cif.IDFicha = f.ID
+    """;
+        return jdbcTemplate.queryForList(sql);
+    }
+    // Método para validar la existencia de una ficha por su número
+    public void validarFicha(Integer numeroFicha) {
+        // Validar que el número de ficha no sea nulo o menor o igual a 0
+        if (numeroFicha == null || numeroFicha <= 0) {
+            throw new IllegalArgumentException("El número de ficha debe ser un valor positivo y no nulo.");
+        }
 
-    // Método auxiliar para verificar la existencia de una clase
-    private void verificarExistenciaClase(Integer idClase) {
-        String sqlVerificarClase = "SELECT COUNT(*) FROM claseformacion WHERE ID = ?";
-        Integer countClase = jdbcTemplate.queryForObject(sqlVerificarClase, new Object[]{idClase}, Integer.class);
-        if (countClase == null || countClase == 0) {
-            throw new IllegalArgumentException("La clase de formación con ID " + idClase + " no existe.");
+        // Consulta SQL para verificar si la ficha existe en la base de datos
+        String sql = "SELECT COUNT(*) FROM fichas WHERE NumeroFicha = ?";
+
+        try {
+            Integer count = jdbcTemplate.queryForObject(sql, new Object[]{numeroFicha}, Integer.class);
+
+            // Verificar si la ficha no existe
+            if (count == null || count == 0) {
+                throw new IllegalArgumentException("No se encontró una ficha con el número: " + numeroFicha);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error al validar la ficha: " + e.getMessage());
         }
     }
 
-    // Método auxiliar para verificar la existencia de una ficha
-    private void verificarExistenciaFicha(Integer idFicha) {
-        String sqlVerificarFicha = "SELECT COUNT(*) FROM fichas WHERE ID = ?";
-        Integer countFicha = jdbcTemplate.queryForObject(sqlVerificarFicha, new Object[]{idFicha}, Integer.class);
-        if (countFicha == null || countFicha == 0) {
-            throw new IllegalArgumentException("La ficha con ID " + idFicha + " no existe.");
+    private void validarIdFicha(Integer id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("El ID de la ficha debe ser un valor positivo y no nulo.");
         }
     }
+
 }

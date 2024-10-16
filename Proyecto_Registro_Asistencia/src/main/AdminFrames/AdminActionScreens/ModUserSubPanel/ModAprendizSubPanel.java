@@ -4,19 +4,23 @@
  */
 package main.AdminFrames.AdminActionScreens.ModUserSubPanel;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Map;
-import java.util.Calendar;
+import java.util.*;
 import java.time.LocalDate;
+import java.util.List;
 
 import main.util.API_Actions.API_BuscarUsuario;
 import main.util.API_AdminActions.API_Admin_UsersApplications.API_Admin_AprendizApplications;
+import main.util.models.ButtonColumnHelper;
 import main.util.models.ComboBoxModels;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import main.util.models.DataTables;
 import main.util.models.UsersModels.AprendizModel;
@@ -54,35 +58,23 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
         jLabel28 = new javax.swing.JLabel();
         ResultadoNombres = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
-        ResultadoArea = new javax.swing.JTextField();
         ResultadoCorreo = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
-        jLabel38 = new javax.swing.JLabel();
         ResultadoApellidos = new javax.swing.JTextField();
         ResultadoDocumento = new javax.swing.JTextField();
-        FichaCB = new javax.swing.JComboBox<>();
         ResultadoTelefono = new javax.swing.JTextField();
-        jLabel39 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel40 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
         TipoDocCB = new javax.swing.JComboBox<>();
         GeneroCB = new javax.swing.JComboBox<>();
-        ResultadoNivelFormacion = new javax.swing.JTextField();
-        ResultadoSede = new javax.swing.JTextField();
-        ResultadoJornadaFormacion = new javax.swing.JTextField();
         jLabel30 = new javax.swing.JLabel();
         DepartamentoCB = new javax.swing.JComboBox<>();
         BarrioCB = new javax.swing.JComboBox<>();
         MunicipioCB = new javax.swing.JComboBox<>();
         ConfirmarRegistroUsuario = new javax.swing.JButton();
-        jLabel41 = new javax.swing.JLabel();
-        ResultadoProgramaFormacion = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         YearCB = new javax.swing.JComboBox<>();
         MesCB = new javax.swing.JComboBox<>();
@@ -94,6 +86,12 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
         BuscarDatosUsuario = new javax.swing.JButton();
         RefrescarCombos = new javax.swing.JButton();
         ResultadoPass = new javax.swing.JPasswordField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        AprendizVinculacionesTB = new javax.swing.JTable();
+        FichaCB = new javax.swing.JComboBox<>();
+        jLabel38 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        VinculacionesFichaTB = new javax.swing.JTable();
 
         CreateAprendizSubPanel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -120,21 +118,12 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
         jLabel29.setForeground(new java.awt.Color(0, 0, 0));
         jLabel29.setText("Correo");
 
-        ResultadoArea.setEditable(false);
-        ResultadoArea.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoArea.setForeground(new java.awt.Color(0, 0, 0));
-        ResultadoArea.setFocusable(false);
-
         ResultadoCorreo.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoCorreo.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(0, 0, 0));
         jLabel19.setText("Documento");
-
-        jLabel38.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel38.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel38.setText("Numero de ficha");
 
         ResultadoApellidos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoApellidos.setForeground(new java.awt.Color(0, 0, 0));
@@ -146,18 +135,14 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
 
         ResultadoDocumento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoDocumento.setForeground(new java.awt.Color(0, 0, 0));
+        ResultadoDocumento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResultadoDocumentoActionPerformed(evt);
+            }
+        });
         ResultadoDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 ResultadoDocumentoKeyTyped(evt);
-            }
-        });
-
-        FichaCB.setForeground(new java.awt.Color(0, 0, 0));
-        FichaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        FichaCB.setPreferredSize(new java.awt.Dimension(64, 28));
-        FichaCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FichaCBActionPerformed(evt);
             }
         });
 
@@ -169,21 +154,9 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel39.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel39.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel39.setText("Jornada de formacion");
-
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(0, 0, 0));
         jLabel18.setText("Telefono");
-
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel24.setText("Area de trabajo");
-
-        jLabel40.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel40.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel40.setText("Nivel de formacion");
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(0, 0, 0));
@@ -200,10 +173,6 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
         jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(0, 0, 0));
         jLabel23.setText("Genero");
-
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel17.setText("Sede");
 
         TipoDocCB.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         TipoDocCB.setForeground(new java.awt.Color(0, 0, 0));
@@ -224,15 +193,6 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                 GeneroCBActionPerformed(evt);
             }
         });
-
-        ResultadoNivelFormacion.setEditable(false);
-        ResultadoNivelFormacion.setFocusable(false);
-
-        ResultadoSede.setEditable(false);
-        ResultadoSede.setFocusable(false);
-
-        ResultadoJornadaFormacion.setEditable(false);
-        ResultadoJornadaFormacion.setFocusable(false);
 
         jLabel30.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(0, 0, 0));
@@ -276,13 +236,6 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                 ConfirmarRegistroUsuarioActionPerformed(evt);
             }
         });
-
-        jLabel41.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel41.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel41.setText("Programa de Formacion");
-
-        ResultadoProgramaFormacion.setEditable(false);
-        ResultadoProgramaFormacion.setFocusable(false);
 
         jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(0, 0, 0));
@@ -365,31 +318,67 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
 
         ResultadoPass.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
 
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fichas Asociadas", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
+
+        AprendizVinculacionesTB.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
+            }
+        ));
+        AprendizVinculacionesTB.setFocusable(false);
+        AprendizVinculacionesTB.setRequestFocusEnabled(false);
+        AprendizVinculacionesTB.setRowSelectionAllowed(false);
+        jScrollPane1.setViewportView(AprendizVinculacionesTB);
+
+        FichaCB.setForeground(new java.awt.Color(0, 0, 0));
+        FichaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        FichaCB.setPreferredSize(new java.awt.Dimension(64, 28));
+        FichaCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FichaCBActionPerformed(evt);
+            }
+        });
+
+        jLabel38.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel38.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel38.setText("Numero de ficha");
+
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fichas Asociadas", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
+
+        VinculacionesFichaTB.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
+            }
+        ));
+        VinculacionesFichaTB.setFocusable(false);
+        VinculacionesFichaTB.setRequestFocusEnabled(false);
+        VinculacionesFichaTB.setRowSelectionAllowed(false);
+        jScrollPane2.setViewportView(VinculacionesFichaTB);
+
         javax.swing.GroupLayout CreateAprendizSubPanelLayout = new javax.swing.GroupLayout(CreateAprendizSubPanel);
         CreateAprendizSubPanel.setLayout(CreateAprendizSubPanelLayout);
         CreateAprendizSubPanelLayout.setHorizontalGroup(
             CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel40)
-                            .addComponent(jLabel39)
-                            .addComponent(jLabel41)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel17))
-                        .addGap(33, 33, 33)
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ResultadoJornadaFormacion)
-                            .addComponent(ResultadoArea)
-                            .addComponent(ResultadoSede)
-                            .addComponent(ResultadoProgramaFormacion)))
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel38)
                             .addComponent(jLabel30)
                             .addComponent(jLabel29)
                             .addComponent(jLabel18)
@@ -404,7 +393,7 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ResultadoFechaHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE))
+                                .addComponent(ResultadoFechaHolder))
                             .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(ResultadoTelefono)
                             .addComponent(ResultadoCorreo)
@@ -415,9 +404,8 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ResultadoHolder))
-                            .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addComponent(ResultadoHolder))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel22)
                             .addComponent(jLabel21)
@@ -426,9 +414,6 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                             .addComponent(jLabel28)
                             .addComponent(jLabel6))
                         .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(RefrescarCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                                 .addGap(39, 39, 39)
                                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -436,26 +421,32 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                                     .addComponent(ResultadoApellidos, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(TipoDocCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(ResultadoNombres)
-                                    .addComponent(ResultadoUsuario)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                                    .addComponent(ResultadoUsuario)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(RefrescarCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addComponent(IDInstructorField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addComponent(jLabel19)
                         .addGap(120, 120, 120)
-                        .addComponent(ResultadoDocumento)))
-                .addContainerGap())
+                        .addComponent(ResultadoDocumento))
+                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel38)
+                        .addGap(85, 85, 85)
+                        .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 827, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(210, 210, 210))
         );
         CreateAprendizSubPanelLayout.setVerticalGroup(
             CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CreateAprendizSubPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(RefrescarCombos, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel6)))
+                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6)
+                    .addComponent(RefrescarCombos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -476,7 +467,6 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                     .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                         .addComponent(ResultadoPass, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TipoDocCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20))
@@ -522,35 +512,19 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                     .addComponent(jLabel38)
                     .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel41))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel40))
-                .addGap(6, 6, 6)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ResultadoJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel39))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel24)
-                    .addComponent(ResultadoArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17)
-                    .addComponent(ResultadoSede, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(CreateAprendizSubPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(CreateAprendizSubPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1040, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -565,56 +539,6 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
     private void GeneroCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GeneroCBActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_GeneroCBActionPerformed
-
-    private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
-           String fichaSeleccionada = (String) FichaCB.getSelectedItem();
-
-            if (fichaSeleccionada != null && !fichaSeleccionada.equals("Seleccionar...")) {
-                try {
-                    // Convertir el valor seleccionado a un número de ficha (si corresponde)
-                    int ficha = Integer.parseInt(fichaSeleccionada);
-                    System.out.println(ficha);
-
-                    // Crear una instancia de DataTables para realizar la consulta
-                    DataTables dataTables = new DataTables();
-
-                    // Consultar el programa de formación por la ficha seleccionada
-                    Map<String, Object> FichaDataResult = dataTables.obtenerProgramaFormacionPorFicha(ficha);
-                    System.out.println(FichaDataResult);
-
-                    if (FichaDataResult != null) {
-                        // Colocar el valor obtenido en el JTextField correspondiente
-                        ResultadoProgramaFormacion.setText((String) FichaDataResult.get("ProgramaFormacion"));
-                        ResultadoNivelFormacion.setText((String) FichaDataResult.get("NivelFormacion"));
-                        ResultadoJornadaFormacion.setText((String) FichaDataResult.get("JornadasFormacion"));
-                        ResultadoSede.setText((String) FichaDataResult.get("Sede"));
-                        ResultadoArea.setText((String) FichaDataResult.get("Area"));
-
-                    } else {
-                        // Si no se obtiene un resultado válido, limpiar el campo de texto
-                        ResultadoProgramaFormacion.setText((String) FichaDataResult.get("ProgramaFormacion No encontrado"));
-                        ResultadoNivelFormacion.setText((String) FichaDataResult.get("NivelFormacion No encontrado"));
-                        ResultadoJornadaFormacion.setText((String) FichaDataResult.get("JornadasFormacion No encontrado"));
-                        ResultadoSede.setText((String) FichaDataResult.get("Sede No encontrado"));
-                        ResultadoArea.setText((String) FichaDataResult.get("Area No encontrado"));
-                    }
-                } catch (NumberFormatException ex) {
-                    ex.printStackTrace();
-                        ResultadoProgramaFormacion.setText("ProgramaFormacion Invalida");
-                        ResultadoNivelFormacion.setText("NivelFormacion Invalida");
-                        ResultadoJornadaFormacion.setText("JornadasFormacion Invalida");
-                        ResultadoSede.setText("Sede Invalida");
-                        ResultadoArea.setText("Area Invalida");
-                }
-            } else {
-                // Limpiar el campo si no hay selección válida
-                        ResultadoProgramaFormacion.setText("");
-                        ResultadoNivelFormacion.setText("");
-                        ResultadoJornadaFormacion.setText("");
-                        ResultadoSede.setText("");
-                        ResultadoArea.setText("");
-            }
-    }//GEN-LAST:event_FichaCBActionPerformed
 
     public void aditionalConfig(){
         yearModel.addElement("Seleccionar Año");
@@ -852,30 +776,6 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
             errores.append("- El campo de Residencia es obligatorio.\n");
         }
 
-        if (FichaCB.getSelectedItem() == null) {
-            errores.append("- Debes seleccionar una Ficha.\n");
-        }
-
-        if (ResultadoProgramaFormacion.getText().trim().isEmpty()) {
-            errores.append("- El campo de Programa de Formación es obligatorio.\n");
-        }
-
-        if (ResultadoNivelFormacion.getText().trim().isEmpty()) {
-            errores.append("- El campo de Nivel de Formación es obligatorio.\n");
-        }
-
-        if (ResultadoJornadaFormacion.getText().trim().isEmpty()) {
-            errores.append("- El campo de Jornada de Formación es obligatorio.\n");
-        }
-
-        if (ResultadoArea.getText().trim().isEmpty()) {
-            errores.append("- El campo de Área es obligatorio.\n");
-        }
-
-        if (ResultadoSede.getText().trim().isEmpty()) {
-            errores.append("- El campo de Sede es obligatorio.\n");
-        }
-
         // 2. Validación de Fecha de Nacimiento
         if (!ResultadoFechaHolder.getText().trim().isEmpty()) {
             try {
@@ -966,18 +866,31 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                 ResultadoCorreo.getText().trim(),
                 GeneroCB.getSelectedItem().toString(),
                 ResultadoHolder.getText().trim(),
-                ficha,
-                ResultadoProgramaFormacion.getText().trim(),
-                ResultadoNivelFormacion.getText().trim(),
-                ResultadoJornadaFormacion.getText().trim(),
-                ResultadoArea.getText().trim(),
-                ResultadoSede.getText().trim()
+                new ArrayList<>() // Inicializamos una lista vacía para las vinculaciones
         );
 
+        // Obtener las vinculaciones desde la tabla AprendizVinculacionesTB y añadirlas al objeto AprendizModel
+        DefaultTableModel model = (DefaultTableModel) AprendizVinculacionesTB.getModel();
+        int rowCount = model.getRowCount();
+
+        for (int i = 0; i < rowCount; i++) {
+            Map<String, Object> vinculacion = new HashMap<>();
+            vinculacion.put("Ficha", model.getValueAt(i, 0));
+            vinculacion.put("Area", model.getValueAt(i, 1));
+            vinculacion.put("Sede", model.getValueAt(i, 2));
+            vinculacion.put("ClaseFormacion", model.getValueAt(i, 3));
+            vinculacion.put("JornadaFormacion", model.getValueAt(i, 4));
+            vinculacion.put("NombreInstructor", model.getValueAt(i, 5));
+            vinculacion.put("NivelFormacion", model.getValueAt(i, 6));
+            vinculacion.put("ProgramaFormacion", model.getValueAt(i, 7));
+            aprendiz.getVinculaciones().add(vinculacion);
+        }
+
+        // Llamar al API para actualizar el aprendiz con las vinculaciones
         API_Admin_AprendizApplications updateAprendiz = new API_Admin_AprendizApplications();
         updateAprendiz.UpdateAprendiz(ResultadoDocumento.getText(), aprendiz);
 
-
+        // Limpiar el formulario después de la operación
         limpiarFormularioAprendiz();
     }//GEN-LAST:event_ConfirmarRegistroUsuarioActionPerformed
 
@@ -992,11 +905,7 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
         ResultadoCorreo.setText("");
         ResultadoHolder.setText("");
         ResultadoFechaHolder.setText("");
-        ResultadoProgramaFormacion.setText("");
-        ResultadoNivelFormacion.setText("");
-        ResultadoJornadaFormacion.setText("");
-        ResultadoArea.setText("");
-        ResultadoSede.setText("");
+
 
         // Restablecer JComboBoxes
         TipoDocCB.setSelectedIndex(0);  // Asumiendo que el índice 0 es "Seleccionar..."
@@ -1094,34 +1003,22 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                 ResultadoApellidos.setText(aprendiz.getApellidos());
                 ResultadoCorreo.setText(aprendiz.getCorreo());
                 ResultadoTelefono.setText(aprendiz.getTelefono());
-                ResultadoProgramaFormacion.setText(aprendiz.getProgramaFormacion());
-                ResultadoNivelFormacion.setText(aprendiz.getNivelFormacion());
-                ResultadoJornadaFormacion.setText(aprendiz.getJornadaFormacion());
-                ResultadoSede.setText(aprendiz.getSede());
-                ResultadoArea.setText(aprendiz.getArea());
 
                 // Fecha de nacimiento: ajustar YearCB, MesCB, DiaCB
                 Date fechaNacimiento = aprendiz.getFechaNacimiento();
-
                 if (fechaNacimiento != null) {
-                    // Usar LocalDate para extraer el año, mes y día
                     LocalDate fecha = fechaNacimiento.toLocalDate();
                     int anho = fecha.getYear();
                     int mes = fecha.getMonthValue();  // De 1 a 12
                     int dia = fecha.getDayOfMonth();
 
-                    // Setear YearCB
                     YearCB.setSelectedItem(String.valueOf(anho));
 
-                    // Mapear el número del mes al nombre del mes
                     String[] mesesNombres = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
                     String nombreMes = mesesNombres[mes - 1];  // Restamos 1 para que coincida con el índice
 
-                    // Setear MesCB al nombre del mes
                     MesCB.setSelectedItem(nombreMes);
-
-                    // Setear DiaCB
-                    DiaCB.setSelectedItem(String.valueOf(dia));  // Asegúrate de que los días en DiaCB estén como números sin ceros a la izquierda
+                    DiaCB.setSelectedItem(String.valueOf(dia));
                 }
 
                 // Género
@@ -1135,8 +1032,57 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                     BarrioCB.setSelectedItem(residencia[2]);
                 }
 
-                // Número de ficha
-                FichaCB.setSelectedItem(String.valueOf(aprendiz.getFicha()));
+                // Limpiar la tabla antes de llenarla con nuevas vinculaciones
+                DefaultTableModel model = new DefaultTableModel(
+                        new Object[] {"Ficha", "Area", "Sede", "Clase de Formacion", "Jornada de Formacion", "Nombre del Instructor",  "Nivel de Formacion", "Programa de Formacion", "Eliminar"},
+                        0  // Número de filas iniciales
+                ); // Limpiar la tabla
+
+                // Llenar la tabla AprendizVinculacionesTB con los datos de las vinculaciones
+                if (aprendiz.getVinculaciones() != null && !aprendiz.getVinculaciones().isEmpty()) {
+                    for (Map<String, Object> vinculacion : aprendiz.getVinculaciones()) {
+                        Integer ficha = (Integer) vinculacion.get("Ficha");
+                        String area = (String) vinculacion.get("Area");
+                        String sede = (String) vinculacion.get("Sede");
+                        String nombreClase = (String) vinculacion.get("ClaseFormacion");
+                        String jornada = (String) vinculacion.get("JornadaFormacion");
+                        String nombreInstructor = (String) vinculacion.get("NombreInstructor");
+                        String nivelFormacion = (String) vinculacion.get("NivelFormacion");
+                        String programaFormacion = (String) vinculacion.get("ProgramaFormacion");
+
+
+                        // Añadir una nueva fila a la tabla
+                        model.addRow(new Object[]{ficha, area, sede, nombreClase, jornada, nombreInstructor, nivelFormacion, programaFormacion });
+                    }
+                }
+                AprendizVinculacionesTB.setModel(model);
+                // Crear el ButtonRenderer y ButtonEditor para la columna de "Eliminar"
+                TableColumn eliminarColumna = AprendizVinculacionesTB.getColumnModel().getColumn(8);
+                eliminarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
+                eliminarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), AprendizVinculacionesTB) {
+                    @Override
+                    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                        super.getTableCellEditorComponent(table, value, isSelected, row, column);
+
+                        // Mostrar un cuadro de confirmación antes de eliminar la fila
+                        int opcion = JOptionPane.showConfirmDialog(
+                                this.getComponent(),
+                                "¿Está seguro de que desea eliminar esta vinculación?",
+                                "Confirmar eliminación",
+                                JOptionPane.YES_NO_OPTION
+                        );
+
+                        if (opcion == JOptionPane.YES_OPTION) {
+                            // Eliminar la fila seleccionada
+                            ((DefaultTableModel) table.getModel()).removeRow(row);
+                            JOptionPane.showMessageDialog(this.getComponent(), "Vinculación eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(this.getComponent(), "Eliminación cancelada.", "Cancelado", JOptionPane.INFORMATION_MESSAGE);
+                        }
+
+                        return this.getComponent();
+                    }
+                });
 
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontró el usuario con el documento proporcionado.");
@@ -1172,7 +1118,7 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
                char caracter = evt.getKeyChar();
 
         // Permitir solo números y la tecla de retroceso
-        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
+        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE && caracter != KeyEvent.VK_ENTER) {
             evt.consume();  // Evitar que se ingrese el carácter no válido
             JOptionPane.showMessageDialog(this, "Solo se permiten números.");
         }
@@ -1202,6 +1148,162 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
         refrescarComboBoxes();
     }//GEN-LAST:event_RefrescarCombosActionPerformed
 
+    private void ResultadoDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResultadoDocumentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ResultadoDocumentoActionPerformed
+
+    private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
+    String fichaSeleccionada = (String) FichaCB.getSelectedItem();
+
+        if (fichaSeleccionada != null && !fichaSeleccionada.equals("Seleccionar...")) {
+            try {
+                // Convertir el valor seleccionado a un número de ficha
+                int ficha = Integer.parseInt(fichaSeleccionada);
+                System.out.println("Ficha seleccionada: " + ficha);
+
+                // Crear una instancia de DataTables para realizar la consulta
+                DataTables dataTables = new DataTables();
+                List<Map<String, Object>> vinculaciones = dataTables.obtenerVinculacionesPorFicha(ficha);
+
+                if (vinculaciones != null && !vinculaciones.isEmpty()) {
+
+                    // Limpiar la tabla antes de llenarla con nuevas vinculaciones
+                    DefaultTableModel model = new DefaultTableModel(
+                            new Object[] {"Ficha", "Area", "Sede", "Clase de Formacion", "Jornada de Formacion", "Nombre del Instructor",  "Nivel de Formacion", "Programa de Formacion", "Accion"},
+                            0  // Número de filas iniciales
+                    ); // Limpiar la tabla
+
+                    // Llenar la tabla AprendizVinculacionesTB con los datos de las vinculaciones
+
+                        for (Map<String, Object> vinculacion : vinculaciones) {
+                            String area = (String) vinculacion.get("Area");
+                            String sede = (String) vinculacion.get("Sede");
+                            String nombreClase = (String) vinculacion.get("ClaseFormacion");
+                            String jornada = (String) vinculacion.get("JornadaFormacion");
+                            String nombreInstructor = (String) vinculacion.get("NombreInstructor");
+                            String nivelFormacion = (String) vinculacion.get("NivelFormacion");
+                            String programaFormacion = (String) vinculacion.get("ProgramaFormacion");
+
+
+                            // Añadir una nueva fila a la tabla
+                            model.addRow(new Object[]{ficha, area, sede, nombreClase, jornada, nombreInstructor, nivelFormacion, programaFormacion, "Copiar" });
+                        }
+
+
+                    // Asignar el modelo a la tabla
+                    VinculacionesFichaTB.setModel(model);
+                    // Asignar el ButtonRenderer y ButtonEditor para la columna de "Copiar" (índice 8, por ejemplo)
+                    TableColumn copiarColumna = VinculacionesFichaTB.getColumnModel().getColumn(8);
+                    copiarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
+                    copiarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), VinculacionesFichaTB) {
+                        @Override
+                        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                            super.getTableCellEditorComponent(table, value, isSelected, row, column);
+
+                            // Obtener los valores de la fila seleccionada en la tabla VinculacionesFichaTB
+                            Integer ficha = Integer.parseInt(table.getValueAt(row, 0).toString());
+                            String area = table.getValueAt(row, 1).toString();
+                            String sede = table.getValueAt(row, 2).toString();
+                            String nombreClase = table.getValueAt(row, 3).toString();
+                            String jornada = table.getValueAt(row, 4).toString();
+                            String nombreInstructor = table.getValueAt(row, 5).toString();
+                            String nivelFormacion = table.getValueAt(row, 6).toString();
+                            String programaFormacion = table.getValueAt(row, 7).toString();
+
+                            // Verificar si la fila ya existe en AprendizVinculacionesTB
+                            DefaultTableModel modelAprendiz = (DefaultTableModel) AprendizVinculacionesTB.getModel();
+                            boolean filaDuplicada = false;
+                            for (int i = 0; i < modelAprendiz.getRowCount(); i++) {
+                                Integer fichaExistente = Integer.parseInt(modelAprendiz.getValueAt(i, 0).toString());
+                                String areaExistente = modelAprendiz.getValueAt(i, 1).toString();
+                                String sedeExistente = modelAprendiz.getValueAt(i, 2).toString();
+                                String nombreClaseExistente = modelAprendiz.getValueAt(i, 3).toString();
+                                String jornadaExistente = modelAprendiz.getValueAt(i, 4).toString();
+                                String nombreInstructorExistente = modelAprendiz.getValueAt(i, 5).toString();
+                                String nivelFormacionExistente = modelAprendiz.getValueAt(i, 6).toString();
+                                String programaFormacionExistente = modelAprendiz.getValueAt(i, 7).toString();
+
+                                // Comprobar si todas las columnas coinciden
+                                if (ficha.equals(fichaExistente) &&
+                                        area.equals(areaExistente) &&
+                                        sede.equals(sedeExistente) &&
+                                        nombreClase.equals(nombreClaseExistente) &&
+                                        jornada.equals(jornadaExistente) &&
+                                        nombreInstructor.equals(nombreInstructorExistente) &&
+                                        nivelFormacion.equals(nivelFormacionExistente) &&
+                                        programaFormacion.equals(programaFormacionExistente)) {
+                                    filaDuplicada = true;
+                                    break;
+                                }
+                            }
+
+                            // Si no se encuentra la fila duplicada, agregarla
+                            if (!filaDuplicada) {
+                                // Mostrar un cuadro de confirmación para asegurarse de que se desea copiar la fila
+                                int opcion = JOptionPane.showConfirmDialog(
+                                        this.getComponent(),
+                                        "¿Desea copiar esta vinculación?\n" +
+                                                "Ficha: " + ficha + "\n" +
+                                                "Área: " + area + "\n" +
+                                                "Sede: " + sede + "\n" +
+                                                "Clase de Formación: " + nombreClase + "\n" +
+                                                "Jornada: " + jornada + "\n" +
+                                                "Instructor: " + nombreInstructor + "\n" +
+                                                "Nivel de Formación: " + nivelFormacion + "\n" +
+                                                "Programa de Formación: " + programaFormacion,
+                                        "Confirmar copia",
+                                        JOptionPane.YES_NO_OPTION
+                                );
+
+                                if (opcion == JOptionPane.YES_OPTION) {
+                                    // Añadir la fila a la tabla AprendizVinculacionesTB
+                                    modelAprendiz.addRow(new Object[]{
+                                            ficha,
+                                            area,
+                                            sede,
+                                            nombreClase,
+                                            jornada,
+                                            nombreInstructor,
+                                            nivelFormacion,
+                                            programaFormacion
+                                    });
+
+                                    JOptionPane.showMessageDialog(this.getComponent(), "Vinculación copiada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                                } else {
+                                    JOptionPane.showMessageDialog(this.getComponent(), "Operación cancelada.", "Cancelado", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            } else {
+                                // Mostrar mensaje de advertencia si la fila ya existe
+                                JOptionPane.showMessageDialog(this.getComponent(), "La vinculación ya existe en la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                            }
+
+                            return this.getComponent();
+                        }
+                    });
+
+                } else {
+                    // Limpiar la tabla si no hay vinculaciones
+                    DefaultTableModel model = new DefaultTableModel(
+                            new Object[] {"Ficha", "Area", "Sede", "Clase de Formacion", "Jornada de Formacion", "Nombre del Instructor",  "Nivel de Formacion", "Programa de Formacion", "Accion"},
+                            0  // Número de filas iniciales
+                    ); // Limpiar la tabla
+                    VinculacionesFichaTB.setModel(model);
+                }
+
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Ficha seleccionada inválida.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            // Limpiar la tabla si no hay una selección válida
+            DefaultTableModel model = new DefaultTableModel(
+                    new Object[] {"Clase de Formación", "Jornada", "Instructor", "Ficha"},
+                    0  // Número de filas iniciales
+            );
+            VinculacionesFichaTB.setModel(model);
+        }
+    }//GEN-LAST:event_FichaCBActionPerformed
+
 
     public void refrescarComboBoxes() {
         try {
@@ -1227,6 +1329,7 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable AprendizVinculacionesTB;
     private javax.swing.JComboBox<String> BarrioCB;
     private javax.swing.JButton BuscarDatosUsuario;
     private javax.swing.JButton ConfirmarRegistroUsuario;
@@ -1240,38 +1343,31 @@ public class ModAprendizSubPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> MunicipioCB;
     private javax.swing.JButton RefrescarCombos;
     private javax.swing.JTextField ResultadoApellidos;
-    private javax.swing.JTextField ResultadoArea;
     private javax.swing.JTextField ResultadoCorreo;
     private javax.swing.JTextField ResultadoDocumento;
     private javax.swing.JTextField ResultadoFechaHolder;
     private javax.swing.JTextField ResultadoHolder;
-    private javax.swing.JTextField ResultadoJornadaFormacion;
-    private javax.swing.JTextField ResultadoNivelFormacion;
     private javax.swing.JTextField ResultadoNombres;
     private javax.swing.JPasswordField ResultadoPass;
-    private javax.swing.JTextField ResultadoProgramaFormacion;
-    private javax.swing.JTextField ResultadoSede;
     private javax.swing.JTextField ResultadoTelefono;
     private javax.swing.JTextField ResultadoUsuario;
     private javax.swing.JComboBox<String> TipoDocCB;
+    private javax.swing.JTable VinculacionesFichaTB;
     private javax.swing.JComboBox<String> YearCB;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
-    private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

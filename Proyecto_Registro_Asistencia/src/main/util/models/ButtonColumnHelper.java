@@ -291,4 +291,68 @@ public class ButtonColumnHelper {
 
     }
 
+
+    public static class ButtonEditorCopiar extends DefaultCellEditor {
+        private String label;
+        protected JButton button;
+        private boolean isPushed;
+        private JTable sourceTable;  // La tabla de la que se copia
+        private JTable destinationTable;  // La tabla a la que se copia
+        private int row;  // La fila seleccionada
+
+        // Constructor para el editor
+        public ButtonEditorCopiar(JCheckBox checkBox, JTable destinationTable) {
+            super(checkBox);
+            this.sourceTable = sourceTable;
+            this.destinationTable = destinationTable;
+            button = new JButton();
+            ButtonStyler.applyPrimaryStyle(button);  // Aplicar estilo al botón
+            button.setOpaque(true);
+
+            // Acción al hacer clic en el botón
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    fireEditingStopped();
+                    if (row >= 0 && row < sourceTable.getRowCount()) {
+                        // Obtener los valores de la fila seleccionada en la tabla de origen
+                        String claseFormacion = (String) sourceTable.getValueAt(row, 0);
+                        String jornada = (String) sourceTable.getValueAt(row, 1);
+                        String nombreInstructor = (String) sourceTable.getValueAt(row, 2);
+                        Integer ficha = (Integer) sourceTable.getValueAt(row, 3);
+
+                        // Añadir esos valores a la tabla de destino (AprendizVinculacionesTB)
+                        DefaultTableModel destModel = (DefaultTableModel) destinationTable.getModel();
+                        destModel.addRow(new Object[]{claseFormacion, jornada, nombreInstructor, ficha});
+
+                        // Puedes imprimir el contenido de la tabla destino para verificar
+                        imprimirContenidoTabla(destinationTable);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                                                     boolean isSelected, int row, int column) {
+            this.row = row;  // Capturar la fila actual
+            label = (value == null) ? "Copiar" : value.toString();
+            button.setText(label);
+            isPushed = true;
+            return button;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            isPushed = false;
+            return label;
+        }
+
+        @Override
+        public boolean stopCellEditing() {
+            isPushed = false;
+            return super.stopCellEditing();
+        }
+    }
+
 }

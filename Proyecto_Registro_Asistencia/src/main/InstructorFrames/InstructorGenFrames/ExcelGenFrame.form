@@ -58,8 +58,8 @@
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="AmbienteCB" min="-2" pref="181" max="-2" attributes="0"/>
-                                              <Component id="InstructorClaseFormacion" alignment="0" min="-2" pref="275" max="-2" attributes="0"/>
                                               <Component id="ActividadCB" alignment="0" min="-2" pref="181" max="-2" attributes="0"/>
+                                              <Component id="ClaseFormacionCB" min="-2" pref="181" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -156,7 +156,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="InstructorClaseFormacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="ClaseFormacionCB" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
@@ -459,11 +459,6 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="InstructorClaseFormacion">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="XXXXXXXXXXXXXXXXXX"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
             <Property name="text" type="java.lang.String" value="Actividad"/>
@@ -534,6 +529,21 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ExtensionHoraCBActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="ClaseFormacionCB">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="4">
+                <StringItem index="0" value="Item 1"/>
+                <StringItem index="1" value="Item 2"/>
+                <StringItem index="2" value="Item 3"/>
+                <StringItem index="3" value="Item 4"/>
+              </StringArray>
+            </Property>
+          </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>

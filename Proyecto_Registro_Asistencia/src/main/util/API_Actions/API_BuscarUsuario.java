@@ -12,7 +12,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import main.util.models.UsersModels.AprendizModel;
 import main.util.models.UsersModels.InstructorModel;
 
@@ -42,7 +45,7 @@ public class API_BuscarUsuario {
                 JOptionPane.showMessageDialog(null, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
                 return null;
             } else {
-                // Convertir el JSON en AprendizModel
+                // Convertir el JSON en AprendizModel, incluyendo la conversión de vinculaciones
                 return convertirJsonAAprendizModel(json);
             }
         } catch (Exception e) {
@@ -146,24 +149,24 @@ public class API_BuscarUsuario {
             }
         }
 
-//        // Imprimir los valores obtenidos del JSON para depuración
-//        System.out.println("User: " + json.optString("User"));
-//        System.out.println("Password: " + json.optString("Password"));
-//        System.out.println("Documento: " + json.optString("Documento"));
-//        System.out.println("TipoDocumento: " + json.optString("TipoDocumento"));
-//        System.out.println("Nombres: " + json.optString("Nombres"));
-//        System.out.println("Apellidos: " + json.optString("Apellidos"));
-//        System.out.println("FechaNacimiento: " + fechaNacimiento);
-//        System.out.println("Telefono: " + json.optString("Telefono"));
-//        System.out.println("Correo: " + json.optString("Correo"));
-//        System.out.println("Genero: " + json.optString("Genero"));
-//        System.out.println("Residencia: " + json.optString("Residencia"));
-//        System.out.println("NumeroFicha: " + json.optInt("NumeroFicha"));
-//        System.out.println("ProgramaFormacion: " + json.optString("ProgramaFormacion"));
-//        System.out.println("JornadaFormacion: " + json.optString("JornadaFormacion"));
-//        System.out.println("NivelFormacion: " + json.optString("NivelFormacion"));
-//        System.out.println("Sede: " + json.optString("Sede"));
-//        System.out.println("Area: " + json.optString("Area"));
+        // Convertir la lista de vinculaciones
+        List<Map<String, Object>> vinculaciones = new ArrayList<>();
+        JSONArray vinculacionesJsonArray = json.optJSONArray("Vinculaciones");
+        if (vinculacionesJsonArray != null) {
+            for (int i = 0; i < vinculacionesJsonArray.length(); i++) {
+                JSONObject vinculacionJson = vinculacionesJsonArray.getJSONObject(i);
+                Map<String, Object> vinculacion = new HashMap<>();
+                vinculacion.put("ClaseFormacion", vinculacionJson.optString("ClaseFormacion"));
+                vinculacion.put("Ficha", vinculacionJson.optInt("Ficha"));
+                vinculacion.put("ProgramaFormacion", vinculacionJson.optString("ProgramaFormacion"));
+                vinculacion.put("JornadaFormacion", vinculacionJson.optString("JornadaFormacion"));
+                vinculacion.put("NivelFormacion", vinculacionJson.optString("NivelFormacion"));
+                vinculacion.put("Sede", vinculacionJson.optString("Sede"));
+                vinculacion.put("Area", vinculacionJson.optString("Area"));
+                vinculacion.put("NombreInstructor", vinculacionJson.optString("NombreInstructor"));
+                vinculaciones.add(vinculacion);
+            }
+        }
 
         // Crear y devolver un AprendizModel a partir del JSON
         AprendizModel aprendiz = new AprendizModel(
@@ -178,12 +181,7 @@ public class API_BuscarUsuario {
                 json.optString("Correo"),
                 json.optString("Genero"),
                 json.optString("Residencia"),
-                json.optInt("NumeroFicha"),
-                json.optString("ProgramaFormacion"),
-                json.optString("JornadaFormacion"),
-                json.optString("NivelFormacion"),
-                json.optString("Sede"),
-                json.optString("Area")
+                vinculaciones  // Agregar las vinculaciones al modelo
         );
 
         return aprendiz;
@@ -192,17 +190,18 @@ public class API_BuscarUsuario {
     private InstructorModel convertirJsonAInstructorModel(JSONObject json) {
         // Crear listas para las fichas y otros atributos
         List<Integer> fichas = new ArrayList<>();
-        JSONArray fichasArray = json.optJSONArray("Fichas"); // Ajustar el nombre de la clave con mayúscula inicial
+        JSONArray fichasArray = json.optJSONArray("Fichas");
         if (fichasArray != null) {
             for (int i = 0; i < fichasArray.length(); i++) {
                 fichas.add(fichasArray.getInt(i));
             }
         }
 
+        List<String> claseFormacion = jsonArrayToList(json.optJSONArray("ClaseFormacion"));
         List<String> programasFormacion = jsonArrayToList(json.optJSONArray("ProgramasFormacion"));
         List<String> jornadasFormacion = jsonArrayToList(json.optJSONArray("JornadasFormacion"));
         List<String> nivelesFormacion = jsonArrayToList(json.optJSONArray("NivelesFormacion"));
-        List<String> sedes = jsonArrayToList(json.optJSONArray("CentrosFormacion")); // Ajustar el nombre de la clave con mayúscula inicial
+        List<String> sedes = jsonArrayToList(json.optJSONArray("CentrosFormacion"));
         List<String> areas = jsonArrayToList(json.optJSONArray("Areas"));
 
         // Manejar la fecha de nacimiento
@@ -229,7 +228,7 @@ public class API_BuscarUsuario {
         System.out.println("Correo: " + json.optString("Correo"));
         System.out.println("Genero: " + json.optString("Genero"));
         System.out.println("Residencia: " + json.optString("Residencia"));
-        System.out.println("ClaseFormacion: " + json.optString("ClaseFormacion"));
+        System.out.println("ClaseFormacion: " + claseFormacion);
         System.out.println("Fichas: " + fichas);
         System.out.println("ProgramasFormacion: " + programasFormacion);
         System.out.println("JornadasFormacion: " + jornadasFormacion);
@@ -250,7 +249,7 @@ public class API_BuscarUsuario {
                 json.optString("Correo"),
                 json.optString("Genero"),
                 json.optString("Residencia"),
-                json.optString("ClaseFormacion"),
+                claseFormacion,
                 fichas,
                 programasFormacion,
                 jornadasFormacion,

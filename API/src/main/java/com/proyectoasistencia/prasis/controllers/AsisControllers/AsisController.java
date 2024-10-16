@@ -66,7 +66,7 @@ public class AsisController {
     }
 
     @GetMapping("/listar/InstructorAsis")
-    public ResponseEntity<List<Map<String, Object>>> listarAsistenciasPorFicha(@RequestParam String documentoInstructor) {
+    public ResponseEntity<List<Map<String, Object>>> listarAsistenciasPorInstructor(@RequestParam String documentoInstructor) {
         try {
             System.out.println("Buscando asistencias para el instructor con documento: " + documentoInstructor);
             List<Map<String, Object>> asistencias = asisService.listarAsistenciasPorInstructor(documentoInstructor);

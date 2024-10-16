@@ -2,6 +2,7 @@ package com.proyectoasistencia.prasis.controllers.DataTablesControllers;
 
 import com.proyectoasistencia.prasis.services.DataTablesServices.ClaseFormacionDataService;
 import com.proyectoasistencia.prasis.services.DataTablesServices.FichasDataService;
+import com.proyectoasistencia.prasis.services.DataTablesServices.InstructoresDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ public class FichasDataController {
 
     @Autowired
     private ClaseFormacionDataService claseFormacionDataService;
+
+    @Autowired
+    private InstructoresDataService instructoresDataService;
 
     // Obtener todas las fichas
     @GetMapping("/todos")
@@ -115,9 +119,14 @@ public class FichasDataController {
         }
     }
 
-    // Endpoint para obtener las fichas por nombre del programa de formación
+    /**
+     * Endpoint para obtener las fichas por nombre del programa de formación.
+     *
+     * @param nombrePrograma Nombre del programa de formación.
+     * @return ResponseEntity con la lista de fichas o mensaje de error.
+     */
     @GetMapping("/porPrograma")
-    public ResponseEntity<List<Map<String, Object>>> obtenerFichasPorPrograma(@RequestParam String nombrePrograma) {
+    public ResponseEntity<Map<String, Object>> obtenerFichasPorPrograma(@RequestParam String nombrePrograma) {
         try {
             // Decodificar el nombre del programa en caso de que venga codificado
             String nombreProgramaDecodificado = URLDecoder.decode(nombrePrograma, StandardCharsets.UTF_8.name());
@@ -126,112 +135,195 @@ public class FichasDataController {
             // Llamar al servicio para obtener las fichas por el programa de formación
             List<Map<String, Object>> fichas = fichasDataService.obtenerFichasPorPrograma(nombreProgramaDecodificado);
 
-            // Retornar la lista de fichas en el response
-            return ResponseEntity.ok(fichas);
+            // Retornar la lista de fichas en el response con un mensaje
+            return ResponseEntity.ok(Map.of(
+                    "data", fichas,
+                    "mensaje", "Fichas obtenidas exitosamente por el programa de formación."
+            ));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
+            return ResponseEntity.badRequest().body(Map.of(
+                    "mensaje", e.getMessage()
+            ));
         } catch (Exception e) {
             System.out.println("Error al obtener las fichas por programa: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
-        }
-    }
-
-    // Obtener todas las fichas por documento del instructor
-    @GetMapping("/instructor/{documento}")
-    public ResponseEntity<List<Map<String, Object>>> obtenerFichasPorInstructor(@PathVariable String documento) {
-        try {
-            // Decodificar el documento en caso de que venga codificado
-            String documentoDecodificado = URLDecoder.decode(documento, StandardCharsets.UTF_8.name());
-
-            // Llamar al servicio para obtener las fichas por el documento del instructor
-            List<Map<String, Object>> fichas = fichasDataService.obtenerFichasPorDocumentoInstructor(documentoDecodificado);
-
-            // Retornar la lista de fichas en el response
-            return ResponseEntity.ok(fichas);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonList(Map.of("mensaje", e.getMessage())));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonList(Map.of("error", "Error al obtener las fichas por instructor: " + e.getMessage())));
+            return ResponseEntity.status(500).body(Map.of(
+                    "mensaje", "Error interno del servidor al obtener las fichas por programa."
+            ));
         }
     }
 
     /**
-     * Endpoint para asociar una ficha con una clase de formación.
+     * Endpoint para obtener las fichas por documento del instructor.
      *
-     * @param numeroFicha El número de la ficha.
-     * @param nombreClase El nombre de la clase de formación.
-     * @return ResponseEntity con mensaje de éxito o error.
+     * @param documento Documento del instructor.
+     * @return ResponseEntity con la lista de fichas o mensaje de error.
      */
-    @PostMapping("/asociarFichaClase")
-    public ResponseEntity<String> asociarFichaConClase(@RequestParam Integer numeroFicha,
-                                                       @RequestParam String nombreClase) {
-        System.out.println("Asociando Ficha Número " + numeroFicha + " con Clase de Formación '" + nombreClase + "'");
+    @GetMapping("/instructor/{documento}")
+    public ResponseEntity<Map<String, Object>> obtenerFichasPorInstructor(@PathVariable String documento) {
         try {
-            // Obtener el ID de la ficha
-            Integer idFicha = fichasDataService.obtenerIdFichaPorNumero(numeroFicha);
-            System.out.println("ID de la ficha obtenida: " + idFicha);
+            // Decodificar el documento en caso de que venga codificado
+            String documentoDecodificado = URLDecoder.decode(documento, StandardCharsets.UTF_8.name());
+            System.out.println("Documento decodificado en el backend: " + documentoDecodificado);
 
-            // Obtener el ID de la clase de formación
-            Integer idClaseFormacion = claseFormacionDataService.obtenerIdClasePorNombre(nombreClase);
-            System.out.println("ID de la clase de formación obtenida: " + idClaseFormacion);
+            // Llamar al servicio para obtener las fichas por el documento del instructor
+            List<Map<String, Object>> fichas = fichasDataService.obtenerFichasPorDocumentoInstructor(documentoDecodificado);
 
-            // Asociar la ficha con la clase de formación
-            fichasDataService.asociarFichaConClase(idClaseFormacion, idFicha);
-            System.out.println("Ficha asociada exitosamente a la clase de formación.");
-
-            return ResponseEntity.ok("Ficha asociada exitosamente a la clase de formación.");
+            // Retornar la lista de fichas en el response con un mensaje
+            return ResponseEntity.ok(Map.of(
+                    "data", fichas,
+                    "mensaje", "Fichas obtenidas exitosamente por el documento del instructor."
+            ));
         } catch (IllegalArgumentException e) {
-            System.out.println("Error al asociar ficha con clase de formación: " + e.getMessage());
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+            return ResponseEntity.status(404).body(Map.of(
+                    "mensaje", e.getMessage()
+            ));
         } catch (Exception e) {
-            System.out.println("Error inesperado al asociar ficha con clase de formación: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + e.getMessage());
+            return ResponseEntity.status(500).body(Map.of(
+                    "mensaje", "Error interno del servidor al obtener las fichas por instructor."
+            ));
         }
     }
 
-    // Método para editar la relación entre una ficha y una clase de formación
-    @PutMapping("/editarAsociacion")
-    public ResponseEntity<String> editarAsociacionFichaAClase(@RequestParam String nombreClaseAnterior,
-                                                              @RequestParam String nombreClaseNueva,
-                                                              @RequestParam Integer numeroFichaAnterior,
-                                                              @RequestParam Integer numeroFichaNuevo) {
+    /**
+     * Obtener todas las asociaciones entre fichas, instructores y clases de formación.
+     */
+    @GetMapping("/obtenerAsociaciones")
+    public ResponseEntity<Map<String, Object>> obtenerAsociaciones() {
         try {
-            // Obtener los IDs de las clases y fichas anteriores y nuevas
-            Integer idClaseAnterior = claseFormacionDataService.obtenerIdClasePorNombre(nombreClaseAnterior);
-            Integer idClaseNueva = claseFormacionDataService.obtenerIdClasePorNombre(nombreClaseNueva);
-            Integer idFichaAnterior = fichasDataService.obtenerIdFichaPorNumero(numeroFichaAnterior);
-            Integer idFichaNueva = fichasDataService.obtenerIdFichaPorNumero(numeroFichaNuevo);
+            List<Map<String, Object>> asociaciones = fichasDataService.obtenerAsociaciones();
+            return ResponseEntity.ok(Map.of(
+                    "data", asociaciones,
+                    "mensaje", "Asociaciones obtenidas exitosamente."
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of(
+                    "mensaje", "Error interno al obtener las asociaciones."
+            ));
+        }
+    }
 
-            if (idClaseAnterior == null || idClaseNueva == null || idFichaAnterior == null || idFichaNueva == null) {
-                return ResponseEntity.badRequest().body("No se pudo encontrar la clase de formación o la ficha especificada.");
+    /**
+     * Asociar una ficha con un instructor y una clase de formación.
+     */
+    @PostMapping("/asociarFichaInstructorClase")
+    public ResponseEntity<Map<String, Object>> asociarFichaInstructorClase(
+            @RequestParam Integer numeroFicha,
+            @RequestParam String documentoInstructor,
+            @RequestParam String nombreClase,
+            @RequestParam String jornadaClase) {
+        try {
+            Integer idInstructor = instructoresDataService.obtenerIdInstructorPorDocumento(documentoInstructor);
+            if (idInstructor == null) {
+                throw new IllegalArgumentException("Instructor no encontrado.");
             }
 
-            // Editar la relación entre la clase de formación y la ficha
-            fichasDataService.editarAsociacionFichaAClase(idClaseAnterior, idClaseNueva, idFichaAnterior, idFichaNueva);
-            return ResponseEntity.ok("Asociación de la ficha con la clase de formación editada exitosamente.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al editar la asociación: " + e.getMessage());
-        }
-    }
+            Integer idClaseFormacion = claseFormacionDataService.obtenerIdClasePorNombre(nombreClase, jornadaClase);
+            if (idClaseFormacion == null) {
+                throw new IllegalArgumentException("Clase de formación no encontrada.");
+            }
 
-    // Método para eliminar la relación entre una ficha y una clase de formación
-    @DeleteMapping("/eliminarAsociacion")
-    public ResponseEntity<String> eliminarAsociacionFichaAClase(@RequestParam String nombreClase,
-                                                                @RequestParam Integer numeroFicha) {
-        try {
-            // Obtener IDs de la clase anterior y la ficha anterior
-            Integer idClase = claseFormacionDataService.obtenerIdClasePorNombre(nombreClase);
             Integer idFicha = fichasDataService.obtenerIdFichaPorNumero(numeroFicha);
-
-            if (idClase == null || idFicha == null) {
-                return ResponseEntity.badRequest().body("No se pudo encontrar la clase de formación o la ficha especificada.");
+            if (idFicha == null) {
+                throw new IllegalArgumentException("Ficha no encontrada.");
             }
 
-            // Eliminar la relación
-            fichasDataService.eliminarAsociacionFichaAClase(idClase, idFicha);
-            return ResponseEntity.ok("Asociación eliminada exitosamente.");
+            fichasDataService.asociarFichaInstructorClase(idFicha, idInstructor, idClaseFormacion);
+            return ResponseEntity.ok(Map.of("mensaje", "Asociación exitosa."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("mensaje", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la asociación: " + e.getMessage());
+            return ResponseEntity.status(500).body(Map.of("mensaje", "Error interno."));
+        }
+    }
+
+    /**
+     * Editar una asociación existente entre ficha, instructor y clase de formación.
+     */
+    @PutMapping("/editarAsociacion")
+    public ResponseEntity<Map<String, Object>> editarAsociacionFichaInstructorClase(
+            @RequestParam String nombreClaseAnterior,
+            @RequestParam String nombreClaseNueva,
+            @RequestParam Integer numeroFichaAnterior,
+            @RequestParam Integer numeroFichaNuevo,
+            @RequestParam String documentoInstructorAnterior,
+            @RequestParam String documentoInstructorNuevo,
+            @RequestParam String jornadaClase) {
+        try {
+            Integer idClaseAnterior = claseFormacionDataService.obtenerIdClasePorNombre(nombreClaseAnterior, jornadaClase);
+            if (idClaseAnterior == null) {
+                throw new IllegalArgumentException("Clase de formación anterior no encontrada.");
+            }
+
+            Integer idClaseNueva = claseFormacionDataService.obtenerIdClasePorNombre(nombreClaseNueva, jornadaClase);
+            if (idClaseNueva == null) {
+                throw new IllegalArgumentException("Nueva clase de formación no encontrada.");
+            }
+
+            Integer idFichaAnterior = fichasDataService.obtenerIdFichaPorNumero(numeroFichaAnterior);
+            if (idFichaAnterior == null) {
+                throw new IllegalArgumentException("Ficha anterior no encontrada.");
+            }
+
+            Integer idFichaNuevo = fichasDataService.obtenerIdFichaPorNumero(numeroFichaNuevo);
+            if (idFichaNuevo == null) {
+                throw new IllegalArgumentException("Nueva ficha no encontrada.");
+            }
+
+            Integer idInstructorAnterior = instructoresDataService.obtenerIdInstructorPorDocumento(documentoInstructorAnterior);
+            if (idInstructorAnterior == null) {
+                throw new IllegalArgumentException("Instructor anterior no encontrado.");
+            }
+
+            Integer idInstructorNuevo = instructoresDataService.obtenerIdInstructorPorDocumento(documentoInstructorNuevo);
+            if (idInstructorNuevo == null) {
+                throw new IllegalArgumentException("Nuevo instructor no encontrado.");
+            }
+
+            fichasDataService.editarAsociacionFichaInstructorClase(
+                    idClaseAnterior, idClaseNueva,
+                    idFichaAnterior, idFichaNuevo,
+                    idInstructorAnterior, idInstructorNuevo
+            );
+
+            return ResponseEntity.ok(Map.of("mensaje", "Asociación editada exitosamente."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("mensaje", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("mensaje", "Error interno."));
+        }
+    }
+
+    /**
+     * Eliminar una asociación existente entre ficha, instructor y clase de formación.
+     */
+    @DeleteMapping("/eliminarAsociacion")
+    public ResponseEntity<Map<String, Object>> eliminarAsociacionFichaInstructorClase(
+            @RequestParam String nombreClase,
+            @RequestParam Integer numeroFicha,
+            @RequestParam String documentoInstructor,
+            @RequestParam String jornadaClase) {
+        try {
+            Integer idClase = claseFormacionDataService.obtenerIdClasePorNombre(nombreClase, jornadaClase);
+            if (idClase == null) {
+                throw new IllegalArgumentException("Clase de formación no encontrada.");
+            }
+
+            Integer idFicha = fichasDataService.obtenerIdFichaPorNumero(numeroFicha);
+            if (idFicha == null) {
+                throw new IllegalArgumentException("Ficha no encontrada.");
+            }
+
+            Integer idInstructor = instructoresDataService.obtenerIdInstructorPorDocumento(documentoInstructor);
+            if (idInstructor == null) {
+                throw new IllegalArgumentException("Instructor no encontrado.");
+            }
+
+            fichasDataService.eliminarAsociacionFichaInstructorClase(idClase, idFicha, idInstructor);
+            return ResponseEntity.ok(Map.of("mensaje", "Asociación eliminada exitosamente."));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("mensaje", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("mensaje", "Error interno."));
         }
     }
 }

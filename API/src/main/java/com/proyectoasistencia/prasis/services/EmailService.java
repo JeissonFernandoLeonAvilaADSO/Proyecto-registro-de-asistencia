@@ -29,26 +29,6 @@ public class EmailService {
         mensaje.append("Género: ").append(perfilUsuario.getGenero()).append("\n");
         mensaje.append("Residencia: ").append(perfilUsuario.getResidencia()).append("\n");
 
-        // Determinar el rol y agregar información específica
-        if (perfilUsuario instanceof AprendizModel) {
-            AprendizModel aprendiz = (AprendizModel) perfilUsuario;
-            mensaje.append("Ficha: ").append(aprendiz.getFicha()).append("\n");
-            mensaje.append("Programa de Formación: ").append(aprendiz.getProgramaFormacion()).append("\n");
-            mensaje.append("Jornada de Formación: ").append(aprendiz.getJornadaFormacion()).append("\n");
-            mensaje.append("Nivel de Formación: ").append(aprendiz.getNivelFormacion()).append("\n");
-            mensaje.append("Centro de Formación: ").append(aprendiz.getSede()).append("\n");
-            mensaje.append("Área: ").append(aprendiz.getArea()).append("\n");
-            mensaje.append("Rol: Aprendiz\n");
-        } else if (perfilUsuario instanceof InstructorModel) {
-            InstructorModel instructor = (InstructorModel) perfilUsuario;
-            mensaje.append("Fichas asignadas: ").append(instructor.getFichas()).append("\n");
-            mensaje.append("Programas de Formación: ").append(instructor.getProgramasFormacion()).append("\n");
-            mensaje.append("Jornadas de Formación: ").append(instructor.getJornadasFormacion()).append("\n");
-            mensaje.append("Niveles de Formación: ").append(instructor.getNivelesFormacion()).append("\n");
-            mensaje.append("Centros de Formación: ").append(instructor.getSedes()).append("\n");
-            mensaje.append("Áreas: ").append(instructor.getAreas()).append("\n");
-            mensaje.append("Rol: Instructor\n");
-        }
 
         // Enviar el correo
         SimpleMailMessage mailMessage = new SimpleMailMessage();

@@ -4,6 +4,9 @@
  */
 package main.util.models;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  *
  * @author Propietario
@@ -14,7 +17,7 @@ public class UserSession {
     private String Documento;
     private String Nombres;
     private String Rol;
-    private String ClaseFormacion;
+    private List<Map<String, Object>> clasesFormacion;
 
 
     private UserSession() {
@@ -61,13 +64,14 @@ public class UserSession {
         Rol = role;
     }
 
-    public String getClaseFormacion() {
-        return ClaseFormacion;
+    public List<Map<String, Object>> getClasesFormacion() {
+        return clasesFormacion;
     }
 
-    public void setClaseFormacion(String claseFormacion) {
-        ClaseFormacion = claseFormacion;
+    public void setClasesFormacion(List<Map<String, Object>> clasesFormacion) {
+        this.clasesFormacion = clasesFormacion;
     }
+
 
     // Método para limpiar la sesión
     public void clearSession() {
@@ -75,6 +79,6 @@ public class UserSession {
         Documento = null;
         Nombres = null;
         Rol = null;
-        ClaseFormacion = null;
+        clasesFormacion = null;
     }
 }

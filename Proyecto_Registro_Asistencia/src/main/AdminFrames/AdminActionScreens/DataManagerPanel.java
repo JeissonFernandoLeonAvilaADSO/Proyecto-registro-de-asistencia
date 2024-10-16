@@ -55,11 +55,12 @@ public class DataManagerPanel extends javax.swing.JPanel {
             actualizarTablaNivelesFormacion();
             actualizarTablaSedesFormacion();
             actualizarTablaClaseFormacion();
-            AsociarFichaDataFichasCB.setModel(cbm.generarComboBoxModelPorTipo("Fichas"));
-            AsociarFichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ClaseFormacion"));
+            AsociarClaseInstructorFichaDataFichasCB.setModel(cbm.generarComboBoxModelPorTipo("Fichas"));
+            AsociarInstructorClaseFichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ClaseFormacion"));
             FichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ProgramaFormacion"));
             agregarModeloProgramaFormacion(ProgramaFormacionDataTable, API_DataProgramaFormacionApplications.obtenerProgramasFormacion());
             FichaDataJornadaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("JornadaFormacion"));
+            DocumentoInstructorClaseFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("JornadaFormacion"));
             NivelFormacionProgramaCB.setModel(cbm.generarComboBoxModelPorTipo("NivelFormacion"));
             SedeFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("Sede"));
             AreaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("Areas"));
@@ -249,30 +250,32 @@ public class DataManagerPanel extends javax.swing.JPanel {
 
 
 
-    // Método para agregar modelo de clase de formación sin ComboBox, usando texto plano para mostrar el instructor
-    // Asumiendo que tienes una instancia de JTable llamada 'tabla'
     public void agregarModeloClaseFormacion(JTable tabla, List<Map<String, Object>> clases) {
-        // Crear el DefaultTableModel con columnas: ID, Nombre de la Clase, Instructor, Documento, Correo, Editar, Eliminar
-        DefaultTableModel modeloTabla = new DefaultTableModel(new Object[]{"ID", "NombreClase", "Instructor", "Documento", "Correo", "Editar", "Eliminar"}, 0);
+        // Crear el DefaultTableModel con columnas: ID, Nombre de la Clase, Jornada de formación, Editar, Eliminar
+        DefaultTableModel modeloTabla = new DefaultTableModel(new Object[]{"ID", "Nombre de Clase", "Jornada de Formación", "Editar", "Eliminar"}, 0) {
+            // Hacer que las columnas Editar y Eliminar no sean editables directamente
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 3 || column == 4;
+            }
+        };
 
         // Rellenar el modelo con los datos de las clases
         for (Map<String, Object> clase : clases) {
-            Integer idClase = (Integer) clase.get("IDClase");
+            Integer idClase = (Integer) clase.get("ID");
             String nombreClase = (String) clase.get("NombreClase");
-            String nombreInstructor = (String) clase.get("NombreInstructor");
-            String documentoInstructor = (String) clase.get("DocumentoInstructor");
-            String correoInstructor = (String) clase.get("CorreoInstructor");
+            String jornadaFormacion = (String) clase.get("JornadasFormacion");
 
-            // Añadir una fila al modelo con los datos de la clase y el instructor
-            modeloTabla.addRow(new Object[]{idClase, nombreClase, nombreInstructor, documentoInstructor, correoInstructor, "Editar", "Eliminar"});
+            // Añadir una fila al modelo con los datos de la clase
+            modeloTabla.addRow(new Object[]{idClase, nombreClase, jornadaFormacion, "Editar", "Eliminar"});
         }
 
         // Setear el modelo a la JTable
         tabla.setModel(modeloTabla);
 
         // Asignar el ButtonRenderer y ButtonEditor para las columnas de "Editar" y "Eliminar"
-        // Columna "Editar" (índice 5)
-        TableColumn editarColumna = tabla.getColumnModel().getColumn(5);
+        // Columna "Editar" (índice 3)
+        TableColumn editarColumna = tabla.getColumnModel().getColumn(3);
         editarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
         editarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
             @Override
@@ -282,7 +285,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 // Obtener los valores de la fila seleccionada
                 int idClase = Integer.parseInt(table.getValueAt(row, 0).toString());
                 String nombreClase = table.getValueAt(row, 1).toString();
-                String documentoInstructor = table.getValueAt(row, 3).toString();
+                String jornadaFormacion = table.getValueAt(row, 2).toString();
 
                 // Solicitar nuevos valores al usuario
                 String nuevoNombreClase = JOptionPane.showInputDialog(null, "Actualizar Nombre de la Clase:", nombreClase);
@@ -291,58 +294,34 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     return this.getComponent();
                 }
 
-                String nuevoDocumentoInstructor = JOptionPane.showInputDialog(null, "Actualizar Documento del Instructor:", documentoInstructor);
-                if (nuevoDocumentoInstructor == null || nuevoDocumentoInstructor.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "El documento del instructor no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                String nuevaJornadaFormacion = JOptionPane.showInputDialog(null, "Actualizar Jornada de Formación:", jornadaFormacion);
+                if (nuevaJornadaFormacion == null || nuevaJornadaFormacion.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "La jornada de formación no puede estar vacía.", "Error", JOptionPane.ERROR_MESSAGE);
                     return this.getComponent();
                 }
-
-                // Verificar si el nuevo documento del instructor existe
-                API_BuscarUsuario buscarInstructor = new API_BuscarUsuario();
-                InstructorModel instructor = buscarInstructor.buscarInstructorPorDocumento(nuevoDocumentoInstructor);
-
-                if (instructor == null) {
-                    JOptionPane.showMessageDialog(this.getComponent(), "No se encontró ningún instructor con el documento proporcionado.", "Instructor no encontrado", JOptionPane.ERROR_MESSAGE);
-                    return this.getComponent();
-                }
-
-                // Formatear la información del instructor
-                String infoInstructor = String.format(
-                        "Información del Instructor:\n" +
-                                "Nombres: %s %s\n" +
-                                "Documento: %s\n" +
-                                "Correo: %s\n" +
-                                "Teléfono: %s",
-                        instructor.getNombres(),
-                        instructor.getApellidos(),
-                        instructor.getDocumento(),
-                        instructor.getCorreo(),
-                        instructor.getTelefono()
-                );
 
                 // Mostrar el cuadro de diálogo de confirmación
                 int opcion = JOptionPane.showConfirmDialog(
                         this.getComponent(),
-                        infoInstructor + "\n\n¿Desea actualizar la clase con estos datos?",
+                        "¿Desea actualizar la clase con los nuevos datos?\n" +
+                                "Nombre de la Clase: " + nuevoNombreClase + "\n" +
+                                "Jornada de Formación: " + nuevaJornadaFormacion,
                         "Confirmar actualización",
                         JOptionPane.YES_NO_OPTION
                 );
 
                 if (opcion == JOptionPane.YES_OPTION) {
                     // Proceder a actualizar la clase
-                    String respuesta = API_DataClaseFormacionApplications.actualizarClase(idClase, nuevoNombreClase, nuevoDocumentoInstructor);
+                    String respuesta = API_DataClaseFormacionApplications.actualizarClase(idClase, nuevoNombreClase, nuevaJornadaFormacion);
                     if (respuesta.contains("exitosamente")) {
                         // Actualizar la tabla con los nuevos valores
                         table.setValueAt(nuevoNombreClase, row, 1);
-                        table.setValueAt(instructor.getNombres(), row, 2);
-                        table.setValueAt(nuevoDocumentoInstructor, row, 3);
-                        table.setValueAt(instructor.getCorreo(), row, 4);
+                        table.setValueAt(nuevaJornadaFormacion, row, 2);
                         JOptionPane.showMessageDialog(this.getComponent(), "Clase actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                        actualizarTablaClaseFormacion();
-                        ClaseFormacionHolder.setText("");
-                        DocumentoInstructorClaseFormacionHolder.setText("");
+                        // Opcional: actualizar la tabla completa si es necesario
+                        // actualizarTablaClaseFormacion();
                     } else {
-                        JOptionPane.showMessageDialog(this.getComponent(), "No se pudo actualizar la clase.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this.getComponent(), "No se pudo actualizar la clase.\n" + respuesta, "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
                     // El usuario canceló la operación
@@ -353,8 +332,8 @@ public class DataManagerPanel extends javax.swing.JPanel {
             }
         });
 
-        // Columna "Eliminar" (índice 6)
-        TableColumn eliminarColumna = tabla.getColumnModel().getColumn(6);
+        // Columna "Eliminar" (índice 4)
+        TableColumn eliminarColumna = tabla.getColumnModel().getColumn(4);
         eliminarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
         eliminarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
             @Override
@@ -363,15 +342,28 @@ public class DataManagerPanel extends javax.swing.JPanel {
 
                 // Obtener el ID de la clase de la fila seleccionada
                 int idClase = Integer.parseInt(table.getValueAt(row, 0).toString());
+                String nombreClase = table.getValueAt(row, 1).toString();
 
                 // Confirmación de eliminación
-                int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar la clase con ID " + idClase + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                int confirm = JOptionPane.showConfirmDialog(
+                        null,
+                        "¿Está seguro de que desea eliminar la clase \"" + nombreClase + "\" con ID " + idClase + "?",
+                        "Confirmar eliminación",
+                        JOptionPane.YES_NO_OPTION
+                );
 
                 if (confirm == JOptionPane.YES_OPTION) {
                     // Llamar al método para eliminar la clase
-                    API_DataClaseFormacionApplications.eliminarClase(idClase);
-                    // Eliminar la fila del modelo de la tabla
-                    ((DefaultTableModel) table.getModel()).removeRow(row);
+                    String respuesta = API_DataClaseFormacionApplications.eliminarClase(idClase);
+                    if (respuesta.contains("exitosamente")) {
+                        // Eliminar la fila del modelo de la tabla
+                        ((DefaultTableModel) table.getModel()).removeRow(row);
+                        JOptionPane.showMessageDialog(null, "Clase eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        // Opcional: actualizar la tabla completa si es necesario
+                        // actualizarTablaClaseFormacion();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se pudo eliminar la clase.\n" + respuesta, "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
 
                 return this.getComponent();
@@ -527,103 +519,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
         });
     }
 
-
-    public void agregarModeloAsociarFichasClaseFormacion(JTable tabla, List<Map<String, Object>> asociaciones, Integer numeroFichaSeleccionado) {
-        // Crear el DefaultTableModel con columnas: ID, NombreClase, Editar, Eliminar
-        DefaultTableModel modeloTabla = new DefaultTableModel(new Object[]{
-                "ID", "NombreClase", "Editar", "Eliminar"
-        }, 0) {
-            // Hacer que las celdas de botones no sean editables directamente
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 2 || column == 3;  // Hacer editables las columnas "Editar" y "Eliminar"
-            }
-        };
-
-        // Llenar el modelo con los datos de las asociaciones
-        for (Map<String, Object> asociacion : asociaciones) {
-            Integer idAsociacion = (Integer) asociacion.get("ID");
-            String nombreClase = (String) asociacion.get("NombreClase");
-
-            modeloTabla.addRow(new Object[]{idAsociacion, nombreClase, "Editar", "Eliminar"});
-        }
-
-        // Asignar el modelo a la tabla
-        tabla.setModel(modeloTabla);
-
-        // Columna "Editar" (índice 2)
-        TableColumn editarColumna = tabla.getColumnModel().getColumn(2);
-        editarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());  // Renderizador del botón
-        editarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
-            @Override
-            public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-                super.getTableCellEditorComponent(table, value, isSelected, row, column);
-
-                // Obtener los valores de la fila seleccionada
-                String claseActual = table.getValueAt(row, 1).toString();  // Nombre de la clase en la columna 1
-                Integer fichaActual = numeroFichaSeleccionado;  // Obtener el numeroFicha desde el parámetro del método
-
-                // Abrir el diálogo de edición con los valores actuales preseleccionados
-                EditarAsociacionDialog dialog = new EditarAsociacionDialog(JOptionPane.getFrameForComponent(table), claseActual, fichaActual);
-                dialog.setVisible(true);
-
-                // Obtener los valores seleccionados por el usuario en el diálogo
-                String nuevaClase = dialog.getNuevaClaseFormacion();
-                Integer nuevaFicha = dialog.getNuevaFicha();
-
-                if (nuevaClase != null && nuevaFicha != null) {
-                    // Llamar al método para editar la asociación
-                    String respuesta = API_DataFichasApplications.editarAsociacionFichaConClase(claseActual, nuevaClase, fichaActual, nuevaFicha);
-                    if (respuesta != null && respuesta.contains("exitosamente")) {
-                        // Actualizar la tabla con los nuevos valores
-                        actualizarTablaAsociarFichas();
-                        JOptionPane.showMessageDialog(this.getComponent(), "Asociación editada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(this.getComponent(), "Error al editar la asociación.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                return this.getComponent();
-            }
-        });
-
-        // Columna "Eliminar" (índice 3)
-        TableColumn eliminarColumna = tabla.getColumnModel().getColumn(3);
-        eliminarColumna.setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
-        eliminarColumna.setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), tabla) {
-            @Override
-            public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-                super.getTableCellEditorComponent(table, value, isSelected, row, column);
-
-                // Obtener el ID y NombreClase de la fila seleccionada
-                int idAsociacion = Integer.parseInt(table.getValueAt(row, 0).toString());
-                String nombreClase = table.getValueAt(row, 1).toString();
-                Integer numeroFicha = numeroFichaSeleccionado;  // Obtener el numeroFicha desde el parámetro del método
-
-                // Confirmar eliminación
-                int confirm = JOptionPane.showConfirmDialog(
-                        this.getComponent(),
-                        "¿Está seguro de que desea eliminar la asociación de la clase '" + nombreClase + "'?",
-                        "Confirmar eliminación",
-                        JOptionPane.YES_NO_OPTION
-                );
-
-                if (confirm == JOptionPane.YES_OPTION) {
-                    // Llamar al método para eliminar la asociación
-                    String respuesta = API_DataFichasApplications.eliminarAsociacionFichaConClase(numeroFicha, nombreClase);
-                    if (respuesta != null && respuesta.contains("exitosamente")) {
-                        // Eliminar la fila del modelo de la tabla
-                        ((DefaultTableModel) table.getModel()).removeRow(row);
-                        JOptionPane.showMessageDialog(this.getComponent(), "Asociación eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(this.getComponent(), "Error al eliminar la asociación.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-
-                return this.getComponent();
-            }
-        });
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -667,21 +562,23 @@ public class DataManagerPanel extends javax.swing.JPanel {
         AsignarFIchasSubPanel = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jScrollPane8 = new javax.swing.JScrollPane();
-        FichasAsociadasDataTable = new javax.swing.JTable();
+        ClaseInstructorFichasAsociadasDataTable = new javax.swing.JTable();
         jLabel11 = new javax.swing.JLabel();
-        AsociarFichaDataProgramaFormacionCB = new javax.swing.JComboBox<>();
-        AsociarFicha = new javax.swing.JButton();
+        AsociarInstructorClaseFichaDataProgramaFormacionCB = new javax.swing.JComboBox<>();
+        AsociarClaseInstructorFIcha = new javax.swing.JButton();
         RefrescarTablaAsociarFichas = new javax.swing.JButton();
-        AsociarFichaDataFichasCB = new javax.swing.JComboBox<>();
+        AsociarClaseInstructorFichaDataFichasCB = new javax.swing.JComboBox<>();
+        AsociarClaseInstructorFichaDocumentoHolder = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
         ClasesFormacionPanel = new javax.swing.JPanel();
         ClaseFormacionHolder = new javax.swing.JTextField();
         AgregarClaseFormacion = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         ClaseFormacionDataTable = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        DocumentoInstructorClaseFormacionHolder = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         RefrescarTablaClaseFormacion = new javax.swing.JButton();
+        DocumentoInstructorClaseFormacionCB = new javax.swing.JComboBox<>();
         AmbientesPanel = new javax.swing.JPanel();
         AmbienteHolder = new javax.swing.JTextField();
         AgregarAmbiente = new javax.swing.JButton();
@@ -1059,7 +956,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
 
         jLabel10.setText("Ficha");
 
-        FichasAsociadasDataTable.setModel(new javax.swing.table.DefaultTableModel(
+        ClaseInstructorFichasAsociadasDataTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -1070,25 +967,24 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 "ID", "NombreClase", "Editar", "Eliminar"
             }
         ));
-        FichasAsociadasDataTable.setRowHeight(30);
-        jScrollPane8.setViewportView(FichasAsociadasDataTable);
-        if (FichasAsociadasDataTable.getColumnModel().getColumnCount() > 0) {
-            FichasAsociadasDataTable.getColumnModel().getColumn(1).setPreferredWidth(150);
-            FichasAsociadasDataTable.getColumnModel().getColumn(1).setMaxWidth(150);
+        ClaseInstructorFichasAsociadasDataTable.setRowHeight(30);
+        jScrollPane8.setViewportView(ClaseInstructorFichasAsociadasDataTable);
+        if (ClaseInstructorFichasAsociadasDataTable.getColumnModel().getColumnCount() > 0) {
+            ClaseInstructorFichasAsociadasDataTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+            ClaseInstructorFichasAsociadasDataTable.getColumnModel().getColumn(1).setMaxWidth(150);
         }
 
         jLabel11.setText("Clase de Formacion");
 
-        AsociarFichaDataProgramaFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        AsociarFichaDataProgramaFormacionCB.setEnabled(false);
+        AsociarInstructorClaseFichaDataProgramaFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        AsociarFicha.setBackground(new java.awt.Color(57, 169, 0));
-        AsociarFicha.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        AsociarFicha.setForeground(new java.awt.Color(255, 255, 255));
-        AsociarFicha.setText("Asociar Ficha");
-        AsociarFicha.addActionListener(new java.awt.event.ActionListener() {
+        AsociarClaseInstructorFIcha.setBackground(new java.awt.Color(57, 169, 0));
+        AsociarClaseInstructorFIcha.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        AsociarClaseInstructorFIcha.setForeground(new java.awt.Color(255, 255, 255));
+        AsociarClaseInstructorFIcha.setText("Asociar Ficha");
+        AsociarClaseInstructorFIcha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AsociarFichaActionPerformed(evt);
+                AsociarClaseInstructorFIchaActionPerformed(evt);
             }
         });
 
@@ -1102,12 +998,17 @@ public class DataManagerPanel extends javax.swing.JPanel {
             }
         });
 
-        AsociarFichaDataFichasCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        AsociarFichaDataFichasCB.addActionListener(new java.awt.event.ActionListener() {
+        AsociarClaseInstructorFichaDataFichasCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        AsociarClaseInstructorFichaDataFichasCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AsociarFichaDataFichasCBActionPerformed(evt);
+                AsociarClaseInstructorFichaDataFichasCBActionPerformed(evt);
             }
         });
+
+        AsociarClaseInstructorFichaDocumentoHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        AsociarClaseInstructorFichaDocumentoHolder.setForeground(new java.awt.Color(0, 0, 0));
+
+        jLabel12.setText("Documento Instructor");
 
         javax.swing.GroupLayout AsignarFIchasSubPanelLayout = new javax.swing.GroupLayout(AsignarFIchasSubPanel);
         AsignarFIchasSubPanel.setLayout(AsignarFIchasSubPanelLayout);
@@ -1115,39 +1016,51 @@ public class DataManagerPanel extends javax.swing.JPanel {
             AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
                 .addGap(34, 34, 34)
-                .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 923, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel10))
+                .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
-                        .addComponent(AsociarFichaDataFichasCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(171, 171, 171)
+                                .addComponent(jLabel12)
+                                .addGap(193, 193, 193))
+                            .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
+                                .addComponent(AsociarClaseInstructorFichaDataFichasCB, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(AsociarClaseInstructorFichaDocumentoHolder)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel11)
-                            .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
-                                .addComponent(AsociarFichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(AsociarFicha)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(RefrescarTablaAsociarFichas)))))
-                .addContainerGap(104, Short.MAX_VALUE))
+                            .addComponent(AsociarInstructorClaseFichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(AsociarClaseInstructorFIcha, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RefrescarTablaAsociarFichas)))
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
         AsignarFIchasSubPanelLayout.setVerticalGroup(
             AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AsociarFichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AsociarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RefrescarTablaAsociarFichas)
-                    .addComponent(AsociarFichaDataFichasCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
+                        .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel12)
+                                .addComponent(jLabel10))
+                            .addComponent(jLabel11))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(AsignarFIchasSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AsociarClaseInstructorFichaDocumentoHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AsociarClaseInstructorFichaDataFichasCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AsociarInstructorClaseFichaDataProgramaFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(AsignarFIchasSubPanelLayout.createSequentialGroup()
+                        .addComponent(RefrescarTablaAsociarFichas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AsociarClaseInstructorFIcha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addContainerGap(222, Short.MAX_VALUE))
         );
 
         FichasTabPanel.addTab("Asociar Ficha", AsignarFIchasSubPanel);
@@ -1211,15 +1124,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
 
         jLabel3.setText("Nombre de la nueva clase de formacion");
 
-        DocumentoInstructorClaseFormacionHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        DocumentoInstructorClaseFormacionHolder.setForeground(new java.awt.Color(0, 0, 0));
-        DocumentoInstructorClaseFormacionHolder.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                DocumentoInstructorClaseFormacionHolderKeyTyped(evt);
-            }
-        });
-
-        jLabel4.setText("Documento del instructor por asociar");
+        jLabel4.setText("Jornada de formacion");
 
         RefrescarTablaClaseFormacion.setBackground(new java.awt.Color(57, 169, 0));
         RefrescarTablaClaseFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -1231,49 +1136,50 @@ public class DataManagerPanel extends javax.swing.JPanel {
             }
         });
 
+        DocumentoInstructorClaseFormacionCB.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        DocumentoInstructorClaseFormacionCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout ClasesFormacionPanelLayout = new javax.swing.GroupLayout(ClasesFormacionPanel);
         ClasesFormacionPanel.setLayout(ClasesFormacionPanelLayout);
         ClasesFormacionPanelLayout.setHorizontalGroup(
             ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ClasesFormacionPanelLayout.createSequentialGroup()
+                    .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
                         .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(DocumentoInstructorClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel4)
-                                .addGap(173, 173, 173)
-                                .addComponent(RefrescarTablaClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jScrollPane5)
-                    .addComponent(AgregarClaseFormacion, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(126, 126, 126))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(RefrescarTablaClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
+                                .addComponent(DocumentoInstructorClaseFormacionCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(AgregarClaseFormacion))))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 995, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
         );
         ClasesFormacionPanelLayout.setVerticalGroup(
             ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
                 .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ClasesFormacionPanelLayout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ClasesFormacionPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(RefrescarTablaClaseFormacion)
-                        .addGap(14, 14, 14)))
-                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AgregarClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel4))
+                    .addComponent(RefrescarTablaClaseFormacion, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ClasesFormacionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(DocumentoInstructorClaseFormacionHolder, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(AgregarClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DocumentoInstructorClaseFormacionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         PrincipalTabPanel.addTab("Clases de Formacion", ClasesFormacionPanel);
@@ -1856,10 +1762,10 @@ public class DataManagerPanel extends javax.swing.JPanel {
         try {
             DataTables modClaseFormacion = new DataTables();
             // Llamada para obtener las clases actualizadas
-            List<Map<String, Object>> clasesActualizadas = modClaseFormacion.obtenerClasesConInstructor();
+            List<Map<String, Object>> clasesActualizadas = modClaseFormacion.obtenerClases();
 
             // Actualizar la tabla con los nuevos datos
-            agregarModeloClaseFormacion(ClaseFormacionDataTable, API_DataClaseFormacionApplications.obtenerClasesConInstructor());
+//            agregarModeloClaseFormacion(ClaseFormacionDataTable, API_DataClaseFormacionApplications.obtenerClasesConInstructor());
         } catch (Exception e) {
             System.out.println("Error al refrescar la tabla: " + e.getMessage());
         }
@@ -1974,10 +1880,10 @@ public class DataManagerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_AgregarAmbienteActionPerformed
 
     private void AgregarClaseFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarClaseFormacionActionPerformed
-        API_BuscarUsuario buscarInstructor = new API_BuscarUsuario();
-        InstructorModel instructor = buscarInstructor.buscarInstructorPorDocumento(DocumentoInstructorClaseFormacionHolder.getText());
+        String jornadaFormacion = (String)DocumentoInstructorClaseFormacionCB.getSelectedItem();
+        String nombreClase = ClaseFormacionHolder.getText();
 
-        if (instructor == null) {
+        if (jornadaFormacion == null) {
             JOptionPane.showMessageDialog(this, "No se encontró ningún instructor con el documento proporcionado.", "Instructor no encontrado", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -1985,10 +1891,8 @@ public class DataManagerPanel extends javax.swing.JPanel {
         // Formatear la información del instructor
         String infoInstructor = STR."""
         Información del Instructor:
-        Nombres: \{instructor.getNombres()} \{instructor.getApellidos()}
-        Documento: \{instructor.getDocumento()}
-        Correo: \{instructor.getCorreo()}
-        Teléfono: \{instructor.getTelefono()}""";
+        Nueva clase de formacion: \{nombreClase}
+        Jornada de formacion: \{jornadaFormacion}""";
 
         // Mostrar el cuadro de diálogo de confirmación
         int opcion = JOptionPane.showConfirmDialog(this, infoInstructor + "\n\n¿Desea agregar la clase a este instructor?", "Confirmar agregar clase", JOptionPane.YES_NO_OPTION);
@@ -1997,14 +1901,14 @@ public class DataManagerPanel extends javax.swing.JPanel {
             // Proceder a agregar la clase al instructor
             try {
                 // Asumiendo que tienes un campo para el nombre de la clase
-                String nombreClase = ClaseFormacionHolder.getText();
+
                 API_DataClaseFormacionApplications claseFormacionApplications = new API_DataClaseFormacionApplications();
-                claseFormacionApplications.crearClaseFormacion(nombreClase, instructor.getDocumento());
+                claseFormacionApplications.crearClaseFormacion(nombreClase, jornadaFormacion);
 
                 JOptionPane.showMessageDialog(this, "La clase se ha agregado exitosamente al instructor.", "Operación exitosa", JOptionPane.INFORMATION_MESSAGE);
                 actualizarTablaClaseFormacion();
                 ClaseFormacionHolder.setText("");
-                DocumentoInstructorClaseFormacionHolder.setText("");
+                DocumentoInstructorClaseFormacionCB.setSelectedIndex(0);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Ocurrió un error al agregar la clase: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -2178,16 +2082,6 @@ public class DataManagerPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_ClaseFormacionHolderKeyTyped
 
-    private void DocumentoInstructorClaseFormacionHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DocumentoInstructorClaseFormacionHolderKeyTyped
-                char caracter = evt.getKeyChar();
-
-        // Permitir solo números y la tecla de retroceso
-        if (!Character.isDigit(caracter) && caracter != KeyEvent.VK_BACK_SPACE) {
-            evt.consume();  // Evitar que se ingrese el carácter no válido
-            JOptionPane.showMessageDialog(this, "Solo se permiten números.");
-        }
-    }//GEN-LAST:event_DocumentoInstructorClaseFormacionHolderKeyTyped
-
     private void AmbienteHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AmbienteHolderKeyTyped
         char caracter = evt.getKeyChar();
 
@@ -2266,84 +2160,252 @@ public class DataManagerPanel extends javax.swing.JPanel {
        actualizarTablaClaseFormacion();
     }//GEN-LAST:event_RefrescarTablaClaseFormacionActionPerformed
 
-    private void AsociarFichaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsociarFichaActionPerformed
-        String StrFicha = AsociarFichaDataFichasCB.getSelectedItem().toString();
-        String programaFormacion = AsociarFichaDataProgramaFormacionCB.getSelectedItem().toString();
-        if (StrFicha.equals("Seleccionar...") || programaFormacion.equals("Seleccionar...")){
-            JOptionPane.showMessageDialog(this, "Aun hay datos por seleccionar, por favor seleccione los datos correctamente", "Error", JOptionPane.ERROR_MESSAGE);
+    private void AsociarClaseInstructorFIchaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsociarClaseInstructorFIchaActionPerformed
+// Obtener los valores seleccionados y ingresados
+        String numeroFichaStr = (String) AsociarClaseInstructorFichaDataFichasCB.getSelectedItem();
+        String documentoInstructor = AsociarClaseInstructorFichaDocumentoHolder.getText().trim();
+        String nombreClase = (String) AsociarInstructorClaseFichaDataProgramaFormacionCB.getSelectedItem();
+
+        // Validar que los campos no estén en su estado por defecto o vacíos
+        if (numeroFichaStr.equals("Seleccionar...")) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un número de ficha.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Integer numeroFicha = Integer.parseInt(StrFicha);
-        API_DataFichasApplications.asociarFichaConClase(numeroFicha, programaFormacion);
+
+        if (nombreClase.equals("Seleccionar...")) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una clase de formación.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (documentoInstructor.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese el documento del instructor.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Convertir numeroFicha a Integer
+        Integer numeroFicha;
+        try {
+            numeroFicha = Integer.parseInt(numeroFichaStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Número de ficha inválido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Buscar el instructor usando API_BuscarUsuario
+        API_BuscarUsuario buscarInstructor = new API_BuscarUsuario();
+        InstructorModel instructor = buscarInstructor.buscarInstructorPorDocumento(documentoInstructor);
+        System.out.println(instructor);
+        if (instructor == null) {
+            JOptionPane.showMessageDialog(this, "Instructor no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Mostrar los datos del instructor
+        String instructorInfo = "Nombre: " + instructor.getNombres() + " " + instructor.getApellidos() + "\n" +
+                "Documento: " + instructor.getDocumento() + "\n" +
+                "Tipo de Documento: " + instructor.getTipoDocumento() + "\n" +
+                "Correo: " + instructor.getCorreo();
+        JOptionPane.showMessageDialog(this, instructorInfo, "Datos del Instructor", JOptionPane.INFORMATION_MESSAGE);
+
+        // Crear y configurar el ComboBox para seleccionar la jornadaClase
+        JComboBox<String> jornadaComboBox = new JComboBox<>();
+        ComboBoxModels cbm = new ComboBoxModels();
+        ComboBoxModel<String> jornadaModel = cbm.generarComboBoxModelPorTipo("JornadaFormacion");
+        jornadaComboBox.setModel(jornadaModel);
+        jornadaComboBox.setSelectedIndex(0); // Seleccionar el primer elemento por defecto
+
+        // Crear un panel para el diálogo
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Seleccione la jornada de la clase:"));
+        panel.add(jornadaComboBox);
+
+        // Mostrar el diálogo para seleccionar la jornadaClase
+        int result = JOptionPane.showConfirmDialog(this, panel, "Seleccionar Jornada", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result != JOptionPane.OK_OPTION) {
+            // El usuario canceló la operación
+            return;
+        }
+
+        String jornadaClase = (String) jornadaComboBox.getSelectedItem();
+
+        if (jornadaClase == null || jornadaClase.equals("Seleccionar...")) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una jornada válida.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Verificar si la clase con la jornada seleccionada existe
+        boolean claseExiste = false;
+        List<Map<String, Object>> clasesRegistradas = DataTables.obtenerClases();
+        for (Map<String, Object> clase : clasesRegistradas) {
+            if (clase.get("NombreClase").toString().equalsIgnoreCase(nombreClase) && clase.get("JornadasFormacion").toString().equalsIgnoreCase(jornadaClase)) {
+                claseExiste = true;
+                break;
+            }
+        }
+
+        if (!claseExiste) {
+            JOptionPane.showMessageDialog(this, "No existe una clase de formación con el nombre y jornada seleccionados.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Confirmar la asociación con el usuario
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Desea asociar la ficha número " + numeroFicha + " con el instructor " + instructor.getNombres() +
+                        " " + instructor.getApellidos() + " y la clase de formación '" + nombreClase + "' en la jornada '" + jornadaClase + "'?",
+                "Confirmar Asociación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return; // El usuario canceló la operación
+        }
+
+        // Llamar al método del cliente para crear la asociación
+        API_DataInstructorFichaClaseApplications.asociarFichaInstructorClase(nombreClase, numeroFicha, documentoInstructor, jornadaClase);
+        AsociarClaseInstructorFichaDocumentoHolder.setText("");
         actualizarTablaAsociarFichas();
-    }//GEN-LAST:event_AsociarFichaActionPerformed
+    }//GEN-LAST:event_AsociarClaseInstructorFIchaActionPerformed
 
     private void RefrescarTablaAsociarFichasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarTablaAsociarFichasActionPerformed
         actualizarTablaAsociarFichas();
     }//GEN-LAST:event_RefrescarTablaAsociarFichasActionPerformed
 
-    private void AsociarFichaDataFichasCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsociarFichaDataFichasCBActionPerformed
+    private void AsociarClaseInstructorFichaDataFichasCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsociarClaseInstructorFichaDataFichasCBActionPerformed
+        String fichaSeleccionada = (String) AsociarClaseInstructorFichaDataFichasCB.getSelectedItem();
 
-        String StrFicha = AsociarFichaDataFichasCB.getSelectedItem().toString();
-        if (StrFicha.equals("Seleccionar...")) {
-            // Si el mapa es null o está vacío, limpiar todas las filas de la tabla
-            DefaultTableModel model = (DefaultTableModel) FichasAsociadasDataTable.getModel();
-            model.setRowCount(0);  // Esto elimina todas las filas de la tabla
+        if (fichaSeleccionada != null && !fichaSeleccionada.equals("Seleccionar...")) {
+            try {
+                // Convertir el valor seleccionado a un número de ficha
+                int ficha = Integer.parseInt(fichaSeleccionada);
+                System.out.println("Ficha seleccionada: " + ficha);
 
-            // Deshabilitar el ComboBox si no hay clases
-            AsociarFichaDataProgramaFormacionCB.setEnabled(false);
-            AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
-            return;
+                // Crear una instancia de DataTables para realizar la consulta
+                DataTables dataTables = new DataTables();
+                List<Map<String, Object>> vinculaciones = dataTables.obtenerVinculacionesPorFicha(ficha);
+
+                if (vinculaciones != null && !vinculaciones.isEmpty()) {
+
+                    // Limpiar la tabla antes de llenarla con nuevas vinculaciones
+                    DefaultTableModel model = new DefaultTableModel(
+                            new Object[]{"Ficha", "Area", "Sede", "Clase de Formacion", "Jornada de Formacion", "Documento del Instructor", "Nivel de Formacion", "Programa de Formacion", "Editar", "Eliminar"},
+                            0  // Número de filas iniciales
+                    );
+
+                    // Llenar la tabla AprendizVinculacionesTB con los datos de las vinculaciones
+
+                    for (Map<String, Object> vinculacion : vinculaciones) {
+                        String area = (String) vinculacion.get("Area");
+                        String sede = (String) vinculacion.get("Sede");
+                        String nombreClase = (String) vinculacion.get("ClaseFormacion");
+                        String jornada = (String) vinculacion.get("JornadaFormacion");
+                        String documentoInstructor = (String) vinculacion.get("DocumentoInstructor");
+                        String nivelFormacion = (String) vinculacion.get("NivelFormacion");
+                        String programaFormacion = (String) vinculacion.get("ProgramaFormacion");
+
+
+                        // Añadir una nueva fila a la tabla
+                        model.addRow(new Object[]{ficha, area, sede, nombreClase, jornada, documentoInstructor, nivelFormacion, programaFormacion, "Editar", "Eliminar"});
+                    }
+
+
+                    // Asignar el modelo a la tabla
+                    ClaseInstructorFichasAsociadasDataTable.setModel(model);
+
+                    ClaseInstructorFichasAsociadasDataTable.getColumnModel().getColumn(8).setCellRenderer(new ButtonColumnHelper.ButtonRenderer()); // Columna "Editar"
+                    ClaseInstructorFichasAsociadasDataTable.getColumnModel().getColumn(8).setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), ClaseInstructorFichasAsociadasDataTable) {
+                        @Override
+                        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                            super.getTableCellEditorComponent(table, value, isSelected, row, column);
+
+                            // Obtener los valores actuales de la fila seleccionada
+                            String nombreClase = table.getValueAt(row, 3).toString();
+                            int numeroFicha = Integer.parseInt(table.getValueAt(row, 0).toString());
+                            String documentoInstructor = table.getValueAt(row, 5).toString();
+                            String jornadaClase = table.getValueAt(row, 4).toString();
+
+                            // Abrir el diálogo personalizado con el documento actual
+                            EditarAsociacionDialog dialog = new EditarAsociacionDialog(null, nombreClase, jornadaClase, documentoInstructor);
+                            dialog.setVisible(true);
+
+                            // Verificar si se confirmó la actualización
+                            if (dialog.isActualizacionConfirmada()) {
+                                // Obtener los nuevos valores después de cerrar el diálogo
+                                String nuevaClase = dialog.getClaseFormacion();
+                                String nuevaJornada = dialog.getJornadaFormacion();
+                                String nuevoDocumentoInstructor = dialog.getDocumentoInstructor();
+
+                                // Confirmar la actualización
+                                int opcion = JOptionPane.showConfirmDialog(this.getComponent(),
+                                        "¿Actualizar la clase a: " + nuevaClase + " y la jornada a: " + nuevaJornada + "?",
+                                        "Confirmar Actualización",
+                                        JOptionPane.YES_NO_OPTION);
+
+                                if (opcion == JOptionPane.YES_OPTION) {
+                                    // Llamar al método para actualizar la asociación
+                                    API_DataInstructorFichaClaseApplications.editarAsociacionFichaInstructorClase(
+                                            nombreClase, nuevaClase, numeroFicha, numeroFicha, documentoInstructor, nuevoDocumentoInstructor, nuevaJornada
+                                    );
+
+                                    // Actualizar la tabla con los nuevos valores
+                                    table.setValueAt(nuevaClase, row, 3);
+                                    table.setValueAt(nuevaJornada, row, 4);
+                                    table.setValueAt(nuevoDocumentoInstructor, row, 5);
+                                    JOptionPane.showMessageDialog(null, "Asociación actualizada correctamente.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Actualización cancelada.");
+                                }
+                            } else {
+                                // Se presionó cancelar, no realizar ninguna acción
+                                JOptionPane.showMessageDialog(null, "Actualización cancelada.");
+                            }
+
+                            return this.getComponent();
+                        }
+                    });
+
+// Botón de "Eliminar"
+                    ClaseInstructorFichasAsociadasDataTable.getColumnModel().getColumn(9).setCellRenderer(new ButtonColumnHelper.ButtonRenderer()); // Columna "Eliminar"
+                    ClaseInstructorFichasAsociadasDataTable.getColumnModel().getColumn(9).setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), ClaseInstructorFichasAsociadasDataTable) {
+                        @Override
+                        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                            super.getTableCellEditorComponent(table, value, isSelected, row, column);
+
+                            // Obtener los valores actuales de la fila seleccionada
+                            String nombreClase = table.getValueAt(row, 3).toString();
+                            int numeroFicha = Integer.parseInt(table.getValueAt(row, 0).toString());
+                            String documentoInstructor = table.getValueAt(row, 5).toString();
+                            String jornadaClase = table.getValueAt(row, 4).toString();
+
+                            // Confirmar eliminación
+                            int opcion = JOptionPane.showConfirmDialog(this.getComponent(),
+                                    "¿Está seguro que desea eliminar esta asociación?",
+                                    "Confirmar Eliminación",
+                                    JOptionPane.YES_NO_OPTION);
+
+                            if (opcion == JOptionPane.YES_OPTION) {
+                                // Llamar al método para eliminar la asociación
+                                API_DataInstructorFichaClaseApplications.eliminarAsociacionFichaInstructorClase(nombreClase, numeroFicha, documentoInstructor, jornadaClase);
+
+                                // Eliminar la fila de la tabla
+                                ((DefaultTableModel) table.getModel()).removeRow(row);
+                                JOptionPane.showMessageDialog(null, "Asociación eliminada correctamente.");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Eliminación cancelada.");
+                            }
+                            return this.getComponent();
+                        }
+                    });
+                }
+            } catch (NumberFormatException e) {
+                throw new RuntimeException(e);
+            }
         }
-        // Obtener el número de ficha seleccionado
-        Integer numeroFicha = Integer.parseInt(StrFicha);
-        if (numeroFicha == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una ficha.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Obtener las clases asociadas al número de ficha
-        Map<Integer, String> clasesMap = API_DataClaseFormacionApplications.obtenerClasesPorNumeroFicha(numeroFicha);
-
-        // Verificar si el mapa es null o vacío
-        if (clasesMap == null || clasesMap.isEmpty()) {
-            // Si el mapa es null o está vacío, limpiar todas las filas de la tabla
-            DefaultTableModel model = (DefaultTableModel) FichasAsociadasDataTable.getModel();
-            model.setRowCount(0);  // Esto elimina todas las filas de la tabla
-
-            // Deshabilitar el ComboBox si no hay clases
-            AsociarFichaDataProgramaFormacionCB.setEnabled(false);
-            AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
-            return;
-        }
-
-        // Convertir el Map<Integer, String> a List<Map<String, Object>>
-        List<Map<String, Object>> listaDeMapas = convertirMapaALista(clasesMap);
-
-        // Si se encontraron clases, llenar la tabla con los datos obtenidos
-        agregarModeloAsociarFichasClaseFormacion(FichasAsociadasDataTable, listaDeMapas, numeroFicha);
-
-        // Habilitar el ComboBox
-        AsociarFichaDataProgramaFormacionCB.setEnabled(true);
-        AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
-    }//GEN-LAST:event_AsociarFichaDataFichasCBActionPerformed
+    }//GEN-LAST:event_AsociarClaseInstructorFichaDataFichasCBActionPerformed
 
     private void RefrescarCombosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarCombosActionPerformed
         refrescarComboBoxes();
     }//GEN-LAST:event_RefrescarCombosActionPerformed
 
-    private List<Map<String, Object>> convertirMapaALista(Map<Integer, String> clasesMap) {
-        List<Map<String, Object>> listaDeMapas = new ArrayList<>();
-
-        for (Map.Entry<Integer, String> entrada : clasesMap.entrySet()) {
-            Map<String, Object> mapa = new HashMap<>();
-            mapa.put("ID", entrada.getKey());
-            mapa.put("NombreClase", entrada.getValue());
-            listaDeMapas.add(mapa);
-        }
-
-        return listaDeMapas;
-    }
 
     public void comportamientoTabla(JTable table, String tipoTabla) {
         // Configurar el comportamiento de los botones de "Editar"
@@ -2594,71 +2656,160 @@ public class DataManagerPanel extends javax.swing.JPanel {
     public void actualizarTablaFichas(){
         agregarModeloAdicional(FichasDataTable, dt.obtenerFichas());
     }
+
+
     public void actualizarTablaClaseFormacion(){
-        agregarModeloClaseFormacion(ClaseFormacionDataTable, API_DataClaseFormacionApplications.obtenerClasesConInstructor());
+        agregarModeloClaseFormacion(ClaseFormacionDataTable, DataTables.obtenerClases());
     }
 
     public void actualizarTablaAsociarFichas() {
-        // Obtener el número de ficha seleccionado desde el ComboBox
-        String StrFicha = AsociarFichaDataFichasCB.getSelectedItem().toString();
-        if (StrFicha.equals("Seleccionar...")) {
-            // Si el mapa es null o está vacío, limpiar todas las filas de la tabla
-            DefaultTableModel model = (DefaultTableModel) FichasAsociadasDataTable.getModel();
-            model.setRowCount(0);  // Esto elimina todas las filas de la tabla
+        String fichaSeleccionada = (String) AsociarClaseInstructorFichaDataFichasCB.getSelectedItem();
 
-            // Deshabilitar el ComboBox si no hay clases
-            AsociarFichaDataProgramaFormacionCB.setEnabled(false);
-            AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
-            return;
+        if (fichaSeleccionada != null && !fichaSeleccionada.equals("Seleccionar...")) {
+            try {
+                // Convertir el valor seleccionado a un número de ficha
+                int ficha = Integer.parseInt(fichaSeleccionada);
+                System.out.println("Ficha seleccionada: " + ficha);
+
+                // Crear una instancia de DataTables para realizar la consulta
+                DataTables dataTables = new DataTables();
+                List<Map<String, Object>> vinculaciones = dataTables.obtenerVinculacionesPorFicha(ficha);
+
+                if (vinculaciones != null && !vinculaciones.isEmpty()) {
+
+                    // Limpiar la tabla antes de llenarla con nuevas vinculaciones
+                    DefaultTableModel model = new DefaultTableModel(
+                            new Object[]{"Ficha", "Area", "Sede", "Clase de Formacion", "Jornada de Formacion", "Documento del Instructor", "Nivel de Formacion", "Programa de Formacion", "Editar", "Eliminar"},
+                            0  // Número de filas iniciales
+                    );
+
+                    // Llenar la tabla AprendizVinculacionesTB con los datos de las vinculaciones
+
+                    for (Map<String, Object> vinculacion : vinculaciones) {
+                        String area = (String) vinculacion.get("Area");
+                        String sede = (String) vinculacion.get("Sede");
+                        String nombreClase = (String) vinculacion.get("ClaseFormacion");
+                        String jornada = (String) vinculacion.get("JornadaFormacion");
+                        String documentoInstructor = (String) vinculacion.get("DocumentoInstructor");
+                        String nivelFormacion = (String) vinculacion.get("NivelFormacion");
+                        String programaFormacion = (String) vinculacion.get("ProgramaFormacion");
+
+
+                        // Añadir una nueva fila a la tabla
+                        model.addRow(new Object[]{ficha, area, sede, nombreClase, jornada, documentoInstructor, nivelFormacion, programaFormacion, "Editar", "Eliminar"});
+                    }
+
+
+                    // Asignar el modelo a la tabla
+                    ClaseInstructorFichasAsociadasDataTable.setModel(model);
+
+                    ClaseInstructorFichasAsociadasDataTable.getColumnModel().getColumn(8).setCellRenderer(new ButtonColumnHelper.ButtonRenderer()); // Columna "Editar"
+                    ClaseInstructorFichasAsociadasDataTable.getColumnModel().getColumn(8).setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), ClaseInstructorFichasAsociadasDataTable) {
+                        @Override
+                        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                            super.getTableCellEditorComponent(table, value, isSelected, row, column);
+
+                            // Obtener los valores actuales de la fila seleccionada
+                            String nombreClase = table.getValueAt(row, 3).toString();
+                            int numeroFicha = Integer.parseInt(table.getValueAt(row, 0).toString());
+                            String documentoInstructor = table.getValueAt(row, 5).toString();
+                            String jornadaClase = table.getValueAt(row, 4).toString();
+
+                            // Abrir el diálogo personalizado con el documento actual
+                            EditarAsociacionDialog dialog = new EditarAsociacionDialog(null, nombreClase, jornadaClase, documentoInstructor);
+                            dialog.setVisible(true);
+
+                            // Verificar si se confirmó la actualización
+                            if (dialog.isActualizacionConfirmada()) {
+                                // Obtener los nuevos valores después de cerrar el diálogo
+                                String nuevaClase = dialog.getClaseFormacion();
+                                String nuevaJornada = dialog.getJornadaFormacion();
+                                String nuevoDocumentoInstructor = dialog.getDocumentoInstructor();
+
+                                // Confirmar la actualización
+                                int opcion = JOptionPane.showConfirmDialog(this.getComponent(),
+                                        "¿Actualizar la clase a: " + nuevaClase + " y la jornada a: " + nuevaJornada + "?",
+                                        "Confirmar Actualización",
+                                        JOptionPane.YES_NO_OPTION);
+
+                                if (opcion == JOptionPane.YES_OPTION) {
+                                    // Llamar al método para actualizar la asociación
+                                    API_DataInstructorFichaClaseApplications.editarAsociacionFichaInstructorClase(
+                                            nombreClase, nuevaClase, numeroFicha, numeroFicha, documentoInstructor, nuevoDocumentoInstructor, nuevaJornada
+                                    );
+
+                                    // Actualizar la tabla con los nuevos valores
+                                    table.setValueAt(nuevaClase, row, 3);
+                                    table.setValueAt(nuevaJornada, row, 4);
+                                    table.setValueAt(nuevoDocumentoInstructor, row, 5);
+                                    JOptionPane.showMessageDialog(null, "Asociación actualizada correctamente.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Actualización cancelada.");
+                                }
+                            } else {
+                                // Se presionó cancelar, no realizar ninguna acción
+                                JOptionPane.showMessageDialog(null, "Actualización cancelada.");
+                            }
+
+                            return this.getComponent();
+                        }
+                    });
+
+// Botón de "Eliminar"
+                    ClaseInstructorFichasAsociadasDataTable.getColumnModel().getColumn(9).setCellRenderer(new ButtonColumnHelper.ButtonRenderer()); // Columna "Eliminar"
+                    ClaseInstructorFichasAsociadasDataTable.getColumnModel().getColumn(9).setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), ClaseInstructorFichasAsociadasDataTable) {
+                        @Override
+                        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                            super.getTableCellEditorComponent(table, value, isSelected, row, column);
+
+                            // Obtener los valores actuales de la fila seleccionada
+                            String nombreClase = table.getValueAt(row, 3).toString();
+                            int numeroFicha = Integer.parseInt(table.getValueAt(row, 0).toString());
+                            String documentoInstructor = table.getValueAt(row, 5).toString();
+                            String jornadaClase = table.getValueAt(row, 4).toString();
+
+                            // Confirmar eliminación
+                            int opcion = JOptionPane.showConfirmDialog(this.getComponent(),
+                                    "¿Está seguro que desea eliminar esta asociación?",
+                                    "Confirmar Eliminación",
+                                    JOptionPane.YES_NO_OPTION);
+
+                            if (opcion == JOptionPane.YES_OPTION) {
+                                // Llamar al método para eliminar la asociación
+                                API_DataInstructorFichaClaseApplications.eliminarAsociacionFichaInstructorClase(nombreClase, numeroFicha, documentoInstructor, jornadaClase);
+
+                                // Eliminar la fila de la tabla
+                                ((DefaultTableModel) table.getModel()).removeRow(row);
+                                JOptionPane.showMessageDialog(null, "Asociación eliminada correctamente.");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Eliminación cancelada.");
+                            }
+                            return this.getComponent();
+                        }
+                    });
+                }
+            } catch (NumberFormatException e) {
+                throw new RuntimeException(e);
+            }
         }
-        // Obtener el número de ficha seleccionado
-        Integer numeroFicha = Integer.parseInt(StrFicha);
-        if (numeroFicha == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una ficha.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Obtener las clases asociadas al número de ficha
-        Map<Integer, String> clasesMap = API_DataClaseFormacionApplications.obtenerClasesPorNumeroFicha(numeroFicha);
-
-        // Verificar si el mapa es null o vacío
-        if (clasesMap == null || clasesMap.isEmpty()) {
-            // Si el mapa es null o está vacío, limpiar todas las filas de la tabla
-            DefaultTableModel model = (DefaultTableModel) FichasAsociadasDataTable.getModel();
-            model.setRowCount(0);  // Esto elimina todas las filas de la tabla
-
-            // Deshabilitar el ComboBox si no hay clases
-            AsociarFichaDataProgramaFormacionCB.setEnabled(false);
-            AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
-            return;
-        }
-
-        // Convertir el Map<Integer, String> a List<Map<String, Object>>
-        List<Map<String, Object>> listaDeMapas = convertirMapaALista(clasesMap);
-
-        // Si se encontraron clases, llenar la tabla con los datos obtenidos
-        agregarModeloAsociarFichasClaseFormacion(FichasAsociadasDataTable, listaDeMapas, numeroFicha);
-
-        // Habilitar el ComboBox
-        AsociarFichaDataProgramaFormacionCB.setEnabled(true);
-        AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
     }
 
     public void refrescarComboBoxes() {
         try {
             ComboBoxModels cbm = new ComboBoxModels();
             // Actualizar los ComboBox con los modelos más recientes
-            AsociarFichaDataFichasCB.setModel(cbm.generarComboBoxModelPorTipo("Fichas"));
-            AsociarFichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ClaseFormacion"));
+            AsociarClaseInstructorFichaDataFichasCB.setModel(cbm.generarComboBoxModelPorTipo("Fichas"));
+            AsociarInstructorClaseFichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ClaseFormacion"));
             FichaDataProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ProgramaFormacion"));
             FichaDataJornadaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("JornadaFormacion"));
+            DocumentoInstructorClaseFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("JornadaFormacion"));
             NivelFormacionProgramaCB.setModel(cbm.generarComboBoxModelPorTipo("NivelFormacion"));
             SedeFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("Sede"));
             AreaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("Areas"));
 
             // Reiniciar los ComboBox al índice 0
-            AsociarFichaDataFichasCB.setSelectedIndex(0);
-            AsociarFichaDataProgramaFormacionCB.setSelectedIndex(0);
+            AsociarClaseInstructorFichaDataFichasCB.setSelectedIndex(0);
+            AsociarInstructorClaseFichaDataProgramaFormacionCB.setSelectedIndex(0);
             FichaDataProgramaFormacionCB.setSelectedIndex(0);
             FichaDataJornadaFormacionCB.setSelectedIndex(0);
             NivelFormacionProgramaCB.setSelectedIndex(0);
@@ -2698,18 +2849,19 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JTable AreasDataTable;
     private javax.swing.JPanel AreasPanel;
     private javax.swing.JPanel AsignarFIchasSubPanel;
-    private javax.swing.JButton AsociarFicha;
-    private javax.swing.JComboBox<String> AsociarFichaDataFichasCB;
-    private javax.swing.JComboBox<String> AsociarFichaDataProgramaFormacionCB;
+    private javax.swing.JButton AsociarClaseInstructorFIcha;
+    private javax.swing.JComboBox<String> AsociarClaseInstructorFichaDataFichasCB;
+    private javax.swing.JTextField AsociarClaseInstructorFichaDocumentoHolder;
+    private javax.swing.JComboBox<String> AsociarInstructorClaseFichaDataProgramaFormacionCB;
     private javax.swing.JTable ClaseFormacionDataTable;
     private javax.swing.JTextField ClaseFormacionHolder;
+    private javax.swing.JTable ClaseInstructorFichasAsociadasDataTable;
     private javax.swing.JPanel ClasesFormacionPanel;
     private javax.swing.JPanel CrearFichasSubPanel;
-    private javax.swing.JTextField DocumentoInstructorClaseFormacionHolder;
+    private javax.swing.JComboBox<String> DocumentoInstructorClaseFormacionCB;
     private javax.swing.JComboBox<String> FichaDataJornadaFormacionCB;
     private javax.swing.JComboBox<String> FichaDataProgramaFormacionCB;
     private javax.swing.JTextField FichaHolder;
-    private javax.swing.JTable FichasAsociadasDataTable;
     private javax.swing.JTable FichasDataTable;
     private javax.swing.JPanel FichasPanel;
     private javax.swing.JTabbedPane FichasTabPanel;
@@ -2747,6 +2899,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -55,47 +55,32 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         CreateInstructorSubPanel = new javax.swing.JPanel();
         ConfirmarRegistroUsuario = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         ResidenciaHolder = new javax.swing.JTextField();
-        jLabel40 = new javax.swing.JLabel();
         FechaHolder = new javax.swing.JTextField();
         DiaCB = new javax.swing.JComboBox<>();
         MesCB = new javax.swing.JComboBox<>();
-        RegistrarArea = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         RegistrarNombres = new javax.swing.JTextField();
-        RegistrarSede = new javax.swing.JTextField();
-        RegistrarNivelFormacion = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
         GeneroCB = new javax.swing.JComboBox<>();
         RegistrarUsuario = new javax.swing.JTextField();
         TipoDocCB = new javax.swing.JComboBox<>();
         RegistrarDocumento = new javax.swing.JTextField();
-        jLabel41 = new javax.swing.JLabel();
         RegistrarApellidos = new javax.swing.JTextField();
-        jLabel38 = new javax.swing.JLabel();
         MunicipioCB = new javax.swing.JComboBox<>();
         jLabel19 = new javax.swing.JLabel();
         BarrioCB = new javax.swing.JComboBox<>();
         RegistrarCorreo = new javax.swing.JTextField();
         DepartamentoCB = new javax.swing.JComboBox<>();
         jLabel30 = new javax.swing.JLabel();
-        RegistrarJornadaFormacion = new javax.swing.JTextField();
-        jLabel24 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel39 = new javax.swing.JLabel();
         YearCB = new javax.swing.JComboBox<>();
         RegistrarTelefono = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
-        FichaCB = new javax.swing.JComboBox<>();
-        RegistrarProgramaFormacion = new javax.swing.JTextField();
-        AsociarFicha = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        FichasAsociadasTB = new javax.swing.JTable();
         RegistrarPass = new javax.swing.JPasswordField();
         RefrescarCombos = new javax.swing.JButton();
 
@@ -114,10 +99,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(0, 0, 0));
         jLabel27.setText("Usuario");
-
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel17.setText("Sede");
 
         jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(0, 0, 0));
@@ -139,10 +120,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         ResidenciaHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResidenciaHolder.setForeground(new java.awt.Color(0, 0, 0));
         ResidenciaHolder.setFocusable(false);
-
-        jLabel40.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel40.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel40.setText("Nivel de formacion");
 
         FechaHolder.setEditable(false);
         FechaHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -169,16 +146,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
             }
         });
 
-        RegistrarArea.setEditable(false);
-        RegistrarArea.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        RegistrarArea.setForeground(new java.awt.Color(0, 0, 0));
-        RegistrarArea.setFocusable(false);
-        RegistrarArea.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RegistrarAreaActionPerformed(evt);
-            }
-        });
-
         jLabel29.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(0, 0, 0));
         jLabel29.setText("Correo");
@@ -190,12 +157,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                 RegistrarNombresKeyTyped(evt);
             }
         });
-
-        RegistrarSede.setEditable(false);
-        RegistrarSede.setFocusable(false);
-
-        RegistrarNivelFormacion.setEditable(false);
-        RegistrarNivelFormacion.setFocusable(false);
 
         jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(0, 0, 0));
@@ -232,10 +193,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel41.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel41.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel41.setText("Programa de Formacion");
-
         RegistrarApellidos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         RegistrarApellidos.setForeground(new java.awt.Color(0, 0, 0));
         RegistrarApellidos.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -243,10 +200,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                 RegistrarApellidosKeyTyped(evt);
             }
         });
-
-        jLabel38.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel38.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel38.setText("Numero de ficha");
 
         MunicipioCB.setForeground(new java.awt.Color(0, 0, 0));
         MunicipioCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -288,20 +241,9 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         jLabel30.setForeground(new java.awt.Color(0, 0, 0));
         jLabel30.setText("Residencia");
 
-        RegistrarJornadaFormacion.setEditable(false);
-        RegistrarJornadaFormacion.setFocusable(false);
-
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel24.setText("Area de trabajo");
-
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(0, 0, 0));
         jLabel18.setText("Telefono");
-
-        jLabel39.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel39.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel39.setText("Jornada de formacion");
 
         YearCB.setForeground(new java.awt.Color(0, 0, 0));
         YearCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -323,46 +265,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(0, 0, 0));
         jLabel25.setText("Fecha de Nacimiento");
-
-        FichaCB.setForeground(new java.awt.Color(0, 0, 0));
-        FichaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        FichaCB.setPreferredSize(new java.awt.Dimension(64, 28));
-        FichaCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FichaCBActionPerformed(evt);
-            }
-        });
-
-        RegistrarProgramaFormacion.setEditable(false);
-        RegistrarProgramaFormacion.setFocusable(false);
-
-        AsociarFicha.setBackground(new java.awt.Color(57, 169, 0));
-        AsociarFicha.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        AsociarFicha.setForeground(new java.awt.Color(255, 255, 255));
-        AsociarFicha.setText("AsociarFicha");
-        AsociarFicha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AsociarFichaActionPerformed(evt);
-            }
-        });
-
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fichas Asociadas", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
-
-        FichasAsociadasTB.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
-            }
-        ));
-        FichasAsociadasTB.setFocusable(false);
-        FichasAsociadasTB.setRequestFocusEnabled(false);
-        FichasAsociadasTB.setRowSelectionAllowed(false);
-        jScrollPane1.setViewportView(FichasAsociadasTB);
 
         RegistrarPass.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
 
@@ -386,12 +288,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                     .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(RefrescarCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel38)
-                        .addGap(85, 85, 85)
-                        .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AsociarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
                         .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel30)
@@ -408,7 +304,7 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ResidenciaHolder))
+                                .addComponent(ResidenciaHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE))
                             .addComponent(RegistrarCorreo)
                             .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
@@ -438,28 +334,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                         .addComponent(jLabel19)
                         .addGap(120, 120, 120)
                         .addComponent(RegistrarDocumento))
-                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel24)
-                                    .addComponent(jLabel17))
-                                .addGap(95, 95, 95)
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(RegistrarArea)
-                                    .addComponent(RegistrarSede)))
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel40)
-                                    .addComponent(jLabel39)
-                                    .addComponent(jLabel41))
-                                .addGap(33, 33, 33)
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(RegistrarNivelFormacion, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(RegistrarProgramaFormacion, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(RegistrarJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE))
                     .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(14, 14, 14))
         );
@@ -523,38 +397,9 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                         .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(ResidenciaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel38)
-                    .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(AsociarFicha)))
-                .addGap(7, 7, 7)
-                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel41)
-                            .addComponent(RegistrarProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel40)
-                            .addComponent(RegistrarNivelFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel39)
-                            .addComponent(RegistrarJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel24)
-                            .addComponent(RegistrarArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel17)
-                            .addComponent(RegistrarSede, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(213, 213, 213))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -565,7 +410,7 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(CreateInstructorSubPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(CreateInstructorSubPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -573,8 +418,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         public void aditionalConfig(){
             try {
                 ButtonStyler buttonStyler = new ButtonStyler();
-                buttonStyler.applyPrimaryStyle(AsociarFicha);
-                FichasAsociadasTB.setModel(modeloTabla);
                 ComboBoxModels CBModels = new ComboBoxModels();
                 yearModel.addElement("Seleccionar Año");
                 llenarYear(yearModel);
@@ -585,7 +428,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                 MunicipioCB.setModel(CBModels.generarComboBoxModelPorTipo("Municipios"));
                 DepartamentoCB.setModel(CBModels.generarComboBoxModelPorTipo("Departamentos"));
                 BarrioCB.setModel(CBModels.generarComboBoxModelPorTipo("Barrios"));
-                FichaCB.setModel(CBModels.generarComboBoxModelPorTipo("Fichas"));
                 YearCB.setModel(yearModel);
                 MesCB.setModel(mesModel);
                 DiaCB.setModel(diaModel);
@@ -780,29 +622,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                         errores.append("- El campo de Residencia es obligatorio.\n");
                     }
 
-                    if (FichaCB.getSelectedItem() == null) {
-                        errores.append("- Debes seleccionar al menos una Ficha.\n");
-                    }
-
-                    if (RegistrarProgramaFormacion.getText().trim().isEmpty()) {
-                        errores.append("- El campo de Programa de Formación es obligatorio.\n");
-                    }
-
-                    if (RegistrarNivelFormacion.getText().trim().isEmpty()) {
-                        errores.append("- El campo de Nivel de Formación es obligatorio.\n");
-                    }
-
-                    if (RegistrarJornadaFormacion.getText().trim().isEmpty()) {
-                        errores.append("- El campo de Jornada de Formación es obligatorio.\n");
-                    }
-
-                    if (RegistrarArea.getText().trim().isEmpty()) {
-                        errores.append("- El campo de Área es obligatorio.\n");
-                    }
-
-                    if (RegistrarSede.getText().trim().isEmpty()) {
-                        errores.append("- El campo de Sede es obligatorio.\n");
-                    }
 
                     // 2. Validación de Fecha de Nacimiento
                     if (!FechaHolder.getText().trim().isEmpty()) {
@@ -868,18 +687,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                         // Puedes agregar más validaciones si es necesario, como combinaciones de letras y números
                     }
 
-                    // 7. Validación de Ficha (convertir a entero)
-                    List<Integer> fichas = new ArrayList<>();
-                    if (FichaCB.getSelectedItem() != null) {
-                        try {
-                            // Suponiendo que FichaCB puede tener múltiples selecciones
-                            // Si solo permite una, ajusta el código en consecuencia
-                            fichas.add(Integer.parseInt(FichaCB.getSelectedItem().toString()));
-                        } catch (NumberFormatException e) {
-                            errores.append("- La Ficha seleccionada no es válida.\n");
-                        }
-                    }
-
 
                     // 9. Validación de Programas, Niveles, Jornadas, etc. si es necesario
                     // Puedes agregar más validaciones según tus requerimientos específicos
@@ -888,55 +695,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                     if (errores.length() > 0) {
                         JOptionPane.showMessageDialog(null, "Por favor, corrige los siguientes errores:\n" + errores.toString(), "Errores de Validación", JOptionPane.ERROR_MESSAGE);
                         return;
-                    }
-
-                    // 11. Capturar los datos de la tabla FichasAsociadasTB
-                    DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
-                    int filasTabla = modeloTabla.getRowCount();
-
-                    List<Integer> fichasList = new ArrayList<>();
-                    List<String> programasFormacion = new ArrayList<>();
-                    List<String> jornadasFormacion = new ArrayList<>();
-                    List<String> nivelesFormacion = new ArrayList<>();
-                    List<String> sedesList = new ArrayList<>();
-                    List<String> areasList = new ArrayList<>();
-
-                    for (int i = 0; i < filasTabla; i++) {
-                        // Validación de cada fila de la tabla
-                        try {
-                            fichasList.add((Integer) modeloTabla.getValueAt(i, 0)); // Ficha en la columna 0
-                        } catch (ClassCastException e) {
-                            errores.append("- El valor de Ficha en la fila " + (i + 1) + " no es válido.\n");
-                        }
-
-                        String programa = (String) modeloTabla.getValueAt(i, 1);
-                        String nivel = (String) modeloTabla.getValueAt(i, 2);
-                        String jornada = (String) modeloTabla.getValueAt(i, 3);
-                        String sedeFila = (String) modeloTabla.getValueAt(i, 4);
-                        String areaFila = (String) modeloTabla.getValueAt(i, 5);
-
-                        // Validar que los campos de la tabla no estén vacíos
-                        if (programa == null || programa.trim().isEmpty()) {
-                            errores.append("- El Programa de Formación en la fila " + (i + 1) + " es obligatorio.\n");
-                        }
-                        if (nivel == null || nivel.trim().isEmpty()) {
-                            errores.append("- El Nivel de Formación en la fila " + (i + 1) + " es obligatorio.\n");
-                        }
-                        if (jornada == null || jornada.trim().isEmpty()) {
-                            errores.append("- La Jornada de Formación en la fila " + (i + 1) + " es obligatoria.\n");
-                        }
-                        if (sedeFila == null || sedeFila.trim().isEmpty()) {
-                            errores.append("- La Sede en la fila " + (i + 1) + " es obligatoria.\n");
-                        }
-                        if (areaFila == null || areaFila.trim().isEmpty()) {
-                            errores.append("- El Área en la fila " + (i + 1) + " es obligatoria.\n");
-                        }
-
-                        programasFormacion.add(programa != null ? programa.trim() : "");
-                        nivelesFormacion.add(nivel != null ? nivel.trim() : "");
-                        jornadasFormacion.add(jornada != null ? jornada.trim() : "");
-                        sedesList.add(sedeFila != null ? sedeFila.trim() : "");
-                        areasList.add(areaFila != null ? areaFila.trim() : "");
                     }
 
                     // Si hubo errores en la tabla, mostrarlos
@@ -958,13 +716,13 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
                             RegistrarCorreo.getText().trim(),
                             GeneroCB.getSelectedItem().toString(),
                             ResidenciaHolder.getText().trim(),
-                            null, // Si hay algún otro campo que manejar
-                            fichasList,
-                            programasFormacion,
-                            jornadasFormacion,
-                            nivelesFormacion,
-                            sedesList,
-                            areasList
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            new ArrayList<>()
                     );
 
                     // 13. Enviar el modelo a la API
@@ -997,11 +755,7 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         RegistrarCorreo.setText("");
         ResidenciaHolder.setText("");
         FechaHolder.setText("");
-        RegistrarProgramaFormacion.setText("");
-        RegistrarNivelFormacion.setText("");
-        RegistrarJornadaFormacion.setText("");
-        RegistrarArea.setText("");
-        RegistrarSede.setText("");
+
 
         // Restablecer JComboBoxes
         TipoDocCB.setSelectedIndex(0);  // Asumiendo que el índice 0 es "Seleccionar..."
@@ -1016,7 +770,7 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         MunicipioCB.setEnabled(false);
         BarrioCB.setSelectedIndex(0);
         BarrioCB.setEnabled(false);
-        FichaCB.setSelectedIndex(0);
+
 
         modeloTabla.setRowCount(0);  // Vaciar todas las filas de la tabla
 
@@ -1118,118 +872,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         actualizarFecha();  // Actualizar el TextField FechaHolder
     }//GEN-LAST:event_YearCBActionPerformed
 
-    private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
-        String fichaSeleccionada = (String) FichaCB.getSelectedItem();
-
-        if (fichaSeleccionada != null && !fichaSeleccionada.equals("Seleccionar...")) {
-            try {
-                // Convertir el valor seleccionado a un número de ficha (si corresponde)
-                int ficha = Integer.parseInt(fichaSeleccionada);
-                System.out.println(ficha);
-
-                // Crear una instancia de DataTables para realizar la consulta
-                DataTables dataTables = new DataTables();
-
-                // Consultar el programa de formación por la ficha seleccionada
-                Map<String, Object> FichaDataResult = dataTables.obtenerProgramaFormacionPorFicha(ficha);
-                System.out.println(FichaDataResult);
-
-                if (FichaDataResult != null) {
-                    // Colocar el valor obtenido en el JTextField correspondiente
-                    RegistrarProgramaFormacion.setText((String) FichaDataResult.get("ProgramaFormacion"));
-                    RegistrarNivelFormacion.setText((String) FichaDataResult.get("NivelFormacion"));
-                    RegistrarJornadaFormacion.setText((String) FichaDataResult.get("JornadasFormacion"));
-                    RegistrarSede.setText((String) FichaDataResult.get("Sede"));
-                    RegistrarArea.setText((String) FichaDataResult.get("Area"));
-
-                } else {
-                    // Si no se obtiene un resultado válido, limpiar el campo de texto
-                    RegistrarProgramaFormacion.setText((String) FichaDataResult.get("ProgramaFormacion No encontrado"));
-                    RegistrarNivelFormacion.setText((String) FichaDataResult.get("NivelFormacion No encontrado"));
-                    RegistrarJornadaFormacion.setText((String) FichaDataResult.get("JornadasFormacion No encontrado"));
-                    RegistrarSede.setText((String) FichaDataResult.get("Sede No encontrado"));
-                    RegistrarArea.setText((String) FichaDataResult.get("Area No encontrado"));
-                }
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-                RegistrarProgramaFormacion.setText("ProgramaFormacion Invalida");
-                RegistrarNivelFormacion.setText("NivelFormacion Invalida");
-                RegistrarJornadaFormacion.setText("JornadasFormacion Invalida");
-                RegistrarSede.setText("Sede Invalida");
-                RegistrarArea.setText("Area Invalida");
-            }
-        } else {
-            // Limpiar el campo si no hay selección válida
-            RegistrarProgramaFormacion.setText("");
-            RegistrarNivelFormacion.setText("");
-            RegistrarJornadaFormacion.setText("");
-            RegistrarSede.setText("");
-            RegistrarArea.setText("");
-        }
-    }//GEN-LAST:event_FichaCBActionPerformed
-
-    private void AsociarFichaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsociarFichaActionPerformed
-        String fichaSeleccionada = (String) FichaCB.getSelectedItem();
-
-        // Verificar si se ha seleccionado una ficha válida
-        if (fichaSeleccionada != null && !fichaSeleccionada.equals("Seleccionar...")) {
-            try {
-                // Convertir el valor seleccionado a un número de ficha (si corresponde)
-                int ficha = Integer.parseInt(fichaSeleccionada);
-
-                // Verificar si la ficha ya está asociada en la tabla
-                if (fichaYaAsociada(ficha)) {
-                    JOptionPane.showMessageDialog(null, "La ficha " + ficha + " ya está asociada.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return; // Salir del método si la ficha ya está asociada
-                }
-
-                // Crear una instancia de DataTables para realizar la consulta
-                DataTables dataTables = new DataTables();
-
-                // Consultar el programa de formación por la ficha seleccionada
-                Map<String, Object> FichaDataResult = dataTables.obtenerProgramaFormacionPorFicha(ficha);
-
-                // Si se obtuvieron resultados válidos, agregar la ficha a la tabla
-                if (FichaDataResult != null) {
-                    // Obtener los valores del resultado de la consulta
-                    String programaFormacion = (String) FichaDataResult.get("ProgramaFormacion");
-                    String nivelFormacion = (String) FichaDataResult.get("NivelFormacion");
-                    String jornadaFormacion = (String) FichaDataResult.get("JornadasFormacion");
-                    String sede = (String) FichaDataResult.get("Sede");
-                    String area = (String) FichaDataResult.get("Area");
-
-                    // Obtener el modelo de la tabla
-                    DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
-
-                    // Agregar una nueva fila con los valores obtenidos
-                    modeloTabla.addRow(new Object[] {ficha, programaFormacion, nivelFormacion, jornadaFormacion, sede, area, "Eliminar"});
-
-                    // Configurar los renderers y editores para la columna "Eliminar"
-                    FichasAsociadasTB.getColumn("Eliminar").setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
-                    FichasAsociadasTB.getColumn("Eliminar").setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), FichasAsociadasTB));
-
-                    // Imprimir el contenido de la tabla después de agregar la fila
-                    imprimirContenidoTabla();
-
-                } else {
-                    // Si no se obtuvieron resultados válidos, mostrar un mensaje de error
-                    JOptionPane.showMessageDialog(null, "Ficha no encontrada o datos incompletos", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Ficha inválida", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            // Si no se ha seleccionado una ficha válida, mostrar un mensaje de advertencia
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una ficha válida", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-    }//GEN-LAST:event_AsociarFichaActionPerformed
-
-    private void RegistrarAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarAreaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_RegistrarAreaActionPerformed
-
     private void RegistrarNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RegistrarNombresKeyTyped
         char caracter = evt.getKeyChar();
 
@@ -1287,7 +929,6 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
             MunicipioCB.setModel(CBModels.generarComboBoxModelPorTipo("Municipios"));
             DepartamentoCB.setModel(CBModels.generarComboBoxModelPorTipo("Departamentos"));
             BarrioCB.setModel(CBModels.generarComboBoxModelPorTipo("Barrios"));
-            FichaCB.setModel(CBModels.generarComboBoxModelPorTipo("Fichas"));
             YearCB.setModel(yearModel);
             MesCB.setModel(mesModel);
             DiaCB.setModel(diaModel);
@@ -1299,94 +940,37 @@ public class CreateInstructorSubPanel extends javax.swing.JPanel {
         }
     }
 
-    private boolean fichaYaAsociada(int ficha) {
-        DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
-        int filas = modeloTabla.getRowCount();
-
-        for (int i = 0; i < filas; i++) {
-            int fichaEnTabla = (int) modeloTabla.getValueAt(i, 0); // La ficha está en la columna 0
-            if (fichaEnTabla == ficha) {
-                return true; // Ficha ya existe en la tabla
-            }
-        }
-        return false; // Ficha no existe en la tabla
-    }
-
-    private void imprimirContenidoTabla() {
-        try {
-            DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
-            int filas = modeloTabla.getRowCount();  // Número de filas
-            int columnas = modeloTabla.getColumnCount();  // Número de columnas
-
-            System.out.println("Contenido actual de la tabla:");
-
-            // Recorre cada fila
-            for (int i = 0; i < filas; i++) {
-                StringBuilder fila = new StringBuilder();  // Utilizamos StringBuilder para construir cada fila
-                // Recorre cada columna en la fila
-                for (int j = 0; j < columnas; j++) {
-                    Object value = modeloTabla.getValueAt(i, j);  // Obtiene el valor de la celda
-                    fila.append(value != null ? value.toString() : "null").append(" ");  // Si el valor es null, muestra "null"
-                }
-                System.out.println(fila.toString().trim());  // Imprime la fila completa
-            }
-
-            // Si la tabla está vacía
-            if (filas == 0) {
-                System.out.println("La tabla está vacía.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();  // Imprimir cualquier error que ocurra durante la impresión de la tabla
-        }
-    }
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AsociarFicha;
     private javax.swing.JComboBox<String> BarrioCB;
     private javax.swing.JButton ConfirmarRegistroUsuario;
     private javax.swing.JPanel CreateInstructorSubPanel;
     private javax.swing.JComboBox<String> DepartamentoCB;
     private javax.swing.JComboBox<String> DiaCB;
     private javax.swing.JTextField FechaHolder;
-    private javax.swing.JComboBox<String> FichaCB;
-    private javax.swing.JTable FichasAsociadasTB;
     private javax.swing.JComboBox<String> GeneroCB;
     private javax.swing.JComboBox<String> MesCB;
     private javax.swing.JComboBox<String> MunicipioCB;
     private javax.swing.JButton RefrescarCombos;
     private javax.swing.JTextField RegistrarApellidos;
-    private javax.swing.JTextField RegistrarArea;
     private javax.swing.JTextField RegistrarCorreo;
     private javax.swing.JTextField RegistrarDocumento;
-    private javax.swing.JTextField RegistrarJornadaFormacion;
-    private javax.swing.JTextField RegistrarNivelFormacion;
     private javax.swing.JTextField RegistrarNombres;
     private javax.swing.JPasswordField RegistrarPass;
-    private javax.swing.JTextField RegistrarProgramaFormacion;
-    private javax.swing.JTextField RegistrarSede;
     private javax.swing.JTextField RegistrarTelefono;
     private javax.swing.JTextField RegistrarUsuario;
     private javax.swing.JTextField ResidenciaHolder;
     private javax.swing.JComboBox<String> TipoDocCB;
     private javax.swing.JComboBox<String> YearCB;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
-    private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
-    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

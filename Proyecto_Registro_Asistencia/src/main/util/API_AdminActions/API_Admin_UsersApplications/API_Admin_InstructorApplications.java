@@ -4,6 +4,7 @@ import main.util.models.UsersModels.InstructorModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -168,7 +169,7 @@ public class API_Admin_InstructorApplications {
                         responseJson.getString("Correo"),
                         responseJson.getString("Genero"),
                         responseJson.getString("Residencia"),
-                        responseJson.getString("ClaseFormacion"),
+                        new ArrayList<>(),
                         // Verificar si los arrays existen y no son nulos
                         responseJson.has("Fichas") && !responseJson.isNull("Fichas") ? convertJsonArrayToIntegerList(responseJson.getJSONArray("Fichas")) : new ArrayList<>(),
                         responseJson.has("ProgramasFormacion") && !responseJson.isNull("ProgramasFormacion") ? convertJsonArrayToStringList(responseJson.getJSONArray("ProgramasFormacion")) : new ArrayList<>(),
@@ -178,7 +179,11 @@ public class API_Admin_InstructorApplications {
                         responseJson.has("Areas") && !responseJson.isNull("Areas") ? convertJsonArrayToStringList(responseJson.getJSONArray("Areas")) : new ArrayList<>()
                 );
 
-                System.out.println("Datos del instructor actualizados correctamente: " + updatedInstructor);
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    JOptionPane.showMessageDialog(null, "Datos del Instructor actualizados correctamente");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar la Instructor");
+                }
                 return updatedInstructor;
             } else {
                 System.out.println("Error: Código de respuesta inesperado - " + responseCode);

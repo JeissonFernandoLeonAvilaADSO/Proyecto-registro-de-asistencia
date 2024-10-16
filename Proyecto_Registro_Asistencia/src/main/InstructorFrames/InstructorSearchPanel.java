@@ -10,6 +10,7 @@ import main.util.models.ComboBoxModels;
 import main.util.models.DataTables;
 import main.util.models.UserSession;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +41,8 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
         ProgramaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ProgramaFormacion"));
 
         llenarTablaAsistencias(null, null, null);
+        DefaultComboBoxModel<String> FichasBoxModel = new DefaultComboBoxModel<>(new String[]{"Seleccionar..."});
+        FichaCB.setModel(FichasBoxModel);
     }
 
     /**
@@ -186,43 +189,51 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
                 DataTables dt = new DataTables();
                 List<Map<String, Object>> tiposFichas = dt.obtenerFichasPorPrograma(ProgramaFormacionCB.getSelectedItem().toString());
                 List<String> tiposFichasStr = tiposFichas.stream()
-                        .map(ficha -> ficha.get("NumeroFicha").toString()) // Asegúrate de usar la clave correcta para obtener el número de la ficha
+                        .map(ficha -> ficha.get("NumeroFicha").toString())
                         .collect(Collectors.toList());
 
                 // Añadir la opción "Seleccionar..." al inicio de la lista
                 tiposFichasStr.add(0, "Seleccionar...");
                 DefaultComboBoxModel<String> FichasBoxModel = new DefaultComboBoxModel<>(tiposFichasStr.toArray(new String[0]));
                 FichaCB.setModel(FichasBoxModel);
-                if(!AmbienteCB.getSelectedItem().equals("Seleccionar...")) {
-                    llenarTablaAsistencias(AmbienteCB.getSelectedItem().toString(), ProgramaFormacionCB.getSelectedItem().toString(), null);
-                } else if(!AmbienteCB.getSelectedItem().equals("Seleccionar...")) {
-                    llenarTablaAsistencias(null, ProgramaFormacionCB.getSelectedItem().toString(), null);
-                }
+                FichaCB.setEnabled(true);
+
+                // Refrescar la tabla según el ambiente y programa seleccionados
+                llenarTablaAsistencias(
+                        AmbienteCB.getSelectedItem().equals("Seleccionar...") ? null : AmbienteCB.getSelectedItem().toString(),
+                        ProgramaFormacionCB.getSelectedItem().toString(),
+                        FichaCB.getSelectedItem().equals("Seleccionar...") ? null : Integer.parseInt(FichaCB.getSelectedItem().toString())
+                );
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            FichaCB.setEnabled(true);
         } else {
             FichaCB.setSelectedItem("Seleccionar...");
             FichaCB.setEnabled(false);
+            llenarTablaAsistencias(
+                    AmbienteCB.getSelectedItem().equals("Seleccionar...") ? null : AmbienteCB.getSelectedItem().toString(),
+                    null,
+                    null
+            );
         }
-
     }//GEN-LAST:event_ProgramaFormacionCBActionPerformed
 
     private void AmbienteCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmbienteCBActionPerformed
-        if(!ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...") && !FichaCB.getSelectedItem().equals("Seleccionar...")) {
-            llenarTablaAsistencias(AmbienteCB.getSelectedItem().toString(), ProgramaFormacionCB.getSelectedItem().toString(), (Integer)FichaCB.getSelectedItem());
-        } else if (!ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...")) {
-            llenarTablaAsistencias(AmbienteCB.getSelectedItem().toString(), ProgramaFormacionCB.getSelectedItem().toString(), null);
-        } else {
-            llenarTablaAsistencias(AmbienteCB.getSelectedItem().toString(), null, null);
-        }
+        // Refrescar la tabla según los filtros seleccionados
+        llenarTablaAsistencias(
+                AmbienteCB.getSelectedItem().equals("Seleccionar...") ? null : AmbienteCB.getSelectedItem().toString(),
+                ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...") ? null : ProgramaFormacionCB.getSelectedItem().toString(),
+                FichaCB.getSelectedItem().equals("Seleccionar...") ? null : Integer.parseInt(FichaCB.getSelectedItem().toString())
+        );
     }//GEN-LAST:event_AmbienteCBActionPerformed
 
     private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
-        if(!FichaCB.getSelectedItem().equals("Seleccionar...")) {
-            llenarTablaAsistencias(AmbienteCB.getSelectedItem().toString(), ProgramaFormacionCB.getSelectedItem().toString(), (Integer)FichaCB.getSelectedItem());
-        }
+        // Refrescar la tabla según los filtros seleccionados
+        llenarTablaAsistencias(
+                AmbienteCB.getSelectedItem().equals("Seleccionar...") ? null : AmbienteCB.getSelectedItem().toString(),
+                ProgramaFormacionCB.getSelectedItem().equals("Seleccionar...") ? null : ProgramaFormacionCB.getSelectedItem().toString(),
+                FichaCB.getSelectedItem().equals("Seleccionar...") ? null : Integer.parseInt(FichaCB.getSelectedItem().toString())
+        );
     }//GEN-LAST:event_FichaCBActionPerformed
 
 
@@ -241,20 +252,31 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
 
         // Rellenar el modelo de la tabla con los datos obtenidos
         for (Map<String, Object> asistencia : asistencias) {
-            String Fecha = null;
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-            try {
-                Date date = inputFormat.parse((String) asistencia.get("Fecha"));
+            String fechaFormateada = null;
 
-                // Formatear la fecha a un formato más legible
+            // Obtener el valor de "FechaRegistro" y manejar el formato
+            Object fechaRegistro = asistencia.get("FechaRegistro");
+
+            if (fechaRegistro instanceof String) {
+                // Si es un String, intentar convertirlo a Date usando el formato esperado
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                try {
+                    Date date = inputFormat.parse((String) fechaRegistro);
+                    // Formatear la fecha a un formato más legible
+                    SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    fechaFormateada = outputFormat.format(date);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (fechaRegistro instanceof Timestamp) {
+                // Si es un Timestamp, formatear directamente
+                Timestamp timestamp = (Timestamp) fechaRegistro;
                 SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                Fecha = outputFormat.format(date);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+                fechaFormateada = outputFormat.format(timestamp);
             }
 
             modeloTabla.addRow(new Object[]{
-                    Fecha,
+                    fechaFormateada,
                     asistencia.get("ClaseFormacion"),
                     asistencia.get("Ambiente"),
                     asistencia.get("Ficha"),
@@ -271,6 +293,7 @@ public class InstructorSearchPanel extends javax.swing.JPanel {
         TableColumn archivoColumn = TablaAsistencias.getColumnModel().getColumn(6); // Columna de "Archivo Excel"
         archivoColumn.setCellRenderer(new ButtonColumnHelper.ButtonRendererExcel());  // Renderizador del botón
         archivoColumn.setCellEditor(new ButtonColumnHelper.ButtonEditorExcel(new JCheckBox(), TablaAsistencias, asistencias)); // Editor del botón con JTable y lista de asistencias
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

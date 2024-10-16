@@ -1,6 +1,9 @@
 package com.proyectoasistencia.prasis.controllers.DataTablesControllers;
 
 import com.proyectoasistencia.prasis.services.DataTablesServices.ClaseFormacionDataService;
+import com.proyectoasistencia.prasis.services.DataTablesServices.ProgramaFormacionDataServices.JornadaFormacionDataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping("/Data/ClaseFormacion")
 public class ClaseFormacionDataController {
@@ -16,120 +20,146 @@ public class ClaseFormacionDataController {
     @Autowired
     private ClaseFormacionDataService claseFormacionDataService;
 
-    // Obtener todas las clases de formación
+    private static final Logger logger = LoggerFactory.getLogger(ClaseFormacionDataController.class);
+
+    /**
+     * Obtener todas las clases de formación.
+     *
+     * @return Respuesta con mensaje y datos de las clases de formación.
+     */
     @GetMapping("/todas")
-    public ResponseEntity<List<Map<String, Object>>> obtenerTodasLasClases() {
-        System.out.println("Obteniendo todas las clases de formación...");
-        List<Map<String, Object>> clases = claseFormacionDataService.obtenerTodasLasClases();
-        System.out.println("Clases obtenidas: " + clases);
-        return ResponseEntity.ok(clases);
+    public ResponseEntity<?> obtenerTodasLasClases() {
+        logger.info("Endpoint /todas llamado para obtener todas las clases de formación.");
+        try {
+            List<Map<String, Object>> clases = claseFormacionDataService.obtenerTodasLasClases();
+            logger.info("Clases obtenidas: {}", clases);
+            return ResponseEntity.ok(Map.of(
+                    "mensaje", "Clases de formación obtenidas exitosamente.",
+                    "data", clases
+            ));
+        } catch (Exception e) {
+            logger.error("Error al obtener todas las clases de formación: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("mensaje", "Error al obtener todas las clases de formación."));
+        }
     }
 
-    // Obtener el ID de una clase por nombre
-    @GetMapping("/buscarPorNombre")
-    public ResponseEntity<Integer> obtenerIdClasePorNombre(@RequestParam String nombreClase) {
-        System.out.println("Buscando ID de la clase: " + nombreClase);
-        Integer idClase = claseFormacionDataService.obtenerIdClasePorNombre(nombreClase);
-        System.out.println("ID de la clase " + nombreClase + ": " + idClase);
-        return ResponseEntity.ok(idClase);
-    }
-
+    /**
+     * Endpoint para obtener todas las clases de formación agrupadas por NombreClase.
+     *
+     * @return Lista de mapas con NombreClase y sus IDs concatenados.
+     */
     @GetMapping("/todos")
-    public List<Map<String, Object>> obtenerClasesConInstructor() {
-        System.out.println("Obteniendo clases con su instructor...");
-        List<Map<String, Object>> clasesConInstructor = claseFormacionDataService.obtenerClasesConInstructor();
-        System.out.println("Clases con instructor: " + clasesConInstructor);
-        return clasesConInstructor;
+    public List<Map<String, Object>> obtenerClasesAgrupadas() {
+        return claseFormacionDataService.obtenerClasesAgrupadas();
     }
 
-//    // Obtener instructores para la ComboBox
-//    @GetMapping("/Instructores/todos")
-//    public List<Map<String, Object>> obtenerInstructoresParaComboBox() {
-//        System.out.println("Obteniendo instructores para la ComboBox...");
-//        List<Map<String, Object>> instructores = claseFormacionDataService.obtenerInstructoresParaComboBox();
-//        System.out.println("Instructores obtenidos: " + instructores);
-//        return instructores;
-//    }
 
-    // Crear una nueva clase de formación
+
+    /**
+     * Crear una nueva clase de formación.
+     *
+     * @param nombreClase        Nombre de la clase de formación.
+     * @param jornadaFormacion   Nombre de la jornada de formación.
+     * @return Respuesta con mensaje de éxito o error.
+     */
     @PostMapping("/crear")
-    public ResponseEntity<String> crearClase(@RequestParam String nombreClase, @RequestParam String documentoInstructor) {
-        System.out.println("Creando clase: " + nombreClase + ", Instructor: " + documentoInstructor);
+    public ResponseEntity<?> crearClase(@RequestParam String nombreClase,
+                                        @RequestParam String jornadaFormacion) {
+        logger.info("Endpoint /crear llamado para crear clase: {}, Jornada: {}", nombreClase, jornadaFormacion);
         try {
-            claseFormacionDataService.crearClase(nombreClase, documentoInstructor);
-            System.out.println("Clase creada exitosamente.");
-            return ResponseEntity.ok("Clase creada exitosamente.");
+            claseFormacionDataService.crearClase(nombreClase, jornadaFormacion);
+            logger.info("Clase creada exitosamente: {}", nombreClase);
+            return ResponseEntity.ok(Map.of("mensaje", "Clase creada exitosamente."));
+        } catch (IllegalArgumentException e) {
+            logger.warn("Error al crear clase: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("mensaje", e.getMessage()));
         } catch (Exception e) {
-            System.out.println("Error al crear la clase: " + e.getMessage());
-            return ResponseEntity.badRequest().body("Error al crear la clase: " + e.getMessage());
+            logger.error("Error al crear clase: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("mensaje", "Error al crear la clase de formación."));
         }
     }
 
-    // Actualizar una clase de formación existente
+    /**
+     * Actualizar una clase de formación existente.
+     *
+     * @param id                  ID de la clase de formación.
+     * @param nombreClase         Nuevo nombre de la clase de formación.
+     * @param jornadaFormacion    Nuevo nombre de la jornada de formación.
+     * @return Respuesta con mensaje de éxito o error.
+     */
     @PutMapping("/actualizar")
-    public ResponseEntity<String> actualizarClase(@RequestParam Integer id,
-                                                  @RequestParam String nombreClase,
-                                                  @RequestParam String documentoInstructor) {
-        System.out.println("Actualizando clase con ID: " + id + ", Nombre: " + nombreClase + ", Instructor: " + documentoInstructor);
+    public ResponseEntity<?> actualizarClase(@RequestParam Integer id,
+                                             @RequestParam String nombreClase,
+                                             @RequestParam String jornadaFormacion) {
+        logger.info("Endpoint /actualizar llamado para actualizar clase ID: {}, Nombre: {}, Jornada: {}", id, nombreClase, jornadaFormacion);
         try {
-            claseFormacionDataService.actualizarClase(id, nombreClase, documentoInstructor);
-            System.out.println("Clase actualizada exitosamente.");
-            return ResponseEntity.ok("Clase actualizada exitosamente.");
+            claseFormacionDataService.actualizarClase(id, nombreClase, jornadaFormacion);
+            logger.info("Clase actualizada exitosamente: ID {}", id);
+            return ResponseEntity.ok(Map.of("mensaje", "Clase actualizada exitosamente."));
+        } catch (IllegalArgumentException e) {
+            logger.warn("Error al actualizar clase: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("mensaje", e.getMessage()));
         } catch (Exception e) {
-            System.out.println("Error al actualizar la clase: " + e.getMessage());
-            return ResponseEntity.badRequest().body("Error al actualizar la clase: " + e.getMessage());
+            logger.error("Error al actualizar clase: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("mensaje", "Error al actualizar la clase de formación."));
         }
     }
 
-    // Eliminar una clase de formación
+    /**
+     * Eliminar una clase de formación existente.
+     *
+     * @param id ID de la clase de formación a eliminar.
+     * @return Respuesta con mensaje de éxito o error.
+     */
     @DeleteMapping("/eliminar")
-    public ResponseEntity<String> eliminarClase(@RequestParam Integer id) {
-        System.out.println("Eliminando clase con ID: " + id);
+    public ResponseEntity<?> eliminarClase(@RequestParam Integer id) {
+        logger.info("Endpoint /eliminar llamado para eliminar clase ID: {}", id);
         try {
             claseFormacionDataService.eliminarClase(id);
-            System.out.println("Clase eliminada exitosamente.");
-            return ResponseEntity.ok("Clase eliminada exitosamente.");
-        } catch (Exception e) {
-            System.out.println("Error al eliminar la clase: " + e.getMessage());
-            return ResponseEntity.badRequest().body("Error al eliminar la clase: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/porDocumentoInstructor")
-    public ResponseEntity<Map<String, Object>> obtenerClasePorDocumentoInstructor(@RequestParam String documentoInstructor) {
-        try {
-            Map<String, Object> claseFormacion = claseFormacionDataService.obtenerClasePorDocumentoInstructor(documentoInstructor);
-            if (claseFormacion != null) {
-                return ResponseEntity.ok(claseFormacion);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
-
-    @GetMapping("/PorNumeroFicha")
-    public ResponseEntity<?> obtenerClasesPorNumeroFicha(@RequestParam Integer numeroFicha) {
-        System.out.println("Obteniendo clases de formación para la ficha: " + numeroFicha);
-        try {
-            List<Map<String, Object>> clases = claseFormacionDataService.obtenerClasesPorNumeroFicha(numeroFicha);
-            if (clases.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(Map.of("mensaje", "No se encontraron clases de formación para la ficha número: " + numeroFicha));
-            }
-            return ResponseEntity.ok(clases);
+            logger.info("Clase eliminada exitosamente: ID {}", id);
+            return ResponseEntity.ok(Map.of("mensaje", "Clase eliminada exitosamente."));
         } catch (IllegalArgumentException e) {
+            logger.warn("Error al eliminar clase: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", e.getMessage()));
+                    .body(Map.of("mensaje", e.getMessage()));
         } catch (Exception e) {
+            logger.error("Error al eliminar clase: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Error interno del servidor: " + e.getMessage()));
+                    .body(Map.of("mensaje", "Error al eliminar la clase de formación."));
         }
     }
 
-
-
+    /**
+     * Obtener el ID de una clase de formación por su nombre y jornada.
+     *
+     * @param nombreClase      Nombre de la clase de formación.
+     * @param jornadaFormacion Nombre de la jornada de formación.
+     * @return Respuesta con mensaje y ID de la clase de formación.
+     */
+    @GetMapping("/buscarPorNombre")
+    public ResponseEntity<?> obtenerIdClasePorNombre(@RequestParam String nombreClase,
+                                                     @RequestParam String jornadaFormacion) {
+        logger.info("Endpoint /buscarPorNombre llamado para buscar ID de la clase: {}, Jornada: {}", nombreClase, jornadaFormacion);
+        try {
+            Integer idClase = claseFormacionDataService.obtenerIdClasePorNombre(nombreClase, jornadaFormacion);
+            logger.info("ID de la clase '{}' obtenido: {}", nombreClase, idClase);
+            return ResponseEntity.ok(Map.of(
+                    "mensaje", "ID de la clase obtenida exitosamente.",
+                    "data", Map.of("IDClase", idClase)
+            ));
+        } catch (IllegalArgumentException e) {
+            logger.warn("Clase de formación no encontrada: {}", nombreClase);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("mensaje", e.getMessage()));
+        } catch (Exception e) {
+            logger.error("Error al buscar ID de la clase de formación: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("mensaje", "Error al buscar ID de la clase de formación."));
+        }
+    }
 }
-

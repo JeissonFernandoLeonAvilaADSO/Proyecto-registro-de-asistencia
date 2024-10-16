@@ -134,7 +134,7 @@ public class API_AsistenciasApplications {
     public List<Map<String, Object>> obtenerAsistenciasFiltradas(String documentoInstructor, String ambiente, String programaFormacion, Integer ficha) {
         List<Map<String, Object>> asistencias = new ArrayList<>();
         try {
-            String urlString = String.format("http://localhost:8080/Asistencia/FiltroListarAsistencias?DocumentoInstructor=%s", documentoInstructor);
+            String urlString = String.format("http://localhost:8080/Asistencia/FiltroListarAsistencias?DocumentoInstructor=%s", URLEncoder.encode(documentoInstructor, "UTF-8"));
 
             if (ambiente != null && !ambiente.isEmpty()) {
                 urlString += "&ambiente=" + URLEncoder.encode(ambiente, "UTF-8");

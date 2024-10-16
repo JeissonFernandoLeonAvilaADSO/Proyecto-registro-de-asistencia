@@ -12,6 +12,9 @@ import lombok.Value;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
+import java.util.List;
+import java.util.Map;
+
 
 @Jacksonized
 @Value
@@ -19,22 +22,6 @@ import lombok.extern.jackson.Jacksonized;
 @EqualsAndHashCode(callSuper = true)
 public class AprendizModel extends PerfilUsuarioModel {
 
-    @JsonProperty("NumeroFicha")
-    private Integer ficha;
-
-    @JsonProperty("ProgramaFormacion")
-    @Size(max = 100, message = "El programa de formación no debe exceder los 100 caracteres")
-    private String programaFormacion;
-
-    @JsonProperty("JornadaFormacion")
-    private String jornadaFormacion;
-
-    @JsonProperty("NivelFormacion")
-    private String nivelFormacion;
-
-    @JsonProperty("Sede")
-    private String sede;
-
-    @JsonProperty("Area")
-    private String area;
+    @JsonProperty("Vinculaciones")
+    private List<Map<String, Object>> vinculaciones;
 }

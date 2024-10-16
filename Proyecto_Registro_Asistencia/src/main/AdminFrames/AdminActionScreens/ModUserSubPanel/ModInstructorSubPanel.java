@@ -57,51 +57,36 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         CreateInstructorSubPanel = new javax.swing.JPanel();
         ConfirmarRegistroUsuario = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         ResidenciaHolder = new javax.swing.JTextField();
-        jLabel40 = new javax.swing.JLabel();
         ResultadoFechaHolder = new javax.swing.JTextField();
         DiaCB = new javax.swing.JComboBox<>();
         MesCB = new javax.swing.JComboBox<>();
-        ResultadoArea = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         ResultadoNombres = new javax.swing.JTextField();
-        ResultadoSede = new javax.swing.JTextField();
-        ResultadoNivelFormacion = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
         GeneroCB = new javax.swing.JComboBox<>();
         ResultadoUsuario = new javax.swing.JTextField();
         TipoDocCB = new javax.swing.JComboBox<>();
         ResultadoDocumento = new javax.swing.JTextField();
-        jLabel41 = new javax.swing.JLabel();
         ResultadoApellidos = new javax.swing.JTextField();
-        jLabel38 = new javax.swing.JLabel();
         MunicipioCB = new javax.swing.JComboBox<>();
         jLabel19 = new javax.swing.JLabel();
         BarrioCB = new javax.swing.JComboBox<>();
         ResultadoCorreo = new javax.swing.JTextField();
         DepartamentoCB = new javax.swing.JComboBox<>();
         jLabel30 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         YearCB = new javax.swing.JComboBox<>();
         ResultadoTelefono = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
-        FichaCB = new javax.swing.JComboBox<>();
-        ResultadoProgramaFormacion = new javax.swing.JTextField();
-        AsociarFicha = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        FichasAsociadasTB = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         IDInstructorField = new javax.swing.JTextField();
         BuscarDatosUsuario = new javax.swing.JButton();
         RefrescarCombos = new javax.swing.JButton();
-        jLabel31 = new javax.swing.JLabel();
-        ResultadoJornadaFormacion = new javax.swing.JTextField();
         ResultadoPass = new javax.swing.JPasswordField();
 
         CreateInstructorSubPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -119,10 +104,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(0, 0, 0));
         jLabel27.setText("Usuario");
-
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel17.setText("Sede");
 
         jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(0, 0, 0));
@@ -144,10 +125,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         ResidenciaHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResidenciaHolder.setForeground(new java.awt.Color(0, 0, 0));
         ResidenciaHolder.setFocusable(false);
-
-        jLabel40.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel40.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel40.setText("Nivel de formacion");
 
         ResultadoFechaHolder.setEditable(false);
         ResultadoFechaHolder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -174,16 +151,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
             }
         });
 
-        ResultadoArea.setEditable(false);
-        ResultadoArea.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoArea.setForeground(new java.awt.Color(0, 0, 0));
-        ResultadoArea.setFocusable(false);
-        ResultadoArea.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ResultadoAreaActionPerformed(evt);
-            }
-        });
-
         jLabel29.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(0, 0, 0));
         jLabel29.setText("Correo");
@@ -195,12 +162,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                 ResultadoNombresKeyTyped(evt);
             }
         });
-
-        ResultadoSede.setEditable(false);
-        ResultadoSede.setFocusable(false);
-
-        ResultadoNivelFormacion.setEditable(false);
-        ResultadoNivelFormacion.setFocusable(false);
 
         jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(0, 0, 0));
@@ -237,10 +198,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel41.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel41.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel41.setText("Programa de Formacion");
-
         ResultadoApellidos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoApellidos.setForeground(new java.awt.Color(0, 0, 0));
         ResultadoApellidos.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -248,10 +205,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                 ResultadoApellidosKeyTyped(evt);
             }
         });
-
-        jLabel38.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel38.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel38.setText("Numero de ficha");
 
         MunicipioCB.setForeground(new java.awt.Color(0, 0, 0));
         MunicipioCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -293,10 +246,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         jLabel30.setForeground(new java.awt.Color(0, 0, 0));
         jLabel30.setText("Residencia");
 
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel24.setText("Area de trabajo");
-
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(0, 0, 0));
         jLabel18.setText("Telefono");
@@ -321,46 +270,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(0, 0, 0));
         jLabel25.setText("Fecha de Nacimiento");
-
-        FichaCB.setForeground(new java.awt.Color(0, 0, 0));
-        FichaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        FichaCB.setPreferredSize(new java.awt.Dimension(64, 28));
-        FichaCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FichaCBActionPerformed(evt);
-            }
-        });
-
-        ResultadoProgramaFormacion.setEditable(false);
-        ResultadoProgramaFormacion.setFocusable(false);
-
-        AsociarFicha.setBackground(new java.awt.Color(57, 169, 0));
-        AsociarFicha.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        AsociarFicha.setForeground(new java.awt.Color(255, 255, 255));
-        AsociarFicha.setText("AsociarFicha");
-        AsociarFicha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AsociarFichaActionPerformed(evt);
-            }
-        });
-
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fichas Asociadas", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
-
-        FichasAsociadasTB.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
-            }
-        ));
-        FichasAsociadasTB.setFocusable(false);
-        FichasAsociadasTB.setRequestFocusEnabled(false);
-        FichasAsociadasTB.setRowSelectionAllowed(false);
-        jScrollPane1.setViewportView(FichasAsociadasTB);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
@@ -398,23 +307,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel31.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel31.setText("Jornada de formacion");
-
-        ResultadoJornadaFormacion.setEditable(false);
-        ResultadoJornadaFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoJornadaFormacion.setForeground(new java.awt.Color(0, 0, 0));
-        ResultadoJornadaFormacion.setFocusable(false);
-        ResultadoJornadaFormacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ResultadoJornadaFormacionActionPerformed(evt);
-            }
-
-            private void ResultadoJornadaFormacionActionPerformed(ActionEvent evt) {
-            }
-        });
-
         ResultadoPass.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
 
         javax.swing.GroupLayout CreateInstructorSubPanelLayout = new javax.swing.GroupLayout(CreateInstructorSubPanel);
@@ -432,28 +324,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                         .addComponent(jLabel19)
                         .addGap(120, 120, 120)
                         .addComponent(ResultadoDocumento))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel40)
-                                    .addComponent(jLabel41))
-                                .addGap(33, 33, 33)
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                                    .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.Alignment.LEADING)))
-                            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel24)
-                                    .addComponent(jLabel17)
-                                    .addComponent(jLabel31))
-                                .addGap(50, 50, 50)
-                                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ResultadoJornadaFormacion)
-                                    .addComponent(ResultadoArea, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                                    .addComponent(ResultadoSede))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
                         .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel30)
@@ -499,15 +369,11 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                             .addComponent(ResultadoUsuario, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(TipoDocCB, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(ResultadoApellidos, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ResultadoPass)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel38)
-                        .addGap(85, 85, 85)
-                        .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AsociarFicha, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(ResultadoPass))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
+                .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 1028, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 12, Short.MAX_VALUE))
         );
         CreateInstructorSubPanelLayout.setVerticalGroup(
             CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -579,37 +445,8 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                         .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(ResidenciaHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel38)
-                    .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(AsociarFicha)))
-                .addGap(7, 7, 7)
-                .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(CreateInstructorSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel41)
-                            .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel40)
-                            .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel31)
-                            .addComponent(ResultadoJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel24)
-                            .addComponent(ResultadoArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(CreateInstructorSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel17)
-                            .addComponent(ResultadoSede, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ConfirmarRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(225, 225, 225))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -629,8 +466,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
             try {
                 ComboBoxModels CBModels = new ComboBoxModels();
                 ButtonStyler buttonStyler = new ButtonStyler();
-                buttonStyler.applyPrimaryStyle(AsociarFicha);
-                FichasAsociadasTB.setModel(modeloTabla);
                 yearModel.addElement("Seleccionar Año");
                 llenarYear(yearModel);
                 mesModel.addElement("Seleccionar Mes");
@@ -640,7 +475,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                 MunicipioCB.setModel(CBModels.generarComboBoxModelPorTipo("Municipios"));
                 DepartamentoCB.setModel(CBModels.generarComboBoxModelPorTipo("Departamentos"));
                 BarrioCB.setModel(CBModels.generarComboBoxModelPorTipo("Barrios"));
-                FichaCB.setModel(CBModels.generarComboBoxModelPorTipo("Fichas"));
                 YearCB.setModel(yearModel);
                 MesCB.setModel(mesModel);
                 DiaCB.setModel(diaModel);
@@ -896,33 +730,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                     }
 
 
-                    // 8. Capturar los datos de la tabla FichasAsociadasTB (si aplica)
-                    DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
-                    int filas = modeloTabla.getRowCount();
-
-                    List<Integer> fichas = new ArrayList<>();
-                    List<String> jornadasFormacion = new ArrayList<>();
-
-
-                    for (int i = 0; i < filas; i++) {
-                        // Asegúrate de que los tipos de datos coincidan con las columnas de la tabla
-                        Object fichaObj = modeloTabla.getValueAt(i, 0);
-                        Object jornadaObj = modeloTabla.getValueAt(i, 1);
-
-
-                        if (fichaObj instanceof Integer) {
-                            fichas.add((Integer) fichaObj);
-                        } else {
-                            errores.append("- La Ficha en la fila ").append(i + 1).append(" no es válida.\n");
-                        }
-
-                        if (jornadaObj instanceof String) {
-                            jornadasFormacion.add((String) jornadaObj);
-                        } else {
-                            errores.append("- La Jornada de Formación en la fila ").append(i + 1).append(" no es válida.\n");
-                        }
-
-                    }
 
                     // 9. Verificar si hay errores acumulados
                     if (errores.length() > 0) {
@@ -943,13 +750,13 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                             ResultadoCorreo.getText().trim(),
                             GeneroCB.getSelectedItem().toString(),
                             ResidenciaHolder.getText().trim(),
-                            null,
-                            fichas,
-                            null,
-                            jornadasFormacion,
-                            null,
-                            null,
-                            null
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            new ArrayList<>()
                     );
 
                     // 11. Enviar el modelo a la API
@@ -983,11 +790,7 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         ResultadoCorreo.setText("");
         ResidenciaHolder.setText("");
         ResultadoFechaHolder.setText("");
-        ResultadoProgramaFormacion.setText("");
-        ResultadoNivelFormacion.setText("");
-        ResultadoJornadaFormacion.setText("");
-        ResultadoArea.setText("");
-        ResultadoSede.setText("");
+
 
         // Restablecer JComboBoxes
         TipoDocCB.setSelectedIndex(0);  // Asumiendo que el índice 0 es "Seleccionar..."
@@ -1002,7 +805,7 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         MunicipioCB.setEnabled(false);
         BarrioCB.setSelectedIndex(0);
         BarrioCB.setEnabled(false);
-        FichaCB.setSelectedIndex(0);
+
 
         modeloTabla.setRowCount(0);  // Vaciar todas las filas de la tabla
 
@@ -1104,118 +907,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         actualizarFecha();  // Actualizar el TextField FechaHolder
     }//GEN-LAST:event_YearCBActionPerformed
 
-    private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
-        String fichaSeleccionada = (String) FichaCB.getSelectedItem();
-
-        if (fichaSeleccionada != null && !fichaSeleccionada.equals("Seleccionar...")) {
-            try {
-                // Convertir el valor seleccionado a un número de ficha (si corresponde)
-                int ficha = Integer.parseInt(fichaSeleccionada);
-                System.out.println(ficha);
-
-                // Crear una instancia de DataTables para realizar la consulta
-                DataTables dataTables = new DataTables();
-
-                // Consultar el programa de formación por la ficha seleccionada
-                Map<String, Object> FichaDataResult = dataTables.obtenerProgramaFormacionPorFicha(ficha);
-                System.out.println(FichaDataResult);
-
-                if (FichaDataResult != null) {
-                    // Colocar el valor obtenido en el JTextField correspondiente
-                    ResultadoProgramaFormacion.setText((String) FichaDataResult.get("ProgramaFormacion"));
-                    ResultadoNivelFormacion.setText((String) FichaDataResult.get("NivelFormacion"));
-                    ResultadoJornadaFormacion.setText((String) FichaDataResult.get("JornadasFormacion"));
-                    ResultadoSede.setText((String) FichaDataResult.get("Sede"));
-                    ResultadoArea.setText((String) FichaDataResult.get("Area"));
-
-                } else {
-                    // Si no se obtiene un resultado válido, limpiar el campo de texto
-                    ResultadoProgramaFormacion.setText((String) FichaDataResult.get("ProgramaFormacion No encontrado"));
-                    ResultadoNivelFormacion.setText((String) FichaDataResult.get("NivelFormacion No encontrado"));
-                    ResultadoJornadaFormacion.setText((String) FichaDataResult.get("JornadasFormacion No encontrado"));
-                    ResultadoSede.setText((String) FichaDataResult.get("Sede No encontrado"));
-                    ResultadoArea.setText((String) FichaDataResult.get("Area No encontrado"));
-                }
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-                ResultadoProgramaFormacion.setText("ProgramaFormacion Invalida");
-                ResultadoNivelFormacion.setText("NivelFormacion Invalida");
-                ResultadoJornadaFormacion.setText("JornadasFormacion Invalida");
-                ResultadoSede.setText("Sede Invalida");
-                ResultadoArea.setText("Area Invalida");
-            }
-        } else {
-            // Limpiar el campo si no hay selección válida
-            ResultadoProgramaFormacion.setText("");
-            ResultadoNivelFormacion.setText("");
-            ResultadoJornadaFormacion.setText("");
-            ResultadoSede.setText("");
-            ResultadoArea.setText("");
-        }
-    }//GEN-LAST:event_FichaCBActionPerformed
-
-    private void AsociarFichaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AsociarFichaActionPerformed
-        String fichaSeleccionada = (String) FichaCB.getSelectedItem();
-
-        // Verificar si se ha seleccionado una ficha válida
-        if (fichaSeleccionada != null && !fichaSeleccionada.equals("Seleccionar...")) {
-            try {
-                // Convertir el valor seleccionado a un número de ficha (si corresponde)
-                int ficha = Integer.parseInt(fichaSeleccionada);
-
-                // Verificar si la ficha ya está asociada en la tabla
-                if (fichaYaAsociada(ficha)) {
-                    JOptionPane.showMessageDialog(null, "La ficha " + ficha + " ya está asociada.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return; // Salir del método si la ficha ya está asociada
-                }
-
-                // Crear una instancia de DataTables para realizar la consulta
-                DataTables dataTables = new DataTables();
-
-                // Consultar el programa de formación por la ficha seleccionada
-                Map<String, Object> FichaDataResult = dataTables.obtenerProgramaFormacionPorFicha(ficha);
-
-                // Si se obtuvieron resultados válidos, agregar la ficha a la tabla
-                if (FichaDataResult != null) {
-                    // Obtener los valores del resultado de la consulta
-                    String programaFormacion = (String) FichaDataResult.get("ProgramaFormacion");
-                    String nivelFormacion = (String) FichaDataResult.get("NivelFormacion");
-                    String jornadaFormacion = (String) FichaDataResult.get("JornadasFormacion");
-                    String sede = (String) FichaDataResult.get("Sede");
-                    String area = (String) FichaDataResult.get("Area");
-
-                    // Obtener el modelo de la tabla
-                    DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
-
-                    // Agregar una nueva fila con los valores obtenidos
-                    modeloTabla.addRow(new Object[] {ficha, programaFormacion, nivelFormacion, jornadaFormacion, sede, area, "Eliminar"});
-
-                    // Configurar los renderers y editores para la columna "Eliminar"
-                    FichasAsociadasTB.getColumn("Eliminar").setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
-                    FichasAsociadasTB.getColumn("Eliminar").setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), FichasAsociadasTB));
-
-                    // Imprimir el contenido de la tabla después de agregar la fila
-                    imprimirContenidoTabla();
-
-                } else {
-                    // Si no se obtuvieron resultados válidos, mostrar un mensaje de error
-                    JOptionPane.showMessageDialog(null, "Ficha no encontrada o datos incompletos", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Ficha inválida", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            // Si no se ha seleccionado una ficha válida, mostrar un mensaje de advertencia
-            JOptionPane.showMessageDialog(null, "Debe seleccionar una ficha válida", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-    }//GEN-LAST:event_AsociarFichaActionPerformed
-
-    private void ResultadoAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResultadoAreaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ResultadoAreaActionPerformed
-
     private void IDInstructorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IDInstructorFieldActionPerformed
         BuscarDatosUsuario.doClick();
     }//GEN-LAST:event_IDInstructorFieldActionPerformed
@@ -1277,41 +968,9 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
                 BarrioCB.setSelectedItem(residencia[2]);
             }
 
-            // Limpiar los campos relacionados con las fichas
-            ResultadoProgramaFormacion.setText("");
-            ResultadoNivelFormacion.setText("");
-            ResultadoJornadaFormacion.setText("");
-            ResultadoSede.setText("");
-            ResultadoArea.setText("");
 
-            // Obtener el modelo de la tabla y limpiar las filas existentes
-            DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
-            modeloTabla.setRowCount(0);  // Limpiar la tabla
 
-            // Obtener las listas de fichas y jornadas
-            List<Integer> fichas = instructor.getFichas();
-            List<String> jornadasFormacion = instructor.getJornadasFormacion();
 
-            // Verificar que las listas tengan el mismo tamaño
-            if (fichas.size() != jornadasFormacion.size()) {
-                JOptionPane.showMessageDialog(this, "La cantidad de fichas y jornadas no coincide. Por favor, verifica los datos.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Agregar cada ficha y su jornada correspondiente a la tabla
-            for (int i = 0; i < fichas.size(); i++) {
-                Integer ficha = fichas.get(i);
-                String jornada = jornadasFormacion.get(i);
-
-                modeloTabla.addRow(new Object[]{
-                        ficha,
-                        jornada
-                });
-            }
-
-            // Asocia el ButtonRenderer y ButtonEditor con la columna del botón de eliminar
-            FichasAsociadasTB.getColumnModel().getColumn(2).setCellRenderer(new ButtonColumnHelper.ButtonRenderer());
-            FichasAsociadasTB.getColumnModel().getColumn(2).setCellEditor(new ButtonColumnHelper.ButtonEditor(new JCheckBox(), FichasAsociadasTB));
 
         } else {
             JOptionPane.showMessageDialog(null, "No se encontró el instructor con el documento proporcionado.");
@@ -1372,46 +1031,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
         refrescarComboBoxes();
     }//GEN-LAST:event_RefrescarCombosActionPerformed
 
-    private boolean fichaYaAsociada(int ficha) {
-        DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
-        int filas = modeloTabla.getRowCount();
-
-        for (int i = 0; i < filas; i++) {
-            int fichaEnTabla = (int) modeloTabla.getValueAt(i, 0); // La ficha está en la columna 0
-            if (fichaEnTabla == ficha) {
-                return true; // Ficha ya existe en la tabla
-            }
-        }
-        return false; // Ficha no existe en la tabla
-    }
-
-    private void imprimirContenidoTabla() {
-        try {
-            DefaultTableModel modeloTabla = (DefaultTableModel) FichasAsociadasTB.getModel();
-            int filas = modeloTabla.getRowCount();  // Número de filas
-            int columnas = modeloTabla.getColumnCount();  // Número de columnas
-
-            System.out.println("Contenido actual de la tabla:");
-
-            // Recorre cada fila
-            for (int i = 0; i < filas; i++) {
-                StringBuilder fila = new StringBuilder();  // Utilizamos StringBuilder para construir cada fila
-                // Recorre cada columna en la fila
-                for (int j = 0; j < columnas; j++) {
-                    Object value = modeloTabla.getValueAt(i, j);  // Obtiene el valor de la celda
-                    fila.append(value != null ? value.toString() : "null").append(" ");  // Si el valor es null, muestra "null"
-                }
-                System.out.println(fila.toString().trim());  // Imprime la fila completa
-            }
-
-            // Si la tabla está vacía
-            if (filas == 0) {
-                System.out.println("La tabla está vacía.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();  // Imprimir cualquier error que ocurra durante la impresión de la tabla
-        }
-    }
 
     public void refrescarComboBoxes() {
         try {
@@ -1425,7 +1044,6 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
             MunicipioCB.setModel(CBModels.generarComboBoxModelPorTipo("Municipios"));
             DepartamentoCB.setModel(CBModels.generarComboBoxModelPorTipo("Departamentos"));
             BarrioCB.setModel(CBModels.generarComboBoxModelPorTipo("Barrios"));
-            FichaCB.setModel(CBModels.generarComboBoxModelPorTipo("Fichas"));
             YearCB.setModel(yearModel);
             MesCB.setModel(mesModel);
             DiaCB.setModel(diaModel);
@@ -1439,15 +1057,12 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AsociarFicha;
     private javax.swing.JComboBox<String> BarrioCB;
     private javax.swing.JButton BuscarDatosUsuario;
     private javax.swing.JButton ConfirmarRegistroUsuario;
     private javax.swing.JPanel CreateInstructorSubPanel;
     private javax.swing.JComboBox<String> DepartamentoCB;
     private javax.swing.JComboBox<String> DiaCB;
-    private javax.swing.JComboBox<String> FichaCB;
-    private javax.swing.JTable FichasAsociadasTB;
     private javax.swing.JComboBox<String> GeneroCB;
     private javax.swing.JTextField IDInstructorField;
     private javax.swing.JComboBox<String> MesCB;
@@ -1455,38 +1070,26 @@ public class ModInstructorSubPanel extends javax.swing.JPanel {
     private javax.swing.JButton RefrescarCombos;
     private javax.swing.JTextField ResidenciaHolder;
     private javax.swing.JTextField ResultadoApellidos;
-    private javax.swing.JTextField ResultadoArea;
     private javax.swing.JTextField ResultadoCorreo;
     private javax.swing.JTextField ResultadoDocumento;
     private javax.swing.JTextField ResultadoFechaHolder;
-    private javax.swing.JTextField ResultadoJornadaFormacion;
-    private javax.swing.JTextField ResultadoNivelFormacion;
     private javax.swing.JTextField ResultadoNombres;
     private javax.swing.JPasswordField ResultadoPass;
-    private javax.swing.JTextField ResultadoProgramaFormacion;
-    private javax.swing.JTextField ResultadoSede;
     private javax.swing.JTextField ResultadoTelefono;
     private javax.swing.JTextField ResultadoUsuario;
     private javax.swing.JComboBox<String> TipoDocCB;
     private javax.swing.JComboBox<String> YearCB;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

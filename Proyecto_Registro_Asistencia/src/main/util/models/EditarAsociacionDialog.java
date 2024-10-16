@@ -4,60 +4,104 @@ import javax.swing.*;
 import java.awt.*;
 
 public class EditarAsociacionDialog extends JDialog {
+    private JComboBox<String> claseFormacionCB;
+    private JComboBox<String> jornadaFormacionCB;
+    private JTextField documentoInstructorTF;
+    private JButton actualizarButton, cancelarButton;
+    private boolean actualizacionConfirmada = false;  // Nuevo flag para verificar si se confirma la actualización
 
-    private JComboBox<String> claseFormacionComboBox;
-    private JComboBox<String> fichaComboBox;  // Añadido para seleccionar nueva ficha
-    private JButton guardarButton;
-    private JButton cancelarButton;
-    private String nuevaClaseFormacion;
-    private Integer nuevaFicha;
-
-    public EditarAsociacionDialog(Frame parent, String claseActual, Integer fichaActual) {
+    public EditarAsociacionDialog(JFrame parent, String claseActual, String jornadaActual, String documentoActual) {
         super(parent, "Editar Asociación", true);
-        setLayout(new GridLayout(3, 2, 10, 10));  // Añadido espacio entre componentes
 
-        // Inicializar ComboBoxModels
+        // Crear componentes
+        claseFormacionCB = new JComboBox<>();
+        jornadaFormacionCB = new JComboBox<>();
+        documentoInstructorTF = new JTextField(15);
+
+        // Llenar ComboBox con los métodos existentes
         ComboBoxModels cbm = new ComboBoxModels();
+        claseFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("ClaseFormacion"));
+        jornadaFormacionCB.setModel(cbm.generarComboBoxModelPorTipo("JornadaFormacion"));
 
-        // Clase de formación ComboBox
-        claseFormacionComboBox = new JComboBox<>();
-        claseFormacionComboBox.setModel(cbm.generarComboBoxModelPorTipo("ClaseFormacion"));
-        claseFormacionComboBox.setSelectedItem(claseActual); // Preseleccionar la clase actual
-        add(new JLabel("Clase de Formación:"));
-        add(claseFormacionComboBox);
+        // Seleccionar los valores actuales
+        claseFormacionCB.setSelectedItem(claseActual);
+        jornadaFormacionCB.setSelectedItem(jornadaActual);
 
-        // Ficha ComboBox
-        fichaComboBox = new JComboBox<>();
-        fichaComboBox.setModel(cbm.generarComboBoxModelPorTipo("Fichas"));
-        fichaComboBox.setSelectedItem(fichaActual.toString()); // Preseleccionar la ficha actual
-        add(new JLabel("Nueva Ficha:"));  // Etiqueta para nueva ficha
-        add(fichaComboBox);
+        // Rellenar el campo del documento con el valor actual, el usuario puede cambiarlo si lo desea
+        documentoInstructorTF.setText(documentoActual);
 
-        // Botón Guardar
-        guardarButton = new JButton("Guardar");
-        guardarButton.addActionListener(e -> {
-            nuevaClaseFormacion = (String) claseFormacionComboBox.getSelectedItem();
-            nuevaFicha = Integer.parseInt(fichaComboBox.getSelectedItem().toString());
-            dispose();  // Cerrar el diálogo
-        });
-        add(guardarButton);
-
-        // Botón Cancelar
+        // Crear botones
+        actualizarButton = new JButton("Actualizar");
         cancelarButton = new JButton("Cancelar");
-        cancelarButton.addActionListener(e -> dispose());  // Cerrar el diálogo sin hacer cambios
-        add(cancelarButton);
 
-        pack();  // Ajustar tamaño
-        setLocationRelativeTo(parent);  // Centrar el diálogo en la ventana padre
+        // Layout
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(new JLabel("Clase Formación: "), gbc);
+
+        gbc.gridx = 1;
+        add(claseFormacionCB, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(new JLabel("Jornada Formación: "), gbc);
+
+        gbc.gridx = 1;
+        add(jornadaFormacionCB, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        add(new JLabel("Documento Instructor: "), gbc);
+
+        gbc.gridx = 1;
+        add(documentoInstructorTF, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(actualizarButton, gbc);
+
+        gbc.gridy = 4;
+        add(cancelarButton, gbc);
+
+        // Acción de cancelar
+        cancelarButton.addActionListener(e -> {
+            actualizacionConfirmada = false;  // Marcar que no se ha confirmado la actualización
+            dispose();  // Cerrar el diálogo sin hacer nada
+        });
+
+        // Acción de actualizar
+        actualizarButton.addActionListener(e -> {
+            actualizacionConfirmada = true;  // Marcar que se ha confirmado la actualización
+            dispose();  // Cerrar el diálogo para proceder con la actualización
+        });
+
+        // Tamaño y visibilidad
+        pack();
+        setLocationRelativeTo(parent);
     }
 
-    // Método para obtener la nueva clase seleccionada
-    public String getNuevaClaseFormacion() {
-        return nuevaClaseFormacion;
+    // Getter para verificar si se confirmó la actualización
+    public boolean isActualizacionConfirmada() {
+        return actualizacionConfirmada;
     }
 
-    // Método para obtener la nueva ficha seleccionada
-    public Integer getNuevaFicha() {
-        return nuevaFicha;
+    // Getters para obtener los valores seleccionados
+    public String getClaseFormacion() {
+        return (String) claseFormacionCB.getSelectedItem();
+    }
+
+    public String getJornadaFormacion() {
+        return (String) jornadaFormacionCB.getSelectedItem();
+    }
+
+    public String getDocumentoInstructor() {
+        return documentoInstructorTF.getText();
     }
 }
+

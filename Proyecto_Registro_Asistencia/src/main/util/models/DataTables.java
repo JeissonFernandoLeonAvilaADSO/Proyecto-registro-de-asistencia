@@ -1,17 +1,18 @@
 package main.util.models;
 
+import main.util.models.UsersModels.AprendizModel;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import javax.swing.*;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.sql.Date;
 
 public class DataTables {
 
@@ -236,69 +237,100 @@ public class DataTables {
     }
 
     // Método para obtener las clases con sus respectivos instructores
-    public List<Map<String, Object>> obtenerClasesConInstructor() {
+    public static List<Map<String, Object>> obtenerClases() {
         List<Map<String, Object>> resultados = new ArrayList<>();
 
         try {
-            URL url = new URL("http://localhost:8080/Data/ClaseFormacion/Instructores/todos");
+            URL url = new URL("http://localhost:8080/Data/ClaseFormacion/todas");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
+            // Verificar la respuesta del servidor
             if (conn.getResponseCode() == 200) {
+                // Leer la respuesta del servidor
                 BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
                 StringBuilder response = new StringBuilder();
                 String line;
                 while ((line = br.readLine()) != null) {
                     response.append(line);
                 }
+                br.close();
 
-                // Parsear el JSON
-                JSONArray jsonArray = new JSONArray(response.toString());
+                // Parsear el JSON completo
+                JSONObject jsonResponse = new JSONObject(response.toString());
 
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                // Obtener el mensaje del servidor (opcional)
+                String mensaje = jsonResponse.optString("mensaje", "No se recibió mensaje del servidor.");
+                System.out.println("Mensaje del servidor: " + mensaje);
+
+                // Obtener el arreglo de datos
+                JSONArray dataArray = jsonResponse.getJSONArray("data");
+
+                // Iterar sobre cada objeto en el arreglo de datos
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject jsonObject = dataArray.getJSONObject(i);
 
                     // Extraer los valores de las claves del JSON
                     Integer id = jsonObject.getInt("ID");
-                    Integer idClase = jsonObject.getInt("IDClase");
-                    String nombreInstructor = jsonObject.getString("NombreInstructor");
-                    String documentoInstructor = jsonObject.getString("DocumentoInstructor");
-                    String correoInstructor = jsonObject.getString("CorreoInstructor");
-
-                    // Manejar el campo NombreClase, asignar "Sin Clase Asignada" si es null
-                    String nombreClase = jsonObject.isNull("NombreClase") ? "Sin Clase Asignada" : jsonObject.getString("NombreClase");
+                    String nombreClase = jsonObject.getString("NombreClase");
+                    String jornadasFormacion = jsonObject.getString("JornadasFormacion");
 
                     // Agregar los valores en un mapa
-                    Map<String, Object> claseInstructorMap = new HashMap<>();
-                    claseInstructorMap.put("ID", id);
-                    claseInstructorMap.put("IDClase", idClase);
-                    claseInstructorMap.put("NombreInstructor", nombreInstructor);
-                    claseInstructorMap.put("DocumentoInstructor", documentoInstructor);
-                    claseInstructorMap.put("CorreoInstructor", correoInstructor);
-                    claseInstructorMap.put("NombreClase", nombreClase);  // Asegurarse de que siempre tenga un valor
+                    Map<String, Object> claseMap = new HashMap<>();
+                    claseMap.put("ID", id);
+                    claseMap.put("NombreClase", nombreClase);
+                    claseMap.put("JornadasFormacion", jornadasFormacion);
 
-                    resultados.add(claseInstructorMap);
+                    resultados.add(claseMap);
                 }
+                
+                // Mostrar la respuesta completa en consola (opcional)
+                System.out.println("Respuesta del servidor: " + response.toString());
 
             } else {
-                throw new RuntimeException("Error HTTP: " + conn.getResponseCode());
+                // Manejar respuestas de error
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream(), StandardCharsets.UTF_8));
+                StringBuilder errorResponse = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    errorResponse.append(line);
+                }
+                br.close();
+
+                // Parsear el error como JSONObject
+                JSONObject errorJson = new JSONObject(errorResponse.toString());
+                String mensajeError = errorJson.optString("mensaje", "Error al obtener las clases.");
+
+                // Mostrar mensaje de error al usuario
+                JOptionPane.showMessageDialog(null, mensajeError, "Error", JOptionPane.ERROR_MESSAGE);
+                System.err.println("Error HTTP: " + conn.getResponseCode() + " - " + mensajeError);
             }
 
+        } catch (JSONException je) {
+            // Manejar errores de parseo JSON
+            JOptionPane.showMessageDialog(null, "Error al parsear la respuesta del servidor.", "Error", JOptionPane.ERROR_MESSAGE);
+            je.printStackTrace();
+        } catch (IOException ioe) {
+            // Manejar errores de conexión
+            JOptionPane.showMessageDialog(null, "Error de conexión al servidor:\n" + ioe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ioe.printStackTrace();
         } catch (Exception e) {
+            // Manejar otros tipos de errores
+            JOptionPane.showMessageDialog(null, "Error al obtener las clases:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
 
         return resultados;
     }
 
-    // Método para obtener los aprendices asociados a una ficha
-    public List<Map<String, Object>> obtenerAprendicesPorFicha(Integer Ficha) {
-        List<Map<String, Object>> aprendices = new ArrayList<>();
+    // Método para obtener los aprendices asociados a una ficha y mapearlos a AprendizModel
+    public List<AprendizModel> obtenerAprendicesPorFicha(Integer ficha) {
+        List<AprendizModel> aprendices = new ArrayList<>();
 
         try {
             // Construir la URL para el endpoint
-            URL url = new URL("http://localhost:8080/Data/Aprendices/porFicha?Ficha=" + Ficha);
+            URL url = new URL("http://localhost:8080/Data/Aprendices/CompletosPorFicha/" + ficha);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -321,11 +353,45 @@ public class DataTables {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                    // Mapear los datos del aprendiz a un Map
-                    Map<String, Object> aprendiz = new HashMap<>();
-                    aprendiz.put("ID", jsonObject.getInt("ID"));
-                    aprendiz.put("NombreAprendiz", jsonObject.getString("NombreAprendiz"));
-                    aprendiz.put("Documento", jsonObject.getString("Documento"));
+                    // Crear una nueva instancia de AprendizModel
+                    AprendizModel aprendiz = new AprendizModel(
+                            jsonObject.getString("User"),
+                            jsonObject.getString("Password"),
+                            jsonObject.getString("Documento"),
+                            jsonObject.getString("TipoDocumento"),
+                            jsonObject.getString("Nombres"),
+                            jsonObject.getString("Apellidos"),
+                            Date.valueOf(jsonObject.getString("FecNacimiento")), // Convertir String a Date
+                            jsonObject.getString("Telefono"),
+                            jsonObject.getString("Correo"),
+                            jsonObject.getString("Genero"),
+                            jsonObject.getString("Residencia"),
+                            new ArrayList<>()
+                    );
+
+                    // Procesar las vinculaciones
+                    JSONArray vinculacionesArray = jsonObject.getJSONArray("Vinculaciones");
+                    List<Map<String, Object>> vinculaciones = new ArrayList<>();
+
+                    for (int j = 0; j < vinculacionesArray.length(); j++) {
+                        JSONObject vinculacionObj = vinculacionesArray.getJSONObject(j);
+                        Map<String, Object> vinculacion = new HashMap<>();
+
+                        vinculacion.put("Ficha", vinculacionObj.getInt("Ficha"));
+                        vinculacion.put("Area", vinculacionObj.getString("Area"));
+                        vinculacion.put("Sede", vinculacionObj.getString("Sede"));
+                        vinculacion.put("ClaseFormacion", vinculacionObj.getString("ClaseFormacion"));
+                        vinculacion.put("JornadaFormacion", vinculacionObj.getString("JornadaFormacion"));
+                        vinculacion.put("NombreInstructor", vinculacionObj.getString("NombreInstructor"));
+                        vinculacion.put("NivelFormacion", vinculacionObj.getString("NivelFormacion"));
+                        vinculacion.put("ProgramaFormacion", vinculacionObj.getString("ProgramaFormacion"));
+
+                        // Agregar la vinculacion a la lista de vinculaciones
+                        vinculaciones.add(vinculacion);
+                    }
+
+                    // Establecer las vinculaciones al aprendiz
+                    aprendiz.setVinculaciones(vinculaciones);
 
                     // Agregar el aprendiz a la lista
                     aprendices.add(aprendiz);
@@ -343,7 +409,7 @@ public class DataTables {
         return aprendices;
     }
 
-    // Método para obtener fichas por programa de formación
+        // Método para obtener fichas por programa de formación
     public List<Map<String, Object>> obtenerFichasPorPrograma(String nombrePrograma) {
         List<Map<String, Object>> fichas = new ArrayList<>();
         try {
@@ -375,12 +441,19 @@ public class DataTables {
             }
 
             // Parsear el JSON
-            JSONArray jsonArray = new JSONArray(response.toString());
+            JSONObject jsonResponse = new JSONObject(response.toString());
 
-            // Convertir el JSONArray en una lista de mapas
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                fichas.add(jsonObject.toMap());
+            // Verificar que haya un campo 'data' en la respuesta
+            if (jsonResponse.has("data")) {
+                JSONArray jsonArray = jsonResponse.getJSONArray("data");
+
+                // Convertir el JSONArray en una lista de mapas
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    fichas.add(jsonObject.toMap());
+                }
+            } else {
+                throw new RuntimeException("Respuesta inesperada: No se encontró el campo 'data' en la respuesta.");
             }
 
             conn.disconnect();
@@ -391,5 +464,97 @@ public class DataTables {
         }
 
         return fichas;
+    }
+
+    public List<Map<String, Object>> obtenerVinculacionesPorFicha(int ficha) {
+        String apiUrl = "http://localhost:8080/Aprendiz/vinculaciones/" + ficha;
+        String jsonResponse = hacerPeticionGET(apiUrl);
+
+        if (jsonResponse == null || jsonResponse.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No se pudo obtener una respuesta del servidor.", "Error de Conexión", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+
+        try {
+            System.out.println("Respuesta JSON recibida: " + jsonResponse);
+            JSONArray jsonArray = new JSONArray(jsonResponse);
+
+            // Lista para almacenar las vinculaciones
+            List<Map<String, Object>> vinculaciones = new ArrayList<>();
+
+            // Iterar sobre el arreglo JSON para convertirlo a una lista de mapas
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObj = jsonArray.getJSONObject(i);
+
+                Map<String, Object> vinculacion = new HashMap<>();
+                vinculacion.put("Ficha", jsonObj.getInt("NumeroFicha"));
+                vinculacion.put("Area", jsonObj.getString("Area"));
+                vinculacion.put("Sede", jsonObj.getString("Sede"));
+                vinculacion.put("ClaseFormacion", jsonObj.getString("ClaseFormacion"));
+                vinculacion.put("JornadaFormacion", jsonObj.getString("JornadaFormacion"));
+                vinculacion.put("DocumentoInstructor", jsonObj.getString("DocumentoInstructor"));
+                vinculacion.put("NivelFormacion", jsonObj.getString("NivelFormacion"));
+                vinculacion.put("ProgramaFormacion", jsonObj.getString("ProgramaFormacion"));
+                vinculacion.put("NombreInstructor", jsonObj.getString("NombreInstructor"));
+
+                vinculaciones.add(vinculacion);
+            }
+
+            return vinculaciones;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al procesar la información de vinculaciones: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String hacerPeticionGET(String apiUrl) {
+        StringBuilder resultado = new StringBuilder();
+        HttpURLConnection conn = null;
+        BufferedReader in = null;
+        try {
+            URL url = new URL(apiUrl);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            int responseCode = conn.getResponseCode();
+            InputStream is;
+
+            if (responseCode >= 200 && responseCode < 300) {
+                is = conn.getInputStream();
+            } else {
+                is = conn.getErrorStream();
+            }
+
+            if (is != null) {
+                in = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    resultado.append(inputLine);
+                }
+            } else {
+                System.out.println("No se pudo obtener el cuerpo de la respuesta.");
+                return null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+
+        return resultado.toString();
     }
 }

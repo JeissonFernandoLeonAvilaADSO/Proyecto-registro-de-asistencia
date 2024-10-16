@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,9 +40,7 @@ public class InstructorApList extends JPanel {
 
         ListarApModel = new DefaultTableModel(new Object[]{
                 "Documento", "Tipo Documento", "Nombres", "Fecha Nacimiento",
-                "Telefono", "Correo", "Genero", "Residencia", "Ficha",
-                "Programa Formacion", "Jornada Formacion",
-                "Nivel Formacion", "Sede", "Area"}, 0);
+                "Telefono", "Correo", "Genero", "Residencia"}, 0);
 
         ListaAprendicesFichaTable.setModel(ListarApModel);
         ComboBoxModels cbm = new ComboBoxModels();
@@ -154,13 +153,7 @@ public class InstructorApList extends JPanel {
                             aprendiz.getTelefono(),
                             aprendiz.getCorreo(),
                             aprendiz.getGenero(),
-                            aprendiz.getResidencia(),
-                            aprendiz.getFicha(),
-                            aprendiz.getProgramaFormacion(),
-                            aprendiz.getJornadaFormacion(),
-                            aprendiz.getNivelFormacion(),
-                            aprendiz.getSede(),
-                            aprendiz.getArea()
+                            aprendiz.getResidencia()
                     });
                 }
 
@@ -168,6 +161,7 @@ public class InstructorApList extends JPanel {
                 ListaAprendicesFichaTable.setModel(ListarApModel);
                 ListaAprendicesFichaTable.revalidate();
                 ListaAprendicesFichaTable.repaint();
+                ListaAprendicesFichaTable.setRowHeight(30);
 
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Error al convertir el valor de la ficha: " + e.getMessage());

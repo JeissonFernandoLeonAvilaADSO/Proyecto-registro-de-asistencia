@@ -19,6 +19,7 @@ import main.util.API_AdminActions.API_Admin_UsersApplications.API_Admin_Instruct
 import main.util.models.ComboBoxModels;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import main.util.models.DataTables;
 import main.util.models.UsersModels.AprendizModel;
@@ -57,35 +58,23 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
         ResultadoPass = new javax.swing.JTextField();
         ResultadoNombres = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
-        ResultadoArea = new javax.swing.JTextField();
         ResultadoCorreo = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
-        jLabel38 = new javax.swing.JLabel();
         ResultadoApellidos = new javax.swing.JTextField();
         ResultadoDocumento = new javax.swing.JTextField();
-        FichaCB = new javax.swing.JComboBox<>();
         ResultadoTelefono = new javax.swing.JTextField();
-        jLabel39 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel40 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
         TipoDocCB = new javax.swing.JComboBox<>();
         GeneroCB = new javax.swing.JComboBox<>();
-        ResultadoNivelFormacion = new javax.swing.JTextField();
-        ResultadoSede = new javax.swing.JTextField();
-        ResultadoJornadaFormacion = new javax.swing.JTextField();
         jLabel30 = new javax.swing.JLabel();
         DepartamentoCB = new javax.swing.JComboBox<>();
         BarrioCB = new javax.swing.JComboBox<>();
         MunicipioCB = new javax.swing.JComboBox<>();
         ConfirmarEliminarAprendiz = new javax.swing.JButton();
-        jLabel41 = new javax.swing.JLabel();
-        ResultadoProgramaFormacion = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         YearCB = new javax.swing.JComboBox<>();
         MesCB = new javax.swing.JComboBox<>();
@@ -96,6 +85,8 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         BuscarDatosUsuario = new javax.swing.JButton();
         HabilitarAprendiz = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        AprendizVinculacionesTB = new javax.swing.JTable();
 
         CreateAprendizSubPanel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -136,11 +127,6 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
         jLabel29.setForeground(new java.awt.Color(0, 0, 0));
         jLabel29.setText("Correo");
 
-        ResultadoArea.setEditable(false);
-        ResultadoArea.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoArea.setForeground(new java.awt.Color(0, 0, 0));
-        ResultadoArea.setFocusable(false);
-
         ResultadoCorreo.setEditable(false);
         ResultadoCorreo.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoCorreo.setForeground(new java.awt.Color(0, 0, 0));
@@ -149,10 +135,6 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(0, 0, 0));
         jLabel19.setText("Documento");
-
-        jLabel38.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel38.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel38.setText("Numero de ficha");
 
         ResultadoApellidos.setEditable(false);
         ResultadoApellidos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -174,18 +156,6 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
             }
         });
 
-        FichaCB.setForeground(new java.awt.Color(0, 0, 0));
-        FichaCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        FichaCB.setEnabled(false);
-        FichaCB.setFocusable(false);
-        FichaCB.setPreferredSize(new java.awt.Dimension(64, 28));
-        FichaCB.setRequestFocusEnabled(false);
-        FichaCB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FichaCBActionPerformed(evt);
-            }
-        });
-
         ResultadoTelefono.setEditable(false);
         ResultadoTelefono.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoTelefono.setForeground(new java.awt.Color(0, 0, 0));
@@ -196,21 +166,9 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel39.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel39.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel39.setText("Jornada de formacion");
-
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(0, 0, 0));
         jLabel18.setText("Telefono");
-
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel24.setText("Area de trabajo");
-
-        jLabel40.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel40.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel40.setText("Nivel de formacion");
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(0, 0, 0));
@@ -227,10 +185,6 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
         jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(0, 0, 0));
         jLabel23.setText("Genero");
-
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel17.setText("Sede");
 
         TipoDocCB.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         TipoDocCB.setForeground(new java.awt.Color(0, 0, 0));
@@ -256,15 +210,6 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
                 GeneroCBActionPerformed(evt);
             }
         });
-
-        ResultadoNivelFormacion.setEditable(false);
-        ResultadoNivelFormacion.setFocusable(false);
-
-        ResultadoSede.setEditable(false);
-        ResultadoSede.setFocusable(false);
-
-        ResultadoJornadaFormacion.setEditable(false);
-        ResultadoJornadaFormacion.setFocusable(false);
 
         jLabel30.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(0, 0, 0));
@@ -315,13 +260,6 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
                 ConfirmarEliminarAprendizActionPerformed(evt);
             }
         });
-
-        jLabel41.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel41.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel41.setText("Programa de Formacion");
-
-        ResultadoProgramaFormacion.setEditable(false);
-        ResultadoProgramaFormacion.setFocusable(false);
 
         jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(0, 0, 0));
@@ -409,81 +347,91 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
             }
         });
 
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fichas Asociadas", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(0, 0, 0))); // NOI18N
+
+        AprendizVinculacionesTB.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
+            }
+        ));
+        AprendizVinculacionesTB.setFocusable(false);
+        AprendizVinculacionesTB.setRequestFocusEnabled(false);
+        AprendizVinculacionesTB.setRowSelectionAllowed(false);
+        jScrollPane1.setViewportView(AprendizVinculacionesTB);
+
         javax.swing.GroupLayout CreateAprendizSubPanelLayout = new javax.swing.GroupLayout(CreateAprendizSubPanel);
         CreateAprendizSubPanel.setLayout(CreateAprendizSubPanelLayout);
         CreateAprendizSubPanelLayout.setHorizontalGroup(
             CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(ConfirmarEliminarAprendiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel19)
-                        .addGap(120, 120, 120)
-                        .addComponent(ResultadoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel40, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel39, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel41, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel38)
-                            .addComponent(jLabel30)
-                            .addComponent(jLabel29)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel25))
-                        .addGap(56, 56, 56)
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                                .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ResultadoHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
-                            .addComponent(ResultadoCorreo)
-                            .addComponent(ResultadoTelefono)
-                            .addComponent(FichaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ResultadoJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ResultadoArea, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ResultadoSede, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                                .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ResultadoFechaHolder))
-                            .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel22)
-                            .addComponent(jLabel21)
-                            .addComponent(jLabel20)
-                            .addComponent(jLabel27)
-                            .addComponent(jLabel28))
-                        .addGap(67, 67, 67)
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ResultadoPass, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
-                            .addComponent(ResultadoUsuario)
-                            .addComponent(TipoDocCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ResultadoNombres)
-                            .addComponent(ResultadoApellidos)))
-                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(HabilitarAprendiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(ConfirmarEliminarAprendiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addGap(120, 120, 120)
+                                .addComponent(ResultadoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel30)
+                                    .addComponent(jLabel29)
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel23)
+                                    .addComponent(jLabel25))
+                                .addGap(56, 56, 56)
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                                        .addComponent(DepartamentoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(MunicipioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ResultadoHolder, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+                                    .addComponent(ResultadoCorreo)
+                                    .addComponent(ResultadoTelefono)
+                                    .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                                        .addComponent(YearCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(MesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(DiaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ResultadoFechaHolder))
+                                    .addComponent(GeneroCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel22)
+                                    .addComponent(jLabel21)
+                                    .addComponent(jLabel20)
+                                    .addComponent(jLabel27)
+                                    .addComponent(jLabel28))
+                                .addGap(67, 67, 67)
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(ResultadoPass, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+                                    .addComponent(ResultadoUsuario)
+                                    .addComponent(TipoDocCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(ResultadoNombres)
+                                    .addComponent(ResultadoApellidos)))
+                            .addGroup(CreateAprendizSubPanelLayout.createSequentialGroup()
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(IDInstructorField, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(BuscarDatosUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(HabilitarAprendiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         CreateAprendizSubPanelLayout.setVerticalGroup(
             CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -551,29 +499,7 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
                         .addComponent(BarrioCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(ResultadoHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel38)
-                    .addComponent(FichaCB, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ResultadoProgramaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel41))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ResultadoNivelFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel40))
-                .addGap(6, 6, 6)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ResultadoJornadaFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel39))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel24)
-                    .addComponent(ResultadoArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CreateAprendizSubPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17)
-                    .addComponent(ResultadoSede, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ConfirmarEliminarAprendiz, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -603,56 +529,6 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_ResultadoPassActionPerformed
 
-    private void FichaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FichaCBActionPerformed
-           String fichaSeleccionada = (String) FichaCB.getSelectedItem();
-
-            if (fichaSeleccionada != null && !fichaSeleccionada.equals("Seleccionar...")) {
-                try {
-                    // Convertir el valor seleccionado a un número de ficha (si corresponde)
-                    int ficha = Integer.parseInt(fichaSeleccionada);
-                    System.out.println(ficha);
-
-                    // Crear una instancia de DataTables para realizar la consulta
-                    DataTables dataTables = new DataTables();
-
-                    // Consultar el programa de formación por la ficha seleccionada
-                    Map<String, Object> FichaDataResult = dataTables.obtenerProgramaFormacionPorFicha(ficha);
-                    System.out.println(FichaDataResult);
-
-                    if (FichaDataResult != null) {
-                        // Colocar el valor obtenido en el JTextField correspondiente
-                        ResultadoProgramaFormacion.setText((String) FichaDataResult.get("ProgramaFormacion"));
-                        ResultadoNivelFormacion.setText((String) FichaDataResult.get("NivelFormacion"));
-                        ResultadoJornadaFormacion.setText((String) FichaDataResult.get("JornadasFormacion"));
-                        ResultadoSede.setText((String) FichaDataResult.get("Sede"));
-                        ResultadoArea.setText((String) FichaDataResult.get("Area"));
-
-                    } else {
-                        // Si no se obtiene un resultado válido, limpiar el campo de texto
-                        ResultadoProgramaFormacion.setText((String) FichaDataResult.get("ProgramaFormacion No encontrado"));
-                        ResultadoNivelFormacion.setText((String) FichaDataResult.get("NivelFormacion No encontrado"));
-                        ResultadoJornadaFormacion.setText((String) FichaDataResult.get("JornadasFormacion No encontrado"));
-                        ResultadoSede.setText((String) FichaDataResult.get("Sede No encontrado"));
-                        ResultadoArea.setText((String) FichaDataResult.get("Area No encontrado"));
-                    }
-                } catch (NumberFormatException ex) {
-                    ex.printStackTrace();
-                        ResultadoProgramaFormacion.setText("ProgramaFormacion Invalida");
-                        ResultadoNivelFormacion.setText("NivelFormacion Invalida");
-                        ResultadoJornadaFormacion.setText("JornadasFormacion Invalida");
-                        ResultadoSede.setText("Sede Invalida");
-                        ResultadoArea.setText("Area Invalida");
-                }
-            } else {
-                // Limpiar el campo si no hay selección válida
-                        ResultadoProgramaFormacion.setText("");
-                        ResultadoNivelFormacion.setText("");
-                        ResultadoJornadaFormacion.setText("");
-                        ResultadoSede.setText("");
-                        ResultadoArea.setText("");
-            }
-    }//GEN-LAST:event_FichaCBActionPerformed
-
     public void aditionalConfig(){
         yearModel.addElement("Seleccionar Año");
         llenarYear(yearModel);
@@ -665,7 +541,6 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
             MunicipioCB.setModel(CBModels.generarComboBoxModelPorTipo("Municipios"));
             DepartamentoCB.setModel(CBModels.generarComboBoxModelPorTipo("Departamentos"));
             BarrioCB.setModel(CBModels.generarComboBoxModelPorTipo("Barrios"));
-            FichaCB.setModel(CBModels.generarComboBoxModelPorTipo("Fichas"));
             YearCB.setModel(yearModel);
             MesCB.setModel(mesModel);
             DiaCB.setModel(diaModel);
@@ -877,12 +752,6 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
         ResultadoCorreo.setText("");
         ResultadoHolder.setText("");
         ResultadoFechaHolder.setText("");
-        ResultadoProgramaFormacion.setText("");
-        ResultadoNivelFormacion.setText("");
-        ResultadoJornadaFormacion.setText("");
-        ResultadoArea.setText("");
-        ResultadoSede.setText("");
-
         // Restablecer JComboBoxes
         TipoDocCB.setSelectedIndex(0);  // Asumiendo que el índice 0 es "Seleccionar..."
         YearCB.setSelectedIndex(0);
@@ -896,7 +765,7 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
         MunicipioCB.setEnabled(false);
         BarrioCB.setSelectedIndex(0);
         BarrioCB.setEnabled(false);
-        FichaCB.setSelectedIndex(0);
+
         // Si tienes alguna tabla o componente adicional en Aprendiz, también debes limpiarlo
     }
 
@@ -954,67 +823,89 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_IDInstructorFieldActionPerformed
 
     private void BuscarDatosUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarDatosUsuarioActionPerformed
-        // Crea una nueva instancia de API_BuscarUsuario.
-        API_BuscarUsuario buscarAprendiz = new API_BuscarUsuario();
+        try {
+            System.out.println("Evento BuscarDatosUsuarioActionPerformed disparado.");
 
-        // Intenta buscar el usuario (Instructor o Aprendiz) en la base de datos.
-        AprendizModel aprendiz = buscarAprendiz.buscarAprendizPorDocumento(IDInstructorField.getText());
+            // Crea una nueva instancia de API_BuscarUsuario.
+            API_BuscarUsuario buscarAprendiz = new API_BuscarUsuario();
 
-        if (aprendiz != null) {
-            // Rellenar los campos con los datos del aprendiz
-            ResultadoUsuario.setText(aprendiz.getUser());
-            ResultadoDocumento.setText(aprendiz.getDocumento());
-            TipoDocCB.setSelectedItem(aprendiz.getTipoDocumento());
-            ResultadoNombres.setText(aprendiz.getNombres());
-            ResultadoApellidos.setText(aprendiz.getApellidos());
-            ResultadoCorreo.setText(aprendiz.getCorreo());
-            ResultadoTelefono.setText(aprendiz.getTelefono());
-            ResultadoProgramaFormacion.setText(aprendiz.getProgramaFormacion());
-            ResultadoNivelFormacion.setText(aprendiz.getNivelFormacion());
-            ResultadoJornadaFormacion.setText(aprendiz.getJornadaFormacion());
-            ResultadoSede.setText(aprendiz.getSede());
-            ResultadoArea.setText(aprendiz.getArea());
+            // Intenta buscar el usuario (Instructor o Aprendiz) en la base de datos.
+            String documento = IDInstructorField.getText();
 
-            // Fecha de nacimiento: ajustar YearCB, MesCB, DiaCB
-            Date fechaNacimiento = aprendiz.getFechaNacimiento();
+            AprendizModel aprendiz = buscarAprendiz.buscarAprendizPorDocumento(documento);
 
-            if (fechaNacimiento != null) {
-                // Usar LocalDate para extraer el año, mes y día
-                LocalDate fecha = fechaNacimiento.toLocalDate();
-                int anho = fecha.getYear();
-                int mes = fecha.getMonthValue();  // De 1 a 12
-                int dia = fecha.getDayOfMonth();
+            if (aprendiz != null) {
+                System.out.println("Aprendiz obtenido: " + aprendiz.getDocumento());
+                System.out.println("Documento ingresado: " + documento);
+                // Rellenar los campos con los datos del aprendiz
+                ResultadoUsuario.setText(aprendiz.getUser());
+                ResultadoDocumento.setText(aprendiz.getDocumento());
+                TipoDocCB.setSelectedItem(aprendiz.getTipoDocumento());
+                ResultadoNombres.setText(aprendiz.getNombres());
+                ResultadoApellidos.setText(aprendiz.getApellidos());
+                ResultadoCorreo.setText(aprendiz.getCorreo());
+                ResultadoTelefono.setText(aprendiz.getTelefono());
 
-                // Setear YearCB
-                YearCB.setSelectedItem(String.valueOf(anho));
+                // Fecha de nacimiento: ajustar YearCB, MesCB, DiaCB
+                Date fechaNacimiento = aprendiz.getFechaNacimiento();
+                if (fechaNacimiento != null) {
+                    LocalDate fecha = fechaNacimiento.toLocalDate();
+                    int anho = fecha.getYear();
+                    int mes = fecha.getMonthValue();  // De 1 a 12
+                    int dia = fecha.getDayOfMonth();
 
-                // Mapear el número del mes al nombre del mes
-                String[] mesesNombres = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
-                String nombreMes = mesesNombres[mes - 1];  // Restamos 1 para que coincida con el índice
+                    YearCB.setSelectedItem(String.valueOf(anho));
 
-                // Setear MesCB al nombre del mes
-                MesCB.setSelectedItem(nombreMes);
+                    String[] mesesNombres = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+                    String nombreMes = mesesNombres[mes - 1];  // Restamos 1 para que coincida con el índice
 
-                // Setear DiaCB
-                DiaCB.setSelectedItem(String.valueOf(dia));  // Asegúrate de que los días en DiaCB estén como números sin ceros a la izquierda
+                    MesCB.setSelectedItem(nombreMes);
+                    DiaCB.setSelectedItem(String.valueOf(dia));
+                }
+
+                // Género
+                GeneroCB.setSelectedItem(aprendiz.getGenero());
+
+                // Residencia (descomponer en departamento, municipio y barrio si es necesario)
+                String[] residencia = aprendiz.getResidencia().split(" - ");
+                if (residencia.length == 3) {
+                    DepartamentoCB.setSelectedItem(residencia[0]);
+                    MunicipioCB.setSelectedItem(residencia[1]);
+                    BarrioCB.setSelectedItem(residencia[2]);
+                }
+
+                // Limpiar la tabla antes de llenarla con nuevas vinculaciones
+                DefaultTableModel model = new DefaultTableModel(
+                        new Object[] {"Ficha", "Area", "Sede", "Clase de Formacion", "Jornada de Formacion", "Nombre del Instructor",  "Nivel de Formacion", "Programa de Formacion"},
+                        0  // Número de filas iniciales
+                ); // Limpiar la tabla
+
+                // Llenar la tabla AprendizVinculacionesTB con los datos de las vinculaciones
+                if (aprendiz.getVinculaciones() != null && !aprendiz.getVinculaciones().isEmpty()) {
+                    for (Map<String, Object> vinculacion : aprendiz.getVinculaciones()) {
+                        Integer ficha = (Integer) vinculacion.get("Ficha");
+                        String area = (String) vinculacion.get("Area");
+                        String sede = (String) vinculacion.get("Sede");
+                        String nombreClase = (String) vinculacion.get("ClaseFormacion");
+                        String jornada = (String) vinculacion.get("JornadaFormacion");
+                        String nombreInstructor = (String) vinculacion.get("NombreInstructor");
+                        String nivelFormacion = (String) vinculacion.get("NivelFormacion");
+                        String programaFormacion = (String) vinculacion.get("ProgramaFormacion");
+
+
+                        // Añadir una nueva fila a la tabla
+                        model.addRow(new Object[]{ficha, area, sede, nombreClase, jornada, nombreInstructor, nivelFormacion, programaFormacion });
+                    }
+                }
+                AprendizVinculacionesTB.setModel(model);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró el usuario con el documento proporcionado.");
             }
-
-            // Género
-            GeneroCB.setSelectedItem(aprendiz.getGenero());
-
-            // Residencia (descomponer en departamento, municipio y barrio si es necesario)
-            String[] residencia = aprendiz.getResidencia().split(" - ");
-            if (residencia.length == 3) {
-                DepartamentoCB.setSelectedItem(residencia[0]);
-                MunicipioCB.setSelectedItem(residencia[1]);
-                BarrioCB.setSelectedItem(residencia[2]);
-            }
-
-            // Número de ficha
-            FichaCB.setSelectedItem(String.valueOf(aprendiz.getFicha()));
-
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontró el usuario con el documento proporcionado.");
+        } catch (Exception e) {
+            System.out.println("Ocurrió una excepción:");
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ocurrió un error al buscar el usuario: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BuscarDatosUsuarioActionPerformed
 
@@ -1136,51 +1027,41 @@ public class DelAprendizSubPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable AprendizVinculacionesTB;
     private javax.swing.JComboBox<String> BarrioCB;
     private javax.swing.JButton BuscarDatosUsuario;
     private javax.swing.JButton ConfirmarEliminarAprendiz;
     private javax.swing.JPanel CreateAprendizSubPanel;
     private javax.swing.JComboBox<String> DepartamentoCB;
     private javax.swing.JComboBox<String> DiaCB;
-    private javax.swing.JComboBox<String> FichaCB;
     private javax.swing.JComboBox<String> GeneroCB;
     private javax.swing.JButton HabilitarAprendiz;
     private javax.swing.JTextField IDInstructorField;
     private javax.swing.JComboBox<String> MesCB;
     private javax.swing.JComboBox<String> MunicipioCB;
     private javax.swing.JTextField ResultadoApellidos;
-    private javax.swing.JTextField ResultadoArea;
     private javax.swing.JTextField ResultadoCorreo;
     private javax.swing.JTextField ResultadoDocumento;
     private javax.swing.JTextField ResultadoFechaHolder;
     private javax.swing.JTextField ResultadoHolder;
-    private javax.swing.JTextField ResultadoJornadaFormacion;
-    private javax.swing.JTextField ResultadoNivelFormacion;
     private javax.swing.JTextField ResultadoNombres;
     private javax.swing.JTextField ResultadoPass;
-    private javax.swing.JTextField ResultadoProgramaFormacion;
-    private javax.swing.JTextField ResultadoSede;
     private javax.swing.JTextField ResultadoTelefono;
     private javax.swing.JTextField ResultadoUsuario;
     private javax.swing.JComboBox<String> TipoDocCB;
     private javax.swing.JComboBox<String> YearCB;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
-    private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

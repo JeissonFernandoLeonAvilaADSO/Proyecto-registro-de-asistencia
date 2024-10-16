@@ -11,11 +11,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import main.util.models.UsersModels.AprendizModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import javax.swing.*;
 
 /**
  * Clase para crear usuarios de instructores en la base de datos.
@@ -24,11 +28,12 @@ import org.json.JSONObject;
 public class API_Admin_AprendizApplications {
 
     // Este método toma el objeto AprendizModel y lo envía a la base de datos.
-    public void CrearAprendiz(AprendizModel aprendiz) {
+    public void CrearAprendiz(AprendizModel aprendiz, List<Integer> fichas) {
         HttpURLConnection conn = null;
         try {
             // Mostrar los detalles del aprendiz para depuración
             System.out.println("Detalles del aprendiz: " + aprendiz);
+            System.out.println("Fichas asociadas: " + fichas);
 
             // Crear la conexión a la URL del controlador Aprendiz
             URL url = new URL("http://localhost:8080/Aprendiz");
@@ -40,27 +45,37 @@ public class API_Admin_AprendizApplications {
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
 
-            // Convertir el objeto AprendizModel a JSON usando org.json.JSONObject
-            JSONObject json = new JSONObject();
-            json.put("User", aprendiz.getUser());
-            json.put("Password", aprendiz.getPassword());
-            json.put("Documento", aprendiz.getDocumento());
-            json.put("TipoDocumento", aprendiz.getTipoDocumento());
-            json.put("Nombres", aprendiz.getNombres());
-            json.put("Apellidos", aprendiz.getApellidos());
-            json.put("FecNacimiento", aprendiz.getFechaNacimiento().toString());  // Convertir la fecha a String
-            json.put("Telefono", aprendiz.getTelefono());
-            json.put("Correo", aprendiz.getCorreo());
-            json.put("Genero", aprendiz.getGenero());
-            json.put("Residencia", aprendiz.getResidencia());
-            json.put("NumeroFicha", aprendiz.getFicha());  // Asegúrate de que es un número
+            // Construir el objeto JSON con el aprendiz y las fichas
+            JSONObject jsonAprendiz = new JSONObject();
+            jsonAprendiz.put("User", aprendiz.getUser());
+            jsonAprendiz.put("Password", aprendiz.getPassword());
+            jsonAprendiz.put("Documento", aprendiz.getDocumento());
+            jsonAprendiz.put("TipoDocumento", aprendiz.getTipoDocumento());
+            jsonAprendiz.put("Nombres", aprendiz.getNombres());
+            jsonAprendiz.put("Apellidos", aprendiz.getApellidos());
+            jsonAprendiz.put("FecNacimiento", aprendiz.getFechaNacimiento().toString());
+            jsonAprendiz.put("Telefono", aprendiz.getTelefono());
+            jsonAprendiz.put("Correo", aprendiz.getCorreo());
+            jsonAprendiz.put("Genero", aprendiz.getGenero());
+            jsonAprendiz.put("Residencia", aprendiz.getResidencia());
+            jsonAprendiz.put("Vinculaciones", new ArrayList<>());
+
+            // Construir el array de fichas
+            JSONArray fichasArray = new JSONArray();
+            for (Integer ficha : fichas) {
+                fichasArray.put(ficha);
+            }
+
+            // Crear el JSON principal que contiene el aprendiz y las fichas
+            JSONObject jsonPrincipal = new JSONObject();
+            jsonPrincipal.put("aprendiz", jsonAprendiz);
+            jsonPrincipal.put("fichas", fichasArray);
 
             // Mostrar el JSON creado para depuración
-            System.out.println("JSON a enviar: " + json.toString());
+            System.out.println("JSON a enviar: " + jsonPrincipal.toString());
 
             // Convertir el JSON a bytes y enviarlo
-            byte[] input = json.toString().getBytes("utf-8");
-
+            byte[] input = jsonPrincipal.toString().getBytes("utf-8");
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(input, 0, input.length);
                 System.out.println("Solicitud enviada correctamente.");
@@ -116,7 +131,7 @@ public class API_Admin_AprendizApplications {
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
 
-            // Construir el objeto JSON con los nombres correctos
+            // Construir el objeto JSON con los datos del aprendiz
             JSONObject json = new JSONObject();
             json.put("User", aprendiz.getUser());
             json.put("Password", aprendiz.getPassword());
@@ -129,7 +144,22 @@ public class API_Admin_AprendizApplications {
             json.put("Correo", aprendiz.getCorreo());
             json.put("Genero", aprendiz.getGenero());
             json.put("Residencia", aprendiz.getResidencia());
-            json.put("NumeroFicha", aprendiz.getFicha());
+
+            // Agregar las vinculaciones al JSON
+            JSONArray vinculacionesArray = new JSONArray();
+            for (Map<String, Object> vinculacion : aprendiz.getVinculaciones()) {
+                JSONObject vinculacionJson = new JSONObject();
+                vinculacionJson.put("Ficha", vinculacion.get("Ficha"));
+                vinculacionJson.put("Area", vinculacion.get("Area"));
+                vinculacionJson.put("Sede", vinculacion.get("Sede"));
+                vinculacionJson.put("ClaseFormacion", vinculacion.get("ClaseFormacion"));
+                vinculacionJson.put("JornadaFormacion", vinculacion.get("JornadaFormacion"));
+                vinculacionJson.put("NombreInstructor", vinculacion.get("NombreInstructor"));
+                vinculacionJson.put("NivelFormacion", vinculacion.get("NivelFormacion"));
+                vinculacionJson.put("ProgramaFormacion", vinculacion.get("ProgramaFormacion"));
+                vinculacionesArray.put(vinculacionJson);
+            }
+            json.put("Vinculaciones", vinculacionesArray); // Añadir las vinculaciones al JSON
 
             // Depuración de los datos enviados
             System.out.println("Enviando los siguientes datos de aprendiz: " + json.toString());
@@ -158,26 +188,43 @@ public class API_Admin_AprendizApplications {
                 // Convertir la respuesta JSON en un objeto AprendizModel
                 JSONObject responseJson = new JSONObject(response.toString());
                 AprendizModel updatedAprendiz = new AprendizModel(
-                        responseJson.getString("Usuario"),
-                        responseJson.getString("Contraseña"),
+                        responseJson.getString("User"),
+                        responseJson.getString("Password"),
                         responseJson.getString("Documento"),
                         responseJson.getString("TipoDocumento"),
                         responseJson.getString("Nombres"),
                         responseJson.getString("Apellidos"),
-                        Date.valueOf(responseJson.getString("FechaNacimiento")),  // Conversión de fecha a SQL Date
-                        responseJson.getString("Teléfono"),
+                        Date.valueOf(responseJson.getString("FecNacimiento")),  // Conversión de fecha a SQL Date
+                        responseJson.getString("Telefono"),
                         responseJson.getString("Correo"),
-                        responseJson.getString("Género"),
+                        responseJson.getString("Genero"),
                         responseJson.getString("Residencia"),
-                        responseJson.getInt("Ficha"),
-                        responseJson.getString("ProgramaFormacion"),
-                        responseJson.getString("JornadaFormacion"),
-                        responseJson.getString("NivelFormacion"),
-                        responseJson.getString("Sede"),
-                        responseJson.getString("Area")
+                        new ArrayList<>() // Inicializar vinculaciones
                 );
 
-                System.out.println("Datos del aprendiz actualizados correctamente: " + updatedAprendiz);
+                // Procesar las vinculaciones de la respuesta
+                if (responseJson.has("Vinculaciones")) {
+                    JSONArray vinculacionesRespuesta = responseJson.getJSONArray("Vinculaciones");
+                    for (int i = 0; i < vinculacionesRespuesta.length(); i++) {
+                        JSONObject vinculacionJson = vinculacionesRespuesta.getJSONObject(i);
+                        Map<String, Object> vinculacion = new HashMap<>();
+                        vinculacion.put("Ficha", vinculacionJson.getInt("Ficha"));
+                        vinculacion.put("Area", vinculacionJson.getString("Area"));
+                        vinculacion.put("Sede", vinculacionJson.getString("Sede"));
+                        vinculacion.put("ClaseFormacion", vinculacionJson.getString("ClaseFormacion"));
+                        vinculacion.put("JornadaFormacion", vinculacionJson.getString("JornadaFormacion"));
+                        vinculacion.put("NombreInstructor", vinculacionJson.getString("NombreInstructor"));
+                        vinculacion.put("NivelFormacion", vinculacionJson.getString("NivelFormacion"));
+                        vinculacion.put("ProgramaFormacion", vinculacionJson.getString("ProgramaFormacion"));
+                        updatedAprendiz.getVinculaciones().add(vinculacion);
+                    }
+                }
+
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    JOptionPane.showMessageDialog(null, "Datos del aprendiz actualizados correctamente");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar el aprendiz");
+                }
                 return updatedAprendiz;
             } else {
                 System.out.println("Error: Código de respuesta inesperado - " + responseCode);
@@ -268,12 +315,7 @@ public class API_Admin_AprendizApplications {
                             jsonObject.getString("Correo"),
                             jsonObject.getString("Genero"),
                             jsonObject.getString("Residencia"),
-                            jsonObject.getInt("NumeroFicha"),
-                            jsonObject.getString("ProgramaFormacion"),
-                            jsonObject.getString("JornadaFormacion"),
-                            jsonObject.getString("NivelFormacion"),
-                            jsonObject.getString("Sede"),
-                            jsonObject.getString("Area")
+                            new ArrayList<>()
                     );
 
                     // Agregar a la lista de aprendices

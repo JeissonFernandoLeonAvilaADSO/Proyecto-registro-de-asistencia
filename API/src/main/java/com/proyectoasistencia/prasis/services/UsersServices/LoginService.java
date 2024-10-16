@@ -10,8 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
 @Service
 public class LoginService {
 
@@ -60,19 +60,17 @@ public class LoginService {
     public Map<String, Object> login(String user, String password, String role) {
         Map<String, Object> response = new HashMap<>();
 
-        // Depuración: Validación inicial del rol
+        // Depuración: Validación inicial del rol y credenciales
         System.out.println("Iniciando proceso de login. Usuario: " + user + ", Rol: " + role);
 
+        // Validación de credenciales para ADMIN
         if (role.equalsIgnoreCase("ADMIN")) {
-            // Depuración: Procesando login para administrador
             System.out.println("Validando credenciales de Administrador.");
-
             AdminModel admin = adminService.login(user, password);
+
             if (admin != null) {
                 response.put("User", admin.getUser());
                 response.put("Role", "Admin");
-
-                // Depuración: Login exitoso para administrador
                 System.out.println("Administrador autenticado: " + admin.getUser());
             } else {
                 System.err.println("Credenciales incorrectas para el Administrador.");
@@ -80,57 +78,66 @@ public class LoginService {
             }
 
         } else {
-            // Buscar el documento asociado al nombre de usuario y la contraseña
+            // Validación de credenciales para INSTRUCTOR o APRENDIZ
             String documento = obtenerDocumentoPorUsuarioYContrasena(user, password);
+            if (documento == null) {
+                throw new RuntimeException("Credenciales incorrectas o usuario no encontrado.");
+            }
 
-            if (role.equalsIgnoreCase("INSTRUCTOR")) {
-                // Depuración: Procesando login para instructor
-                System.out.println("Validando credenciales de Instructor.");
+            switch (role.toUpperCase()) {
+                case "INSTRUCTOR":
+                    System.out.println("Validando credenciales de Instructor.");
+                    InstructorModel instructor = instructorService.getInstructor(documento);
 
-                // Usar el documento para buscar al instructor
-                InstructorModel instructor = instructorService.getInstructor(documento);
-                if (instructor != null) {
-                    // Obtener la clase asociada al instructor
-                    Map<String, Object> claseFormacion = cfd.obtenerClasePorDocumentoInstructor(documento);
-                    if (claseFormacion == null || !claseFormacion.containsKey("NombreClase")) {
-                        // No se encontró ninguna clase para el instructor
-                        throw new RuntimeException("No se encontró ninguna clase para el instructor con documento: " + documento);
+                    if (instructor != null) {
+                        List<Map<String, Object>> clasesFormacion = cfd.obtenerClasePorDocumentoInstructor(documento);
+                        if (clasesFormacion == null || clasesFormacion.isEmpty()) {
+                            throw new RuntimeException("No se encontró ninguna clase para el instructor con documento: " + documento);
+                        }
+
+                        // Usamos un Set para eliminar duplicados, basándonos en el nombre de la clase o el ID
+                        Set<String> nombresClasesUnicas = new HashSet<>();
+                        List<Map<String, Object>> clasesUnicas = new ArrayList<>();
+
+                        for (Map<String, Object> clase : clasesFormacion) {
+                            String nombreClase = (String) clase.get("NombreClase");  // o "IDClase" si prefieres usar el ID
+                            if (nombresClasesUnicas.add(nombreClase)) {
+                                // Si el set añade exitosamente el nombre, es porque no estaba antes (es único)
+                                clasesUnicas.add(clase);
+                            }
+                        }
+
+                        response.put("FullName", instructor.getNombres() + " " + instructor.getApellidos());
+                        response.put("Documento", instructor.getDocumento());
+                        response.put("TipoDocumento", instructor.getTipoDocumento());
+                        response.put("Role", "Instructor");
+                        response.put("Clases", clasesUnicas); // Agregamos las clases únicas al response
+                        System.out.println("Instructor autenticado: " + instructor.getNombres() + " " + instructor.getApellidos());
+
+                    } else {
+                        throw new RuntimeException("No se encontró el instructor con el documento: " + documento);
                     }
+                    break;
 
-                    String nombreClase = (String) claseFormacion.get("NombreClase");
 
-                    response.put("FullName", instructor.getNombres() + " " + instructor.getApellidos());
-                    response.put("Documento", instructor.getDocumento());
-                    response.put("TipoDocumento", instructor.getTipoDocumento());
-                    response.put("ClaseFormacion", nombreClase);
-                    response.put("Role", "Instructor");
+                case "APRENDIZ":
+                    System.out.println("Validando credenciales de Aprendiz.");
+                    AprendizModel aprendiz = aprendizService.getAprendiz(documento);
 
-                    // Depuración: Login exitoso para instructor
-                    System.out.println("Instructor autenticado: " + instructor.getNombres() + " " + instructor.getApellidos());
-                } else {
-                    throw new RuntimeException("No se encontró el instructor con el documento: " + documento);
-                }
+                    if (aprendiz != null) {
+                        response.put("FullName", aprendiz.getNombres() + " " + aprendiz.getApellidos());
+                        response.put("Documento", aprendiz.getDocumento());
+                        response.put("TipoDocumento", aprendiz.getTipoDocumento());
+                        response.put("Role", "Aprendiz");
+                        System.out.println("Aprendiz autenticado: " + aprendiz.getNombres() + " " + aprendiz.getApellidos());
 
-            } else if (role.equalsIgnoreCase("APRENDIZ")) {
-                // Depuración: Procesando login para aprendiz
-                System.out.println("Validando credenciales de Aprendiz.");
+                    } else {
+                        throw new RuntimeException("No se encontró el aprendiz con el documento: " + documento);
+                    }
+                    break;
 
-                // Usar el documento para buscar al aprendiz
-                AprendizModel aprendiz = aprendizService.getAprendiz(documento);
-                if (aprendiz != null) {
-                    response.put("FullName", aprendiz.getNombres() + " " + aprendiz.getApellidos());
-                    response.put("Documento", aprendiz.getDocumento());
-                    response.put("TipoDocumento", aprendiz.getTipoDocumento());
-                    response.put("Role", "Aprendiz");
-
-                    // Depuración: Login exitoso para aprendiz
-                    System.out.println("Aprendiz autenticado: " + aprendiz.getNombres() + " " + aprendiz.getApellidos());
-                } else {
-                    throw new RuntimeException("No se encontró el aprendiz con el documento: " + documento);
-                }
-
-            } else {
-                throw new RuntimeException("Rol no válido.");
+                default:
+                    throw new RuntimeException("Rol no válido.");
             }
         }
 

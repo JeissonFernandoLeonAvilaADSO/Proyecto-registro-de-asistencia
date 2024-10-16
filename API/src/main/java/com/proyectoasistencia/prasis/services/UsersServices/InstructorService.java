@@ -43,12 +43,12 @@ public class InstructorService {
         logger.info("Iniciando búsqueda de instructor con documento: {}", documento);
 
         try {
-            // Paso 1: Obtener todos los IDPerfilUsuario que coincidan
+            // Paso 1: Obtener todos los IDPerfilUsuario que coincidan con el documento y que tengan el rol de instructor
             String sqlGetPerfilUsuarioIds = """
-            SELECT pu.ID
-            FROM perfilusuario pu
-            INNER JOIN rol r ON pu.IDRol = r.ID
-            WHERE pu.Documento = ? AND r.TipoRol = 'Instructor'
+        SELECT pu.ID
+        FROM perfilusuario pu
+        INNER JOIN rol r ON pu.IDRol = r.ID
+        WHERE pu.Documento = ? AND r.TipoRol = 'Instructor'
         """;
 
             List<Integer> perfilUsuarioIds = jdbcTemplate.queryForList(sqlGetPerfilUsuarioIds, new Object[]{documento}, Integer.class);
@@ -64,46 +64,37 @@ public class InstructorService {
                 throw new RuntimeException("Se encontraron múltiples perfiles de usuario para el documento: " + documento);
             }
 
-            Integer perfilUsuarioId = perfilUsuarioIds.get(0);
-            logger.info("PerfilUsuarioId seleccionado: {}", perfilUsuarioId);
+            Integer instructorId = perfilUsuarioIds.get(0);
+            logger.info("PerfilUsuarioId seleccionado: {}", instructorId);
 
-            // Paso 2: Obtener la información básica del instructor con ClaseFormacion como String
+            // Paso 2: Obtener la información básica del instructor
             String sqlGetInstructorBasicInfo = """
-            SELECT
-                u.Usuario AS Usuario,
-                u.Contraseña AS Contraseña,
-                pu.Documento AS Documento,
-                td.TipoDocumento AS TipoDocumento,
-                pu.Nombres AS Nombres,
-                pu.Apellidos AS Apellidos,
-                pu.FecNacimiento AS FecNacimiento,
-                pu.Telefono AS Telefono,
-                pu.Correo AS Correo,
-                g.TiposGeneros AS Genero,
-                CONCAT(d.nombre_departamento, ' - ', m.nombre_municipio, ' - ', b.nombre_barrio) AS Residencia,
-                COALESCE(
-                    (SELECT cf.NombreClase
-                     FROM claseformacion cf
-                     WHERE cf.IDInstructor = i.ID
-                     LIMIT 1),
-                    'Clase no asignada'
-                ) AS ClaseFormacion,
-                pu.Estado AS Estado
-            FROM
-                perfilusuario pu
-                INNER JOIN usuario u ON pu.IDUsuario = u.ID
-                INNER JOIN tipodocumento td ON pu.IDTipoDocumento = td.ID
-                INNER JOIN genero g ON pu.IDGenero = g.ID
-                INNER JOIN barrios b ON pu.IDBarrio = b.ID
-                INNER JOIN municipios m ON b.id_municipio = m.ID
-                INNER JOIN departamentos d ON m.id_departamento = d.ID
-                LEFT JOIN instructor i ON pu.ID = i.IDPerfilUsuario
-            WHERE
-                pu.ID = ?
-            LIMIT 1
-        """;
+                                            SELECT
+                                                u.Usuario AS Usuario,
+                                                u.Contraseña AS Contraseña,
+                                                pu.Documento AS Documento,
+                                                td.TipoDocumento AS TipoDocumento,
+                                                pu.Nombres AS Nombres,
+                                                pu.Apellidos AS Apellidos,
+                                                pu.FecNacimiento AS FecNacimiento,
+                                                pu.Telefono AS Telefono,
+                                                pu.Correo AS Correo,
+                                                g.TiposGeneros AS Genero,
+                                                CONCAT(d.nombre_departamento, ' - ', m.nombre_municipio, ' - ', b.nombre_barrio) AS Residencia,
+                                                pu.Estado AS Estado
+                                            FROM
+                                                perfilusuario pu
+                                                    INNER JOIN usuario u ON pu.IDUsuario = u.ID
+                                                    INNER JOIN tipodocumento td ON pu.IDTipoDocumento = td.ID
+                                                    INNER JOIN genero g ON pu.IDGenero = g.ID
+                                                    INNER JOIN barrios b ON pu.IDBarrio = b.ID
+                                                    INNER JOIN municipios m ON b.id_municipio = m.ID
+                                                    INNER JOIN departamentos d ON m.id_departamento = d.ID
+                                            WHERE
+                                                pu.ID = ?
+                                            LIMIT 1""";
 
-            InstructorModel instructor = jdbcTemplate.queryForObject(sqlGetInstructorBasicInfo, new Object[]{perfilUsuarioId}, (rs, rowNum) -> {
+            InstructorModel instructor = jdbcTemplate.queryForObject(sqlGetInstructorBasicInfo, new Object[]{instructorId}, (rs, rowNum) -> {
                 return InstructorModel.builder()
                         .user(rs.getString("Usuario"))
                         .password(rs.getString("Contraseña"))
@@ -117,8 +108,7 @@ public class InstructorService {
                         .genero(rs.getString("Genero"))
                         .residencia(rs.getString("Residencia"))
                         .estado(rs.getString("Estado"))
-                        .ClaseFormacion(rs.getString("ClaseFormacion"))
-                        // Inicializar las listas vacías
+                        .clasesFormacion(new ArrayList<>())
                         .fichas(new ArrayList<>())
                         .programasFormacion(new ArrayList<>())
                         .jornadasFormacion(new ArrayList<>())
@@ -129,147 +119,69 @@ public class InstructorService {
             });
 
             if (instructor == null) {
-                logger.warn("No se pudo obtener la información básica del instructor con IDPerfilUsuario: {}", perfilUsuarioId);
+                logger.warn("No se pudo obtener la información básica del instructor con IDPerfilUsuario: {}", instructorId);
                 throw new RuntimeException("No se pudo obtener la información del instructor.");
             }
 
             logger.info("Información básica del instructor obtenida: {}", instructor);
 
-            // Paso 3: Obtener el IDInstructor
-            String sqlGetInstructorId = "SELECT ID FROM instructor WHERE IDPerfilUsuario = ?";
-            Integer instructorId = jdbcTemplate.queryForObject(sqlGetInstructorId, new Object[]{perfilUsuarioId}, Integer.class);
+            // Paso 3: Obtener las clases, fichas y programas asociados al instructor desde la tabla claseformacion_instructor_ficha
+            String sqlGetClassFichaInfo = """
+                SELECT cf.NombreClase AS ClaseFormacion, f.NumeroFicha AS Ficha, pf.ProgramaFormacion AS ProgramaFormacion,
+                       jf.JornadasFormacion AS JornadaFormacion, nf.NivelFormacion AS NivelFormacion, s.CentroFormacion AS Sede, a.Area AS Area
+                FROM claseformacion_instructor_ficha cif
+                         INNER JOIN claseformacion cf ON cif.IDClaseFormacion = cf.ID
+                         INNER JOIN fichas f ON cif.IDFicha = f.ID
+                         INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
+                         INNER JOIN jornadaformacion jf ON f.IDJornadaFormacion = jf.ID
+                         INNER JOIN nivelformacion nf ON pf.IDNivelFormacion = nf.ID
+                         INNER JOIN sede s ON pf.IDSede = s.ID
+                         INNER JOIN areas a ON pf.IDArea = a.ID
+                WHERE cif.IDPerfilUsuario = ?""";
 
-            if (instructorId == null) {
-                logger.warn("No se encontró el instructor con IDPerfilUsuario: {}", perfilUsuarioId);
-                throw new RuntimeException("No se encontró el instructor con IDPerfilUsuario: " + perfilUsuarioId);
-            }
+            jdbcTemplate.query(sqlGetClassFichaInfo, new Object[]{instructorId}, (rs) -> {
+                // Agregar clases de formación
+                instructor.getClasesFormacion().add(rs.getString("ClaseFormacion"));
 
-            logger.info("InstructorId encontrado: {}", instructorId);
+                // Agregar fichas
+                instructor.getFichas().add(rs.getInt("Ficha"));
 
-            // Paso 4: Obtener las fichas asociadas al instructor
-            String sqlGetFichas = """
-            SELECT f.NumeroFicha
-            FROM instructor_ficha inf
-            INNER JOIN fichas f ON inf.IDFicha = f.ID
-            WHERE inf.IDInstructor = ?
-        """;
+                // Agregar programas de formación
+                instructor.getProgramasFormacion().add(rs.getString("ProgramaFormacion"));
 
-            List<Integer> fichas = jdbcTemplate.query(sqlGetFichas, new Object[]{instructorId}, (rs, rowNum) -> rs.getInt("NumeroFicha"));
-            instructor.getFichas().addAll(fichas);
-            logger.debug("Fichas asociadas al instructor {}: {}", instructorId, fichas);
+                // Agregar jornadas de formación
+                instructor.getJornadasFormacion().add(rs.getString("JornadaFormacion"));
 
-            if (fichas.isEmpty()) {
-                logger.info("No hay fichas asociadas al instructor con ID: {}", instructorId);
-                return instructor;
-            }
+                // Agregar niveles de formación
+                instructor.getNivelesFormacion().add(rs.getString("NivelFormacion"));
 
-            // Paso 5: Obtener detalles adicionales basados en las fichas
-            MapSqlParameterSource params = new MapSqlParameterSource();
-            params.addValue("fichas", fichas);
+                // Agregar sedes
+                instructor.getSedes().add(rs.getString("Sede"));
 
-            NamedParameterJdbcTemplate namedJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
+                // Agregar áreas
+                instructor.getAreas().add(rs.getString("Area"));
+            });
 
-            // Obtener programas de formación
-            String sqlGetProgramasFormacion = """
-            SELECT DISTINCT pf.ProgramaFormacion
-            FROM fichas f
-            INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
-            WHERE f.NumeroFicha IN (:fichas)
-        """;
-
-            List<String> programasFormacion = namedJdbcTemplate.query(sqlGetProgramasFormacion, params, (rs, rowNum) -> rs.getString("ProgramaFormacion"));
-            instructor.getProgramasFormacion().addAll(programasFormacion);
-            logger.debug("Programas de formación: {}", programasFormacion);
-
-            // Obtener jornadas de formación (Ajuste realizado aquí)
-            String sqlGetJornadasFormacion = """
-            SELECT DISTINCT jf.JornadasFormacion
-            FROM fichas f
-            INNER JOIN jornadaformacion jf ON f.IDJornadaFormacion = jf.ID
-            WHERE f.NumeroFicha IN (:fichas)
-        """;
-
-            List<String> jornadasFormacion = namedJdbcTemplate.query(sqlGetJornadasFormacion, params, (rs, rowNum) -> rs.getString("JornadasFormacion"));
-            instructor.getJornadasFormacion().addAll(jornadasFormacion);
-            logger.debug("Jornadas de formación: {}", jornadasFormacion);
-
-            // Obtener niveles de formación
-            String sqlGetNivelesFormacion = """
-            SELECT DISTINCT nf.NivelFormacion
-            FROM fichas f
-            INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
-            INNER JOIN nivelformacion nf ON pf.IDNivelFormacion = nf.ID
-            WHERE f.NumeroFicha IN (:fichas)
-        """;
-
-            List<String> nivelesFormacion = namedJdbcTemplate.query(sqlGetNivelesFormacion, params, (rs, rowNum) -> rs.getString("NivelFormacion"));
-            instructor.getNivelesFormacion().addAll(nivelesFormacion);
-            logger.debug("Niveles de formación: {}", nivelesFormacion);
-
-            // Obtener sedes
-            String sqlGetSedes = """
-            SELECT DISTINCT s.CentroFormacion
-            FROM fichas f
-            INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
-            INNER JOIN sede s ON pf.IDSede = s.ID
-            WHERE f.NumeroFicha IN (:fichas)
-        """;
-
-            List<String> sedes = namedJdbcTemplate.query(sqlGetSedes, params, (rs, rowNum) -> rs.getString("CentroFormacion"));
-            instructor.getSedes().addAll(sedes);
-            logger.debug("Sedes: {}", sedes);
-
-            // Obtener áreas
-            String sqlGetAreas = """
-            SELECT DISTINCT a.Area
-            FROM fichas f
-            INNER JOIN programaformacion pf ON f.IDProgramaFormacion = pf.ID
-            INNER JOIN areas a ON pf.IDArea = a.ID
-            WHERE f.NumeroFicha IN (:fichas)
-        """;
-
-            List<String> areas = namedJdbcTemplate.query(sqlGetAreas, params, (rs, rowNum) -> rs.getString("Area"));
-            instructor.getAreas().addAll(areas);
-            logger.debug("Áreas: {}", areas);
-
-            logger.info("Instructor obtenido exitosamente: {}", instructor);
+            logger.info("Información completa del instructor obtenida exitosamente: {}", instructor);
             return instructor;
 
         } catch (IncorrectResultSizeDataAccessException e) {
-            logger.error("Se encontraron múltiples perfiles de usuario para el documento: {}. Error: {}", documento, e.getMessage(), e);
-            throw new RuntimeException("Se encontraron múltiples perfiles de usuario para el documento: " + documento, e);
+            logger.error("Error de tamaño incorrecto en los resultados: ", e);
+            throw new RuntimeException("Error en la búsqueda del instructor.");
         } catch (Exception e) {
-            logger.error("Error al obtener el instructor con documento {}: {}", documento, e.getMessage(), e);
-            throw new RuntimeException("Error al obtener el instructor: " + e.getMessage(), e);
+            logger.error("Error al obtener el instructor: ", e);
+            throw new RuntimeException("Error al obtener el instructor.");
         }
     }
 
-    // Crear un nuevo instructor
+
+
     @Transactional(rollbackFor = Exception.class)
     public InstructorModel createInstructor(InstructorModel instructor) {
         // Validación de datos de entrada
-        System.out.println("Iniciando método createInstructor");
-
         if (instructor == null) {
             throw new IllegalArgumentException("El objeto instructor no debe ser nulo.");
         }
-
-        // Imprimir todos los campos del objeto instructor para verificar que no sean nulos
-        System.out.println("Datos del instructor recibidos:");
-        System.out.println("Usuario: " + instructor.getUser());
-        System.out.println("Contraseña: " + instructor.getPassword());
-        System.out.println("Documento: " + instructor.getDocumento());
-        System.out.println("TipoDocumento: " + instructor.getTipoDocumento());
-        System.out.println("Nombres: " + instructor.getNombres());
-        System.out.println("Apellidos: " + instructor.getApellidos());
-        System.out.println("FechaNacimiento: " + instructor.getFechaNacimiento());
-        System.out.println("Teléfono: " + instructor.getTelefono());
-        System.out.println("Correo: " + instructor.getCorreo());
-        System.out.println("Género: " + instructor.getGenero());
-        System.out.println("Residencia: " + instructor.getResidencia());
-        System.out.println("ClaseFormacion" + instructor.getClaseFormacion());
-        System.out.println("Fichas: " + instructor.getFichas());
-        // Añadir más campos si es necesario
 
         // Validar que los datos requeridos no sean nulos o vacíos
         if (instructor.getUser() == null || instructor.getUser().isEmpty()) {
@@ -305,36 +217,29 @@ public class InstructorService {
         if (instructor.getResidencia() == null || instructor.getResidencia().isEmpty()) {
             throw new IllegalArgumentException("La residencia es requerida.");
         }
-        if (instructor.getFichas() == null || instructor.getFichas().isEmpty()) {
-            throw new IllegalArgumentException("Las fichas son requeridas.");
-        }
 
         try {
-            // Verificar si el usuario o documento ya existen
-            System.out.println("Verificando si el usuario o documento ya existen en la base de datos.");
-
+            // Verificar si el usuario ya existe
             Integer countUsuario = jdbcTemplate.queryForObject(
                     "SELECT COUNT(*) FROM usuario WHERE Usuario = ?",
                     new Object[]{instructor.getUser()},
                     Integer.class
             );
-            System.out.println("Cantidad de usuarios con el mismo nombre: " + countUsuario);
             if (countUsuario != null && countUsuario > 0) {
                 throw new IllegalArgumentException("El nombre de usuario ya existe: " + instructor.getUser());
             }
 
+            // Verificar si el documento ya está registrado
             Integer countDocumento = jdbcTemplate.queryForObject(
                     "SELECT COUNT(*) FROM perfilusuario WHERE Documento = ?",
                     new Object[]{instructor.getDocumento()},
                     Integer.class
             );
-            System.out.println("Cantidad de documentos iguales: " + countDocumento);
             if (countDocumento != null && countDocumento > 0) {
                 throw new IllegalArgumentException("El documento ya está registrado: " + instructor.getDocumento());
             }
 
             // Paso 1: Insertar en la tabla `usuario` y obtener el ID
-            System.out.println("Insertando en la tabla usuario.");
             String sqlInsertUsuario = "INSERT INTO usuario (Usuario, Contraseña) VALUES (?, ?)";
             KeyHolder keyHolderUsuario = new GeneratedKeyHolder();
 
@@ -344,8 +249,6 @@ public class InstructorService {
                 ps.setString(2, passwordEncoder.encode(instructor.getPassword()));
                 return ps;
             }, keyHolderUsuario);
-
-            System.out.println("Filas afectadas en la inserción de usuario: " + rowsAffectedUsuario);
 
             if (rowsAffectedUsuario == 0) {
                 throw new RuntimeException("La inserción en la tabla usuario no afectó a ninguna fila.");
@@ -357,193 +260,84 @@ public class InstructorService {
             }
 
             int usuarioId = generatedUserId.intValue();
-            System.out.println("ID de usuario generado: " + usuarioId);
 
-            // Paso 2: Obtener IDs relacionados
-            System.out.println("Obteniendo IDs relacionados.");
+            // Paso 2: Obtener el ID de tipo de documento
             Integer idTipoDocumento = jdbcTemplate.queryForObject(
                     "SELECT ID FROM tipodocumento WHERE TipoDocumento = ?",
                     new Object[]{instructor.getTipoDocumento()},
                     Integer.class
             );
-            System.out.println("ID TipoDocumento: " + idTipoDocumento);
             if (idTipoDocumento == null) {
                 throw new IllegalArgumentException("Tipo de documento inválido: " + instructor.getTipoDocumento());
             }
 
+            // Paso 3: Obtener el ID de género
             Integer idGenero = jdbcTemplate.queryForObject(
                     "SELECT ID FROM genero WHERE TiposGeneros = ?",
                     new Object[]{instructor.getGenero()},
                     Integer.class
             );
-            System.out.println("ID Género: " + idGenero);
             if (idGenero == null) {
                 throw new IllegalArgumentException("Género inválido: " + instructor.getGenero());
             }
 
+            // Paso 4: Extraer el nombre del barrio de la residencia
             String residencia = instructor.getResidencia();
             String[] residenciaParts = residencia.split(" - ");
-            if (residenciaParts.length < 3) {
-                throw new IllegalArgumentException("La residencia debe tener el formato 'Departamento - Municipio - Barrio'");
+            if (residenciaParts.length != 3) {
+                throw new IllegalArgumentException("La residencia debe tener el formato 'municipio - departamento - barrio'.");
             }
             String nombreBarrio = residenciaParts[2].trim();
-            System.out.println("Nombre del barrio: " + nombreBarrio);
 
+            // Paso 5: Obtener el ID del barrio
             Integer idBarrio = jdbcTemplate.queryForObject(
                     "SELECT ID FROM barrios WHERE nombre_barrio = ?",
                     new Object[]{nombreBarrio},
                     Integer.class
             );
-            System.out.println("ID Barrio: " + idBarrio);
             if (idBarrio == null) {
                 throw new IllegalArgumentException("Barrio inválido: " + nombreBarrio);
             }
 
-            // Paso 3: Insertar en la tabla `perfilusuario` y obtener el ID
-            System.out.println("Insertando en la tabla perfilusuario.");
+            // Paso 6: Insertar en la tabla `perfilusuario` y asignar el rol de instructor (IDRol = 1)
             String sqlInsertPerfilUsuario = """
                 INSERT INTO perfilusuario (
-                    IDUsuario,
-                    Documento,
-                    IDTipoDocumento,
-                    Nombres,
-                    Apellidos,
-                    FecNacimiento,
-                    Telefono,
-                    Correo,
-                    IDGenero,
-                    IDRol,
-                    IDBarrio)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    IDUsuario, Documento, IDTipoDocumento, Nombres, Apellidos, FecNacimiento, 
+                    Telefono, Correo, IDGenero, IDRol, IDBarrio
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
             """;
-            KeyHolder keyHolderPerfilUsuario = new GeneratedKeyHolder();
+            jdbcTemplate.update(sqlInsertPerfilUsuario,
+                    usuarioId,
+                    instructor.getDocumento(),
+                    idTipoDocumento,
+                    instructor.getNombres(),
+                    instructor.getApellidos(),
+                    new java.sql.Date(instructor.getFechaNacimiento().getTime()),
+                    instructor.getTelefono(),
+                    instructor.getCorreo(),
+                    idGenero,
+                    idBarrio
+            );
 
-            int rowsAffectedPerfilUsuario = jdbcTemplate.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement(sqlInsertPerfilUsuario, Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, usuarioId);
-                ps.setString(2, instructor.getDocumento());
-                ps.setInt(3, idTipoDocumento);
-                ps.setString(4, instructor.getNombres());
-                ps.setString(5, instructor.getApellidos());
-                ps.setDate(6, new java.sql.Date(instructor.getFechaNacimiento().getTime()));
-                ps.setString(7, instructor.getTelefono());
-                ps.setString(8, instructor.getCorreo());
-                ps.setInt(9, idGenero);
-                ps.setInt(10, 1);
-                ps.setInt(11, idBarrio);
-                return ps;
-            }, keyHolderPerfilUsuario);
-
-            System.out.println("Filas afectadas en la inserción de perfilusuario: " + rowsAffectedPerfilUsuario);
-
-            if (rowsAffectedPerfilUsuario == 0) {
-                throw new RuntimeException("La inserción en la tabla perfilusuario no afectó a ninguna fila.");
-            }
-
-            Number generatedPerfilUsuarioId = keyHolderPerfilUsuario.getKey();
-            if (generatedPerfilUsuarioId == null) {
-                throw new RuntimeException("No se generó una clave primaria para perfilusuario.");
-            }
-
-            int perfilUsuarioId = generatedPerfilUsuarioId.intValue();
-            System.out.println("ID de perfilUsuario generado: " + perfilUsuarioId);
-
-            // Paso 4: Insertar en la tabla `instructor` y obtener el ID
-            System.out.println("Insertando en la tabla instructor.");
-            String sqlInsertInstructor = "INSERT INTO instructor (IDPerfilUsuario) VALUES (?)";
-            KeyHolder keyHolderInstructor = new GeneratedKeyHolder();
-
-            int rowsAffectedInstructor = jdbcTemplate.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement(sqlInsertInstructor, Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, perfilUsuarioId);
-                return ps;
-            }, keyHolderInstructor);
-
-            if (rowsAffectedInstructor == 0) {
-                throw new RuntimeException("La inserción en la tabla instructor no afectó a ninguna fila.");
-            }
-
-            Number generatedInstructorId = keyHolderInstructor.getKey();
-            if (generatedInstructorId == null) {
-                throw new RuntimeException("No se generó una clave primaria para instructor.");
-            }
-
-            int instructorId = generatedInstructorId.intValue();
-            System.out.println("ID de instructor generado: " + instructorId);
-
-            // **Nuevo Paso 5: Asociar Fichas al Instructor**
-            System.out.println("Asociando fichas al instructor.");
-            List<Integer> fichas = instructor.getFichas(); // Asegúrate de que este método retorna una lista de números de ficha
-
-            for (Integer numeroFicha : fichas) {
-                System.out.println("Procesando número de ficha: " + numeroFicha);
-
-                // Buscar el ID de la ficha basado en NumeroFicha
-                Integer fichaId = jdbcTemplate.queryForObject(
-                        "SELECT ID FROM fichas WHERE NumeroFicha = ?",
-                        new Object[]{numeroFicha},
-                        Integer.class
-                );
-
-                if (fichaId == null) {
-                    throw new IllegalArgumentException("La ficha con NúmeroFicha " + numeroFicha + " no existe.");
-                }
-
-                System.out.println("ID de la ficha encontrada: " + fichaId);
-
-                // Insertar la asociación en la tabla `instructor_ficha`
-                String sqlInsertInstructorFicha = "INSERT INTO instructor_ficha (IDFicha, IDInstructor) VALUES (?, ?)";
-
-                int rowsAffectedInstructorFicha = jdbcTemplate.update(
-                        sqlInsertInstructorFicha,
-                        fichaId,
-                        instructorId
-                );
-
-                if (rowsAffectedInstructorFicha == 0) {
-                    throw new RuntimeException("No se pudo asociar la ficha número " + numeroFicha + " con el instructor.");
-                }
-
-                System.out.println("Ficha número " + numeroFicha + " asociada correctamente al instructor.");
-            }
-
-            // Finalización exitosa
-            System.out.println("Proceso completado exitosamente.");
+            logger.info("Instructor creado exitosamente con usuario ID: {}", usuarioId);
             return instructor;
 
         } catch (DataAccessException e) {
-            e.printStackTrace();
+            logger.error("Error al acceder a la base de datos: {}", e.getMessage());
             throw new RuntimeException("Error al acceder a la base de datos: " + e.getMessage(), e);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error al crear el instructor: {}", e.getMessage());
             throw new RuntimeException("Error al crear el instructor: " + e.getMessage(), e);
         }
     }
 
+
     @Transactional(rollbackFor = Exception.class)
     public InstructorModel updateInstructor(String documento, InstructorModel instructor) {
         // Validación de datos de entrada
-        System.out.println("Iniciando método updateInstructor");
-
         if (instructor == null) {
             throw new IllegalArgumentException("El objeto instructor no debe ser nulo.");
         }
-
-        // Imprimir todos los campos del objeto instructor para verificar que no sean nulos
-        System.out.println("Datos del instructor recibidos:");
-        System.out.println("Usuario: " + instructor.getUser());
-        System.out.println("Contraseña: " + instructor.getPassword());
-        System.out.println("Documento: " + instructor.getDocumento());
-        System.out.println("TipoDocumento: " + instructor.getTipoDocumento());
-        System.out.println("Nombres: " + instructor.getNombres());
-        System.out.println("Apellidos: " + instructor.getApellidos());
-        System.out.println("FechaNacimiento: " + instructor.getFechaNacimiento());
-        System.out.println("Teléfono: " + instructor.getTelefono());
-        System.out.println("Correo: " + instructor.getCorreo());
-        System.out.println("Género: " + instructor.getGenero());
-        System.out.println("Residencia: " + instructor.getResidencia());
-        System.out.println("Fichas: " + instructor.getFichas());
-        // Añadir más campos si es necesario
 
         // Validar que los datos requeridos no sean nulos o vacíos
         if (instructor.getUser() == null || instructor.getUser().isEmpty()) {
@@ -576,140 +370,108 @@ public class InstructorService {
         if (instructor.getGenero() == null || instructor.getGenero().isEmpty()) {
             throw new IllegalArgumentException("El género es requerido.");
         }
-        // La residencia puede ser opcional si así lo deseas
-        if (instructor.getFichas() == null || instructor.getFichas().isEmpty()) {
-            throw new IllegalArgumentException("Las fichas son requeridas.");
+        if (instructor.getResidencia() == null || instructor.getResidencia().isEmpty()) {
+            throw new IllegalArgumentException("La residencia es requerida.");
         }
 
         try {
-            // Obtener el ID del perfil de usuario
+            // Paso 1: Obtener el ID del perfil de usuario basado en el documento
             String sqlGetPerfilUsuarioId = "SELECT ID FROM perfilusuario WHERE Documento = ?";
-            System.out.println("Obteniendo ID de perfil de usuario con documento: " + documento);
-
             Integer perfilUsuarioId = jdbcTemplate.queryForObject(sqlGetPerfilUsuarioId, new Object[]{documento}, Integer.class);
-            System.out.println("ID de perfil de usuario obtenido: " + perfilUsuarioId);
 
             if (perfilUsuarioId == null) {
                 throw new RuntimeException("No se encontró el perfil de usuario con documento: " + documento);
             }
 
-            // Obtener el ID del usuario para actualizar los campos de usuario y contraseña
+            // Paso 2: Obtener el ID del usuario asociado al perfil
             String sqlGetUsuarioId = "SELECT IDUsuario FROM perfilusuario WHERE Documento = ?";
-            System.out.println("Obteniendo ID del usuario con documento: " + documento);
-
             Integer usuarioId = jdbcTemplate.queryForObject(sqlGetUsuarioId, new Object[]{documento}, Integer.class);
-            System.out.println("ID de usuario obtenido: " + usuarioId);
 
             if (usuarioId == null) {
                 throw new RuntimeException("No se encontró el usuario asociado al documento: " + documento);
             }
 
-            // Verificar si el nuevo nombre de usuario ya existe para otro usuario
-            System.out.println("Verificando si el nuevo nombre de usuario ya existe para otro usuario.");
+            // Paso 3: Verificar si el nuevo nombre de usuario ya existe para otro usuario
             Integer countUsuario = jdbcTemplate.queryForObject(
                     "SELECT COUNT(*) FROM usuario WHERE Usuario = ? AND ID != ?",
                     new Object[]{instructor.getUser(), usuarioId},
                     Integer.class
             );
-            System.out.println("Cantidad de usuarios con el mismo nombre: " + countUsuario);
             if (countUsuario != null && countUsuario > 0) {
                 throw new IllegalArgumentException("El nombre de usuario ya existe: " + instructor.getUser());
             }
 
-            // Verificar si el nuevo documento ya existe para otro perfil de usuario
-            System.out.println("Verificando si el nuevo documento ya existe para otro perfil de usuario.");
+            // Paso 4: Verificar si el nuevo documento ya existe para otro perfil de usuario
             Integer countDocumento = jdbcTemplate.queryForObject(
                     "SELECT COUNT(*) FROM perfilusuario WHERE Documento = ? AND ID != ?",
                     new Object[]{instructor.getDocumento(), perfilUsuarioId},
                     Integer.class
             );
-            System.out.println("Cantidad de documentos iguales: " + countDocumento);
             if (countDocumento != null && countDocumento > 0) {
                 throw new IllegalArgumentException("El documento ya está registrado: " + instructor.getDocumento());
             }
 
-            // Actualizar en la tabla `usuario`
-            String sqlUpdateUsuario = """
-        UPDATE usuario
-        SET Usuario = ?, Contraseña = ?
-        WHERE ID = ?
-        """;
-
-            System.out.println("Actualizando usuario y contraseña para el usuario con ID: " + usuarioId);
-            int updatedUsuario = jdbcTemplate.update(sqlUpdateUsuario,
-                    instructor.getUser(),
-                    passwordEncoder.encode(instructor.getPassword()),
-                    usuarioId);
-            System.out.println("Filas actualizadas en usuario: " + updatedUsuario);
-
-            if (updatedUsuario == 0) {
-                throw new RuntimeException("La actualización no afectó a ninguna fila en usuario.");
-            }
-
-            // Obtener IDs relacionados
-            System.out.println("Obteniendo IDs relacionados.");
+            // Paso 5: Obtener el ID de tipo de documento
             Integer idTipoDocumento = jdbcTemplate.queryForObject(
                     "SELECT ID FROM tipodocumento WHERE TipoDocumento = ?",
                     new Object[]{instructor.getTipoDocumento()},
                     Integer.class
             );
-            System.out.println("ID TipoDocumento: " + idTipoDocumento);
             if (idTipoDocumento == null) {
                 throw new IllegalArgumentException("Tipo de documento inválido: " + instructor.getTipoDocumento());
             }
 
+            // Paso 6: Obtener el ID de género
             Integer idGenero = jdbcTemplate.queryForObject(
                     "SELECT ID FROM genero WHERE TiposGeneros = ?",
                     new Object[]{instructor.getGenero()},
                     Integer.class
             );
-            System.out.println("ID Género: " + idGenero);
             if (idGenero == null) {
                 throw new IllegalArgumentException("Género inválido: " + instructor.getGenero());
             }
 
-            // Manejo de la residencia
-            Integer idBarrio = null;
-            if (instructor.getResidencia() != null && !instructor.getResidencia().isEmpty()) {
-                String residencia = instructor.getResidencia();
-                String[] residenciaParts = residencia.split(" - ");
-                if (residenciaParts.length >= 3) {
-                    String nombreBarrio = residenciaParts[2].trim();
-                    System.out.println("Nombre del barrio: " + nombreBarrio);
+            // Paso 7: Extraer el nombre del barrio de la residencia
+            String residencia = instructor.getResidencia();
+            String[] residenciaParts = residencia.split(" - ");
+            if (residenciaParts.length != 3) {
+                throw new IllegalArgumentException("La residencia debe tener el formato 'municipio - departamento - barrio'.");
+            }
+            String nombreBarrio = residenciaParts[2].trim();
 
-                    idBarrio = jdbcTemplate.queryForObject(
-                            "SELECT ID FROM barrios WHERE nombre_barrio = ?",
-                            new Object[]{nombreBarrio},
-                            Integer.class
-                    );
-                    System.out.println("ID Barrio: " + idBarrio);
-                    if (idBarrio == null) {
-                        throw new IllegalArgumentException("Barrio inválido: " + nombreBarrio);
-                    }
-                } else {
-                    System.out.println("La residencia no tiene el formato esperado, se omitirá el IDBarrio.");
-                }
-            } else {
-                System.out.println("No se proporcionó residencia, se omitirá el IDBarrio.");
+            // Paso 8: Obtener el ID del barrio
+            Integer idBarrio = jdbcTemplate.queryForObject(
+                    "SELECT ID FROM barrios WHERE nombre_barrio = ?",
+                    new Object[]{nombreBarrio},
+                    Integer.class
+            );
+            if (idBarrio == null) {
+                throw new IllegalArgumentException("Barrio inválido: " + nombreBarrio);
             }
 
-            // Actualizar en la tabla `perfilusuario`
-            String sqlUpdatePerfilUsuario = """
-        UPDATE perfilusuario
-        SET Documento = ?,
-            IDTipoDocumento = ?,
-            Nombres = ?,
-            Apellidos = ?,
-            FecNacimiento = ?,
-            Telefono = ?,
-            Correo = ?,
-            IDGenero = ?,
-            IDBarrio = ?
-        WHERE ID = ?
+            // Paso 9: Actualizar la tabla `usuario`
+            String sqlUpdateUsuario = """
+            UPDATE usuario
+            SET Usuario = ?, Contraseña = ?
+            WHERE ID = ?
         """;
+            int rowsAffectedUsuario = jdbcTemplate.update(sqlUpdateUsuario,
+                    instructor.getUser(),
+                    passwordEncoder.encode(instructor.getPassword()),
+                    usuarioId
+            );
+            if (rowsAffectedUsuario == 0) {
+                throw new RuntimeException("La actualización en la tabla usuario no afectó a ninguna fila.");
+            }
 
-            System.out.println("Actualizando perfil de usuario con ID: " + perfilUsuarioId);
-            int updatedPerfilUsuario = jdbcTemplate.update(sqlUpdatePerfilUsuario,
+            // Paso 10: Actualizar la tabla `perfilusuario`
+            String sqlUpdatePerfilUsuario = """
+            UPDATE perfilusuario
+            SET Documento = ?, IDTipoDocumento = ?, Nombres = ?, Apellidos = ?, FecNacimiento = ?, 
+                Telefono = ?, Correo = ?, IDGenero = ?, IDBarrio = ?
+            WHERE ID = ?
+        """;
+            int rowsAffectedPerfilUsuario = jdbcTemplate.update(sqlUpdatePerfilUsuario,
                     instructor.getDocumento(),
                     idTipoDocumento,
                     instructor.getNombres(),
@@ -718,73 +480,31 @@ public class InstructorService {
                     instructor.getTelefono(),
                     instructor.getCorreo(),
                     idGenero,
-                    idBarrio, // Puede ser null si no se proporcionó o no se encontró
-                    perfilUsuarioId);
-            System.out.println("Filas actualizadas en perfilusuario: " + updatedPerfilUsuario);
-
-            if (updatedPerfilUsuario == 0) {
-                throw new RuntimeException("La actualización no afectó a ninguna fila en perfilusuario.");
+                    idBarrio,
+                    perfilUsuarioId
+            );
+            if (rowsAffectedPerfilUsuario == 0) {
+                throw new RuntimeException("La actualización en la tabla perfilusuario no afectó a ninguna fila.");
             }
 
-            // Obtener el ID del instructor
-            String sqlGetInstructorId = "SELECT ID FROM instructor WHERE IDPerfilUsuario = ?";
-            System.out.println("Obteniendo ID del instructor con IDPerfilUsuario: " + perfilUsuarioId);
-
-            Integer instructorId = jdbcTemplate.queryForObject(sqlGetInstructorId, new Object[]{perfilUsuarioId}, Integer.class);
-            System.out.println("ID del instructor obtenido: " + instructorId);
-
-            if (instructorId == null) {
-                throw new RuntimeException("No se encontró el instructor con IDPerfilUsuario: " + perfilUsuarioId);
-            }
-
-            // Actualizar asociaciones en `instructor_ficha`
-            // Primero eliminamos las asociaciones existentes
-            String sqlDeleteInstructorFicha = "DELETE FROM instructor_ficha WHERE IDInstructor = ?";
-            System.out.println("Eliminando registros antiguos en instructor_ficha para IDInstructor: " + instructorId);
-
-            jdbcTemplate.update(sqlDeleteInstructorFicha, instructorId);
-
-            // Ahora insertamos las nuevas asociaciones
-            String sqlInsertInstructorFicha = "INSERT INTO instructor_ficha (IDInstructor, IDFicha) VALUES (?, ?)";
-            for (Integer fichaNumero : instructor.getFichas()) {
-                System.out.println("Procesando ficha número: " + fichaNumero);
-
-                Integer idFicha = jdbcTemplate.queryForObject(
-                        "SELECT ID FROM fichas WHERE NumeroFicha = ?",
-                        new Object[]{fichaNumero},
-                        Integer.class
-                );
-                if (idFicha == null) {
-                    throw new IllegalArgumentException("Ficha inválida: " + fichaNumero);
-                }
-                System.out.println("Insertando ficha con ID: " + idFicha + " para el instructor con ID: " + instructorId);
-
-                int rowsInserted = jdbcTemplate.update(sqlInsertInstructorFicha, instructorId, idFicha);
-                if (rowsInserted == 0) {
-                    throw new RuntimeException("No se pudo insertar la asociación en instructor_ficha para ficha ID: " + idFicha);
-                }
-            }
-
-            System.out.println("Actualización del instructor completada con éxito.");
+            logger.info("Instructor actualizado exitosamente con perfil ID: {}", perfilUsuarioId);
             return instructor;
 
         } catch (DataAccessException e) {
-            e.printStackTrace();
-            System.err.println("Error al acceder a la base de datos: " + e.getMessage());
+            logger.error("Error al acceder a la base de datos: {}", e.getMessage());
             throw new RuntimeException("Error al acceder a la base de datos: " + e.getMessage(), e);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error al actualizar el instructor: " + e.getMessage());
+            logger.error("Error al actualizar el instructor: {}", e.getMessage());
             throw new RuntimeException("Error al actualizar el instructor: " + e.getMessage(), e);
         }
     }
+
 
 
     // Eliminar un instructor por documento
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteInstructor(String documento) {
         Integer perfilUsuarioId = null;
-        Integer instructorId = null;
         Integer usuarioId = null;
 
         try {
@@ -795,54 +515,13 @@ public class InstructorService {
             perfilUsuarioId = jdbcTemplate.queryForObject(sqlGetPerfilUsuarioId, new Object[]{documento}, Integer.class);
             System.out.println("ID del perfil de usuario obtenido: " + perfilUsuarioId);
 
-            // Obtener el ID del instructor
-            String sqlGetInstructorId = "SELECT ID FROM instructor WHERE IDPerfilUsuario = ?";
-            System.out.println("Obteniendo ID del instructor para el perfil de usuario con ID: " + perfilUsuarioId);
-            instructorId = jdbcTemplate.queryForObject(sqlGetInstructorId, new Object[]{perfilUsuarioId}, Integer.class);
-            System.out.println("ID del instructor obtenido: " + instructorId);
-
             // Obtener el IDUsuario desde perfilusuario
             String sqlGetUsuarioId = "SELECT IDUsuario FROM perfilusuario WHERE ID = ?";
             System.out.println("Obteniendo ID de usuario para el perfil de usuario con ID: " + perfilUsuarioId);
             usuarioId = jdbcTemplate.queryForObject(sqlGetUsuarioId, new Object[]{perfilUsuarioId}, Integer.class);
             System.out.println("ID de usuario obtenido: " + usuarioId);
 
-            // 2. Una vez obtenidos todos los IDs, proceder con las eliminaciones
 
-            // Eliminar de instructor_ficha
-            String sqlDeleteInstructorFicha = "DELETE FROM instructor_ficha WHERE IDInstructor = ?";
-            System.out.println("Eliminando registros de instructor_ficha para el instructor con ID: " + instructorId);
-            jdbcTemplate.update(sqlDeleteInstructorFicha, instructorId);
-
-            // Eliminar de instructor
-            String sqlDeleteInstructor = "DELETE FROM instructor WHERE ID = ?";
-            System.out.println("Eliminando el registro de instructor con ID: " + instructorId);
-            int deletedInstructor = jdbcTemplate.update(sqlDeleteInstructor, instructorId);
-
-            if (deletedInstructor > 0) {
-                // Eliminar de perfilusuario
-                String sqlDeletePerfilUsuario = "DELETE FROM perfilusuario WHERE ID = ?";
-                System.out.println("Eliminando el registro de perfil de usuario con ID: " + perfilUsuarioId);
-                jdbcTemplate.update(sqlDeletePerfilUsuario, perfilUsuarioId);
-
-                // Eliminar de usuario
-                String sqlDeleteUsuario = "DELETE FROM usuario WHERE ID = ?";
-                System.out.println("Eliminando el registro de usuario con ID: " + usuarioId);
-                int rowsAffected = jdbcTemplate.update(sqlDeleteUsuario, usuarioId);
-
-                if (rowsAffected > 0) {
-                    System.out.println("Usuario eliminado exitosamente con ID: " + usuarioId);
-                } else {
-                    System.out.println("No se eliminó ningún registro de usuario con ID: " + usuarioId);
-                    throw new RuntimeException("Error: No se pudo eliminar el usuario con ID: " + usuarioId);
-                }
-
-                System.out.println("Eliminación del instructor y los registros asociados completada.");
-                return true;
-            } else {
-                System.out.println("No se pudo eliminar el instructor.");
-                throw new RuntimeException("Error al eliminar el instructor"); // Lanzar excepción para que se realice el rollback
-            }
         } catch (EmptyResultDataAccessException e) {
             System.out.println("Error: No se encontró alguno de los registros necesarios para el documento: " + documento);
             throw new RuntimeException("Error: No se encontró alguno de los registros necesarios para el documento: " + documento, e);
@@ -851,6 +530,7 @@ public class InstructorService {
             System.out.println("Error inesperado al eliminar el instructor: " + e.getMessage());
             throw new RuntimeException("Error inesperado al eliminar el instructor: " + e.getMessage(), e);
         }
+        return false;
     }
 
     // Obtener todos los instructores

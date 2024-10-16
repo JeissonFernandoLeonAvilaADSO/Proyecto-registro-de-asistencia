@@ -1,7 +1,9 @@
 package com.proyectoasistencia.prasis.controllers.UsersControllers;
 
 import com.proyectoasistencia.prasis.models.UsersModels.AprendizModel;
+import com.proyectoasistencia.prasis.models.UsersModels.AprendizRequest;
 import com.proyectoasistencia.prasis.services.UsersServices.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,11 @@ public class AprendizController {
     @Autowired
     private AprendizService aprendizService;
 
-    // Crear un nuevo aprendiz
+
     @PostMapping
-    public ResponseEntity<AprendizModel> createAprendiz(@RequestBody AprendizModel aprendiz) {
-        AprendizModel createdAprendiz = aprendizService.createAprendiz(aprendiz);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdAprendiz);
+    public ResponseEntity<AprendizModel> createAprendiz(@Valid @RequestBody AprendizRequest request) {
+        AprendizModel creado = aprendizService.createAprendiz(request.getAprendiz(), request.getFichas());
+        return new ResponseEntity<>(creado, HttpStatus.CREATED);
     }
 
     // Obtener un aprendiz por documento
@@ -46,7 +48,7 @@ public class AprendizController {
     }
 
     // Obtener todos los aprendices (opcional)
-    @GetMapping
+    @GetMapping("/porFicha")
     public ResponseEntity<List<AprendizModel>> getAllAprendices(@RequestParam Integer ficha) {
         List<AprendizModel> aprendices = aprendizService.getAllAprendicesFicha(ficha);
         return ResponseEntity.ok(aprendices);
@@ -99,6 +101,25 @@ public class AprendizController {
         } else {
             response.put("mensaje", "No se pudo inhabilitar el Aprendiz. Verifique que el documento sea correcto y que el Aprendiz exista.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+    /**
+     * Obtener las vinculaciones de los aprendices por número de ficha.
+     *
+     * @param ficha Número de ficha.
+     * @return Lista de vinculaciones de aprendiz.
+     */
+    @GetMapping("/vinculaciones/{ficha}")
+    public ResponseEntity<List<Map<String, Object>>> obtenerVinculacionesPorFicha(@PathVariable Integer ficha) {
+        try {
+            List<Map<String, Object>> vinculaciones = aprendizService.obtenerVinculacionesPorFicha(ficha);
+            if (vinculaciones.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            }
+            return ResponseEntity.ok(vinculaciones);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }

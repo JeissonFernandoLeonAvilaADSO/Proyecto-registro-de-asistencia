@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,6 @@ public class AprendicesDataController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonList(AprendizModel.builder()
                             .user("Error")
-                            .programaFormacion("No se pudo obtener los detalles de los aprendices")
                             .build()));
         }
     }

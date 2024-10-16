@@ -11,6 +11,7 @@ import main.util.models.UsersModels.InstructorModel;
 import org.json.JSONObject;
 
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 
 /**
  *
@@ -45,9 +46,7 @@ public class InstructorUserPanel extends javax.swing.JPanel {
         jLabel16 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
-        ResultadoClaseFormacion = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
         ResultadoDocumento = new javax.swing.JTextField();
         ResultadoTelefono = new javax.swing.JTextField();
         ResultadoResidencia = new javax.swing.JTextField();
@@ -56,24 +55,8 @@ public class InstructorUserPanel extends javax.swing.JPanel {
         jLabel17 = new javax.swing.JLabel();
         ResultadoFechaNacimiento = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        FichasTableInstructor = new javax.swing.JTable();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        CentrosFormacionTableInstructor = new javax.swing.JTable();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        ProgramasFormacionTableInstructor = new javax.swing.JTable();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        AreasTableInstructor = new javax.swing.JTable();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        JornadasFormacionTableInstructor = new javax.swing.JTable();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        NivelesFormacionTableInstructor = new javax.swing.JTable();
-        jLabel26 = new javax.swing.JLabel();
+        VinculacionesTableInstructor = new javax.swing.JTable();
         jLabel27 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
-        jLabel33 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -118,17 +101,9 @@ public class InstructorUserPanel extends javax.swing.JPanel {
         jLabel32.setForeground(new java.awt.Color(0, 0, 0));
         jLabel32.setText("Correo");
 
-        ResultadoClaseFormacion.setEditable(false);
-        ResultadoClaseFormacion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ResultadoClaseFormacion.setFocusable(false);
-
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Nombres");
-
-        jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel25.setText("Clase de formacion");
 
         ResultadoDocumento.setEditable(false);
         ResultadoDocumento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -158,8 +133,8 @@ public class InstructorUserPanel extends javax.swing.JPanel {
         ResultadoFechaNacimiento.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ResultadoFechaNacimiento.setFocusable(false);
 
-        FichasTableInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        FichasTableInstructor.setModel(new javax.swing.table.DefaultTableModel(
+        VinculacionesTableInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        VinculacionesTableInstructor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -170,105 +145,11 @@ public class InstructorUserPanel extends javax.swing.JPanel {
                 "Title 1"
             }
         ));
-        jScrollPane1.setViewportView(FichasTableInstructor);
-
-        CentrosFormacionTableInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        CentrosFormacionTableInstructor.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Title 1"
-            }
-        ));
-        jScrollPane2.setViewportView(CentrosFormacionTableInstructor);
-
-        ProgramasFormacionTableInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        ProgramasFormacionTableInstructor.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Title 1"
-            }
-        ));
-        jScrollPane3.setViewportView(ProgramasFormacionTableInstructor);
-
-        AreasTableInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        AreasTableInstructor.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Title 1"
-            }
-        ));
-        jScrollPane4.setViewportView(AreasTableInstructor);
-
-        JornadasFormacionTableInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        JornadasFormacionTableInstructor.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Title 1"
-            }
-        ));
-        jScrollPane5.setViewportView(JornadasFormacionTableInstructor);
-
-        NivelesFormacionTableInstructor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        NivelesFormacionTableInstructor.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Title 1"
-            }
-        ));
-        jScrollPane6.setViewportView(NivelesFormacionTableInstructor);
-
-        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel26.setText("Informacion varia");
+        jScrollPane1.setViewportView(VinculacionesTableInstructor);
 
         jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel27.setText("Fichas");
-
-        jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel28.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel28.setText("Programas de formacion");
-
-        jLabel29.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel29.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel29.setText("Centros de formacion");
-
-        jLabel30.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel30.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel30.setText("Niveles de formacion");
-
-        jLabel31.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel31.setText("Jornadas de formacion");
-
-        jLabel33.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel33.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel33.setText("Areas");
+        jLabel27.setText("Vinculaciones");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -293,70 +174,34 @@ public class InstructorUserPanel extends javax.swing.JPanel {
                                     .addComponent(ResultadoNombre)
                                     .addComponent(ResultadoTipoDoc)))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel25)
-                                        .addGap(60, 60, 60)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(18, 18, 18)
-                                                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(18, 18, 18)
-                                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                            .addComponent(ResultadoClaseFormacion)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel16)
-                                            .addComponent(jLabel32)
-                                            .addComponent(jLabel15)
-                                            .addComponent(jLabel17))
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(52, 52, 52)
-                                                .addComponent(ResultadoGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 704, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                .addGap(51, 51, 51)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(ResultadoCorreo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 705, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(ResultadoTelefono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 705, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(ResultadoFechaNacimiento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 705, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(jLabel27)
+                                .addGap(98, 98, 98)
+                                .addComponent(jScrollPane1))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(193, 193, 193)
-                                .addComponent(ResultadoResidencia)))
+                                .addComponent(ResultadoResidencia))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel16)
+                                    .addComponent(jLabel32)
+                                    .addComponent(jLabel15)
+                                    .addComponent(jLabel17))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(51, 51, 51)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(ResultadoFechaNacimiento)
+                                            .addComponent(ResultadoTelefono)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(52, 52, 52)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(ResultadoGenero)
+                                            .addComponent(ResultadoCorreo))))))
                         .addGap(57, 57, 57))))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel26))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(284, 284, 284)
-                        .addComponent(jLabel27)
-                        .addGap(135, 135, 135)
-                        .addComponent(jLabel28)
-                        .addGap(76, 76, 76)
-                        .addComponent(jLabel29))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(239, 239, 239)
-                        .addComponent(jLabel30)
-                        .addGap(87, 87, 87)
-                        .addComponent(jLabel31)
-                        .addGap(133, 133, 133)
-                        .addComponent(jLabel33)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addComponent(jLabel2)
+                .addGap(0, 355, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -394,40 +239,21 @@ public class InstructorUserPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ResultadoResidencia, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ResultadoClaseFormacion, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25))
-                .addGap(22, 22, 22)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel27)
-                    .addComponent(jLabel28)
-                    .addComponent(jLabel29))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(2, 2, 2)
-                .addComponent(jLabel26)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel30)
-                    .addComponent(jLabel31)
-                    .addComponent(jLabel33))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(128, 128, 128)
+                        .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -442,6 +268,8 @@ public class InstructorUserPanel extends javax.swing.JPanel {
     public void AditionalConfig() {
         API_BuscarUsuario buscarInstructor = new API_BuscarUsuario();
         InstructorModel instructor = buscarInstructor.buscarInstructorPorDocumento(UserSession.getInstance().getDocumento());
+
+        // Setear los datos personales
         ResultadoNombre.setText(instructor.getFullName());
         ResultadoDocumento.setText(instructor.getDocumento());
         ResultadoTipoDoc.setText(instructor.getTipoDocumento());
@@ -450,42 +278,41 @@ public class InstructorUserPanel extends javax.swing.JPanel {
         ResultadoCorreo.setText(instructor.getCorreo());
         ResultadoGenero.setText(instructor.getGenero());
         ResultadoResidencia.setText(instructor.getResidencia());
-        ResultadoClaseFormacion.setText(instructor.getClaseFormacion());
-        FichasTableInstructor.setModel(new DefaultTableModel(
-                (instructor.getFichas()).stream().map(ficha -> new Object[]{ficha}).toArray(Object[][]::new), // Convertir la lista en un array de objetos
-                new String[]{"Fichas"} // Nombre de la columna
-        ));
-        ProgramasFormacionTableInstructor.setModel(new DefaultTableModel(
-                (instructor.getProgramasFormacion()).stream().map(ProgramaFormacion -> new Object[]{ProgramaFormacion}).toArray(Object[][]::new),
-                new String[]{"Programas de Formacion"}
-        ));
-        CentrosFormacionTableInstructor.setModel(new DefaultTableModel(
-                (instructor.getSedes()).stream().map(Sede -> new Object[]{Sede}).toArray(Object[][]::new),
-                new String[]{"Sedes"}
-        ));
-        NivelesFormacionTableInstructor.setModel(new DefaultTableModel(
-                (instructor.getNivelesFormacion()).stream().map(NivelFormacion -> new Object[]{NivelFormacion}).toArray(Object[][]::new),
-                new String[]{"Niveles de Formacion"}
-        ));
-        JornadasFormacionTableInstructor.setModel(new DefaultTableModel(
-                (instructor.getJornadasFormacion()).stream().map(Jornada -> new Object[]{Jornada}).toArray(Object[][]::new),
-                new String[]{"Jornadas de Formacion"}
-        ));
-        AreasTableInstructor.setModel(new DefaultTableModel(
-                (instructor.getAreas()).stream().map(Area -> new Object[]{Area}).toArray(Object[][]::new),
-                new String[]{"Areas"}
-        ));
+
+        // Configuración de la tabla VinculacionesTableInstructor
+        DefaultTableModel modeloTabla = new DefaultTableModel(
+                new Object[]{"Clase de Formación", "Ficha", "Programa de Formación", "Jornada", "Nivel", "Centro de Formación", "Área"},
+                0
+        );
+
+        // Rellenar la tabla con los datos de clase, ficha, programa, etc.
+        List<String> clasesFormacion = instructor.getClaseFormacion();
+        List<Integer> fichas = instructor.getFichas();
+        List<String> programasFormacion = instructor.getProgramasFormacion();
+        List<String> jornadasFormacion = instructor.getJornadasFormacion();
+        List<String> nivelesFormacion = instructor.getNivelesFormacion();
+        List<String> centrosFormacion = instructor.getSedes();
+        List<String> areas = instructor.getAreas();
+
+        // Iterar sobre los datos y añadirlos a la tabla
+        for (int i = 0; i < clasesFormacion.size(); i++) {
+            modeloTabla.addRow(new Object[]{
+                    clasesFormacion.get(i),
+                    fichas.get(i),
+                    programasFormacion.get(i),
+                    jornadasFormacion.get(i),
+                    nivelesFormacion.get(i),
+                    centrosFormacion.get(i),
+                    areas.get(i)
+            });
+        }
+
+        // Asignar el modelo a la tabla
+        VinculacionesTableInstructor.setModel(modeloTabla);
+        VinculacionesTableInstructor.setRowHeight(30);
     }
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable AreasTableInstructor;
-    private javax.swing.JTable CentrosFormacionTableInstructor;
-    private javax.swing.JTable FichasTableInstructor;
-    private javax.swing.JTable JornadasFormacionTableInstructor;
-    private javax.swing.JTable NivelesFormacionTableInstructor;
-    private javax.swing.JTable ProgramasFormacionTableInstructor;
-    private javax.swing.JTextField ResultadoClaseFormacion;
     private javax.swing.JTextField ResultadoCorreo;
     private javax.swing.JTextField ResultadoDocumento;
     private javax.swing.JTextField ResultadoFechaNacimiento;
@@ -494,29 +321,18 @@ public class InstructorUserPanel extends javax.swing.JPanel {
     private javax.swing.JTextField ResultadoResidencia;
     private javax.swing.JTextField ResultadoTelefono;
     private javax.swing.JTextField ResultadoTipoDoc;
+    private javax.swing.JTable VinculacionesTableInstructor;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     // End of variables declaration//GEN-END:variables
 }
