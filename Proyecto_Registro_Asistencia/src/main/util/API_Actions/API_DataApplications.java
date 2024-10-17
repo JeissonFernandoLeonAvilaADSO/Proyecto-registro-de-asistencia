@@ -2,6 +2,7 @@ package main.util.API_Actions;
 
 import javax.swing.*;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -75,28 +76,41 @@ public class API_DataApplications {
             System.out.println("Respuesta del servidor: " + response.toString());
 
             conn.disconnect();
+            // Manejar las respuestas según el código HTTP
             if (responseCode >= 200 && responseCode < 300) {
-                JOptionPane.showMessageDialog(null, "Dato eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                switch (accion.toLowerCase()) {
+                    case "crear":
+                        JOptionPane.showMessageDialog(null, "Dato creado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    case "actualizar":
+                        JOptionPane.showMessageDialog(null, "Dato actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    case "eliminar":
+                        JOptionPane.showMessageDialog(null, "Dato eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                }
                 return response.toString();
             } else {
-                // Error en la solicitud
+                // Manejo de errores en caso de una respuesta HTTP no exitosa
                 String errorMessage = response.toString();
-
-                // Analizar el mensaje de error para detectar violación de integridad referencial
-                System.out.println(errorMessage);
-                if (errorMessage.startsWith("Error HTTP")) {
-                    // Devolver el mensaje personalizado
-                    JOptionPane.showMessageDialog(null, "Error: No se pudo eliminar el dato porque cuenta con relaciones pendientes.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return "Error: No se pudo eliminar el dato porque cuenta con relaciones pendientes.";
+                System.out.println("Error al procesar la solicitud: " + errorMessage);
+                if (errorMessage.contains("integridad referencial")) {
+                    JOptionPane.showMessageDialog(null, "No se pudo completar la acción porque existen relaciones pendientes.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    // Devolver el mensaje de error original
-                    return "Error HTTP " + responseCode + ": " + errorMessage;
+                    JOptionPane.showMessageDialog(null, "Error: " + errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
                 }
+                return "Error HTTP " + responseCode + ": " + errorMessage;
             }
-
-        } catch (Exception e) {
+        } catch (IOException e) {
+            // Manejo de excepciones al conectar con la API
             e.printStackTrace();
-            return "Error al conectar con la API: " + e.getMessage();
+            JOptionPane.showMessageDialog(null, "Error de conexión: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return "Error de conexión: " + e.getMessage();
+        } catch (Exception e) {
+            // Manejo de cualquier otra excepción
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "No se pudo completar la acción porque el dato aun tiene relaciones pendientes.", "Error", JOptionPane.ERROR_MESSAGE);
+            return "Error inesperado: " + e.getMessage();
         }
     }
 }

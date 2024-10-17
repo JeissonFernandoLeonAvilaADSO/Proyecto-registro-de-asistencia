@@ -1776,10 +1776,23 @@ public class DataManagerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_FichaNuevaHolderKeyTyped
 
     private void AgregarSedeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarSedeActionPerformed
-        API_DataSedeApplications SedeApplications = new API_DataSedeApplications();
-        String resultadoCrear = SedeApplications.crearSede(SedeHolder.getText());
-        actualizarTablaSedesFormacion();
+        String nuevaSede = SedeHolder.getText().trim();
 
+        // Verificar si la sede ya existe en la tabla
+        DefaultTableModel model = (DefaultTableModel) SedesDataTables.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String sedeExistente = (String) model.getValueAt(i, 1); // Columna 1: nombres de sedes
+            if (nuevaSede.equalsIgnoreCase(sedeExistente)) {
+                JOptionPane.showMessageDialog(this, "La sede '" + nuevaSede + "' ya existe.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        // Proceder a agregar la sede si no existe duplicado
+        API_DataSedeApplications SedeApplications = new API_DataSedeApplications();
+        String resultadoCrear = SedeApplications.crearSede(nuevaSede);
+        actualizarTablaSedesFormacion();
+        SedeHolder.setText("");
         JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AgregarSedeActionPerformed
 
@@ -1798,12 +1811,24 @@ public class DataManagerPanel extends javax.swing.JPanel {
                 || ProgramaFormacionHolder.getText().trim().equals("Seleccionar...")
                 || SedeFormacionCB.getSelectedItem().toString().trim().equals("Seleccionar...")
                 || NivelFormacionProgramaCB.getSelectedItem().toString().trim().equals("Seleccionar...")
-                || AreaFormacionCB.getSelectedItem().toString().trim().equals("Seleccionar...")){
+                || AreaFormacionCB.getSelectedItem().toString().trim().equals("Seleccionar...")) {
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // 3. Confirmar la creación del Programa de Formación
+        // 3. Verificar si el nombre del programa de formación ya existe en la tabla
+        DefaultTableModel model = (DefaultTableModel) ProgramaFormacionDataTable.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String programaExistente = (String) model.getValueAt(i, 1); // Columna 1: Nombres de programas de formación
+
+            if (programaFormacion.equalsIgnoreCase(programaExistente)) {
+                // Si hay coincidencia, mostrar el mensaje y retornar
+                JOptionPane.showMessageDialog(this, String.format("El programa de formación '%s' ya existe.", programaFormacion), "Programa duplicado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        // 4. Confirmar la creación del Programa de Formación
         String mensajeConfirmacion = String.format(
                 "¿Desea crear el Programa de Formación con los siguientes datos?\n\n" +
                         "Programa: %s\n" +
@@ -1823,89 +1848,161 @@ public class DataManagerPanel extends javax.swing.JPanel {
             return;
         }
 
-        // 4. Llamar al método para crear el Programa de Formación
+        // 5. Llamar al método para crear el Programa de Formación
         String respuesta = API_DataProgramaFormacionApplications.crearProgramaFormacion(programaFormacion, centroFormacion, nivelFormacion, area);
 
-        // 5. Manejar la respuesta (esto ya se hace dentro del método ClienteAPI, pero puedes añadir lógica adicional si es necesario)
-        // Por ejemplo, si la creación fue exitosa, podrías refrescar una tabla o limpiar los campos de entrada
-
-        // 6. Opcional: Limpiar los campos después de una creación exitosa
+        // 6. Manejar la respuesta
         if (respuesta != null && respuesta.contains("exitosamente")) {
+            // Limpiar los campos después de una creación exitosa
             ProgramaFormacionHolder.setText("");
             SedeFormacionCB.setSelectedIndex(0);
             NivelFormacionProgramaCB.setSelectedIndex(0);
             AreaFormacionCB.setSelectedIndex(0);
-            actualizarTablaProgramaFormacion();
+            actualizarTablaProgramaFormacion(); // Actualizar la tabla
         }
     }//GEN-LAST:event_AgregarProgramaFormacionActionPerformed
 
     private void AgregarNivelFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarNivelFormacionActionPerformed
+        String nuevoNivelFormacion = NivelFormacionHolder.getText().trim();
+
+        // Verificar si el nivel de formación ya existe en la tabla
+        DefaultTableModel model = (DefaultTableModel) NivelesDataTable.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String nivelExistente = (String) model.getValueAt(i, 1); // Columna 1: nombres de los niveles de formación
+            if (nuevoNivelFormacion.equalsIgnoreCase(nivelExistente)) {
+                JOptionPane.showMessageDialog(this, "El nivel de formación '" + nuevoNivelFormacion + "' ya existe.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        // Proceder a agregar el nivel de formación si no existe
         API_DataNivelFormacionApplications NivelFormacion = new API_DataNivelFormacionApplications();
-        String resultadoCrear = NivelFormacion.crearNivelFormacion(NivelFormacionHolder.getText());
+        String resultadoCrear = NivelFormacion.crearNivelFormacion(nuevoNivelFormacion);
         actualizarTablaNivelesFormacion();
         NivelFormacionHolder.setText("");
         JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AgregarNivelFormacionActionPerformed
 
     private void AgregarJornadaFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarJornadaFormacionActionPerformed
+        String nuevaJornada = JornadaHolder.getText().trim();
+
+        // Verificar si la jornada ya existe en la tabla
+        DefaultTableModel model = (DefaultTableModel) JornadasDataTable.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String jornadaExistente = (String) model.getValueAt(i, 1); // Columna 1: nombres de las jornadas
+            if (nuevaJornada.equalsIgnoreCase(jornadaExistente)) {
+                JOptionPane.showMessageDialog(this, "La jornada '" + nuevaJornada + "' ya existe.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
         API_DataJornadaApplications JornadaApplications = new API_DataJornadaApplications();
-        String resultadoCrear = JornadaApplications.crearJornada(JornadaHolder.getText());
+        String resultadoCrear = JornadaApplications.crearJornada(nuevaJornada);
         actualizarTablaJornadas();
         JornadaHolder.setText("");
         JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AgregarJornadaFormacionActionPerformed
 
     private void AgregarAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarAreaActionPerformed
+        String nuevaArea = AreaHolder.getText().trim();
+    
+        // Verificar si el área ya existe en la tabla
+        DefaultTableModel model = (DefaultTableModel) AreasDataTable.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String areaExistente = (String) model.getValueAt(i, 1); // Columna 1: nombres de áreas
+            if (nuevaArea.equalsIgnoreCase(areaExistente)) {
+                JOptionPane.showMessageDialog(this, "El área '" + nuevaArea + "' ya existe.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
         API_DataAreasApplications AreasApplications = new API_DataAreasApplications();
-        String resultadoCrear = AreasApplications.crearArea(AreaHolder.getText());
+        String resultadoCrear = AreasApplications.crearArea(nuevaArea);
         actualizarTablaAreas();
         AreaHolder.setText("");
         JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AgregarAreaActionPerformed
 
     private void AgregarActividadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarActividadActionPerformed
-        API_DataActividadApplications ActividadApplications = new API_DataActividadApplications();
-        String resultadoCrear = ActividadApplications.crearActividad(ActividadHolder.getText());
-        actualizarTablaActividades();
-        ActividadHolder.setText("");
-        JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
+        String nuevaActividad = ActividadHolder.getText().trim();
+
+       // Verificar si la actividad ya existe en la tabla
+       DefaultTableModel model = (DefaultTableModel) ActividadesDataTable.getModel();
+       for (int i = 0; i < model.getRowCount(); i++) {
+           String actividadExistente = (String) model.getValueAt(i, 1); // Columna 1: nombres de actividades
+           if (nuevaActividad.equalsIgnoreCase(actividadExistente)) {
+               JOptionPane.showMessageDialog(this, "La actividad '" + nuevaActividad + "' ya existe.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+               return;
+           }
+       }
+
+       API_DataActividadApplications ActividadApplications = new API_DataActividadApplications();
+       String resultadoCrear = ActividadApplications.crearActividad(nuevaActividad);
+       actualizarTablaActividades();
+       ActividadHolder.setText("");
+       JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AgregarActividadActionPerformed
 
     private void AgregarAmbienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarAmbienteActionPerformed
-        API_DataAmbientesApplications AmbientesApplications = new API_DataAmbientesApplications(); // Instancia de la API
-        String resultadoCrear = AmbientesApplications.crearAmbiente(AmbienteHolder.getText());  // Llamar a la API para actualizar el valor
+        String nuevoAmbiente = AmbienteHolder.getText().trim();
+
+        // Verificar si el ambiente ya existe en la tabla
+        DefaultTableModel model = (DefaultTableModel) AmbientesDataTable.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String ambienteExistente = (String) model.getValueAt(i, 1); // Columna 1: nombres de ambientes
+            if (nuevoAmbiente.equalsIgnoreCase(ambienteExistente)) {
+                JOptionPane.showMessageDialog(this, "El ambiente '" + nuevoAmbiente + "' ya existe.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        API_DataAmbientesApplications AmbientesApplications = new API_DataAmbientesApplications();
+        String resultadoCrear = AmbientesApplications.crearAmbiente(nuevoAmbiente);
         actualizarTablaAmbientes();
         AmbienteHolder.setText("");
         JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AgregarAmbienteActionPerformed
 
     private void AgregarClaseFormacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarClaseFormacionActionPerformed
-        String jornadaFormacion = (String)DocumentoInstructorClaseFormacionCB.getSelectedItem();
+        String jornadaFormacion = (String) DocumentoInstructorClaseFormacionCB.getSelectedItem();
         String nombreClase = ClaseFormacionHolder.getText();
 
-        if (jornadaFormacion == null) {
-            JOptionPane.showMessageDialog(this, "No se encontró ningún instructor con el documento proporcionado.", "Instructor no encontrado", JOptionPane.ERROR_MESSAGE);
+        // Verificar si ambos campos están completos
+        if (jornadaFormacion == null || nombreClase.trim().isEmpty()|| jornadaFormacion.equals("Seleccionar...")) {
+            JOptionPane.showMessageDialog(this, "Debe proporcionar tanto el nombre de la clase como la jornada de formación.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Formatear la información del instructor
-        String infoInstructor = STR."""
-        Información del Instructor:
-        Nueva clase de formacion: \{nombreClase}
-        Jornada de formacion: \{jornadaFormacion}""";
+        // Obtener el modelo de la tabla que almacena las asociaciones actuales de clases y jornadas
+        DefaultTableModel model = (DefaultTableModel) ClaseFormacionDataTable.getModel(); // Asumiendo que tienes una tabla con las clases almacenadas
+
+        // Iterar sobre las filas para verificar coincidencias en el nombre de clase y jornada
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String nombreClaseExistente = (String) model.getValueAt(i, 1); // Columna 1: Nombres de las clases
+            String jornadaFormacionExistente = (String) model.getValueAt(i, 2); // Columna 2: Jornadas de formación
+
+            if (nombreClase.equalsIgnoreCase(nombreClaseExistente) && jornadaFormacion.equalsIgnoreCase(jornadaFormacionExistente)) {
+                // Si hay coincidencia, mostrar el mensaje y retornar
+                JOptionPane.showMessageDialog(this, String.format("La clase '%s' ya está asociada a la jornada '%s'.", nombreClase, jornadaFormacion), "Clase duplicada", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        // Formatear la información de la clase de formación
+        String infoClase = String.format("""
+                Nueva clase de formación: %s
+                Jornada de formación: %s""", nombreClase, jornadaFormacion);
 
         // Mostrar el cuadro de diálogo de confirmación
-        int opcion = JOptionPane.showConfirmDialog(this, infoInstructor + "\n\n¿Desea agregar la clase a este instructor?", "Confirmar agregar clase", JOptionPane.YES_NO_OPTION);
+        int opcion = JOptionPane.showConfirmDialog(this, infoClase + "\n\n¿Desea agregar la clase?", "Confirmar agregar clase", JOptionPane.YES_NO_OPTION);
 
         if (opcion == JOptionPane.YES_OPTION) {
-            // Proceder a agregar la clase al instructor
+            // Proceder a agregar la clase
             try {
-                // Asumiendo que tienes un campo para el nombre de la clase
-
                 API_DataClaseFormacionApplications claseFormacionApplications = new API_DataClaseFormacionApplications();
                 claseFormacionApplications.crearClaseFormacion(nombreClase, jornadaFormacion);
 
-                JOptionPane.showMessageDialog(this, "La clase se ha agregado exitosamente al instructor.", "Operación exitosa", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "La clase se ha agregado exitosamente.", "Operación exitosa", JOptionPane.INFORMATION_MESSAGE);
                 actualizarTablaClaseFormacion();
                 ClaseFormacionHolder.setText("");
                 DocumentoInstructorClaseFormacionCB.setSelectedIndex(0);
@@ -1914,7 +2011,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
             }
         } else {
             // El usuario canceló la operación
-            JOptionPane.showMessageDialog(this, "No se agregó la clase al instructor.", "Operación cancelada", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se agregó la clase.", "Operación cancelada", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_AgregarClaseFormacionActionPerformed
 
@@ -2015,19 +2112,43 @@ public class DataManagerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_AgregarFichaActionPerformed
 
     private void AgregarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarGeneroActionPerformed
-        API_DataGenerosApplications GenerosApplications = new API_DataGenerosApplications(); // Instancia de la API
-        String resultadoCrear = GenerosApplications.crearGenero(GeneroHolder.getText());  // Llamar a la API para actualizar el valor
+        String nuevoGenero = GeneroHolder.getText().trim();
+
+        // Verificar si el género ya existe en la tabla
+        DefaultTableModel model = (DefaultTableModel) GenerosTableData.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String generoExistente = (String) model.getValueAt(i, 1); // Columna 1: nombres de géneros
+            if (nuevoGenero.equalsIgnoreCase(generoExistente)) {
+                JOptionPane.showMessageDialog(this, "El género '" + nuevoGenero + "' ya existe.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        API_DataGenerosApplications GenerosApplications = new API_DataGenerosApplications();
+        String resultadoCrear = GenerosApplications.crearGenero(nuevoGenero);
         actualizarTablaGeneros();
-        JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
         GeneroHolder.setText("");
+        JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AgregarGeneroActionPerformed
 
     private void AgregarRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarRolActionPerformed
+        String nuevoRol = RolHolder.getText().trim();
+
+        // Verificar si el rol ya existe en la tabla
+        DefaultTableModel model = (DefaultTableModel) RolesTableData.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String rolExistente = (String) model.getValueAt(i, 1); // Columna 1: nombres de roles
+            if (nuevoRol.equalsIgnoreCase(rolExistente)) {
+                JOptionPane.showMessageDialog(this, "El rol '" + nuevoRol + "' ya existe.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
         API_DataRolesApplications RolApplications = new API_DataRolesApplications();
-        String resultadoCrear = RolApplications.crearRol(RolHolder.getText());
+        String resultadoCrear = RolApplications.crearRol(nuevoRol);
         actualizarTablaRoles();
-        JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
         RolHolder.setText("");
+        JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AgregarRolActionPerformed
 
     private void RefrescarTablaTipoDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefrescarTablaTipoDocActionPerformed
@@ -2035,11 +2156,23 @@ public class DataManagerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_RefrescarTablaTipoDocActionPerformed
 
     private void AgregarTipoDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarTipoDocActionPerformed
-        API_DataTipoDocApplications tipoDocApplications = new API_DataTipoDocApplications();
-        String resultadoCrear = tipoDocApplications.crearTipoDocumento(TipoDocumentoHolder.getText());
-        actualizarTipoDocTable();
-        JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
-        TipoDocumentoHolder.setText("");
+    String nuevoTipoDoc = TipoDocumentoHolder.getText().trim();
+    
+    // Verificar si el tipo de documento ya existe en la tabla
+    DefaultTableModel model = (DefaultTableModel) TipoDocTableData.getModel();
+    for (int i = 0; i < model.getRowCount(); i++) {
+        String tipoDocExistente = (String) model.getValueAt(i, 1); // Columna 1: tipos de documentos
+        if (nuevoTipoDoc.equalsIgnoreCase(tipoDocExistente)) {
+            JOptionPane.showMessageDialog(this, "El tipo de documento '" + nuevoTipoDoc + "' ya existe.", "Duplicado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    }
+    
+    API_DataTipoDocApplications tipoDocApplications = new API_DataTipoDocApplications();
+    String resultadoCrear = tipoDocApplications.crearTipoDocumento(nuevoTipoDoc);
+    actualizarTipoDocTable();
+    TipoDocumentoHolder.setText("");
+    JOptionPane.showMessageDialog(null, resultadoCrear, "Resultado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AgregarTipoDocActionPerformed
 
     private void TipoDocumentoHolderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TipoDocumentoHolderKeyTyped
@@ -2200,6 +2333,12 @@ public class DataManagerPanel extends javax.swing.JPanel {
             return;
         }
 
+
+        if(instructor.getDocumento().isEmpty()){
+            JOptionPane.showMessageDialog(this, "El usuario no es un instructor", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         // Mostrar los datos del instructor
         String instructorInfo = "Nombre: " + instructor.getNombres() + " " + instructor.getApellidos() + "\n" +
                 "Documento: " + instructor.getDocumento() + "\n" +
@@ -2263,6 +2402,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
         // Llamar al método del cliente para crear la asociación
         API_DataInstructorFichaClaseApplications.asociarFichaInstructorClase(nombreClase, numeroFicha, documentoInstructor, jornadaClase);
         AsociarClaseInstructorFichaDocumentoHolder.setText("");
+        AsociarInstructorClaseFichaDataProgramaFormacionCB.setSelectedIndex(0);
         actualizarTablaAsociarFichas();
     }//GEN-LAST:event_AsociarClaseInstructorFIchaActionPerformed
 
@@ -2386,9 +2526,7 @@ public class DataManagerPanel extends javax.swing.JPanel {
                                 // Llamar al método para eliminar la asociación
                                 API_DataInstructorFichaClaseApplications.eliminarAsociacionFichaInstructorClase(nombreClase, numeroFicha, documentoInstructor, jornadaClase);
 
-                                // Eliminar la fila de la tabla
-                                ((DefaultTableModel) table.getModel()).removeRow(row);
-                                JOptionPane.showMessageDialog(null, "Asociación eliminada correctamente.");
+                                actualizarTablaAsociarFichas();
                             } else {
                                 JOptionPane.showMessageDialog(null, "Eliminación cancelada.");
                             }
@@ -2418,8 +2556,10 @@ public class DataManagerPanel extends javax.swing.JPanel {
                     String valor = (String) table.getValueAt(row, 1);  // Obtener el valor de la segunda columna (nombre del rol)
                     Integer id = (Integer) table.getValueAt(row, 0);  // Obtener el ID de la primera columna (ID del rol)
 
-                    System.out.println(STR."Editando \{tipoTabla}: \{valor} con ID: \{id}");
-                    String nuevoValor = JOptionPane.showInputDialog(null, STR."Editar \{tipoTabla}: ", valor);
+                    System.out.println(String.format("Editando %s: %s con ID: %d", tipoTabla, valor, id));
+
+                    String nuevoValor = JOptionPane.showInputDialog(null, String.format("Editar %s: ", tipoTabla), valor);
+
                     if (nuevoValor != null && !nuevoValor.trim().isEmpty()) {
                         fireEditingStopped();  // Detener la edición antes de actualizar el valor
                         switch (tipoTabla){
@@ -2505,8 +2645,11 @@ public class DataManagerPanel extends javax.swing.JPanel {
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
                 if (row >= 0 && row < table.getRowCount()) {
                     Integer id = (Integer) table.getValueAt(row, 0);  // Obtener el ID de la primera columna (ID del rol)
-                    int respuesta = JOptionPane.showConfirmDialog(null, STR."¿Estás seguro de eliminar el \{tipoTabla} con ID: \{id}?",
-                            "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                    int respuesta = JOptionPane.showConfirmDialog(null, 
+                        String.format("¿Estás seguro de eliminar el %s con ID: %d?", tipoTabla, id),
+                        "Confirmar eliminación", 
+                        JOptionPane.YES_NO_OPTION);
+
                     if (respuesta == JOptionPane.YES_OPTION) {
                         fireEditingStopped();  // Detener la edición antes de eliminar la fila
                         switch (tipoTabla){

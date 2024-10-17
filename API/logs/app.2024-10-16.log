@@ -1,0 +1,623 @@
+2024-10-16 09:03:43 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:03:43 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 27824 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:03:43 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:03:43 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:03:43 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:03:43 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:03:43 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:03:43 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:03:44 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:03:44 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:03:44 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:03:44 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:03:44 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:03:44 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1278 ms
+2024-10-16 09:03:44 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:03:45 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@272d6185
+2024-10-16 09:03:45 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:03:45 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:03:45 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:03:45 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:03:45 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:03:45 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.947 seconds (process running for 3.79)
+2024-10-16 09:05:05 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 09:05:05 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 09:05:05 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 09:05:05 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:05:05 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:05:05 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:05:05 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:05:05 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:05:25 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:05:25 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:05:25 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:05:25 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:05:25 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:05:37 INFO  [http-nio-8080-exec-10] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:05:37 DEBUG [http-nio-8080-exec-10] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:05:37 INFO  [http-nio-8080-exec-10] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:05:37 INFO  [http-nio-8080-exec-10] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:05:37 INFO  [http-nio-8080-exec-10] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:07:11 INFO  [http-nio-8080-exec-7] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:07:11 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:07:11 INFO  [http-nio-8080-exec-7] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:07:11 INFO  [http-nio-8080-exec-7] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:07:11 INFO  [http-nio-8080-exec-7] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:12:06 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 09:12:06 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 09:12:10 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:12:10 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 21796 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:12:10 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:12:10 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:12:11 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:12:11 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:12:11 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:12:11 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:12:12 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:12:12 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:12:12 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:12:12 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:12:12 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:12:12 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1115 ms
+2024-10-16 09:12:12 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:12:12 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5e5c13a5
+2024-10-16 09:12:12 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:12:12 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:12:13 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:12:13 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:12:13 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:12:13 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.626 seconds (process running for 3.427)
+2024-10-16 09:12:17 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 09:12:17 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 09:12:17 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2024-10-16 09:12:17 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:12:17 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:12:17 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:12:17 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:12:17 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:17:40 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 09:17:40 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 09:17:46 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:17:46 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 13604 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:17:46 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:17:46 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:17:46 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:17:46 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:17:46 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:17:46 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:17:47 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:17:47 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:17:47 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:17:47 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:17:47 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:17:47 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1109 ms
+2024-10-16 09:17:47 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:17:47 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@49157ffc
+2024-10-16 09:17:47 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:17:47 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:17:48 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:17:48 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:17:48 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:17:48 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.567 seconds (process running for 3.204)
+2024-10-16 09:18:01 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 09:18:01 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 09:18:01 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2024-10-16 09:18:01 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:18:01 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:18:01 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:18:01 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:18:01 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:19:25 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 09:19:25 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 09:19:30 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:19:30 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 21136 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:19:30 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:19:30 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:19:30 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:19:30 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:19:31 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:19:31 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:19:31 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:19:31 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:19:31 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:19:31 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:19:31 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:19:31 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1101 ms
+2024-10-16 09:19:31 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:19:32 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@173a1b49
+2024-10-16 09:19:32 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:19:32 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:19:32 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:19:32 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:19:32 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:19:32 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.547 seconds (process running for 3.19)
+2024-10-16 09:21:34 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 09:21:34 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 09:21:39 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:21:39 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 20448 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:21:39 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:21:39 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:21:39 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:21:39 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:21:39 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:21:39 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:21:40 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:21:40 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:21:40 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:21:40 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:21:40 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:21:40 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1090 ms
+2024-10-16 09:21:40 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:21:40 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@49157ffc
+2024-10-16 09:21:40 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:21:40 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:21:41 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:21:41 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:21:41 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:21:41 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.543 seconds (process running for 3.226)
+2024-10-16 09:21:59 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 09:21:59 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 09:21:59 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 09:22:05 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:22:05 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:22:05 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:22:05 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:22:05 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:24:44 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 09:24:44 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 09:24:48 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:24:48 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 23584 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:24:48 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:24:48 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:24:48 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:24:48 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:24:49 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:24:49 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:24:49 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:24:49 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:24:49 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:24:49 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:24:49 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:24:49 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1187 ms
+2024-10-16 09:24:50 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:24:50 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@448e17bc
+2024-10-16 09:24:50 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:24:50 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:24:51 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:24:51 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:24:51 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:24:51 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.756 seconds (process running for 3.444)
+2024-10-16 09:24:57 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 09:24:57 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 09:24:57 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 09:24:57 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:24:57 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:24:57 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:24:57 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:24:57 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:25:38 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 09:25:38 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 09:25:43 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:25:43 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 25684 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:25:43 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:25:43 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:25:43 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:25:43 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:25:43 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:25:44 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:25:44 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:25:44 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:25:44 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:25:44 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:25:44 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:25:44 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1101 ms
+2024-10-16 09:25:44 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:25:45 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2c57713b
+2024-10-16 09:25:45 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:25:45 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:25:45 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:25:45 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:25:45 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:25:45 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.535 seconds (process running for 3.183)
+2024-10-16 09:25:54 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 09:25:54 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 09:25:54 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2024-10-16 09:26:00 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:26:00 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:26:00 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:26:00 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:26:00 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:28:45 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 09:28:45 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 09:28:49 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:28:49 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 17512 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:28:49 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:28:49 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:28:49 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:28:49 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:28:50 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:28:50 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:28:51 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:28:51 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:28:51 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:28:51 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:28:51 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:28:51 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1129 ms
+2024-10-16 09:28:51 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:28:51 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@49157ffc
+2024-10-16 09:28:51 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:28:51 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:28:52 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:28:52 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:28:52 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:28:52 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.592 seconds (process running for 3.245)
+2024-10-16 09:28:59 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 09:28:59 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 09:28:59 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 09:28:59 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:28:59 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:28:59 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:28:59 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:28:59 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:29:17 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 09:29:17 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 09:29:22 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:29:22 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 34316 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:29:22 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:29:22 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:29:22 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:29:22 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:29:22 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:29:22 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 20 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:29:23 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:29:23 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:29:23 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:29:23 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:29:23 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:29:23 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1152 ms
+2024-10-16 09:29:23 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:29:23 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1f2cdfe
+2024-10-16 09:29:23 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:29:24 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:29:24 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:29:24 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:29:24 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:29:24 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.639 seconds (process running for 3.304)
+2024-10-16 09:29:26 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 09:29:26 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 09:29:26 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 09:29:27 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:29:27 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:29:27 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:29:27 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:29:27 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:32:07 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 09:32:07 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 09:32:11 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:32:11 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 24400 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:32:11 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:32:11 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:32:11 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:32:11 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:32:12 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:32:12 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:32:12 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:32:12 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:32:12 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:32:12 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:32:12 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:32:12 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1114 ms
+2024-10-16 09:32:13 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:32:13 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3090d7e6
+2024-10-16 09:32:13 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:32:13 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:32:13 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:32:13 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:32:13 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:32:13 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.607 seconds (process running for 3.24)
+2024-10-16 09:32:24 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 09:32:24 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 09:32:24 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 09:32:24 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:32:24 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:32:24 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:32:24 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:32:24 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:34:18 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 09:34:18 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 09:34:22 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:34:22 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 17164 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:34:22 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:34:22 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:34:22 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:34:22 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:34:23 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:34:23 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:34:23 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:34:23 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:34:23 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:34:23 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:34:23 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:34:23 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1099 ms
+2024-10-16 09:34:24 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:34:24 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@173a1b49
+2024-10-16 09:34:24 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:34:24 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:34:25 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:34:25 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:34:25 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:34:25 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.552 seconds (process running for 3.198)
+2024-10-16 09:34:28 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 09:34:28 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 09:34:28 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 09:34:28 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:34:28 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:34:28 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:34:28 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:34:28 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:40:53 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 09:40:53 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 09:40:57 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 09:40:57 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 16564 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 09:40:57 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 09:40:57 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 09:40:57 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 09:40:57 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 09:40:58 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 09:40:58 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 18 ms. Found 0 JDBC repository interfaces.
+2024-10-16 09:40:58 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 09:40:58 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:40:58 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 09:40:58 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 09:40:58 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 09:40:58 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1149 ms
+2024-10-16 09:40:59 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 09:40:59 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5e5c13a5
+2024-10-16 09:40:59 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 09:40:59 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 09:40:59 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 09:40:59 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 09:40:59 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 09:40:59 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.641 seconds (process running for 3.317)
+2024-10-16 09:41:09 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 09:41:09 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 09:41:09 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 09:41:09 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:41:09 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:41:09 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:41:09 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:41:09 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:41:59 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:41:59 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:41:59 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:41:59 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:41:59 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:45:12 INFO  [http-nio-8080-exec-7] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:45:12 DEBUG [http-nio-8080-exec-7] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:45:12 INFO  [http-nio-8080-exec-7] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:45:12 INFO  [http-nio-8080-exec-7] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:45:12 INFO  [http-nio-8080-exec-7] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:47:30 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:47:30 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:47:30 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:47:30 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:47:30 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:54:42 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:54:42 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:54:42 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:54:42 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:54:42 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 09:57:44 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 09:57:44 DEBUG [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 09:57:44 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 09:57:44 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 09:57:44 INFO  [http-nio-8080-exec-4] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 10:11:03 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 10:11:03 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 10:11:07 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 10:11:07 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 2668 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 10:11:07 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 10:11:07 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 10:11:07 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 10:11:07 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 10:11:08 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 10:11:08 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 JDBC repository interfaces.
+2024-10-16 10:11:08 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 10:11:08 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 10:11:08 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 10:11:08 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 10:11:08 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 10:11:08 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1140 ms
+2024-10-16 10:11:09 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 10:11:09 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2f510b9b
+2024-10-16 10:11:09 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 10:11:09 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 10:11:10 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 10:11:10 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 10:11:10 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 10:11:10 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.688 seconds (process running for 3.345)
+2024-10-16 10:11:19 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 10:11:19 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 10:11:19 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 10:11:19 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 10:11:19 DEBUG [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 10:11:19 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 10:11:19 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 10:11:19 INFO  [http-nio-8080-exec-2] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 10:19:43 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 10:19:43 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 10:19:48 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 10:19:48 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 25636 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 10:19:48 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 10:19:48 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 10:19:48 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 10:19:48 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 10:19:48 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 10:19:48 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JDBC repository interfaces.
+2024-10-16 10:19:49 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 10:19:49 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 10:19:49 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 10:19:49 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 10:19:49 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 10:19:49 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1128 ms
+2024-10-16 10:19:49 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 10:19:49 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@22912df0
+2024-10-16 10:19:49 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 10:19:50 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 10:19:50 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 10:19:50 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 10:19:50 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 10:19:50 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.614 seconds (process running for 3.264)
+2024-10-16 10:19:57 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 10:19:57 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 10:19:57 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 10:20:04 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 10:20:04 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 10:20:04 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 10:20:04 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 10:20:04 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 10:23:16 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 10:23:16 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 10:23:20 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 10:23:20 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 28416 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 10:23:20 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 10:23:20 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 10:23:21 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 10:23:21 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 10:23:21 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 10:23:21 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 JDBC repository interfaces.
+2024-10-16 10:23:22 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 10:23:22 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 10:23:22 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 10:23:22 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 10:23:22 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 10:23:22 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1110 ms
+2024-10-16 10:23:22 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 10:23:22 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2c57713b
+2024-10-16 10:23:22 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 10:23:22 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 10:23:23 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 10:23:23 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 10:23:23 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 10:23:23 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.604 seconds (process running for 3.239)
+2024-10-16 10:23:32 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 10:23:32 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 10:23:32 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2024-10-16 10:23:32 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 10:23:32 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 10:23:32 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 10:23:32 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 10:23:32 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 10:24:15 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 10:24:15 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 10:24:19 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 10:24:19 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 23236 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 10:24:19 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 10:24:19 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 10:24:19 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 10:24:19 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 10:24:20 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 10:24:20 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JDBC repository interfaces.
+2024-10-16 10:24:20 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 10:24:20 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 10:24:20 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 10:24:20 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 10:24:20 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 10:24:20 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1110 ms
+2024-10-16 10:24:21 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 10:24:21 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24bc67d2
+2024-10-16 10:24:21 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 10:24:21 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 10:24:21 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 10:24:21 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 10:24:21 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 10:24:21 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.594 seconds (process running for 3.228)
+2024-10-16 10:24:28 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 10:24:28 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 10:24:28 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2024-10-16 10:24:29 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 10:24:29 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 10:24:29 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 10:24:29 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 10:24:29 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 10:29:17 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 10:29:17 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 10:29:22 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 10:29:22 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 17712 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 10:29:22 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 10:29:22 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 10:29:22 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 10:29:22 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 10:29:22 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 10:29:22 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 17 ms. Found 0 JDBC repository interfaces.
+2024-10-16 10:29:23 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 10:29:23 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 10:29:23 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 10:29:23 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 10:29:23 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 10:29:23 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1135 ms
+2024-10-16 10:29:23 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 10:29:23 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1f2cdfe
+2024-10-16 10:29:23 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 10:29:24 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 10:29:24 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 10:29:24 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 10:29:24 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 10:29:24 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.624 seconds (process running for 3.247)
+2024-10-16 10:29:31 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 10:29:31 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 10:29:31 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 10:29:31 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 10:29:31 DEBUG [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 10:29:31 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 10:29:31 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 10:29:31 INFO  [http-nio-8080-exec-1] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 11:13:17 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 11:13:17 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-16 11:13:22 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-16 11:13:22 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Starting PrAsisApplication using Java 21.0.3 with PID 14464 (C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API\target\classes started by Propietario in C:\Users\Propietario\Documents\Proyecto-registro-de-asistencia\API)
+2024-10-16 11:13:22 DEBUG [restartedMain] c.p.prasis.PrAsisApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-10-16 11:13:22 INFO  [restartedMain] c.p.prasis.PrAsisApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-16 11:13:22 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-16 11:13:22 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-16 11:13:22 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+2024-10-16 11:13:22 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 0 JDBC repository interfaces.
+2024-10-16 11:13:23 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-10-16 11:13:23 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-16 11:13:23 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-16 11:13:23 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-10-16 11:13:23 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-16 11:13:23 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1092 ms
+2024-10-16 11:13:23 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-16 11:13:23 INFO  [restartedMain] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@396c6240
+2024-10-16 11:13:23 INFO  [restartedMain] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-16 11:13:23 INFO  [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2024-10-16 11:13:24 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-16 11:13:24 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-10-16 11:13:24 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-10-16 11:13:24 INFO  [restartedMain] c.p.prasis.PrAsisApplication - Started PrAsisApplication in 2.518 seconds (process running for 3.16)
+2024-10-16 11:14:08 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-16 11:14:08 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-16 11:14:08 INFO  [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-16 11:14:09 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 11:14:09 DEBUG [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 11:14:09 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 11:14:09 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 11:14:09 INFO  [http-nio-8080-exec-3] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 11:16:14 INFO  [http-nio-8080-exec-8] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 11:16:14 DEBUG [http-nio-8080-exec-8] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 11:16:14 INFO  [http-nio-8080-exec-8] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 11:16:14 INFO  [http-nio-8080-exec-8] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 11:16:14 INFO  [http-nio-8080-exec-8] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 11:16:22 INFO  [http-nio-8080-exec-6] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 11:16:22 DEBUG [http-nio-8080-exec-6] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 11:16:22 INFO  [http-nio-8080-exec-6] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 11:16:22 INFO  [http-nio-8080-exec-6] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 11:16:22 INFO  [http-nio-8080-exec-6] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 11:16:22 INFO  [http-nio-8080-exec-8] c.p.p.s.U.AprendizService - Iniciando búsqueda de aprendiz con documento: 0987654321
+2024-10-16 11:16:22 DEBUG [http-nio-8080-exec-8] c.p.p.s.U.AprendizService - PerfilUsuarioIds encontrados para documento 0987654321: [4]
+2024-10-16 11:16:22 INFO  [http-nio-8080-exec-8] c.p.p.s.U.AprendizService - PerfilUsuarioId seleccionado: 4
+2024-10-16 11:16:22 INFO  [http-nio-8080-exec-8] c.p.p.s.U.AprendizService - Información básica del aprendiz obtenida: AprendizModel(vinculaciones=[])
+2024-10-16 11:16:22 INFO  [http-nio-8080-exec-8] c.p.p.s.U.AprendizService - Información completa del aprendiz obtenida exitosamente: AprendizModel(vinculaciones=[{Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Desarrollo Web, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}, {Ficha=2696521, Area=Sistemas, Sede=Centro de mantenimiento integral, ClaseFormacion=Algoritmia, JornadaFormacion=Diurna, NombreInstructor=Jeisson Fernando Leon Avila, NivelFormacion=Tecnologo, ProgramaFormacion=Analisis y desarrollo de software}])
+2024-10-16 11:24:12 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-16 11:24:12 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
